@@ -1,0 +1,352 @@
+* {
+  cursor: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Playful Custom Cursor */
+#custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-color: #ec4899;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    background-color 0.2s;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0px;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.2;
+  mix-blend-mode: normal;
+}
+
+.hover-active #custom-cursor {
+  width: 75px;
+  height: 75px;
+  font-size: 14px;
+  background-color: rgba(236, 72, 153, 0.95);
+  box-shadow: 0 0 25px rgba(236, 72, 153, 0.7);
+}
+
+.magnetic {
+  transition:
+    transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.drawer-enter {
+  transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.input-rainbow {
+  transition:
+    box-shadow 0.3s,
+    border-color 0.3s;
+}
+
+.input-rainbow:focus {
+  outline: none;
+  border-color: transparent;
+}
+
+.input-name:focus {
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.4);
+}
+
+.input-email:focus {
+  box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.4);
+}
+
+.font-baskerville {
+  font-family: "Libre Baskerville", "Baskerville", serif;
+}
+
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
+
+.glow-hover:hover {
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.1));
+}
+
+.input-wa:focus {
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.4);
+}
+
+/* Seamless Liquid Wave Parallax */
+.wave-container {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  bottom: 0;
+  transform: translateY(calc(100% - 2px));
+  /* Overlaps hero by 2px to kill the white hairline gap */
+  z-index: 50;
+}
+
+.wave-container svg {
+  position: relative;
+  display: block;
+  width: 200%;
+  height: 140px;
+}
+
+.wave-front {
+  fill: #2563eb;
+  /* Matches Tailwind blue-600 */
+  animation: wave-infinite 10s linear infinite;
+}
+
+.wave-back {
+  fill: rgba(37, 99, 235, 0.6);
+  /* Semi-transparent blue for depth */
+  animation: wave-infinite 16s linear infinite;
+}
+
+@keyframes wave-infinite {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Marquee Animation for Gallery */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.marquee-content {
+  display: inline-flex;
+  animation: marquee 35s linear infinite;
+}
+
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Abstract blobs */
+.blob-bg {
+  position: absolute;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  animation: morph 8s ease-in-out infinite;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+@keyframes morph {
+  0%,
+  100% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  }
+
+  34% {
+    border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
+  }
+
+  67% {
+    border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%;
+  }
+}
+
+/* Social Proof Toast Animations */
+.toast-enter {
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.toast-enter-start {
+  transform: translateY(150%) scale(0.9);
+  opacity: 0;
+}
+
+.toast-enter-end {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.toast-leave {
+  transition: all 0.4s ease-in;
+}
+
+.toast-leave-start {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast-leave-end {
+  transform: translateX(-150%);
+  opacity: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-outfit {
+  font-family: "Outfit", sans-serif;
+}
+
+[data-aos="color-reveal"] {
+  color: #e2e8f0;
+  /* slate-200 */
+}
+
+[data-aos="color-reveal"].aos-animate {
+  background: linear-gradient(to right, #06b6d4, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom Animations */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+. {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Luxury Staggered Fade-in */
+.reveal-text {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-text.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-100 {
+  transition-delay: 100ms;
+}
+
+.delay-200 {
+  transition-delay: 200ms;
+}
+
+.delay-300 {
+  transition-delay: 300ms;
+}
+
+/* Liquid Wave Text Effect */
+.wave-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.wave-bg-text {
+  color: #e2e8f0;
+  /* slate-200 base */
+}
+
+.wave-fill-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: transparent;
+  background-image: linear-gradient(to bottom, #0f172a, #1e3a8a, #2563eb);
+  /* Matched to banner */
+  -webkit-background-clip: text;
+  background-clip: text;
+  clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+  transition: clip-path 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wave-wrapper.is-active .wave-fill-text {
+  animation: wave-liquid 4s ease-in-out infinite;
+}
+
+@keyframes wave-liquid {
+  0%,
+  100% {
+    clip-path: polygon(
+      0% 40%,
+      15% 35%,
+      32% 45%,
+      54% 55%,
+      70% 50%,
+      84% 45%,
+      100% 40%,
+      100% 100%,
+      0% 100%
+    );
+  }
+
+  50% {
+    clip-path: polygon(
+      0% 55%,
+      16% 60%,
+      34% 50%,
+      51% 40%,
+      67% 45%,
+      84% 55%,
+      100% 50%,
+      100% 100%,
+      0% 100%
+    );
+  }
+}

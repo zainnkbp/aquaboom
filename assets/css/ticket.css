@@ -1,0 +1,23 @@
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.ticket-cutout-left {
+  position: absolute;
+  bottom: -12px;
+  left: -12px;
+  width: 24px;
+  height: 24px;
+  background-color: #f1f5f9;
+  border-radius: 50%;
+}
+
+.ticket-cutout-right {
+  position: absolute;
+  bottom: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  background-color: #f1f5f9;
+  border-radius: 50%;
+}

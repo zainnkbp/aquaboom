@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      Product Requirement Document (PRD) - Aquaboom Website Redesign
+    </title>
+    <style>
+      @page {
+        size: A4;
+        margin: 20mm 15mm;
+        background-color: #ffffff;
+        @bottom-right {
+          content: counter(page);
+          font-family: "Inter", sans-serif;
+          font-size: 9pt;
+          color: #94a3b8;
+        }
+        @bottom-left {
+          content: "PRD - Aquaboom Standalone Website MVP";
+          font-family: "Inter", sans-serif;
+          font-size: 9pt;
+          color: #94a3b8;
+        }
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        font-size: 10.5pt;
+        line-height: 1.6;
+        color: #0f172a;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Header Block Component */
+      .doc-header {
+        background-color: #0f172a;
+        color: #ffffff;
+        margin: -20mm -15mm 25px -15mm;
+        padding: 25px 15mm;
+        border-bottom: 5px solid #ec4899;
+      }
+
+      .doc-title {
+        font-size: 22pt;
+        font-weight: 800;
+        margin: 0 0 5px 0;
+        letter-spacing: -0.5px;
+        color: #ffffff;
+      }
+
+      .doc-subtitle {
+        font-size: 12pt;
+        color: #38bdf8;
+        margin: 0 0 15px 0;
+        font-weight: 500;
+      }
+
+      .doc-meta {
+        display: table;
+        width: 100%;
+        margin-top: 15px;
+        border-top: 1px solid #334155;
+        padding-top: 10px;
+        font-size: 9pt;
+        color: #94a3b8;
+      }
+
+      .meta-cell {
+        display: table-cell;
+        width: 33.33%;
+      }
+
+      h2 {
+        font-size: 14pt;
+        font-weight: 700;
+        color: #0f172a;
+        margin-top: 25px;
+        margin-bottom: 12px;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #e2e8f0;
+        page-break-after: avoid;
+      }
+
+      h3 {
+        font-size: 11.5pt;
+        font-weight: 700;
+        color: #ec4899;
+        margin-top: 18px;
+        margin-bottom: 8px;
+        page-break-after: avoid;
+      }
+
+      p {
+        margin: 0 0 12px 0;
+        text-align: justify;
+      }
+
+      ul,
+      ol {
+        margin: 0 0 15px 0;
+        padding-left: 20px;
+      }
+
+      li {
+        margin-bottom: 6px;
+      }
+
+      .highlight-box {
+        background-color: #f8fafc;
+        border-left: 4px solid #f97316;
+        padding: 12px 15px;
+        margin: 15px 0;
+        page-break-inside: avoid;
+      }
+
+      .highlight-box p:last-child {
+        margin-bottom: 0;
+      }
+
+      .danger-box {
+        background-color: #fff1f2;
+        border-left: 4px solid #f43f5e;
+        padding: 12px 15px;
+        margin: 15px 0;
+        page-break-inside: avoid;
+      }
+
+      .danger-box p:last-child {
+        margin-bottom: 0;
+      }
+
+      .code-inline {
+        font-family: monospace;
+        background-color: #f1f5f9;
+        padding: 2px 5px;
+        border-radius: 4px;
+        font-size: 9.5pt;
+        color: #0f172a;
+      }
+
+      .table-container {
+        margin: 15px 0;
+        page-break-inside: avoid;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9.5pt;
+      }
+
+      th {
+        background-color: #1e293b;
+        color: #ffffff;
+        font-weight: 600;
+        text-align: left;
+        padding: 8px 10px;
+        border: 1px solid #334155;
+      }
+
+      td {
+        padding: 8px 10px;
+        border: 1px solid #e2e8f0;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f8fafc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="doc-header">
+      <div class="doc-title">PRODUCT REQUIREMENT DOCUMENT (PRD)</div>
+      <div class="doc-subtitle">
+        Pengembangan Standalone Website Aquaboom Waterpark (MVP Version)
+      </div>
+      <div class="doc-meta">
+        <div class="meta-cell">
+          <strong>Pemilik Dokumen:</strong> Fadli Zainul Ihsani
+        </div>
+        <div class="meta-cell">
+          <strong>Peran:</strong> Junior Web Programmer & Analyst
+        </div>
+        <div class="meta-cell"><strong>Tanggal:</strong> 20 Juli 2026</div>
+      </div>
+    </div>
+
+    <h2>1. Ringkasan Proyek & Tujuan Bisnis</h2>
+    <p>
+      Dokumen ini merinci kebutuhan produk untuk pemisahan total (decoupling)
+      fitur pemasaran dan pemesanan tiket Aquaboom Waterpark dari platform
+      terpusat jatrahotels.com menjadi platform mandiri (standalone website).
+      Langkah strategis ini bertujuan untuk mengoptimalisasi identitas brand
+      Aquaboom yang dinamis, enerjik, dan ramah keluarga (colorful & playful
+      family waterpark), terpisah dari citra kaku ekosistem perhotelan
+      konvensional.
+    </p>
+    <p>
+      Meskipun berdiri sendiri secara visual, website ini tetap mempertahankan
+      standar operasional premium yang selaras dengan Astara Hotel. Fokus utama
+      dari Minimum Viable Product (MVP) ini adalah memaksimalkan tingkat
+      konversi penjualan tiket mandiri secara instan melalui implementasi
+      antarmuka yang modern, interaktif, kaya animasi, serta terintegrasi
+      langsung dengan Payment Gateway DOKU.
+    </p>
+
+    <h2>2. Persona Pengguna (Target Audience)</h2>
+    <ul>
+      <li>
+        <strong>Tamu Umum / Keluarga (B2C Konversi Utama):</strong> Orang tua
+        atau individu lokal yang ingin membeli tiket liburan premium dengan
+        proses instan, interaktif, dan aman langsung melalui perangkat seluler
+        mereka.
+      </li>
+      <li>
+        <strong>Tamu Menginap (Astara & Jatra Hotels):</strong> Pengunjung hotel
+        yang membutuhkan informasi validasi hak akses khusus/diskon tanpa alur
+        birokrasi loket fisik yang panjang.
+      </li>
+      <li>
+        <strong>Staf Tiket Lapangan (Internal Validator):</strong> Petugas
+        operasional loket masuk yang memerlukan modul validasi tiket yang cepat,
+        responsif, dan berkontras tinggi di luar ruangan.
+      </li>
+    </ul>
+
+    <h2>3. Lingkup Fitur Halaman & Arsitektur Animasi Modern</h2>
+    <p>
+      Untuk menghadirkan atmosfer keseruan wahana air sejak detik pertama
+      halaman dimuat, seluruh komponen frontend dirancang menggunakan pendekatan
+      <em>utility-first</em> berbasis <strong>Tailwind CSS</strong> dan
+      mikro-interaksi dari <strong>Alpine.js</strong>.
+    </p>
+
+    <h3>Halaman 1: The Luxury Vibrant Landing Page (Homepage)</h3>
+    <ul>
+      <li>
+        <strong>Hero Section (First Impression Engine):</strong> Visual latar
+        belakang menggunakan kombinasi video gerak lambat (slow-motion) wahana
+        ekstrem Aquaboom dengan overlay gradasi gelap transparan. Diperkaya
+        dengan elemen pembatas halaman bawah berupa ombak dinamis bergerak
+        kontran menggunakan <em>SVG Wave Animation</em>.
+      </li>
+      <li>
+        <strong>Lottie Splash Micro-interactions:</strong> Penggunaan file JSON
+        animasi ringan (Lottie) di sudut-sudut strategis teks utama untuk
+        memunculkan efek cipratan air dan balon meletup yang halus tanpa
+        membebani pemuatan halaman (page loading score).
+      </li>
+      <li>
+        <strong>Interactive Rides Section:</strong> Layout menggunakan susunan
+        3-kolom grid yang bersih. Setiap kartu wahana mengimplementasikan fitur
+        <em>Magnetic Hover Effect</em> dan memancarkan pendaran cahaya latar
+        (ambient glow shadow) yang selaras dengan warna dominan wahana tersebut
+        saat didekati kursor (contoh:
+        <span class="code-inline">hover:shadow-pink-500/40</span>).
+      </li>
+      <li>
+        <strong>Playful Custom Cursor:</strong> Kursor standar peramban diubah
+        menjadi lingkaran kecil interaktif berwarna merah muda yang membesar dan
+        memunculkan teks kontekstual seperti "Lihat!" atau "Seru!" saat berada
+        di atas area interaktif.
+      </li>
+    </ul>
+
+    <h3>Halaman 2: Single-Page Elastic Booking Panel</h3>
+    <ul>
+      <li>
+        <strong>Slide-over UI Component:</strong> Alur pemesanan tidak berpindah
+        halaman, melainkan memicu panel Drawer dari sisi kanan yang muncul
+        dengan efek membal yang dinamis (elastic spring bounce animation).
+      </li>
+      <li>
+        <strong>Manajemen Kuota Real-Time:</strong> Kalender interaktif kustom.
+        Tanggal yang telah mencapai batas kuota otomatis terkunci dengan
+        transisi warna pudar dan coretan garis merah yang tegas.
+      </li>
+      <li>
+        <strong>Rainbow Form Inputs:</strong> Form input minimalis yang
+        interaktif. Ketika area input aktif (focus state), bingkai garis
+        (border) bertransisi halus menggunakan warna identitas unik (Nama: cyan,
+        Email: pink, WhatsApp: orange).
+      </li>
+      <li>
+        <strong>Gamified Payment Gateway Redirection:</strong> Ketika data
+        selesai diisi, tombol final menggunakan warna emas serasi Astara Hotel
+        untuk transisi profesional menuju ekosistem DOKU API, diiringi animasi
+        letupan konfeti digital kecil saat data tervalidasi.
+      </li>
+    </ul>
+
+    <h3>Halaman 3: Status E-Ticket & Modul Pengajuan Pembatalan</h3>
+    <ul>
+      <li>
+        <strong>Digital Boarding Pass UI:</strong> Halaman post-purchase yang
+        didesain menyerupai tiket fisik premium berwarna kontras tinggi,
+        dilengkapi kode unik acak dan QR Code berdimensi besar untuk pemindaian
+        optimal.
+      </li>
+      <li>
+        <strong>Tombol Pengajuan Pembatalan Non-Otomatis:</strong> Tombol
+        mitigasi risiko diletakkan secara elegan namun tidak mencolok di bawah
+        tiket. Klik pada tombol akan memicu animasi <em>Modal Pop-up</em> berisi
+        Syarat & Ketentuan pembatalan, lalu meneruskan alasan pembatalan ke
+        database admin alih-alih melakukan pengembalian dana otomatis via API.
+      </li>
+    </ul>
+
+    <h3>Halaman 4: Mobile-First Counter Validator (Tampilan Staf Internal)</h3>
+    <ul>
+      <li>
+        <strong>High-Contrast Dark Mode Layout:</strong> Didesain khusus dengan
+        latar belakang gelap pekat (<span class="code-inline">bg-slate-950</span
+        >) untuk memitigasi pantulan sinar matahari langsung di loket luar
+        ruangan.
+      </li>
+      <li>
+        <strong>Instant Status Feedback:</strong> Kotak indikator berukuran
+        besar yang langsung berubah warna dan bergetar halus secara visual
+        berdasarkan validitas data (Hijau: Tiket Valid; Merah: Tiket Sudah
+        Digunakan/Batal).
+      </li>
+    </ul>
+
+    <h2>4. Spesifikasi Teknis Backend & Skema Database</h2>
+    <p>
+      Pengembangan sistem dilakukan secara mandiri menggunakan framework Laravel
+      dengan pemisahan database penuh dari sistem utama korporat. Berikut adalah
+      skema rancangan tabel utama database:
+    </p>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%">Nama Tabel</th>
+            <th style="width: 45%">Kolom Kunci & Tipe Data</th>
+            <th style="width: 30%">Deskripsi Fungsional</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>bookings</strong></td>
+            <td>
+              invoice_number (String, Unique), customer_name (String),
+              customer_email (String), visit_date (Date), quantity (Integer),
+              total_amount (Decimal), payment_status (Enum: pending, paid,
+              expired, refunded)
+            </td>
+            <td>
+              Menyimpan data induk transaksi pelanggan dan status sinkronisasi
+              webhook DOKU.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>tickets</strong></td>
+            <td>
+              ticket_code (String, Unique), booking_id (Foreign Key), status
+              (Enum: valid, used, canceled), used_at (Timestamp)
+            </td>
+            <td>
+              Menyimpan kode unik tiket hasil generate pasca-bayar untuk
+              divalidasi staf loket.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>daily_quotas</strong></td>
+            <td>
+              date (Date, Unique), max_quota (Integer), booked_quota (Integer)
+            </td>
+            <td>
+              Data kontrol kapasitas harian untuk mencegah fenomena overbooking
+              pada sistem.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="danger-box">
+      <p>
+        <strong>Kritik & Risiko Kinerja Animasi:</strong> Penumpukan animasi
+        berat berbasis JavaScript (seperti manipulasi DOM berlebih pada event
+        scroll) akan menyebabkan penurunan frame-rate (lagging) secara drastis
+        pada perangkat seluler dengan spesifikasi rendah. Seluruh animasi
+        transisi wajib memanfaatkan akselerasi perangkat keras bawaan (hardware
+        acceleration) lewat utilitas kelas Tailwind CSS seperti
+        <span class="code-inline">transform-gpu</span> dan
+        <span class="code-inline">will-change-*</span>.
+      </p>
+    </div>
+
+    <h2>5. Parameter Uji & Langkah Validasi Operasional</h2>
+    <p>
+      Sebelum implementasi baris kode pertama dijalankan, parameter berikut
+      wajib dikonfirmasi ke pihak manajemen operasional (Mas Made / Pak Eko):
+    </p>
+    <ol>
+      <li>
+        Batas plafon kuota maksimum kapasitas pengunjung harian untuk dimasukkan
+        sebagai nilai default tabel
+        <span class="code-inline">daily_quotas</span>.
+      </li>
+      <li>
+        Kesiapan kredensial API Merchant DOKU (apakah berupa akun entitas baru
+        atau sub-akun di bawah PAM Group).
+      </li>
+      <li>
+        Regulasi hukum dan batas waktu penutupan pengajuan pembatalan
+        (Cancelation Policy) tiket oleh pengunjung (misalnya batas waktu
+        maksimum H-1 kunjungan).
+      </li>
+    </ol>
+  </body>
+</html>

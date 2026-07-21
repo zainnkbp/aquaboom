@@ -1,0 +1,25 @@
+body {
+  font-family: "Inter", sans-serif;
+}
+
+/* Hardware accelerated vibration */
+.vibrate {
+  animation: vibrate 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+@keyframes vibrate {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  20%,
+  60% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  40%,
+  80% {
+    transform: translate3d(10px, 0, 0);
+  }
+}
