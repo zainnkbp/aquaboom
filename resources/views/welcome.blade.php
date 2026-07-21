@@ -11,6 +11,7 @@
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"
     ></script>
+    @livewireStyles
     <!-- AOS CSS -->
 
     <link
@@ -68,8 +69,8 @@
         </nav>
         <button
           @click="isBookingOpen = true"
-          @mouseenter="cursorText=\'Pesan!\'"
-          @mouseleave="cursorText=\'\'"
+          @mouseenter="cursorText='Pesan!'"
+          @mouseleave="cursorText=''"
           class="hidden md:block bg-pink-500 text-white hover:bg-pink-600 px-6 py-2.5 rounded-full font-bold shadow-lg transition-all text-sm tracking-wide font-outfit shrink-0"
         >
           Beli Tiket
@@ -421,14 +422,20 @@
         <div
           class="flex flex-row md:grid md:grid-cols-3 gap-6 md:gap-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-8 -mx-6 px-6 md:mx-0 md:px-0"
         >
-          <!-- Card 1 -->
+          @foreach($wahanas as $index => $wahana)
+          @php
+              // Colors for the line above the title (cyan, blue, orange, etc based on index)
+              $colors = ['bg-cyan-400', 'bg-blue-400', 'bg-orange-400', 'bg-pink-400', 'bg-purple-400'];
+              $color = $colors[$index % count($colors)];
+          @endphp
           <div
             class="group relative h-[450px] w-[85vw] md:w-auto shrink-0 snap-center rounded-[2.5rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-700"
             @mouseenter="cursorText='Cobain!'"
             @mouseleave="cursorText=''"
           >
             <img
-              src="https://aquaboombsb.com/wp-content/uploads/2023/12/V1.jpg"
+              src="{{ $wahana->image_url }}"
+              alt="{{ $wahana->name }}"
               loading="lazy"
               class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
@@ -439,74 +446,16 @@
             <div
               class="absolute bottom-0 left-0 w-full p-8 transform translate-y-12 group-hover:translate-y-0 transition-transform duration-500 ease-out"
             >
-              <div class="w-12 h-1 bg-cyan-400 mb-4 rounded-full"></div>
-              <h3 class="text-3xl font-black text-white mb-2">Tornado Slide</h3>
+              <div class="w-12 h-1 {{ $color }} mb-4 rounded-full"></div>
+              <h3 class="text-3xl font-black text-white mb-2">{{ $wahana->name }}</h3>
               <p
                 class="text-slate-200 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100"
               >
-                Adrenalin tinggi dengan putaran kencang. Berani coba tantangan
-                ekstrem ini bersama kerabat?
+                {{ $wahana->description }}
               </p>
             </div>
           </div>
-
-          <!-- Card 2 -->
-          <div
-            class="group relative h-[450px] w-[85vw] md:w-auto shrink-0 snap-center rounded-[2.5rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-700"
-            @mouseenter="cursorText='Cobain!'"
-            @mouseleave="cursorText=''"
-          >
-            <img
-              src="https://aquaboombsb.com/wp-content/uploads/2023/12/V2.jpg"
-              loading="lazy"
-              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"
-            ></div>
-
-            <div
-              class="absolute bottom-0 left-0 w-full p-8 transform translate-y-12 group-hover:translate-y-0 transition-transform duration-500 ease-out"
-            >
-              <div class="w-12 h-1 bg-blue-400 mb-4 rounded-full"></div>
-              <h3 class="text-3xl font-black text-white mb-2">Lazy River</h3>
-              <p
-                class="text-slate-200 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100"
-              >
-                Bersantai sejenak mengikuti arus tenang nan sejuk di atas ban,
-                mengitari seluruh area taman air.
-              </p>
-            </div>
-          </div>
-
-          <!-- Card 3 -->
-          <div
-            class="group relative h-[450px] w-[85vw] md:w-auto shrink-0 snap-center rounded-[2.5rem] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-700"
-            @mouseenter="cursorText='Cobain!'"
-            @mouseleave="cursorText=''"
-          >
-            <img
-              src="https://aquaboombsb.com/wp-content/uploads/2023/12/V3.jpg"
-              loading="lazy"
-              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"
-            ></div>
-
-            <div
-              class="absolute bottom-0 left-0 w-full p-8 transform translate-y-12 group-hover:translate-y-0 transition-transform duration-500 ease-out"
-            >
-              <div class="w-12 h-1 bg-orange-400 mb-4 rounded-full"></div>
-              <h3 class="text-3xl font-black text-white mb-2">Kids Splash</h3>
-              <p
-                class="text-slate-200 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100"
-              >
-                Area bermain super aman dengan seluncuran mini dan ember tumpah
-                khusus anak.
-              </p>
-            </div>
-          </div>
+          @endforeach
         </div>
       </div>
     </section>
@@ -1044,8 +993,8 @@
       </div>
       <button
         @click="isBookingOpen = true"
-        @mouseenter="cursorText=\'Pesan!\'"
-        @mouseleave="cursorText=\'\'"
+        @mouseenter="cursorText='Pesan!'"
+        @mouseleave="cursorText=''"
         class="bg-pink-500 text-white hover:bg-pink-600 px-6 py-2.5 rounded-full font-bold shadow-lg transition-all text-sm tracking-wide font-outfit shrink-0"
       >
         Beli Tiket
@@ -1175,155 +1124,9 @@
           </button>
         </div>
 
-        <div
-          class="p-7 overflow-y-auto flex-1 relative z-10"
-          @mouseenter="cursorText=''"
-          @mouseleave="cursorText=''"
-        >
-          <div
-            class="mb-8 bg-white p-5 rounded-2xl shadow-sm border border-slate-200"
-          >
-            <label
-              class="block text-sm font-extrabold text-slate-700 mb-4 uppercase tracking-wide"
-              >Pilih Tanggal Kunjungan</label
-            >
-            <div
-              class="flex items-center gap-3 overflow-x-auto pb-2 text-sm font-bold snap-x scrollbar-hide"
-            >
-              <div
-                @click="activeDate = 'today'; customDate = ''"
-                :class="activeDate === 'today' ? 'border-pink-500 bg-pink-500 text-white shadow-[0_5px_15px_rgba(236,72,153,0.3)]' : 'border-slate-200 hover:border-pink-400 hover:bg-pink-50 text-slate-700'"
-                class="py-3 px-5 rounded-xl border-2 cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0"
-              >
-                Hari Ini
-              </div>
-              <div
-                @click="activeDate = 'tomorrow'; customDate = ''"
-                :class="activeDate === 'tomorrow' ? 'border-pink-500 bg-pink-500 text-white shadow-[0_5px_15px_rgba(236,72,153,0.3)]' : 'border-slate-200 hover:border-pink-400 hover:bg-pink-50 text-slate-700'"
-                class="py-3 px-5 rounded-xl border-2 cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0"
-              >
-                Besok
-              </div>
-              <div
-                class="relative py-3 px-5 rounded-xl border-2 cursor-pointer transition-all duration-300 whitespace-nowrap flex items-center gap-2 snap-start shrink-0 group"
-                :class="activeDate === 'custom' ? 'border-cyan-500 bg-cyan-500 text-white shadow-[0_5px_15px_rgba(6,182,212,0.3)]' : 'border-slate-200 hover:border-cyan-400 hover:bg-cyan-50 text-slate-700'"
-              >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  ></path>
-                </svg>
-                <span x-text="customDate ? customDate : 'Tanggal Lain'"></span>
-                <input
-                  type="date"
-                  x-model="customDate"
-                  @change="activeDate = 'custom'"
-                  class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                  min="2026-07-20"
-                />
-              </div>
-            </div>
-          </div>
+        <!-- LIVEWIRE CHECKOUT COMPONENT -->
+        @livewire('checkout')
 
-          <div class="space-y-6">
-            <div class="relative">
-              <label class="block text-sm font-extrabold text-slate-700 mb-2"
-                >Nama Lengkap</label
-              >
-              <input
-                type="text"
-                class="w-full border-2 border-slate-200 rounded-xl px-5 py-4 input-rainbow input-name bg-white text-slate-800 font-bold placeholder-slate-400 shadow-sm"
-                placeholder="Cth: Fadli Zainul"
-              />
-            </div>
-            <div class="relative">
-              <label class="block text-sm font-extrabold text-slate-700 mb-2"
-                >Email</label
-              >
-              <input
-                type="email"
-                class="w-full border-2 border-slate-200 rounded-xl px-5 py-4 input-rainbow input-email bg-white text-slate-800 font-bold placeholder-slate-400 shadow-sm"
-                placeholder="Cth: fadli@domain.com"
-              />
-            </div>
-            <div class="relative">
-              <label class="block text-sm font-extrabold text-slate-700 mb-2"
-                >WhatsApp</label
-              >
-              <input
-                type="tel"
-                class="w-full border-2 border-slate-200 rounded-xl px-5 py-4 input-rainbow input-wa bg-white text-slate-800 font-bold placeholder-slate-400 shadow-sm"
-                placeholder="Cth: 08123456789"
-              />
-            </div>
-            <div
-              class="bg-white p-5 rounded-xl border-2 border-slate-200 flex justify-between items-center shadow-sm"
-            >
-              <label class="text-sm font-extrabold text-slate-700"
-                >Jumlah Tiket</label
-              >
-              <div class="flex items-center space-x-5">
-                <button
-                  class="w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center hover:bg-slate-100 hover:border-slate-300 text-slate-600 font-bold transition text-xl shadow-sm"
-                >
-                  -
-                </button>
-                <span class="text-3xl font-black text-slate-800 w-8 text-center"
-                  >2</span
-                >
-                <button
-                  class="w-12 h-12 rounded-full border-2 border-pink-200 flex items-center justify-center bg-pink-50 hover:bg-pink-100 hover:border-pink-400 text-pink-500 font-bold transition text-xl shadow-sm transform hover:scale-105"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="p-6 bg-white border-t border-slate-200 relative z-10 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]"
-        >
-          <div class="flex justify-between items-center mb-5">
-            <span
-              class="text-slate-500 font-bold uppercase text-sm tracking-wide"
-              >Total Bayar</span
-            >
-            <span class="text-3xl font-black text-slate-900 tracking-tight"
-              >Rp 300.000</span
-            >
-          </div>
-          <a
-            href="ticket.html"
-            @mouseenter="cursorText='Bayar!'"
-            @mouseleave="cursorText=''"
-            class="magnetic w-full flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-white rounded-xl py-4 text-xl font-black shadow-[0_15px_30px_rgba(245,158,11,0.4)] transition-all transform"
-            data-magnetic-strength="15"
-          >
-            Bayar Sekarang
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="3"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
-              ></path>
-            </svg>
-          </a>
-        </div>
       </div>
     </div>
 

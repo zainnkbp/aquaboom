@@ -13,7 +13,11 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/ticket.css" />
+    <!-- dom-to-image for Flawless SVG & Canvas Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <!-- QRCode.js for reliable Canvas-based QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/ticket.css') }}" />
   </head>
   <body
     class="bg-slate-100 text-slate-900 min-h-screen flex flex-col py-10 px-4"
@@ -22,7 +26,7 @@
     <!-- Header Navigation back to home -->
     <div class="max-w-md mx-auto w-full mb-8">
       <a
-        href="index.html"
+        href="{{ url('/') }}"
         class="inline-flex items-center text-sm font-semibold text-slate-500 hover:text-pink-500 transition"
       >
         <svg
@@ -43,9 +47,19 @@
     </div>
 
     <div class="w-full max-w-md mx-auto flex-1">
+      <!-- Notification Banner -->
+      <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-4 rounded-2xl mb-6 flex items-start gap-3 shadow-sm">
+        <svg class="w-6 h-6 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="text-sm">
+          <strong class="block font-bold mb-1 text-base">Penting!</strong>
+          Harap <span class="font-bold underline">Screenshot</span> halaman ini atau klik tombol <span class="font-bold">Simpan E-Ticket</span> di bawah agar tidak hilang. Salinan tiket juga telah dikirim ke Email Anda.
+        </div>
+      </div>
+
       <!-- Ticket Card Component -->
       <div
-        class="bg-white rounded-[2rem] overflow-hidden shadow-2xl relative mb-8"
+        id="ticket-card"
+        class="bg-white rounded-[2rem] overflow-hidden shadow-2xl relative mb-6"
       >
         <!-- Ticket Header -->
         <div
@@ -70,16 +84,15 @@
             <div
               class="bg-white p-3 inline-block rounded-2xl shadow-md border-2 border-slate-100 mb-4"
             >
-              <img
-                src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=AQB-20260720-1349X"
-                alt="QR Code"
-                class="w-48 h-48"
-              />
+              <!-- Client-side Canvas QR Code for 100% html2canvas compatibility -->
+              <div id="qrcode-container" class="w-48 h-48 flex items-center justify-center p-2">
+                <!-- QRCode will be injected here as a <canvas> -->
+              </div>
             </div>
             <p
-              class="font-mono text-xl font-bold text-slate-800 tracking-widest bg-slate-100 inline-block px-4 py-2 rounded-xl"
+              class="font-mono text-sm font-bold text-slate-800 bg-slate-100 inline-block px-4 py-2 rounded-xl break-all"
             >
-              AQB-20260720-1349X
+              {{ $transaction->order_id }}
             </p>
           </div>
 
@@ -89,7 +102,7 @@
             >
               <span class="text-slate-400 font-medium">Nama Pengunjung</span>
               <span class="font-bold text-slate-800 text-base"
-                >Fadli Zainul</span
+                >{{ $transaction->customer_name }}</span
               >
             </div>
             <div
@@ -97,20 +110,20 @@
             >
               <span class="text-slate-400 font-medium">Tanggal Kunjungan</span>
               <span class="font-bold text-slate-800 text-base text-pink-500"
-                >13 Agustus 2026</span
+                >{{ \Carbon\Carbon::parse($transaction->visit_date)->translatedFormat('d F Y') }}</span
               >
             </div>
             <div
               class="flex justify-between items-end border-b border-slate-100 pb-3"
             >
-              <span class="text-slate-400 font-medium">Jumlah Orang</span>
-              <span class="font-bold text-slate-800 text-base">2 Pax</span>
+              <span class="text-slate-400 font-medium">Jumlah Tiket</span>
+              <span class="font-bold text-slate-800 text-base">{{ App\Models\TransactionItem::where('transaction_id', $transaction->id)->sum('quantity') }} Pax</span>
             </div>
             <div class="flex justify-between items-center pt-2">
               <span class="text-slate-400 font-medium">Status Pembayaran</span>
               <span
                 class="bg-green-100 text-green-700 font-bold px-4 py-1.5 rounded-full text-xs shadow-sm"
-                >LUNAS - DOKU</span
+                >LUNAS - (Mock Payment)</span
               >
             </div>
           </div>
@@ -124,6 +137,18 @@
             penyalahgunaan.
           </p>
         </div>
+      </div>
+
+      <!-- Download/Print Button -->
+      <div class="mb-4">
+        <button
+          id="download-btn"
+          onclick="downloadTicket()"
+          class="w-full bg-slate-800 text-white font-black text-lg py-4 rounded-2xl shadow-lg hover:bg-slate-900 transition flex items-center justify-center gap-2"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          Simpan ke Galeri (Gambar)
+        </button>
       </div>
 
       <!-- Cancelation Action Button -->
@@ -222,5 +247,49 @@
         </div>
       </div>
     </div>
+
+    <!-- Scripts -->
+    <script>
+      // Initialize QR Code as a native canvas element
+      document.addEventListener("DOMContentLoaded", function() {
+        new QRCode(document.getElementById("qrcode-container"), {
+          text: "{{ $transaction->order_id }}",
+          width: 170,
+          height: 170,
+          colorDark : "#0f172a", // slate-900
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.M
+        });
+      });
+
+      function downloadTicket() {
+        const btn = document.getElementById('download-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Mempersiapkan Gambar...';
+        btn.disabled = true;
+
+        const ticketCard = document.getElementById('ticket-card');
+        
+        // Use domtoimage to capture the element (much better than html2canvas for Flexbox and Canvas)
+        domtoimage.toPng(ticketCard, { bgcolor: 'transparent' })
+            .then(function (dataUrl) {
+                // Create download link
+                const link = document.createElement('a');
+                link.download = 'Aquaboom-Ticket-{{ $transaction->order_id }}.png';
+                link.href = dataUrl;
+                link.click();
+
+                // Restore button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            })
+            .catch(function (error) {
+                console.error('Error rendering ticket: ', error);
+                alert('Gagal mendownload tiket. Silakan screenshot manual.');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+      }
+    </script>
   </body>
 </html>
