@@ -8,6 +8,25 @@ use Livewire\Component;
 
 class Validator extends Component
 {
+    public string $manualOrderId = '';
+
+    /**
+     * Validate a ticket via the manual code input.
+     */
+    public function validateManual()
+    {
+        $orderId = trim($this->manualOrderId);
+
+        if ($orderId === '') {
+            $this->dispatch('ticket-result', status: 'error', message: 'Silakan masukkan kode order terlebih dahulu.');
+
+            return;
+        }
+
+        $this->processTicket($orderId);
+        $this->manualOrderId = '';
+    }
+
     public function processTicket($orderId)
     {
         // Add a slight delay to prevent abuse or rapid fire scanning issues

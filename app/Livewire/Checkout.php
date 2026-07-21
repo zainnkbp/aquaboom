@@ -8,6 +8,7 @@ use App\Models\PromoCode;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
 use App\Mail\TicketSent;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -64,7 +65,26 @@ class Checkout extends Component
             return;
         }
 
-        $promo = PromoCode::where('code', strtoupper($this->promo_code))
+        $this->appliedPromo = $this->resolvePromo($this->promo_code, $error);
+
+        if (! $this->appliedPromo) {
+            $this->promoError = $error;
+        }
+    }
+
+    /**
+     * Look up a promo code and validate that it is currently usable.
+     * Returns the PromoCode model, or null with $error set to the reason.
+     */
+    protected function resolvePromo(?string $code, ?string &$error = null): ?PromoCode
+    {
+        $error = null;
+
+        if (empty($code)) {
+            return null;
+        }
+
+        $promo = PromoCode::where('code', strtoupper(trim($code)))
             ->where('is_active', true)
             ->where(function ($query) {
                 $query->whereNull('valid_from')->orWhere('valid_from', '<=', now());
@@ -74,17 +94,17 @@ class Checkout extends Component
             })
             ->first();
 
-        if (!$promo) {
-            $this->promoError = 'Kode voucher tidak ditemukan atau sudah tidak aktif.';
-            return;
+        if (! $promo) {
+            $error = 'Kode voucher tidak ditemukan atau sudah tidak aktif.';
+            return null;
         }
 
         if ($promo->max_uses && $promo->used_count >= $promo->max_uses) {
-            $this->promoError = 'Kode voucher sudah mencapai batas penggunaan.';
-            return;
+            $error = 'Kode voucher sudah mencapai batas penggunaan.';
+            return null;
         }
 
-        $this->appliedPromo = $promo;
+        return $promo;
     }
 
     public function removePromo()
@@ -97,24 +117,58 @@ class Checkout extends Component
     public function getSubtotalProperty()
     {
         if (!$this->selectedPackage) return 0;
-        
-        $price = $this->selectedPackage->discount_price ?? $this->selectedPackage->price;
-        return $price * $this->quantity;
+
+        return $this->selectedPackage->effective_price * $this->quantity;
     }
 
     public function getDiscountAmountProperty()
     {
         if (!$this->appliedPromo) return 0;
 
-        if ($this->appliedPromo->discount_percentage) {
-            return ($this->subtotal * $this->appliedPromo->discount_percentage) / 100;
+        return $this->calculateDiscount($this->appliedPromo, $this->subtotal);
+    }
+
+    /**
+     * Compute the Rupiah discount for a promo against a given subtotal.
+     * Percentage takes precedence, then a flat nominal amount. The discount
+     * can never exceed the subtotal.
+     */
+    protected function calculateDiscount(PromoCode $promo, float $subtotal): float
+    {
+        if ($promo->discount_percentage) {
+            $discount = ($subtotal * (float) $promo->discount_percentage) / 100;
+        } elseif ($promo->discount_amount) {
+            $discount = (float) $promo->discount_amount;
+        } else {
+            $discount = 0;
         }
 
-        if ($this->appliedPromo->discount_amount) {
-            return min($this->appliedPromo->discount_amount, $this->subtotal); // Max discount is subtotal
+        return round(min($discount, $subtotal), 2);
+    }
+
+    /**
+     * Whether the given promo is still active, within its validity window and
+     * under its usage cap.
+     */
+    protected function promoStillValid(PromoCode $promo): bool
+    {
+        if (! $promo->is_active) {
+            return false;
         }
 
-        return 0;
+        if ($promo->valid_from && $promo->valid_from->isFuture()) {
+            return false;
+        }
+
+        if ($promo->valid_until && $promo->valid_until->isPast()) {
+            return false;
+        }
+
+        if ($promo->max_uses && $promo->used_count >= $promo->max_uses) {
+            return false;
+        }
+
+        return true;
     }
 
     public function getTotalPriceProperty()
@@ -133,35 +187,61 @@ class Checkout extends Component
             'quantity' => 'required|integer|min:1|max:20',
         ]);
 
-        // MOCK PAYMENT: Create transaction with status 'paid'
+        // Re-fetch the package so pricing can't be tampered with client-side.
+        $this->selectedPackage = TicketPackage::findOrFail($this->ticket_package_id);
+
         $order_id = (string) Str::uuid();
+        $unitPrice = $this->selectedPackage->effective_price;
+        $subtotal = $unitPrice * $this->quantity;
 
-        $transaction = Transaction::create([
-            'order_id' => $order_id,
-            'customer_name' => $this->customer_name,
-            'customer_email' => $this->customer_email,
-            'customer_phone' => $this->customer_phone,
-            'visit_date' => $this->visit_date,
-            'subtotal' => $this->subtotal,
-            'discount_amount' => $this->discountAmount,
-            'total_price' => $this->totalPrice,
-            'status' => 'paid', // MOCK: Auto Paid!
-            'promo_code_id' => $this->appliedPromo ? $this->appliedPromo->id : null,
-        ]);
+        $transaction = DB::transaction(function () use ($order_id, $unitPrice, $subtotal) {
+            $discountAmount = 0;
+            $promoId = null;
 
-        $price = $this->selectedPackage->discount_price ?? $this->selectedPackage->price;
+            // Re-validate the promo at submit time and lock the row so two
+            // simultaneous checkouts can't push used_count past max_uses.
+            if ($this->appliedPromo) {
+                $promo = PromoCode::where('id', $this->appliedPromo->id)
+                    ->lockForUpdate()
+                    ->first();
 
-        TransactionItem::create([
-            'transaction_id' => $transaction->id,
-            'ticket_package_id' => $this->selectedPackage->id,
-            'quantity' => $this->quantity,
-            'price' => $price,
-            'subtotal' => $this->subtotal,
-        ]);
+                if ($promo && $this->promoStillValid($promo)) {
+                    $discountAmount = $this->calculateDiscount($promo, $subtotal);
+                    $promo->increment('used_count');
+                    $promoId = $promo->id;
+                } else {
+                    // Promo became invalid between apply and submit.
+                    $this->appliedPromo = null;
+                    $this->promoError = 'Kode voucher tidak lagi berlaku, diskon dibatalkan.';
+                }
+            }
 
-        if ($this->appliedPromo) {
-            $this->appliedPromo->increment('used_count');
-        }
+            $totalPrice = max(0, $subtotal - $discountAmount);
+
+            // MOCK PAYMENT: Create transaction with status 'paid'
+            $transaction = Transaction::create([
+                'order_id' => $order_id,
+                'customer_name' => $this->customer_name,
+                'customer_email' => $this->customer_email,
+                'customer_phone' => $this->customer_phone,
+                'visit_date' => $this->visit_date,
+                'subtotal' => $subtotal,
+                'discount_amount' => $discountAmount,
+                'total_price' => $totalPrice,
+                'status' => 'paid', // MOCK: Auto Paid!
+                'promo_code_id' => $promoId,
+            ]);
+
+            TransactionItem::create([
+                'transaction_id' => $transaction->id,
+                'ticket_package_id' => $this->selectedPackage->id,
+                'quantity' => $this->quantity,
+                'price' => $unitPrice,
+                'subtotal' => $subtotal,
+            ]);
+
+            return $transaction;
+        });
 
         // Mock Send Email
         Mail::to($this->customer_email)->send(new TicketSent($transaction));

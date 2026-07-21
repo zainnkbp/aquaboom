@@ -98,10 +98,31 @@
             required
           >
             @foreach($packages as $pkg)
-                <option value="{{ $pkg->id }}">{{ $pkg->name }} - Rp {{ number_format($pkg->discount_price ?? $pkg->price, 0, ',', '.') }}</option>
+                <option value="{{ $pkg->id }}">{{ $pkg->name }} - Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}</option>
             @endforeach
           </select>
           @error('ticket_package_id') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+
+          @if($selectedPackage)
+            <div class="mt-3 flex items-center gap-3 bg-white p-4 rounded-xl border-2 border-slate-200 shadow-sm">
+              <div class="flex-1">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Harga per Tiket</p>
+                <div class="flex items-baseline gap-2 flex-wrap">
+                  <span class="text-2xl font-black text-{{ $selectedPackage->is_discounted ? 'rose' : 'slate' }}-600 tracking-tight">
+                    Rp {{ number_format($selectedPackage->effective_price, 0, ',', '.') }}
+                  </span>
+                  @if($selectedPackage->is_discounted)
+                    <span class="text-sm font-semibold text-slate-400 line-through">
+                      Rp {{ number_format($selectedPackage->price, 0, ',', '.') }}
+                    </span>
+                    <span class="text-[11px] font-black text-white bg-rose-500 px-2 py-0.5 rounded-full uppercase tracking-wide">
+                      Hemat Rp {{ number_format($selectedPackage->price - $selectedPackage->effective_price, 0, ',', '.') }}
+                    </span>
+                  @endif
+                </div>
+              </div>
+            </div>
+          @endif
         </div>
 
         <div
@@ -144,8 +165,11 @@
                 </div>
             @else
                 <div class="flex gap-2">
-                    <input type="text" wire:model="promo_code" class="flex-1 border-2 border-slate-200 rounded-lg px-4 py-3 font-bold uppercase text-slate-800" placeholder="Ketik voucher disini">
-                    <button type="button" wire:click="applyPromo" class="bg-slate-800 text-white px-5 py-3 rounded-lg font-bold hover:bg-slate-900 transition">Gunakan</button>
+                    <input type="text" wire:model="promo_code" wire:keydown.enter.prevent="applyPromo" class="flex-1 border-2 border-slate-200 rounded-lg px-4 py-3 font-bold uppercase text-slate-800" placeholder="Ketik voucher disini">
+                    <button type="button" wire:click="applyPromo" wire:loading.attr="disabled" wire:target="applyPromo" class="bg-slate-800 text-white px-5 py-3 rounded-lg font-bold hover:bg-slate-900 transition disabled:opacity-60">
+                        <span wire:loading.remove wire:target="applyPromo">Gunakan</span>
+                        <span wire:loading wire:target="applyPromo">...</span>
+                    </button>
                 </div>
                 @if($promoError)
                     <span class="text-red-500 text-xs mt-2 block">{{ $promoError }}</span>
