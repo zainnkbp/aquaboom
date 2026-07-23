@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->profile(\App\Filament\Pages\EditProfile::class)
             ->colors([
                 'primary' => Color::Pink,
                 'gray' => Color::Slate,
@@ -93,7 +94,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\FilamentInfoWidget::class, // Removed to clean up "Filament" branding
             ])
             ->middleware([
                 EncryptCookies::class,

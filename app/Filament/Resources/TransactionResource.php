@@ -120,6 +120,7 @@ class TransactionResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
+                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status')
                     ->options([
@@ -135,8 +136,17 @@ class TransactionResource extends Resource
                     ->visible(fn (): bool => auth()->user()?->canManageCatalog() ?? false),
             ])
             ->bulkActions([
-                // Transactions must never be deleted — no bulk delete offered.
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([\Illuminate\Database\Eloquent\SoftDeletingScope::class]);
     }
 
     public static function getRelations(): array
@@ -171,16 +181,33 @@ class TransactionResource extends Resource
         return auth()->user()?->canManageCatalog() ?? false;
     }
 
-    /**
-     * Transactions are financial records — deletion is forbidden for everyone.
-     */
     public static function canDelete($record): bool
     {
-        return false;
+        return auth()->user()?->isSuperAdmin() ?? false;
     }
 
     public static function canDeleteAny(): bool
     {
-        return false;
+        return auth()->user()?->isSuperAdmin() ?? false;
+    }
+
+    public static function canRestore($record): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
+    }
+
+    public static function canRestoreAny(): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
+    }
+
+    public static function canForceDelete($record): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
+    }
+
+    public static function canForceDeleteAny(): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
     }
 }

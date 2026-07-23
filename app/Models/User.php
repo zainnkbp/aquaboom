@@ -12,9 +12,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
-#[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements FilamentUser
+use Filament\Models\Contracts\HasAvatar;
+
+#[Fillable(['name', 'email', 'password', 'role', 'pin', 'avatar_url'])]
+#[Hidden(['password', 'remember_token', 'pin'])]
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -41,12 +43,10 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        // Every authenticated staff role may reach the panel; individual
-        // resources are gated per-role. Validators are routed to the scanner.
+        // Every authenticated staff role EXCEPT validator may reach the panel.
         return in_array($this->role, [
             self::ROLE_SUPER_ADMIN,
             self::ROLE_ADMIN,
-            self::ROLE_VALIDATOR,
             self::ROLE_OPERATOR,
         ], true);
     }
@@ -96,5 +96,10 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url ? \Illuminate\Support\Facades\Storage::url($this->avatar_url) : null;
     }
 }

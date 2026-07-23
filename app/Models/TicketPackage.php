@@ -16,6 +16,8 @@ class TicketPackage extends Model
         'price' => 'decimal:2',
         'discount_price' => 'decimal:2',
         'is_active' => 'boolean',
+        'valid_dates' => 'array',
+        'valid_days' => 'array',
     ];
 
     /**
@@ -48,5 +50,39 @@ class TicketPackage extends Model
 
         // 'amount' — discount_price is the final price in Rupiah.
         return (float) $this->discount_price;
+    }
+
+    /**
+     * Check if this package is valid for the given date (Y-m-d).
+     */
+    public function isValidForDate(string $dateString): bool
+    {
+        $date = \Carbon\Carbon::parse($dateString);
+
+        if ($this->validity_type === 'weekday') {
+            return $date->isWeekday();
+        }
+
+        if ($this->validity_type === 'weekend') {
+            return $date->isWeekend();
+        }
+
+        if ($this->validity_type === 'specific_dates') {
+            if (!is_array($this->valid_dates)) {
+                return false;
+            }
+            return in_array($date->format('Y-m-d'), $this->valid_dates);
+        }
+
+        if ($this->validity_type === 'specific_days') {
+            if (!is_array($this->valid_days)) {
+                return false;
+            }
+            // format('l') returns full textual representation of the day of the week (e.g. 'Monday', 'Tuesday')
+            return in_array($date->format('l'), $this->valid_days);
+        }
+
+        // 'all_days' or anything else
+        return true;
     }
 }

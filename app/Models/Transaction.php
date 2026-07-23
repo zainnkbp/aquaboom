@@ -19,6 +19,8 @@ class Transaction extends Model
         'subtotal' => 'decimal:2',
         'discount_amount' => 'decimal:2',
         'total_price' => 'decimal:2',
+        'is_redeemed' => 'boolean',
+        'redeemed_at' => 'datetime',
     ];
 
     public function items(): HasMany

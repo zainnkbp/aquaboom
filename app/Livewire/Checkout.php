@@ -21,6 +21,7 @@ class Checkout extends Component
     public $ticket_package_id;
     public $quantity = 1;
     public $promo_code = '';
+    public $termsAccepted = false;
 
     public $packages;
     public $selectedPackage = null;
@@ -30,8 +31,29 @@ class Checkout extends Component
     public function mount()
     {
         $this->visit_date = date('Y-m-d');
-        $this->packages = TicketPackage::where('is_active', true)->get();
-        if ($this->packages->isNotEmpty()) {
+        $this->refreshPackages();
+    }
+
+    public function updatedVisitDate($value)
+    {
+        $this->refreshPackages();
+    }
+
+    public function refreshPackages()
+    {
+        $allPackages = TicketPackage::where('is_active', true)->get();
+        
+        $this->packages = $allPackages->filter(function ($pkg) {
+            return $pkg->isValidForDate($this->visit_date);
+        })->values();
+
+        // Check if current selected is still valid
+        if ($this->selectedPackage && !$this->selectedPackage->isValidForDate($this->visit_date)) {
+            $this->selectedPackage = null;
+            $this->ticket_package_id = null;
+        }
+
+        if (!$this->selectedPackage && $this->packages->isNotEmpty()) {
             $this->ticket_package_id = $this->packages->first()->id;
             $this->selectedPackage = $this->packages->first();
         }
@@ -185,10 +207,17 @@ class Checkout extends Component
             'customer_phone' => 'required|string|max:20',
             'ticket_package_id' => 'required|exists:ticket_packages,id',
             'quantity' => 'required|integer|min:1|max:20',
+            'termsAccepted' => 'accepted',
+        ], [
+            'termsAccepted.accepted' => 'Anda harus menyetujui Syarat & Ketentuan serta Kebijakan Privasi.',
         ]);
 
-        // Re-fetch the package so pricing can't be tampered with client-side.
+        // Re-fetch the package and validate date
         $this->selectedPackage = TicketPackage::findOrFail($this->ticket_package_id);
+        if (!$this->selectedPackage->isValidForDate($this->visit_date)) {
+            $this->addError('visit_date', 'Paket tiket tidak berlaku untuk tanggal ini.');
+            return;
+        }
 
         $order_id = (string) Str::uuid();
         $unitPrice = $this->selectedPackage->effective_price;

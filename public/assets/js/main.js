@@ -27,21 +27,6 @@ const initMagnetic = () => {
 // Custom Cursor Interaction Init
 const initInteractions = () => {
   initMagnetic();
-  document
-    .querySelectorAll(
-      "a, button, input, .group, .cursor-pointer, .marquee-container",
-    )
-    .forEach((el) => {
-      if (el.dataset.listenerAttached) return;
-      el.addEventListener("mouseenter", () =>
-        document.body.classList.add("hover-active"),
-      );
-      el.addEventListener("mouseleave", () => {
-        document.body.classList.remove("hover-active");
-        // Removed manual innerText clearance to let Alpine x-data handle it smoothly
-      });
-      el.dataset.listenerAttached = true;
-    });
 };
 
 initInteractions();

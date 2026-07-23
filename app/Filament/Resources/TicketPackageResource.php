@@ -7,6 +7,7 @@ use App\Models\TicketPackage;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -32,9 +33,29 @@ class TicketPackageResource extends Resource
                     ->required()
                     ->helperText('Nama paket tiket'),
                 Forms\Components\Textarea::make('description')
-                    ->label('Deskripsi')
+                    ->label('Deskripsi Singkat')
                     ->helperText('Deskripsi singkat paket tiket')
                     ->columnSpanFull(),
+                Forms\Components\RichEditor::make('terms_and_conditions')
+                    ->label('Syarat & Ketentuan Khusus')
+                    ->helperText('Tuliskan S&K spesifik untuk paket ini (jika ada). Akan ditampilkan di bawah pilihan tiket.')
+                    ->columnSpanFull(),
+                Forms\Components\Select::make('copy_terms_from')
+                    ->label('Trik Cepat: Salin S&K dari Paket Lain')
+                    ->options(fn () => \App\Models\TicketPackage::pluck('name', 'id'))
+                    ->searchable()
+                    ->live()
+                    ->afterStateUpdated(function (Set $set, ?string $state) {
+                        if ($state) {
+                            $package = \App\Models\TicketPackage::find($state);
+                            if ($package && $package->terms_and_conditions) {
+                                $set('terms_and_conditions', $package->terms_and_conditions);
+                            }
+                        }
+                    })
+                    ->dehydrated(false)
+                    ->columnSpanFull()
+                    ->helperText('Pilih paket tiket lain di sini, maka teks Syarat & Ketentuan-nya akan otomatis tersalin ke kotak di atas!'),
                 Forms\Components\TextInput::make('price')
                     ->label('Harga Normal')
                     ->required()
@@ -72,6 +93,45 @@ class TicketPackageResource extends Resource
                     ->label('Aktif')
                     ->default(true)
                     ->helperText('Centang jika paket tiket aktif dan bisa dibeli'),
+                
+                Forms\Components\Section::make('Pengaturan Waktu (Dynamic Pricing)')
+                    ->description('Atur kapan tiket ini bisa dibeli dan digunakan')
+                    ->schema([
+                        Forms\Components\Select::make('validity_type')
+                            ->label('Aturan Hari')
+                            ->options([
+                                'all_days' => 'Berlaku Setiap Hari',
+                                'weekday' => 'Hanya Weekday (Senin - Jumat)',
+                                'weekend' => 'Hanya Weekend (Sabtu - Minggu, Libur)',
+                                'specific_days' => 'Hanya Hari Tertentu (Misal: Tiap Rabu)',
+                                'specific_dates' => 'Hanya Tanggal Tertentu',
+                            ])
+                            ->default('all_days')
+                            ->required()
+                            ->live()
+                            ->helperText('Pilih kapan tiket ini akan muncul di form pemesanan.'),
+                        Forms\Components\Select::make('valid_days')
+                            ->label('Pilih Hari')
+                            ->multiple()
+                            ->options([
+                                'Monday' => 'Senin',
+                                'Tuesday' => 'Selasa',
+                                'Wednesday' => 'Rabu',
+                                'Thursday' => 'Kamis',
+                                'Friday' => 'Jumat',
+                                'Saturday' => 'Sabtu',
+                                'Sunday' => 'Minggu',
+                            ])
+                            ->visible(fn (Get $get) => $get('validity_type') === 'specific_days')
+                            ->required(fn (Get $get) => $get('validity_type') === 'specific_days')
+                            ->helperText('Pilih hari-hari apa saja tiket ini berlaku.'),
+                        Forms\Components\TagsInput::make('valid_dates')
+                            ->label('Tanggal Khusus')
+                            ->placeholder('Contoh: 2026-12-31')
+                            ->helperText('Ketik tanggal dengan format YYYY-MM-DD lalu tekan Enter. Hanya diisi jika memilih "Hanya Tanggal Tertentu".')
+                            ->visible(fn (Get $get) => $get('validity_type') === 'specific_dates')
+                            ->required(fn (Get $get) => $get('validity_type') === 'specific_dates'),
+                    ])->columns(2),
             ]);
     }
 
@@ -101,6 +161,25 @@ class TicketPackageResource extends Resource
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('validity_type')
+                    ->label('Berlaku')
+                    ->formatStateUsing(fn ($state) => match($state) {
+                        'all_days' => 'Setiap Hari',
+                        'weekday' => 'Weekday',
+                        'weekend' => 'Weekend',
+                        'specific_days' => 'Hari Tertentu',
+                        'specific_dates' => 'Tanggal Tertentu',
+                        default => $state,
+                    })
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'all_days' => 'success',
+                        'weekday' => 'info',
+                        'weekend' => 'warning',
+                        'specific_days' => 'primary',
+                        'specific_dates' => 'danger',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime()
@@ -165,11 +244,31 @@ class TicketPackageResource extends Resource
 
     public static function canDelete($record): bool
     {
-        return auth()->user()?->canManageCatalog() ?? false;
+        return auth()->user()?->isSuperAdmin() ?? false;
     }
 
     public static function canDeleteAny(): bool
     {
-        return auth()->user()?->canManageCatalog() ?? false;
+        return auth()->user()?->isSuperAdmin() ?? false;
+    }
+
+    public static function canRestore($record): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
+    }
+
+    public static function canRestoreAny(): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
+    }
+
+    public static function canForceDelete($record): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
+    }
+
+    public static function canForceDeleteAny(): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
     }
 }

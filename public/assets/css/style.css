@@ -1,5 +1,8 @@
-* {
-  cursor: none !important;
+@media (min-width: 768px) {
+  body.hide-native-cursor, 
+  body.hide-native-cursor * {
+    cursor: none !important;
+  }
 }
 
 html {
@@ -16,8 +19,8 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 20px;
-  height: 20px;
+  width: 8px;
+  height: 8px;
   background-color: #ec4899;
   border-radius: 50%;
   pointer-events: none;
@@ -38,12 +41,18 @@ body {
   mix-blend-mode: normal;
 }
 
-.hover-active #custom-cursor {
-  width: 75px;
-  height: 75px;
+#custom-cursor.hover-active {
+  width: 80px;
+  height: 80px;
   font-size: 14px;
   background-color: rgba(236, 72, 153, 0.95);
   box-shadow: 0 0 25px rgba(236, 72, 153, 0.7);
+}
+
+@media (max-width: 767px) {
+  #custom-cursor {
+    display: none !important;
+  }
 }
 
 .magnetic {

@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Wahana;
-use App\Models\TicketPackage;
 use App\Models\Transaction;
+
+use App\Livewire\ScannerLogin;
+use App\Livewire\QrScanner;
 
 Route::get('/', function () {
     $wahanas = Wahana::orderBy('order_column')->get();
@@ -37,6 +39,6 @@ Route::get('/ticket/{order_id}', function ($order_id) {
     return view('ticket', compact('transaction'));
 })->name('ticket.show');
 
-Route::get('/validator', \App\Livewire\Validator::class)
-    ->middleware('auth')
-    ->name('validator.index');
+// Scanner App Routes
+Route::get('/scanner/login', ScannerLogin::class)->name('scanner.login')->middleware('guest');
+Route::get('/scanner', QrScanner::class)->name('scanner.app')->middleware('auth');
