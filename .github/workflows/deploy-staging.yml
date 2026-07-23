@@ -23,14 +23,21 @@ jobs:
           script: |
             cd ${{ secrets.STAGING_PATH }}
             
-            # 1. Ambil kode terbaru dari branch staging
-            git checkout staging
-            git pull origin staging
+            # 1. Paksa sinkronisasi kode terbaru dari branch staging (Mencegah konflik git)
+            git fetch origin staging
+            git reset --hard origin/staging
             
-            # 2. Update dependensi PHP tanpa menyentuh .env
+            # 2. Update dependensi PHP (Composer)
             composer install --no-interaction --prefer-dist --optimize-autoloader
             
-            # 3. Refresh cache Laravel agar perubahan langsung aktif di staging
+            # 3. Build asset Frontend (Vite / Tailwind / Alpine.js)
+            npm install
+            npm run build
+            
+            # 4. Clear dan Refresh Cache Laravel
+            php artisan config:clear
+            php artisan route:clear
+            php artisan view:clear
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
