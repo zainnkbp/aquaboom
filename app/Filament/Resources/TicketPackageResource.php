@@ -29,16 +29,51 @@ class TicketPackageResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Nama Paket')
+                    ->label('Nama Paket (ID)')
                     ->required()
-                    ->helperText('Nama paket tiket'),
+                    ->helperText('Nama paket tiket dalam Bahasa Indonesia')
+                    ->suffixAction(
+                        Forms\Components\Actions\Action::make('translateName')
+                            ->icon('heroicon-m-language')
+                            ->tooltip('Terjemahkan ke Bahasa Inggris')
+                            ->action(function (Forms\Set $set, $state) {
+                                $set('name_en', \App\Services\TranslationService::translate($state));
+                            })
+                    ),
+                Forms\Components\TextInput::make('name_en')
+                    ->label('Nama Paket (EN)')
+                    ->helperText('Nama paket tiket dalam Bahasa Inggris'),
                 Forms\Components\Textarea::make('description')
-                    ->label('Deskripsi Singkat')
-                    ->helperText('Deskripsi singkat paket tiket')
+                    ->label('Deskripsi Singkat (ID)')
+                    ->helperText('Deskripsi singkat paket tiket dalam Bahasa Indonesia')
+                    ->suffixAction(
+                        Forms\Components\Actions\Action::make('translateDescription')
+                            ->icon('heroicon-m-language')
+                            ->tooltip('Terjemahkan ke Bahasa Inggris')
+                            ->action(function (Forms\Set $set, $state) {
+                                $set('description_en', \App\Services\TranslationService::translate($state));
+                            })
+                    )
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('description_en')
+                    ->label('Deskripsi Singkat (EN)')
+                    ->helperText('Deskripsi singkat paket tiket dalam Bahasa Inggris')
                     ->columnSpanFull(),
                 Forms\Components\RichEditor::make('terms_and_conditions')
-                    ->label('Syarat & Ketentuan Khusus')
-                    ->helperText('Tuliskan S&K spesifik untuk paket ini (jika ada). Akan ditampilkan di bawah pilihan tiket.')
+                    ->label('Syarat & Ketentuan Khusus (ID)')
+                    ->helperText('Tuliskan S&K spesifik untuk paket ini dalam Bahasa Indonesia.')
+                    ->suffixAction(
+                        Forms\Components\Actions\Action::make('translateTerms')
+                            ->icon('heroicon-m-language')
+                            ->tooltip('Terjemahkan ke Bahasa Inggris')
+                            ->action(function (Forms\Set $set, $state) {
+                                $set('terms_and_conditions_en', \App\Services\TranslationService::translate($state));
+                            })
+                    )
+                    ->columnSpanFull(),
+                Forms\Components\RichEditor::make('terms_and_conditions_en')
+                    ->label('Syarat & Ketentuan Khusus (EN)')
+                    ->helperText('Tuliskan S&K spesifik untuk paket ini dalam Bahasa Inggris.')
                     ->columnSpanFull(),
                 Forms\Components\Select::make('copy_terms_from')
                     ->label('Trik Cepat: Salin S&K dari Paket Lain')

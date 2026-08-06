@@ -18,20 +18,37 @@ class Checkout extends Component
     public $customer_name;
     public $customer_email;
     public $customer_phone;
-    public $ticket_package_id;
-    public $quantity = 1;
+    
+    // Instead of single package, track quantities for each package
+    public $quantities = []; 
+
     public $promo_code = '';
     public $termsAccepted = false;
 
     public $packages;
-    public $selectedPackage = null;
     public $appliedPromo = null;
     public $promoError = '';
+
+    public $locale = 'id';
+    public $addon_quantities = [];
+    public $addons;
 
     public function mount()
     {
         $this->visit_date = date('Y-m-d');
         $this->refreshPackages();
+        
+        $this->addons = \App\Models\AddOn::where('is_active', true)->get();
+        foreach ($this->addons as $addon) {
+            $this->addon_quantities[$addon->id] = 0;
+        }
+
+        if (auth()->check()) {
+            $user = auth()->user();
+            $this->customer_name = $user->name;
+            $this->customer_email = $user->email;
+            $this->customer_phone = $user->phone_number ?? $user->phone ?? '';
+        }
     }
 
     public function updatedVisitDate($value)
@@ -47,34 +64,46 @@ class Checkout extends Component
             return $pkg->isValidForDate($this->visit_date);
         })->values();
 
-        // Check if current selected is still valid
-        if ($this->selectedPackage && !$this->selectedPackage->isValidForDate($this->visit_date)) {
-            $this->selectedPackage = null;
-            $this->ticket_package_id = null;
+        // Initialize or preserve quantities
+        $newQuantities = [];
+        foreach ($this->packages as $pkg) {
+            $newQuantities[$pkg->id] = $this->quantities[$pkg->id] ?? 0;
         }
-
-        if (!$this->selectedPackage && $this->packages->isNotEmpty()) {
-            $this->ticket_package_id = $this->packages->first()->id;
-            $this->selectedPackage = $this->packages->first();
-        }
+        $this->quantities = $newQuantities;
     }
 
-    public function updatedTicketPackageId($value)
+    public function incrementQuantity($packageId)
     {
-        $this->selectedPackage = TicketPackage::find($value);
-    }
-
-    public function incrementQuantity()
-    {
-        if ($this->quantity < 20) {
-            $this->quantity++;
+        if (isset($this->quantities[$packageId]) && $this->quantities[$packageId] < 20) {
+            $this->quantities[$packageId]++;
         }
     }
 
-    public function decrementQuantity()
+    public function decrementQuantity($packageId)
     {
-        if ($this->quantity > 1) {
-            $this->quantity--;
+        if (isset($this->quantities[$packageId]) && $this->quantities[$packageId] > 0) {
+            $this->quantities[$packageId]--;
+        }
+    }
+
+    public function incrementAddonQuantity($addonId)
+    {
+        if (isset($this->addon_quantities[$addonId]) && $this->addon_quantities[$addonId] < 10) {
+            $this->addon_quantities[$addonId]++;
+        }
+    }
+
+    public function decrementAddonQuantity($addonId)
+    {
+        if (isset($this->addon_quantities[$addonId]) && $this->addon_quantities[$addonId] > 0) {
+            $this->addon_quantities[$addonId]--;
+        }
+    }
+
+    public function setLocale($lang)
+    {
+        if (in_array($lang, ['id', 'en'])) {
+            $this->locale = $lang;
         }
     }
 
@@ -136,18 +165,40 @@ class Checkout extends Component
         $this->promoError = '';
     }
 
+    public function getTicketSubtotalProperty()
+    {
+        $subtotal = 0;
+        if ($this->packages) {
+            foreach ($this->packages as $pkg) {
+                $qty = $this->quantities[$pkg->id] ?? 0;
+                $subtotal += $pkg->effective_price * $qty;
+            }
+        }
+        return $subtotal;
+    }
+
+    public function getAddonSubtotalProperty()
+    {
+        $subtotal = 0;
+        if ($this->addons) {
+            foreach ($this->addons as $addon) {
+                $qty = $this->addon_quantities[$addon->id] ?? 0;
+                $subtotal += $addon->price * $qty;
+            }
+        }
+        return $subtotal;
+    }
+
     public function getSubtotalProperty()
     {
-        if (!$this->selectedPackage) return 0;
-
-        return $this->selectedPackage->effective_price * $this->quantity;
+        return $this->ticketSubtotal + $this->addonSubtotal;
     }
 
     public function getDiscountAmountProperty()
     {
         if (!$this->appliedPromo) return 0;
 
-        return $this->calculateDiscount($this->appliedPromo, $this->subtotal);
+        return $this->calculateDiscount($this->appliedPromo, $this->ticketSubtotal);
     }
 
     /**
@@ -195,7 +246,12 @@ class Checkout extends Component
 
     public function getTotalPriceProperty()
     {
-        return max(0, $this->subtotal - $this->discountAmount);
+        return max(0, $this->ticketSubtotal - $this->discountAmount + $this->addonSubtotal);
+    }
+
+    public function getTotalTicketsProperty()
+    {
+        return array_sum($this->quantities);
     }
 
     public function submit()
@@ -205,25 +261,50 @@ class Checkout extends Component
             'customer_name' => 'required|string|max:255',
             'customer_email' => 'required|email|max:255',
             'customer_phone' => 'required|string|max:20',
-            'ticket_package_id' => 'required|exists:ticket_packages,id',
-            'quantity' => 'required|integer|min:1|max:20',
             'termsAccepted' => 'accepted',
         ], [
             'termsAccepted.accepted' => 'Anda harus menyetujui Syarat & Ketentuan serta Kebijakan Privasi.',
         ]);
 
-        // Re-fetch the package and validate date
-        $this->selectedPackage = TicketPackage::findOrFail($this->ticket_package_id);
-        if (!$this->selectedPackage->isValidForDate($this->visit_date)) {
-            $this->addError('visit_date', 'Paket tiket tidak berlaku untuk tanggal ini.');
+        if ($this->totalTickets <= 0) {
+            $this->addError('quantities', 'Please select at least one ticket.');
             return;
         }
 
-        $order_id = (string) Str::uuid();
-        $unitPrice = $this->selectedPackage->effective_price;
-        $subtotal = $unitPrice * $this->quantity;
+        // Validate all selected packages against the date
+        $selectedPackages = [];
+        foreach ($this->quantities as $pkgId => $qty) {
+            if ($qty > 0) {
+                $pkg = TicketPackage::findOrFail($pkgId);
+                if (!$pkg->isValidForDate($this->visit_date)) {
+                    $this->addError('visit_date', "Paket tiket {$pkg->name} tidak berlaku untuk tanggal ini.");
+                    return;
+                }
+                $selectedPackages[] = [
+                    'package' => $pkg,
+                    'quantity' => $qty,
+                ];
+            }
+        }
 
-        $transaction = DB::transaction(function () use ($order_id, $unitPrice, $subtotal) {
+        $order_id = (string) Str::uuid();
+        $ticketSubtotal = $this->ticketSubtotal;
+        $addonSubtotal = $this->addonSubtotal;
+        $subtotal = $this->subtotal;
+
+        // Selected AddOns list
+        $selectedAddOns = [];
+        foreach ($this->addon_quantities as $addonId => $qty) {
+            if ($qty > 0) {
+                $addon = \App\Models\AddOn::findOrFail($addonId);
+                $selectedAddOns[] = [
+                    'addon' => $addon,
+                    'quantity' => $qty,
+                ];
+            }
+        }
+
+        $transaction = DB::transaction(function () use ($order_id, $ticketSubtotal, $addonSubtotal, $subtotal, $selectedPackages, $selectedAddOns) {
             $discountAmount = 0;
             $promoId = null;
 
@@ -235,7 +316,7 @@ class Checkout extends Component
                     ->first();
 
                 if ($promo && $this->promoStillValid($promo)) {
-                    $discountAmount = $this->calculateDiscount($promo, $subtotal);
+                    $discountAmount = $this->calculateDiscount($promo, $ticketSubtotal);
                     $promo->increment('used_count');
                     $promoId = $promo->id;
                 } else {
@@ -245,10 +326,28 @@ class Checkout extends Component
                 }
             }
 
-            $totalPrice = max(0, $subtotal - $discountAmount);
+            $totalPrice = max(0, $ticketSubtotal - $discountAmount + $addonSubtotal);
+
+            // Hybrid Account Flow: Check or auto-create User
+            $userId = null;
+            if (auth()->check()) {
+                $userId = auth()->id();
+            } else {
+                $user = \App\Models\User::where('email', $this->customer_email)->first();
+                if (!$user) {
+                    $user = \App\Models\User::create([
+                        'name' => $this->customer_name,
+                        'email' => $this->customer_email,
+                        'password' => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(16)),
+                        'role' => 'customer',
+                    ]);
+                }
+                $userId = $user->id;
+            }
 
             // MOCK PAYMENT: Create transaction with status 'paid'
             $transaction = Transaction::create([
+                'user_id' => $userId,
                 'order_id' => $order_id,
                 'customer_name' => $this->customer_name,
                 'customer_email' => $this->customer_email,
@@ -261,13 +360,27 @@ class Checkout extends Component
                 'promo_code_id' => $promoId,
             ]);
 
-            TransactionItem::create([
-                'transaction_id' => $transaction->id,
-                'ticket_package_id' => $this->selectedPackage->id,
-                'quantity' => $this->quantity,
-                'price' => $unitPrice,
-                'subtotal' => $subtotal,
-            ]);
+            foreach ($selectedPackages as $item) {
+                $itemSubtotal = $item['package']->effective_price * $item['quantity'];
+                TransactionItem::create([
+                    'transaction_id' => $transaction->id,
+                    'ticket_package_id' => $item['package']->id,
+                    'quantity' => $item['quantity'],
+                    'price' => $item['package']->effective_price,
+                    'subtotal' => $itemSubtotal,
+                ]);
+            }
+
+            foreach ($selectedAddOns as $item) {
+                $itemSubtotal = $item['addon']->price * $item['quantity'];
+                \App\Models\TransactionAddOn::create([
+                    'transaction_id' => $transaction->id,
+                    'add_on_id' => $item['addon']->id,
+                    'quantity' => $item['quantity'],
+                    'price' => $item['addon']->price,
+                    'subtotal' => $itemSubtotal,
+                ]);
+            }
 
             return $transaction;
         });
@@ -281,6 +394,8 @@ class Checkout extends Component
 
     public function render()
     {
+        $this->locale = app()->getLocale();
         return view('livewire.checkout');
     }
 }
+

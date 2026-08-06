@@ -1,12 +1,12 @@
-<div class="min-h-screen bg-slate-900 flex flex-col p-4 relative" x-data="scannerApp()" x-init="initScanner()">
+<div class="min-h-screen bg-aqua-navy flex flex-col p-4 relative" x-data="scannerApp()" x-init="initScanner()">
     
     {{-- Header --}}
-    <header class="flex justify-between items-center bg-slate-800 p-4 rounded-2xl shadow-lg border border-slate-700 mb-4">
+    <header class="flex justify-between items-center bg-aqua-navy-2 p-4 rounded-2xl shadow-lg border border-aqua-gold/20 mb-4">
         <div>
             <h1 class="text-xl font-bold text-white">Scanner Tiket</h1>
-            <p class="text-xs text-slate-400">Pintu Masuk Aquaboom</p>
+            <p class="text-xs text-aqua-gold">Pintu Masuk Aquaboom</p>
         </div>
-        <button wire:click="logout" class="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors">
+        <button wire:click="logout" class="bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors border border-red-500/30">
             Keluar
         </button>
     </header>
@@ -16,15 +16,15 @@
         
         {{-- Default State: Camera View --}}
         @if(!$scanResult)
-            <div class="w-full max-w-sm bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-700 relative">
+            <div class="w-full max-w-sm bg-aqua-navy-2 rounded-3xl overflow-hidden shadow-2xl border border-aqua-gold/20 relative">
                 <div id="reader" class="w-full bg-black aspect-[3/4]"></div>
                 
                 {{-- Fallback Manual Input --}}
-                <div class="p-4 border-t border-slate-700">
-                    <p class="text-xs text-center text-slate-400 mb-2">Kamera bermasalah? Ketik manual:</p>
+                <div class="p-4 border-t border-aqua-gold/25">
+                    <p class="text-xs text-center text-white/60 mb-2">Kamera bermasalah? Ketik manual:</p>
                     <div class="flex gap-2">
-                        <input type="text" wire:model="orderId" placeholder="Order ID..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-blue-500">
-                        <button wire:click="processScan($wire.orderId)" class="bg-blue-600 text-white px-4 py-2 rounded-xl font-medium">Cek</button>
+                        <input type="text" wire:model="orderId" placeholder="Order ID..." class="flex-1 bg-aqua-navy border border-aqua-gold/20 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-aqua-gold">
+                        <button wire:click="processScan($wire.orderId)" class="bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy px-4 py-2 rounded-xl font-bold transition-all">Cek</button>
                     </div>
                 </div>
             </div>

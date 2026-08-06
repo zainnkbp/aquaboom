@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    line-height: 1.6;
+    color: #333;
+}
+h1, h2, h3 {
+    color: #111;
+}
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+code {
+    background-color: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+</style>
+</head>
+<body>
+<h1>📘 BUKU PANDUAN LENGKAP: AQUABOOM TICKET SYSTEM</h1>
+<p>Dokumen ini berisi panduan resmi cara menggunakan seluruh fitur yang ada di sistem tiket Aquaboom, mulai dari panel Admin (CMS) hingga aplikasi Scanner untuk satpam lapangan.</p>
+<hr />
+<h2>DAFTAR ISI</h2>
+<ol>
+<li><strong>[Pendahuluan &amp; Hak Akses (Role)]</strong></li>
+<li><strong>[Cara Menggunakan Panel Admin CMS]</strong></li>
+<li>2.1. Login &amp; Mengganti Profil</li>
+<li>2.2. Mengelola Tiket &amp; Wahana</li>
+<li>2.3. Fitur Restore (Super Admin)</li>
+<li><strong>[Cara Menggunakan Aplikasi Scanner]</strong></li>
+<li>3.1. Login dengan PIN</li>
+<li>3.2. Melakukan Scan QR Code</li>
+</ol>
+<hr />
+<h2>1. PENDAHULUAN &amp; HAK AKSES (ROLE)</h2>
+<p>Sistem ini membagi staf menjadi 3 peran utama demi menjaga keamanan data dan mempermudah operasional lapangan.</p>
+<ul>
+<li><strong>Super Admin:</strong> Pemilik sistem. Bisa menambah staf baru, melihat semua laporan uang, dan <strong>mengembalikan (Restore) data yang tidak sengaja terhapus</strong>.</li>
+<li><strong>Admin:</strong> Staf pengelola harga tiket dan promo. Tidak bisa menghapus permanen, tapi bisa mengubah harga dan memvalidasi tiket jika diperlukan.</li>
+<li><strong>Validator (Satpam):</strong> Staf lapangan. Sama sekali tidak bisa membuka CMS/Laporan. Hanya diberikan 6 Digit PIN untuk membuka layar kamera pemindai.</li>
+</ul>
+<hr />
+<h2>2. CARA MENGGUNAKAN PANEL ADMIN CMS</h2>
+<h3>2.1. Login &amp; Mengganti Profil</h3>
+<p>Untuk masuk ke sistem admin:
+1. Buka halaman: <code>http://namadomain.com/admin</code>
+2. Masukkan Email dan Password Anda.
+3. Di sudut kanan atas (pada nama Anda), klik dan pilih <strong>Edit Profile</strong> jika Anda ingin mengganti foto profil Anda atau memperbarui password.</p>
+<p><img alt="Dashboard Admin" src="/Users/fadlizainulihsani/.gemini/antigravity-ide/brain/9dd72ec0-c9c6-4323-b6ab-3d66211250e2/dashboard_admin_1784799347605.png" />
+<em>(Ilustrasi Halaman Dashboard Admin Aquaboom)</em></p>
+<h3>2.2. Mengelola Tiket &amp; Wahana</h3>
+<ul>
+<li>Di menu samping (sidebar), klik <strong>Paket Tiket</strong>.</li>
+<li>Anda dapat membuat harga normal, harga khusus Flash Sale, dan mengatur waktu berlakunya promo tersebut secara spesifik (Misal: Hanya berlaku di hari Selasa tanggal 15).</li>
+<li>Terdapat fitur <strong>Salin S&amp;K</strong>, di mana Anda tidak perlu capek mengetik ulang Syarat dan Ketentuan, cukup pilih tiket lama Anda dan teksnya akan langsung tersalin.</li>
+</ul>
+<h3>2.3. Fitur Restore (Khusus Super Admin)</h3>
+<p>Pernah tidak sengaja menghapus tiket? Jangan panik!
+1. Login sebagai <strong>Super Admin</strong>.
+2. Masuk ke halaman <strong>Paket Tiket</strong> atau <strong>Transaksi</strong>.
+3. Di kanan atas tabel, klik logo corong (Filter), lalu aktifkan mode <strong>Trashed</strong>.
+4. Data yang terhapus akan muncul kembali. Pilih dan klik <strong>Restore</strong>.</p>
+<hr />
+<h2>3. CARA MENGGUNAKAN APLIKASI SCANNER</h2>
+<p>Aplikasi scanner dirancang sangat cepat dan mudah digunakan oleh satpam lapangan menggunakan ponsel (<em>smartphone</em>) atau <em>tablet</em>.</p>
+<h3>3.1. Login Cepat dengan PIN</h3>
+<ol>
+<li>Minta satpam membuka link ini di HP mereka: <code>http://namadomain.com/scanner/login</code></li>
+<li>Tidak ada kolom email/password, cukup ketik <strong>6 Angka PIN</strong> yang sudah Anda buatkan.</li>
+<li>Layar akan otomatis bergetar/pindah tanpa menekan tombol apa pun.</li>
+</ol>
+<h3>3.2. Melakukan Scan QR Code</h3>
+<ol>
+<li>Saat berhasil login, kamera belakang HP akan langsung menyala.</li>
+<li>Arahkan kotak pemindai ke QR Code pengunjung.</li>
+<li>Jika tiket <strong>Valid</strong>, layar akan berubah menjadi HIJAU BESAR dan menunjukkan berapa jumlah orang yang boleh masuk (Contoh: Total Masuk: 5 ORANG).</li>
+<li>Jika tiket <strong>Sudah Dipakai</strong>, layar akan menjadi MERAH BESAR dan mengeluarkan peringatan.</li>
+<li>Jika kamera rusak / buram, satpam bisa langsung mengetik <em>Order ID</em> secara manual di kolom yang sudah disediakan di bawah kamera.</li>
+</ol>
+<p><img alt="Scanner App" src="/Users/fadlizainulihsani/.gemini/antigravity-ide/brain/9dd72ec0-c9c6-4323-b6ab-3d66211250e2/scanner_app_1784799357362.png" />
+<em>(Ilustrasi Tampilan Aplikasi Scanner Satpam saat tiket Valid)</em></p>
+<hr />
+<p><strong>Dokumen ini dibuat otomatis oleh Sistem Aquaboom.</strong></p>
+</body>
+</html>

@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class TransactionAddOn extends Model
 {
-    //
+    protected $guarded = [];
 }

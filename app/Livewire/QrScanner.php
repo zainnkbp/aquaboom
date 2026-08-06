@@ -90,6 +90,6 @@ class QrScanner extends Component
 
     public function render()
     {
-        return view('livewire.qr-scanner')->layout('components.layouts.app');
+        return view('livewire.qr-scanner')->layout('components.layout');
     }
 }

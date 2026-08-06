@@ -27,12 +27,47 @@ class WahanaResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Nama Wahana')
+                    ->label('Nama Wahana (ID)')
                     ->required()
-                    ->helperText('Nama wahana / atraksi'),
+                    ->helperText('Nama wahana / atraksi')
+                    ->suffixAction(
+                        Forms\Components\Actions\Action::make('translateName')
+                            ->icon('heroicon-m-language')
+                            ->tooltip('Terjemahkan ke Bahasa Inggris')
+                            ->action(function (Forms\Set $set, $state) {
+                                $set('name_en', \App\Services\TranslationService::translate($state));
+                            })
+                    ),
+                Forms\Components\TextInput::make('name_en')
+                    ->label('Nama Wahana (EN)')
+                    ->helperText('Nama wahana dalam Bahasa Inggris'),
+                Forms\Components\Select::make('thrill_level')
+                    ->label('Tingkat Adrenalin (Thrill Level)')
+                    ->options([
+                        'Chill' => 'Chill',
+                        'Family' => 'Family',
+                        'Kids' => 'Kids',
+                        'Fun' => 'Fun',
+                        'Thrill' => 'Thrill',
+                        'Extreme' => 'Extreme',
+                    ])
+                    ->required()
+                    ->helperText('Tingkat petualangan wahana'),
                 Forms\Components\Textarea::make('description')
-                    ->label('Deskripsi')
-                    ->helperText('Deskripsi singkat wahana')
+                    ->label('Deskripsi (ID)')
+                    ->helperText('Deskripsi singkat wahana dalam Bahasa Indonesia')
+                    ->suffixAction(
+                        Forms\Components\Actions\Action::make('translateDescription')
+                            ->icon('heroicon-m-language')
+                            ->tooltip('Terjemahkan ke Bahasa Inggris')
+                            ->action(function (Forms\Set $set, $state) {
+                                $set('description_en', \App\Services\TranslationService::translate($state));
+                            })
+                    )
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('description_en')
+                    ->label('Deskripsi (EN)')
+                    ->helperText('Deskripsi singkat wahana dalam Bahasa Inggris')
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_url')
                     ->label('Gambar')
@@ -53,6 +88,17 @@ class WahanaResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Wahana')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('thrill_level')
+                    ->label('Adrenalin')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Extreme' => 'danger',
+                        'Thrill' => 'warning',
+                        'Chill' => 'info',
+                        'Kids' => 'success',
+                        default => 'primary',
+                    })
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image_url')
                     ->label('Gambar'),

@@ -28,8 +28,20 @@ class AddOnResource extends Resource
             ->schema([
                 Forms\Components\Card::make()->schema([
                     Forms\Components\TextInput::make('name')
-                        ->label('Nama Produk')
+                        ->label('Nama Produk (ID)')
                         ->required()
+                        ->maxLength(255)
+                        ->suffixAction(
+                            Forms\Components\Actions\Action::make('translateName')
+                                ->icon('heroicon-m-language')
+                                ->tooltip('Terjemahkan ke Bahasa Inggris')
+                                ->action(function (Forms\Set $set, $state) {
+                                    $set('name_en', \App\Services\TranslationService::translate($state));
+                                })
+                        ),
+                    
+                    Forms\Components\TextInput::make('name_en')
+                        ->label('Nama Produk (EN)')
                         ->maxLength(255),
                     
                     Forms\Components\TextInput::make('price')
@@ -44,7 +56,19 @@ class AddOnResource extends Resource
                         ->directory('addons'),
                         
                     Forms\Components\RichEditor::make('description')
-                        ->label('Deskripsi')
+                        ->label('Deskripsi (ID)')
+                        ->suffixAction(
+                            Forms\Components\Actions\Action::make('translateDescription')
+                                ->icon('heroicon-m-language')
+                                ->tooltip('Terjemahkan ke Bahasa Inggris')
+                                ->action(function (Forms\Set $set, $state) {
+                                    $set('description_en', \App\Services\TranslationService::translate($state));
+                                })
+                        )
+                        ->columnSpanFull(),
+                        
+                    Forms\Components\RichEditor::make('description_en')
+                        ->label('Deskripsi (EN)')
                         ->columnSpanFull(),
                         
                     Forms\Components\Toggle::make('is_active')

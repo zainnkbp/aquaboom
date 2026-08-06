@@ -5,12 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>E-Ticket - Aquaboom Waterpark</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'waterbom-teal': '#44b3b0',
+              'waterbom-orange': '#ff914d',
+              'waterbom-dark': '#0f2726',
+            }
+          }
+        }
+      }
+    </script>
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"
     ></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <!-- dom-to-image for Flawless SVG & Canvas Download -->
@@ -18,16 +31,24 @@
     <!-- QRCode.js for reliable Canvas-based QR -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/ticket.css') }}" />
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      h1, h3 {
+        font-family: 'Outfit', sans-serif;
+      }
+    </style>
   </head>
   <body
-    class="bg-slate-100 text-slate-900 min-h-screen flex flex-col py-10 px-4"
+    class="bg-[#f5f8f7] text-[#0f2726] min-h-screen flex flex-col py-10 px-4"
     x-data="{ showCancelModal: false }"
   >
     <!-- Header Navigation back to home -->
     <div class="max-w-md mx-auto w-full mb-8">
       <a
         href="{{ url('/') }}"
-        class="inline-flex items-center text-sm font-semibold text-slate-500 hover:text-pink-500 transition"
+        class="inline-flex items-center text-sm font-bold text-slate-500 hover:text-waterbom-orange transition"
       >
         <svg
           class="w-4 h-4 mr-1"
@@ -38,7 +59,7 @@
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
-            stroke-width="2"
+            stroke-width="2.5"
             d="M10 19l-7-7m0 0l7-7m-7 7h18"
           ></path>
         </svg>
@@ -48,10 +69,10 @@
 
     <div class="w-full max-w-md mx-auto flex-1">
       <!-- Notification Banner -->
-      <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-4 rounded-2xl mb-6 flex items-start gap-3 shadow-sm">
-        <svg class="w-6 h-6 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <div class="bg-teal-50 border border-teal-200 text-teal-800 px-4 py-4 rounded-2xl mb-6 flex items-start gap-3 shadow-sm">
+        <svg class="w-6 h-6 mt-0.5 shrink-0 text-waterbom-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         <div class="text-sm">
-          <strong class="block font-bold mb-1 text-base">Penting!</strong>
+          <strong class="block font-bold mb-1 text-base uppercase text-waterbom-dark">Penting!</strong>
           Harap <span class="font-bold underline">Screenshot</span> halaman ini atau klik tombol <span class="font-bold">Simpan E-Ticket</span> di bawah agar tidak hilang. Salinan tiket juga telah dikirim ke Email Anda.
         </div>
       </div>
@@ -63,16 +84,16 @@
       >
         <!-- Ticket Header -->
         <div
-          class="bg-gradient-to-r from-pink-500 to-rose-500 p-8 text-white text-center relative border-b-2 border-dashed border-white/40"
+          class="bg-gradient-to-r from-waterbom-dark to-[#163a39] p-8 text-white text-center relative border-b-2 border-dashed border-slate-100"
         >
           <!-- Physical Ticket Cutout Illusion -->
           <div class="ticket-cutout-left"></div>
           <div class="ticket-cutout-right"></div>
 
-          <h1 class="text-3xl font-extrabold tracking-tight mb-1">
+          <h1 class="text-3xl font-extrabold tracking-wider uppercase mb-1">
             E-Ticket Aquaboom
           </h1>
-          <p class="text-pink-100 text-sm font-medium">
+          <p class="text-waterbom-teal text-xs font-black uppercase tracking-widest">
             Premium Waterpark Experience
           </p>
         </div>
@@ -90,7 +111,7 @@
               </div>
             </div>
             <p
-              class="font-mono text-sm font-bold text-slate-800 bg-slate-100 inline-block px-4 py-2 rounded-xl break-all"
+              class="font-mono text-sm font-bold text-[#0f2726] bg-slate-100 inline-block px-4 py-2 rounded-xl break-all"
             >
               {{ $transaction->order_id }}
             </p>
@@ -101,7 +122,7 @@
               class="flex justify-between items-end border-b border-slate-100 pb-3"
             >
               <span class="text-slate-400 font-medium">Nama Pengunjung</span>
-              <span class="font-bold text-slate-800 text-base"
+              <span class="font-bold text-[#0f2726] text-base"
                 >{{ $transaction->customer_name }}</span
               >
             </div>
@@ -109,7 +130,7 @@
               class="flex justify-between items-end border-b border-slate-100 pb-3"
             >
               <span class="text-slate-400 font-medium">Tanggal Kunjungan</span>
-              <span class="font-bold text-slate-800 text-base text-pink-500"
+              <span class="font-bold text-waterbom-orange text-base"
                 >{{ \Carbon\Carbon::parse($transaction->visit_date)->translatedFormat('d F Y') }}</span
               >
             </div>
@@ -117,12 +138,12 @@
               class="flex justify-between items-end border-b border-slate-100 pb-3"
             >
               <span class="text-slate-400 font-medium">Jumlah Tiket</span>
-              <span class="font-bold text-slate-800 text-base">{{ App\Models\TransactionItem::where('transaction_id', $transaction->id)->sum('quantity') }} Pax</span>
+              <span class="font-bold text-[#0f2726] text-base">{{ App\Models\TransactionItem::where('transaction_id', $transaction->id)->sum('quantity') }} Pax</span>
             </div>
             <div class="flex justify-between items-center pt-2">
               <span class="text-slate-400 font-medium">Status Pembayaran</span>
               <span
-                class="bg-green-100 text-green-700 font-bold px-4 py-1.5 rounded-full text-xs shadow-sm"
+                class="bg-teal-100 text-teal-800 font-bold px-4 py-1.5 rounded-full text-xs shadow-sm"
                 >LUNAS - (Mock Payment)</span
               >
             </div>
@@ -131,7 +152,7 @@
 
         <!-- Ticket Footer -->
         <div class="p-6 bg-slate-50 text-center border-t border-slate-100">
-          <p class="text-xs text-slate-400 font-medium leading-relaxed">
+          <p class="text-xs text-slate-400 font-semibold leading-relaxed">
             Tunjukkan QR Code ini langsung di loket masuk. Harap tidak
             membagikan kode e-ticket ini kepada orang lain untuk mencegah
             penyalahgunaan.
@@ -144,9 +165,9 @@
         <button
           id="download-btn"
           onclick="downloadTicket()"
-          class="w-full bg-slate-800 text-white font-black text-lg py-4 rounded-2xl shadow-lg hover:bg-slate-900 transition flex items-center justify-center gap-2"
+          class="w-full bg-waterbom-dark hover:bg-black text-white font-black text-lg py-4 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 uppercase tracking-wider"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <svg class="w-6 h-6 text-waterbom-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
           Simpan ke Galeri (Gambar)
         </button>
       </div>
@@ -155,7 +176,7 @@
       <div class="text-center">
         <button
           @click="showCancelModal = true"
-          class="text-sm font-semibold text-slate-400 hover:text-red-500 transition-colors py-2 px-4 rounded-xl hover:bg-red-50"
+          class="text-sm font-bold text-slate-400 hover:text-red-500 transition-colors py-2 px-4 rounded-xl hover:bg-red-50"
         >
           Ajukan Pembatalan Tiket
         </button>
@@ -201,7 +222,7 @@
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
+                stroke-width="2.5"
                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
               ></path>
             </svg>
@@ -256,7 +277,7 @@
           text: "{{ $transaction->order_id }}",
           width: 170,
           height: 170,
-          colorDark : "#0f172a", // slate-900
+          colorDark : "#0f2726", // waterbom-dark
           colorLight : "#ffffff",
           correctLevel : QRCode.CorrectLevel.M
         });
