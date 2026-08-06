@@ -165,7 +165,7 @@
             <div class="h-px w-10 bg-aqua-gold"></div>
             <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">Corporate Identity</span>
           </div>
-          <h2 class="text-4xl lg:text-5xl font-black uppercase mb-6 leading-tight">
+          <h2 class="text-3xl lg:text-5xl font-black uppercase mb-6 leading-tight">
             OUR<br />COMPANY<br />
             <span class="gold-shimmer">PHILOSOPHY</span>
           </h2>
@@ -211,7 +211,7 @@
           <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">World-Class Attractions</span>
           <div class="h-px w-16 bg-aqua-gold"></div>
         </div>
-        <h2 class="text-4xl md:text-6xl font-black text-aqua-navy uppercase tracking-tight">DYNAMIC WATER RIDES</h2>
+        <h2 class="text-3xl md:text-6xl font-black text-aqua-navy uppercase tracking-tight">DYNAMIC WATER RIDES</h2>
         <p class="mt-4 text-slate-500 text-lg font-semibold max-w-2xl mx-auto">Discover world-class slides curated
           specifically for family adventures and adrenaline junkies alike.</p>
       </div>
@@ -258,7 +258,7 @@
         <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">Exclusive Members</span>
         <div class="h-px w-12 bg-aqua-gold/60"></div>
       </div>
-      <h2 class="text-4xl md:text-6xl font-black uppercase mb-8 leading-tight">
+      <h2 class="text-3xl md:text-6xl font-black uppercase mb-8 leading-tight">
         SIGN UP FOR<br />
         <span class="gold-shimmer">SPECIAL PROMOTIONS</span>
       </h2>
