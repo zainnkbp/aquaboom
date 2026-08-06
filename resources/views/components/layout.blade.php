@@ -424,7 +424,7 @@
   </nav>
 
   <!-- Main Content Slot -->
-  <main class="flex-1 w-full flex flex-col pt-24">
+  <main class="flex-1 w-full flex flex-col pt-20 lg:pt-28">
     {{ $slot }}
   </main>
 
