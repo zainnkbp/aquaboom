@@ -3,7 +3,8 @@
   {{-- ============================================================ --}}
   {{-- HERO: Fullscreen Video Background (Navy-Gold Luxury Edition) --}}
   {{-- ============================================================ --}}
-  <section class="relative bg-aqua-navy overflow-hidden h-screen min-h-[600px] max-h-[900px]" x-data="{ videoLoaded: false }">
+  <section class="relative bg-aqua-navy overflow-hidden h-screen min-h-[600px] max-h-[900px]"
+    x-data="{ videoLoaded: false }">
 
     {{-- Video Background --}}
     <div class="absolute inset-0 w-full h-full z-0">
@@ -12,15 +13,12 @@
         <iframe
           class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-[56.25vw] h-auto"
           src="{!! $settings['hero_video_url'] ?? 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1' !!}"
-          title="Aquaboom Waterpark"
-          frameborder="0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen
-          x-on:load="videoLoaded = true"
-        ></iframe>
+          title="Aquaboom Waterpark" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
+          x-on:load="videoLoaded = true"></iframe>
 
         {{-- Fallback image shown until video loads --}}
-        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://picsum.photos/1920/1080?random=99');" x-show="!videoLoaded"></div>
+        <div class="absolute inset-0 bg-cover bg-center"
+          style="background-image: url('https://picsum.photos/1920/1080?random=99');" x-show="!videoLoaded"></div>
       </div>
 
       {{-- Deep Navy Overlay: left darker for text readability, right lighter for cinematic feel --}}
@@ -36,7 +34,8 @@
       {{-- Gold eyebrow --}}
       <div class="flex items-center gap-3 mb-6">
         <div class="h-px w-12 bg-aqua-gold"></div>
-        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">Balikpapan's No. 1 Rooftop Waterpark</span>
+        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">Balikpapan's No. 1 Rooftop
+          Waterpark</span>
       </div>
 
       {{-- Main headline --}}
@@ -55,12 +54,15 @@
       {{-- CTA Buttons --}}
       <div class="flex flex-col sm:flex-row gap-4">
         <a href="{{ url('/ticket') }}"
-           class="inline-flex items-center gap-3 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-10 py-5 rounded-full text-base shadow-2xl shadow-amber-900/30 transform hover:-translate-y-1 transition-all uppercase tracking-wider">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
+          class="inline-flex items-center gap-3 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-10 py-5 rounded-full text-base shadow-2xl shadow-amber-900/30 transform hover:-translate-y-1 transition-all uppercase tracking-wider">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+              d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+          </svg>
           BUY TICKETS NOW
         </a>
         <a href="{{ url('/explore') }}"
-           class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white border border-white/30 font-black px-10 py-5 rounded-full text-base transform hover:-translate-y-1 transition-all uppercase tracking-wider backdrop-blur-sm">
+          class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white border border-white/30 font-black px-10 py-5 rounded-full text-base transform hover:-translate-y-1 transition-all uppercase tracking-wider backdrop-blur-sm">
           Explore Rides &rarr;
         </a>
       </div>
@@ -68,17 +70,26 @@
       {{-- Trust badges --}}
       <div class="flex flex-wrap items-center gap-6 mt-12">
         <div class="flex items-center gap-2 text-white/50 text-xs font-bold uppercase tracking-wider">
-          <svg class="w-4 h-4 text-aqua-gold" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg class="w-4 h-4 text-aqua-gold" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
           Premium Experience
         </div>
         <div class="w-px h-4 bg-white/20"></div>
         <div class="flex items-center gap-2 text-white/50 text-xs font-bold uppercase tracking-wider">
-          <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
           Safe & Certified
         </div>
         <div class="w-px h-4 bg-white/20"></div>
         <div class="flex items-center gap-2 text-white/50 text-xs font-bold uppercase tracking-wider">
-          <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+          <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          </svg>
           7th Floor, BSB Mall
         </div>
       </div>
@@ -88,46 +99,54 @@
     {{-- Scroll indicator --}}
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 animate-bounce">
       <span class="text-white/30 text-[10px] font-black uppercase tracking-widest">Scroll</span>
-      <svg class="w-5 h-5 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      <svg class="w-5 h-5 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
     </div>
 
   </section>
 
   {{-- ============================================================ --}}
-  {{-- INFO CARDS GRID (6-Block) — Ivory Cream Background           --}}
+  {{-- INFO CARDS GRID (6-Block) — Ivory Cream Background --}}
   {{-- ============================================================ --}}
   <section class="py-24 bg-aqua-cream">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
 
       {{-- CTA Floating Block --}}
-      <div class="text-center mb-20">
+      <!-- <div class="text-center mb-20">
         <a href="{{ url('/ticket') }}"
            class="inline-block bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy text-2xl lg:text-3xl font-black px-14 py-7 rounded-2xl shadow-2xl shadow-amber-900/20 transform hover:-translate-y-1 transition-all uppercase tracking-wider">
           BUY TICKETS NOW !
         </a>
-      </div>
+      </div> -->
 
       {{-- 6-Block Grid --}}
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
         @foreach($homeCards as $card)
-        <div class="bg-white rounded-[32px] overflow-hidden shadow-xl shadow-slate-200/60 flex flex-col group hover:-translate-y-2 transition-all duration-300">
-          <div class="h-60 overflow-hidden relative">
-            <img src="{{ $card->image_url }}" alt="{{ $card->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
-          <div class="p-8 flex-1 flex flex-col justify-between">
-            <div>
-              <h3 class="text-2xl font-black text-aqua-navy leading-tight mb-4 uppercase">
-                <a href="{{ url($card->link ?? '#') }}" class="hover:text-aqua-gold transition-colors">{{ $card->title }}</a>
-              </h3>
-              <p class="text-slate-500 font-medium text-sm leading-relaxed mb-6">{{ $card->description }}</p>
+          <div
+            class="bg-white rounded-[32px] overflow-hidden shadow-xl shadow-slate-200/60 flex flex-col group hover:-translate-y-2 transition-all duration-300">
+            <div class="h-60 overflow-hidden relative">
+              <img src="{{ $card->image_url }}" alt="{{ $card->title }}"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-aqua-navy/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              </div>
             </div>
-            <a href="{{ url($card->link ?? '#') }}" class="text-aqua-azure font-black text-sm uppercase tracking-wider flex items-center gap-2 hover:text-aqua-gold transition-colors">
-              {{ $card->link_text ?? 'View Details' }} &rarr;
-            </a>
+            <div class="p-8 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-2xl font-black text-aqua-navy leading-tight mb-4 uppercase">
+                  <a href="{{ url($card->link ?? '#') }}"
+                    class="hover:text-aqua-gold transition-colors">{{ $card->title }}</a>
+                </h3>
+                <p class="text-slate-500 font-medium text-sm leading-relaxed mb-6">{{ $card->description }}</p>
+              </div>
+              <a href="{{ url($card->link ?? '#') }}"
+                class="text-aqua-azure font-black text-sm uppercase tracking-wider flex items-center gap-2 hover:text-aqua-gold transition-colors">
+                {{ $card->link_text ?? 'View Details' }} &rarr;
+              </a>
+            </div>
           </div>
-        </div>
         @endforeach
 
       </div>
@@ -135,7 +154,7 @@
   </section>
 
   {{-- ============================================================ --}}
-  {{-- VIDEO / PHILOSOPHY SECTION — Navy Dark Background            --}}
+  {{-- VIDEO / PHILOSOPHY SECTION — Navy Dark Background --}}
   {{-- ============================================================ --}}
   <section class="py-24 bg-aqua-navy text-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
@@ -147,7 +166,7 @@
             <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">Corporate Identity</span>
           </div>
           <h2 class="text-4xl lg:text-5xl font-black uppercase mb-6 leading-tight">
-            OUR<br/>COMPANY<br/>
+            OUR<br />COMPANY<br />
             <span class="gold-shimmer">PHILOSOPHY</span>
           </h2>
           <p class="text-white/60 text-base leading-relaxed font-semibold">
@@ -167,24 +186,22 @@
 
         {{-- Video Box --}}
         <div class="lg:col-span-8">
-          <div class="rounded-3xl overflow-hidden shadow-2xl relative aspect-video border border-white/10 ring-1 ring-aqua-gold/30">
-            <iframe
-              class="w-full h-full"
-              src="https://www.youtube.com/embed/2ugEGMhBPNE"
-              title="Aquaboom Waterpark Company Video"
-              frameborder="0"
+          <div
+            class="rounded-3xl overflow-hidden shadow-2xl relative aspect-video border border-white/10 ring-1 ring-aqua-gold/30">
+            <iframe class="w-full h-full" src="https://www.youtube.com/embed/2ugEGMhBPNE"
+              title="Aquaboom Waterpark Company Video" frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
+              allowfullscreen></iframe>
           </div>
-          <p class="text-white/30 text-xs font-semibold mt-4 text-right">© Aquaboom Balikpapan — Company Profile Video</p>
+          <p class="text-white/30 text-xs font-semibold mt-4 text-right">© Aquaboom Balikpapan — Company Profile Video
+          </p>
         </div>
       </div>
     </div>
   </section>
 
   {{-- ============================================================ --}}
-  {{-- DYNAMIC WATER RIDES — Ivory Cream Background                 --}}
+  {{-- DYNAMIC WATER RIDES — Ivory Cream Background --}}
   {{-- ============================================================ --}}
   <section class="py-24 bg-aqua-cream">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
@@ -195,35 +212,40 @@
           <div class="h-px w-16 bg-aqua-gold"></div>
         </div>
         <h2 class="text-4xl md:text-6xl font-black text-aqua-navy uppercase tracking-tight">DYNAMIC WATER RIDES</h2>
-        <p class="mt-4 text-slate-500 text-lg font-semibold max-w-2xl mx-auto">Discover world-class slides curated specifically for family adventures and adrenaline junkies alike.</p>
+        <p class="mt-4 text-slate-500 text-lg font-semibold max-w-2xl mx-auto">Discover world-class slides curated
+          specifically for family adventures and adrenaline junkies alike.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
         @foreach($wahanas as $wahana)
-        <div class="group bg-white rounded-[32px] overflow-hidden shadow-lg border border-aqua-cream-2 hover:shadow-2xl transition-all duration-300 flex flex-col">
-          <div class="h-64 overflow-hidden relative">
-            <img src="{{ $wahana->image_url }}" alt="{{ $wahana->name }}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
-            <div class="absolute top-4 right-4 bg-aqua-navy text-aqua-gold px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider border border-aqua-gold/30">
-              {{ $wahana->thrill_level ?? 'Ride' }}
+          <div
+            class="group bg-white rounded-[32px] overflow-hidden shadow-lg border border-aqua-cream-2 hover:shadow-2xl transition-all duration-300 flex flex-col">
+            <div class="h-64 overflow-hidden relative">
+              <img src="{{ $wahana->image_url }}" alt="{{ $wahana->name }}"
+                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+              <div
+                class="absolute top-4 right-4 bg-aqua-navy text-aqua-gold px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider border border-aqua-gold/30">
+                {{ $wahana->thrill_level ?? 'Ride' }}
+              </div>
+            </div>
+            <div class="p-8 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-2xl font-black text-aqua-navy mb-3 uppercase">{{ $wahana->name }}</h3>
+                <p class="text-slate-500 text-sm font-medium leading-relaxed mb-6">{{ $wahana->description }}</p>
+              </div>
+              <div
+                class="flex items-center text-aqua-azure text-sm font-black uppercase tracking-wider group-hover:text-aqua-gold transition-colors">
+                Learn more &rarr;
+              </div>
             </div>
           </div>
-          <div class="p-8 flex-1 flex flex-col justify-between">
-            <div>
-              <h3 class="text-2xl font-black text-aqua-navy mb-3 uppercase">{{ $wahana->name }}</h3>
-              <p class="text-slate-500 text-sm font-medium leading-relaxed mb-6">{{ $wahana->description }}</p>
-            </div>
-            <div class="flex items-center text-aqua-azure text-sm font-black uppercase tracking-wider group-hover:text-aqua-gold transition-colors">
-              Learn more &rarr;
-            </div>
-          </div>
-        </div>
         @endforeach
       </div>
     </div>
   </section>
 
   {{-- ============================================================ --}}
-  {{-- NEWSLETTER — Navy Dark Background with Gold Accents          --}}
+  {{-- NEWSLETTER — Navy Dark Background with Gold Accents --}}
   {{-- ============================================================ --}}
   <section class="py-24 bg-aqua-navy text-white relative overflow-hidden">
     {{-- Decorative gold ring --}}
@@ -237,7 +259,7 @@
         <div class="h-px w-12 bg-aqua-gold/60"></div>
       </div>
       <h2 class="text-4xl md:text-6xl font-black uppercase mb-8 leading-tight">
-        SIGN UP FOR<br/>
+        SIGN UP FOR<br />
         <span class="gold-shimmer">SPECIAL PROMOTIONS</span>
       </h2>
 
@@ -246,16 +268,18 @@
         <div>
           <label class="block text-xs font-black uppercase tracking-wider text-white/50 mb-2">Your Name</label>
           <input type="text" placeholder="Full name"
-                 class="w-full bg-white/5 text-white placeholder-white/30 border border-white/10 px-6 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium transition-colors" required />
+            class="w-full bg-white/5 text-white placeholder-white/30 border border-white/10 px-6 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium transition-colors"
+            required />
         </div>
         <div>
           <label class="block text-xs font-black uppercase tracking-wider text-white/50 mb-2">Email Address</label>
           <input type="email" placeholder="example@email.com"
-                 class="w-full bg-white/5 text-white placeholder-white/30 border border-white/10 px-6 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium transition-colors" required />
+            class="w-full bg-white/5 text-white placeholder-white/30 border border-white/10 px-6 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium transition-colors"
+            required />
         </div>
         <div class="flex flex-col justify-end">
           <button type="submit"
-                  class="w-full bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black py-4 rounded-xl transition-all shadow-lg shadow-amber-900/20 uppercase tracking-wider">
+            class="w-full bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black py-4 rounded-xl transition-all shadow-lg shadow-amber-900/20 uppercase tracking-wider">
             SUBSCRIBE
           </button>
         </div>
