@@ -34,7 +34,7 @@
 
     /* Scrolled navbar */
     .glass-nav-wb {
-      background: rgba(13, 27, 46, 0.92);
+      background: rgba(22, 15, 48, 0.9);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
@@ -61,24 +61,24 @@
   <!-- ============================================================ -->
   <nav :class="{'glass-nav-wb shadow-xl border-b border-aqua-gold/20': scrolled, 'bg-aqua-navy': !scrolled}"
     class="fixed w-full z-50 transition-all duration-300">
-    
+
     <!-- Top Utility Bar (Desktop Only) - Hides on scroll -->
-    <div :class="scrolled ? 'h-0 opacity-0 overflow-hidden py-0 border-none' : 'border-b border-white/10 py-2'" 
+    <div :class="scrolled ? 'h-0 opacity-0 overflow-hidden py-0 border-none' : 'border-b border-white/10 py-2'"
       class="hidden lg:block transition-all duration-300">
       <div class="max-w-7xl mx-auto px-6 lg:px-10 flex justify-end items-center gap-4 text-[10px]">
         <span class="text-white/40 font-semibold mr-auto tracking-wider uppercase">Aquaboom Waterpark Balikpapan</span>
-        
+
         <!-- Language Switcher (Compact utility style) -->
         <div class="flex items-center bg-white/5 rounded-full p-0.5 border border-white/10 shrink-0">
-          <a href="{{ route('lang.switch', ['locale' => 'id']) }}" 
-              class="px-3 py-0.5 font-black rounded-full uppercase tracking-wider transition-all
+          <a href="{{ route('lang.switch', ['locale' => 'id']) }}"
+            class="px-3 py-0.5 font-black rounded-full uppercase tracking-wider transition-all
               {{ App::getLocale() === 'id' ? 'bg-aqua-gold text-aqua-navy shadow-sm' : 'text-white/50 hover:text-white' }}">
-              ID
+            ID
           </a>
-          <a href="{{ route('lang.switch', ['locale' => 'en']) }}" 
-              class="px-3 py-0.5 font-black rounded-full uppercase tracking-wider transition-all
+          <a href="{{ route('lang.switch', ['locale' => 'en']) }}"
+            class="px-3 py-0.5 font-black rounded-full uppercase tracking-wider transition-all
               {{ App::getLocale() === 'en' ? 'bg-aqua-gold text-aqua-navy shadow-sm' : 'text-white/50 hover:text-white' }}">
-              EN
+            EN
           </a>
         </div>
       </div>
@@ -89,7 +89,8 @@
 
         <!-- Logo -->
         <div class="flex-shrink-0 flex items-center">
-          <a href="{{ url('/') }}" class="bg-white/95 hover:bg-white px-3.5 py-2 rounded-2xl shadow-md transition-all duration-300 flex items-center justify-center shrink-0">
+          <a href="{{ url('/') }}"
+            class="bg-white/95 hover:bg-white px-3.5 py-2 rounded-2xl shadow-md transition-all duration-300 flex items-center justify-center shrink-0">
             <img src="{{ asset('assets/img/logo-aquaboom.png') }}" alt="Aquaboom" class="h-9 w-auto object-contain">
           </a>
         </div>
@@ -217,10 +218,12 @@
               <button @click="open = !open"
                 class="flex items-center gap-2 border border-aqua-gold/30 bg-white/5 hover:bg-white/10 px-5 py-2.5 rounded-full text-xs font-bold text-white hover:text-aqua-gold transition-all duration-300 uppercase">
                 <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <span>Hi, {{ Str::words(Auth::user()->name, 1, '') }}</span>
-                <svg class="w-3.5 h-3.5 text-aqua-gold/70 transition-transform duration-300" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 text-aqua-gold/70 transition-transform duration-300" :class="{'rotate-180': open}"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
@@ -229,14 +232,16 @@
                 <a href="{{ route('my.tickets') }}"
                   class="flex items-center gap-2 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors uppercase">
                   <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                   </svg>
                   My Tickets
                 </a>
                 <a href="{{ route('logout') }}"
                   class="flex items-center gap-2 px-4 py-2.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-lg transition-colors uppercase">
                   <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
                   Logout
                 </a>
@@ -247,7 +252,8 @@
             <a href="{{ route('login') }}"
               class="flex items-center gap-2 border border-white/20 bg-white/5 hover:bg-white/10 hover:border-aqua-gold/50 px-5 py-2.5 rounded-full text-xs font-bold text-white hover:text-aqua-gold transition-all duration-300 uppercase shrink-0">
               <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               Login
             </a>
@@ -287,7 +293,8 @@
 
         <!-- Drawer Header -->
         <div class="p-8 flex justify-between items-center relative z-20 border-b border-aqua-gold/20">
-          <a href="{{ url('/') }}" class="bg-white/95 hover:bg-white px-3 py-1.5 rounded-xl shadow-md transition-all duration-300 flex items-center justify-center shrink-0">
+          <a href="{{ url('/') }}"
+            class="bg-white/95 hover:bg-white px-3 py-1.5 rounded-xl shadow-md transition-all duration-300 flex items-center justify-center shrink-0">
             <img src="{{ asset('assets/img/logo-aquaboom.png') }}" alt="Aquaboom" class="h-7 w-auto object-contain">
           </a>
           <button @click="isMobileMenuOpen = false"
@@ -366,7 +373,8 @@
                   <a href="{{ url('/about') }}#awards"
                     class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Awards</a>
                   <a href="{{ url('/faq') }}"
-                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">FAQ (Tanya Jawab)</a>
+                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">FAQ
+                    (Tanya Jawab)</a>
                   <a href="{{ url('/about') }}#career"
                     class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Career</a>
                 </div>
@@ -395,15 +403,15 @@
 
           <!-- Mobile Language Switcher -->
           <div class="flex justify-center items-center bg-white/10 rounded-full p-1 border border-white/20 self-center">
-            <a href="{{ route('lang.switch', ['locale' => 'id']) }}" 
-                class="px-5 py-2 text-xs font-black rounded-full uppercase tracking-wider transition-all
+            <a href="{{ route('lang.switch', ['locale' => 'id']) }}"
+              class="px-5 py-2 text-xs font-black rounded-full uppercase tracking-wider transition-all
                 {{ App::getLocale() === 'id' ? 'bg-aqua-gold text-aqua-navy shadow-md' : 'text-white/60 hover:text-white' }}">
-                ID
+              ID
             </a>
-            <a href="{{ route('lang.switch', ['locale' => 'en']) }}" 
-                class="px-5 py-2 text-xs font-black rounded-full uppercase tracking-wider transition-all
+            <a href="{{ route('lang.switch', ['locale' => 'en']) }}"
+              class="px-5 py-2 text-xs font-black rounded-full uppercase tracking-wider transition-all
                 {{ App::getLocale() === 'en' ? 'bg-aqua-gold text-aqua-navy shadow-md' : 'text-white/60 hover:text-white' }}">
-                EN
+              EN
             </a>
           </div>
           <a href="{{ url('/ticket') }}"

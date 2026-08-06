@@ -11,31 +11,31 @@
     /* === AQUABOOM PLAYFUL & PREMIUM PALETTE (Logo Match) === */
 
     /* Primary Background: Deep Purple/Indigo (Derived from logo #3c286e) */
-    --color-aqua-navy:    #160F30;
-    --color-aqua-navy-2:  #1D153E;
-    --color-aqua-navy-3:  #2A2054;
+    --color-aqua-navy: #160F30;
+    --color-aqua-navy-2: #1D153E;
+    --color-aqua-navy-3: #2A2054;
 
     /* Accent 1: Vibrant Orange-Gold (Derived from logo #f09628) */
-    --color-aqua-gold:    #F09628;
-    --color-aqua-gold-2:  #FBAB43;
-    --color-aqua-gold-3:  #FFC374;
+    --color-aqua-gold: #F09628;
+    --color-aqua-gold-2: #FBAB43;
+    --color-aqua-gold-3: #FFC374;
 
     /* Accent 2: Vibrant Cyan (Derived from logo #28bee6) */
-    --color-aqua-azure:   #28BEE6;
+    --color-aqua-azure: #28BEE6;
     --color-aqua-azure-2: #50C8DC;
 
     /* Accent 3: Hot Pink/Magenta (Derived from logo #f05aa0) */
-    --color-aqua-pink:    #F05AA0;
-    --color-aqua-pink-2:  #F064AA;
+    --color-aqua-pink: #F05AA0;
+    --color-aqua-pink-2: #F064AA;
 
     /* Surface: Ivory Cream */
-    --color-aqua-cream:   #F7F4EE;
+    --color-aqua-cream: #F7F4EE;
     --color-aqua-cream-2: #EDE9E0;
 
     /* Legacy aliases */
-    --color-waterbom-teal:   #28BEE6;
+    --color-waterbom-teal: #28BEE6;
     --color-waterbom-orange: #F09628;
-    --color-waterbom-dark:   #160F30;
+    --color-waterbom-dark: #160F30;
 }
 
 /* Glass Navbar Effect */
@@ -47,8 +47,13 @@
 
 /* Playful Logo Shimmer (Orange-Gold -> Hot Pink -> Cyan) */
 @keyframes logoShimmer {
-    0%   { background-position: -200% center; }
-    100% { background-position: 200% center; }
+    0% {
+        background-position: -200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
 }
 
 .gold-shimmer {
@@ -62,10 +67,8 @@
 
 /* Video hero overlay */
 .video-hero-overlay {
-    background: linear-gradient(
-        135deg,
-        rgba(22, 15, 48, 0.8) 0%,
-        rgba(22, 15, 48, 0.5) 50%,
-        rgba(22, 15, 48, 0.3) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(22, 15, 48, 0.8) 0%,
+            rgba(22, 15, 48, 0.5) 50%,
+            rgba(22, 15, 48, 0.3) 100%);
 }
