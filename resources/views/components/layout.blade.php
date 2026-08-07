@@ -278,150 +278,151 @@
       </div>
     </div>
 
-    <!-- Mobile Menu (Side Drawer) -->
-    <div x-show="isMobileMenuOpen" style="display: none;" class="fixed inset-0 z-[100] flex">
-      <!-- Backdrop -->
-      <div x-show="isMobileMenuOpen" x-transition.opacity.duration.300ms @click="isMobileMenuOpen = false"
-        class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+  </nav>
 
-      <!-- Drawer -->
-      <div x-show="isMobileMenuOpen" x-transition:enter="transition-transform ease-out duration-300"
-        x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
-        x-transition:leave="transition-transform ease-in duration-300" x-transition:leave-start="translate-x-0"
-        x-transition:leave-end="-translate-x-full"
-        class="relative w-[85%] max-w-sm bg-aqua-navy h-full shadow-2xl flex flex-col z-10 overflow-hidden border-r border-aqua-gold/20">
+  <!-- Mobile Menu (Side Drawer) -->
+  <div x-show="isMobileMenuOpen" style="display: none;" class="fixed inset-0 z-[100] flex">
+    <!-- Backdrop -->
+    <div x-show="isMobileMenuOpen" x-transition.opacity.duration.300ms @click="isMobileMenuOpen = false"
+      class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
 
-        <!-- Drawer Header -->
-        <div class="p-8 flex justify-between items-center relative z-20 border-b border-aqua-gold/20">
-          <a href="{{ url('/') }}"
-            class="bg-white/95 hover:bg-white px-3 py-1.5 rounded-xl shadow-md transition-all duration-300 flex items-center justify-center shrink-0">
-            <img src="{{ asset('assets/img/logo-aquaboom.png') }}" alt="Aquaboom" class="h-7 w-auto object-contain">
-          </a>
-          <button @click="isMobileMenuOpen = false"
-            class="text-white/80 hover:text-aqua-gold transition-colors bg-aqua-navy-2 p-3 rounded-full border border-aqua-gold/20">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+    <!-- Drawer -->
+    <div x-show="isMobileMenuOpen" x-transition:enter="transition-transform ease-out duration-300"
+      x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+      x-transition:leave="transition-transform ease-in duration-300" x-transition:leave-start="translate-x-0"
+      x-transition:leave-end="-translate-x-full"
+      class="relative w-[85%] max-w-sm bg-aqua-navy h-full shadow-2xl flex flex-col z-10 overflow-hidden border-r border-aqua-gold/20">
 
-        <div class="overflow-y-auto flex-1 py-6">
-          <div class="px-6 flex flex-col gap-3">
+      <!-- Drawer Header -->
+      <div class="p-8 flex justify-between items-center relative z-20 border-b border-aqua-gold/20">
+        <a href="{{ url('/') }}"
+          class="bg-white/95 hover:bg-white px-3 py-1.5 rounded-xl shadow-md transition-all duration-300 flex items-center justify-center shrink-0">
+          <img src="{{ asset('assets/img/logo-aquaboom.png') }}" alt="Aquaboom" class="h-7 w-auto object-contain">
+        </a>
+        <button @click="isMobileMenuOpen = false"
+          class="text-white/80 hover:text-aqua-gold transition-colors bg-aqua-navy-2 p-3 rounded-full border border-aqua-gold/20">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
 
-            <!-- Mobile Explore Accordion -->
-            <div x-data="{ open: false }" class="bg-aqua-navy-2/80 rounded-2xl p-4 border border-aqua-gold/10">
-              <button @click="open = !open"
-                class="w-full flex justify-between items-center text-base font-bold text-white uppercase tracking-wide">
-                Explore
-                <svg class="w-4 h-4 text-aqua-gold transition-transform duration-300" :class="{'rotate-180': open}"
-                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div x-show="open" x-collapse class="mt-3 pl-2 border-l-2 border-aqua-gold/30">
-                <div class="flex flex-col gap-1">
-                  <a href="{{ url('/explore') }}"
-                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Rides &
-                    Attractions</a>
-                  <a href="{{ url('/dining') }}"
-                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Eat &
-                    Drink</a>
-                  <a href="{{ url('/facilities') }}"
-                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Premium
-                    Facilities</a>
-                </div>
-              </div>
-            </div>
+      <div class="overflow-y-auto flex-1 py-6">
+        <div class="px-6 flex flex-col gap-3">
 
-            <!-- Mobile Tickets Accordion -->
-            <div x-data="{ open: false }" class="bg-aqua-navy-2/80 rounded-2xl p-4 border border-aqua-gold/10">
-              <button @click="open = !open"
-                class="w-full flex justify-between items-center text-base font-bold text-white uppercase tracking-wide">
-                Tickets & Pricing
-                <svg class="w-4 h-4 text-aqua-gold transition-transform duration-300" :class="{'rotate-180': open}"
-                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div x-show="open" x-collapse class="mt-3 pl-2 border-l-2 border-aqua-gold/30">
-                <div class="flex flex-col gap-1">
-                  <a href="{{ url('/ticket') }}"
-                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Tickets &
-                    Pricing</a>
-                  <a href="{{ url('/packages') }}"
-                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Special
-                    Packages</a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Mobile About Us Accordion -->
-            <div x-data="{ open: false }" class="bg-aqua-navy-2/80 rounded-2xl p-4 border border-aqua-gold/10">
-              <button @click="open = !open"
-                class="w-full flex justify-between items-center text-base font-bold text-white uppercase tracking-wide">
-                About Us
-                <svg class="w-4 h-4 text-aqua-gold transition-transform duration-300" :class="{'rotate-180': open}"
-                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div x-show="open" x-collapse class="mt-3 pl-2 border-l-2 border-aqua-gold/30">
-                <div class="flex flex-col gap-1">
-                  <a href="{{ url('/about') }}"
-                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Company
-                    Profile</a>
-                  <a href="{{ url('/about') }}#awards"
-                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Awards</a>
-                  <a href="{{ url('/faq') }}"
-                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">FAQ
-                    (Tanya Jawab)</a>
-                  <a href="{{ url('/about') }}#career"
-                    class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Career</a>
-                </div>
+          <!-- Mobile Explore Accordion -->
+          <div x-data="{ open: false }" class="bg-aqua-navy-2/80 rounded-2xl p-4 border border-aqua-gold/10">
+            <button @click="open = !open"
+              class="w-full flex justify-between items-center text-base font-bold text-white uppercase tracking-wide">
+              Explore
+              <svg class="w-4 h-4 text-aqua-gold transition-transform duration-300" :class="{'rotate-180': open}"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div x-show="open" x-collapse class="mt-3 pl-2 border-l-2 border-aqua-gold/30">
+              <div class="flex flex-col gap-1">
+                <a href="{{ url('/explore') }}"
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Rides &
+                  Attractions</a>
+                <a href="{{ url('/dining') }}"
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Eat &
+                  Drink</a>
+                <a href="{{ url('/facilities') }}"
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Premium
+                  Facilities</a>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Mobile CTA -->
-        <div class="p-6 bg-aqua-navy-3 border-t border-aqua-gold/20 relative z-20 flex flex-col gap-3">
-          @auth
-            <a href="{{ route('my.tickets') }}"
-              class="block w-full text-center bg-white/10 border border-white/20 text-white hover:border-aqua-gold/50 px-6 py-3 rounded-full font-black text-sm uppercase tracking-wide transition-all">
-              My Tickets
-            </a>
-            <a href="{{ route('logout') }}"
-              class="block w-full text-center bg-red-950/20 border border-red-500/30 text-red-400 hover:bg-red-950/40 px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wide transition-all">
-              Logout
-            </a>
-          @else
-            <a href="{{ route('login') }}"
-              class="block w-full text-center bg-white/10 border border-white/20 text-white hover:border-aqua-gold/50 px-6 py-3 rounded-full font-black text-sm uppercase tracking-wide transition-all">
-              Login
-            </a>
-          @endauth
-
-          <!-- Mobile Language Switcher -->
-          <div class="flex justify-center items-center bg-white/10 rounded-full p-1 border border-white/20 self-center">
-            <a href="{{ route('lang.switch', ['locale' => 'id']) }}"
-              class="px-5 py-2 text-xs font-black rounded-full uppercase tracking-wider transition-all
-                {{ App::getLocale() === 'id' ? 'bg-aqua-gold text-aqua-navy shadow-md' : 'text-white/60 hover:text-white' }}">
-              ID
-            </a>
-            <a href="{{ route('lang.switch', ['locale' => 'en']) }}"
-              class="px-5 py-2 text-xs font-black rounded-full uppercase tracking-wider transition-all
-                {{ App::getLocale() === 'en' ? 'bg-aqua-gold text-aqua-navy shadow-md' : 'text-white/60 hover:text-white' }}">
-              EN
-            </a>
+          <!-- Mobile Tickets Accordion -->
+          <div x-data="{ open: false }" class="bg-aqua-navy-2/80 rounded-2xl p-4 border border-aqua-gold/10">
+            <button @click="open = !open"
+              class="w-full flex justify-between items-center text-base font-bold text-white uppercase tracking-wide">
+              Tickets & Pricing
+              <svg class="w-4 h-4 text-aqua-gold transition-transform duration-300" :class="{'rotate-180': open}"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div x-show="open" x-collapse class="mt-3 pl-2 border-l-2 border-aqua-gold/30">
+              <div class="flex flex-col gap-1">
+                <a href="{{ url('/ticket') }}"
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Tickets &
+                  Pricing</a>
+                <a href="{{ url('/packages') }}"
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Special
+                  Packages</a>
+              </div>
+            </div>
           </div>
-          <a href="{{ url('/ticket') }}"
-            class="block w-full text-center bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy px-6 py-4 rounded-full font-black text-base shadow-lg shadow-amber-900/20 uppercase tracking-wide">
-            {{ App::getLocale() === 'id' ? 'BELI TIKET SEKARANG !' : 'BUY TICKETS NOW !' }}
-          </a>
+
+          <!-- Mobile About Us Accordion -->
+          <div x-data="{ open: false }" class="bg-aqua-navy-2/80 rounded-2xl p-4 border border-aqua-gold/10">
+            <button @click="open = !open"
+              class="w-full flex justify-between items-center text-base font-bold text-white uppercase tracking-wide">
+              About Us
+              <svg class="w-4 h-4 text-aqua-gold transition-transform duration-300" :class="{'rotate-180': open}"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div x-show="open" x-collapse class="mt-3 pl-2 border-l-2 border-aqua-gold/30">
+              <div class="flex flex-col gap-1">
+                <a href="{{ url('/about') }}"
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Company
+                  Profile</a>
+                <a href="{{ url('/about') }}#awards"
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Awards</a>
+                <a href="{{ url('/faq') }}"
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">FAQ
+                  (Tanya Jawab)</a>
+                <a href="{{ url('/about') }}#career"
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Career</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- Mobile CTA -->
+      <div class="p-6 bg-aqua-navy-3 border-t border-aqua-gold/20 relative z-20 flex flex-col gap-3">
+        @auth
+          <a href="{{ route('my.tickets') }}"
+            class="block w-full text-center bg-white/10 border border-white/20 text-white hover:border-aqua-gold/50 px-6 py-3 rounded-full font-black text-sm uppercase tracking-wide transition-all">
+            My Tickets
+          </a>
+          <a href="{{ route('logout') }}"
+            class="block w-full text-center bg-red-950/20 border border-red-500/30 text-red-400 hover:bg-red-950/40 px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wide transition-all">
+            Logout
+          </a>
+        @else
+          <a href="{{ route('login') }}"
+            class="block w-full text-center bg-white/10 border border-white/20 text-white hover:border-aqua-gold/50 px-6 py-3 rounded-full font-black text-sm uppercase tracking-wide transition-all">
+            Login
+          </a>
+        @endauth
+
+        <!-- Mobile Language Switcher -->
+        <div class="flex justify-center items-center bg-white/10 rounded-full p-1 border border-white/20 self-center">
+          <a href="{{ route('lang.switch', ['locale' => 'id']) }}"
+            class="px-5 py-2 text-xs font-black rounded-full uppercase tracking-wider transition-all
+              {{ App::getLocale() === 'id' ? 'bg-aqua-gold text-aqua-navy shadow-md' : 'text-white/60 hover:text-white' }}">
+            ID
+          </a>
+          <a href="{{ route('lang.switch', ['locale' => 'en']) }}"
+            class="px-5 py-2 text-xs font-black rounded-full uppercase tracking-wider transition-all
+              {{ App::getLocale() === 'en' ? 'bg-aqua-gold text-aqua-navy shadow-md' : 'text-white/60 hover:text-white' }}">
+            EN
+          </a>
+        </div>
+        <a href="{{ url('/ticket') }}"
+          class="block w-full text-center bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy px-6 py-4 rounded-full font-black text-base shadow-lg shadow-amber-900/20 uppercase tracking-wide">
+          {{ App::getLocale() === 'id' ? 'BELI TIKET SEKARANG !' : 'BUY TICKETS NOW !' }}
+        </a>
+      </div>
     </div>
-  </nav>
+  </div>
 
   <!-- Main Content Slot -->
   <main class="flex-1 w-full flex flex-col pt-20 lg:pt-28">

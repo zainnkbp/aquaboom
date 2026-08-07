@@ -51,7 +51,7 @@ class AdminPanelProvider extends PanelProvider
                             background-color: #f8fafc !important; /* slate-50 */
                         }
                         .dark .fi-body {
-                            background-color: #0f172a !important; /* slate-900 */
+                            background-color: #160F30 !important; /* aquaboom primary background */
                         }
                         
                         /* Glassy Cards */
