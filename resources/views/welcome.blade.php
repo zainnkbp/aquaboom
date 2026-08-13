@@ -106,52 +106,7 @@
 
   </section>
 
-  {{-- ============================================================ --}}
-  {{-- INFO CARDS GRID (6-Block) — Ivory Cream Background --}}
-  {{-- ============================================================ --}}
-  <section class="py-24 bg-aqua-cream">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
 
-      {{-- CTA Floating Block --}}
-      <!-- <div class="text-center mb-20">
-        <a href="{{ url('/ticket') }}"
-           class="inline-block bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy text-2xl lg:text-3xl font-black px-14 py-7 rounded-2xl shadow-2xl shadow-amber-900/20 transform hover:-translate-y-1 transition-all uppercase tracking-wider">
-          BUY TICKETS NOW !
-        </a>
-      </div> -->
-
-      {{-- 6-Block Grid --}}
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-
-        @foreach($homeCards as $card)
-          <div
-            class="bg-white rounded-[32px] overflow-hidden shadow-xl shadow-slate-200/60 flex flex-col group hover:-translate-y-2 transition-all duration-300">
-            <div class="h-60 overflow-hidden relative">
-              <img src="{{ $card->image_url }}" alt="{{ $card->title }}"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-aqua-navy/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              </div>
-            </div>
-            <div class="p-8 flex-1 flex flex-col justify-between">
-              <div>
-                <h3 class="text-2xl font-black text-aqua-navy leading-tight mb-4 uppercase">
-                  <a href="{{ url($card->link ?? '#') }}"
-                    class="hover:text-aqua-gold transition-colors">{{ $card->title }}</a>
-                </h3>
-                <p class="text-slate-500 font-medium text-sm leading-relaxed mb-6">{{ $card->description }}</p>
-              </div>
-              <a href="{{ url($card->link ?? '#') }}"
-                class="text-aqua-azure font-black text-sm uppercase tracking-wider flex items-center gap-2 hover:text-aqua-gold transition-colors">
-                {{ $card->link_text ?? 'View Details' }} &rarr;
-              </a>
-            </div>
-          </div>
-        @endforeach
-
-      </div>
-    </div>
-  </section>
 
   {{-- ============================================================ --}}
   {{-- VIDEO / PHILOSOPHY SECTION — Navy Dark Background --}}
