@@ -20,9 +20,9 @@ class TicketPackageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
-    protected static ?string $navigationLabel = 'Special Packages / Promo';
+    protected static ?string $navigationLabel = 'Paket Tiket';
 
-    protected static ?string $modelLabel = 'Special Packages / Promo';
+    protected static ?string $modelLabel = 'Paket Tiket';
 
     public static function form(Form $form): Form
     {
