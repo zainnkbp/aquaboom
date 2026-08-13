@@ -72,6 +72,7 @@ class WahanaResource extends Resource
                 Forms\Components\FileUpload::make('image_url')
                     ->label('Gambar')
                     ->image()
+                    ->disk('public_uploads')
                     ->helperText('Foto wahana yang tampil di halaman utama'),
                 Forms\Components\TextInput::make('order_column')
                     ->label('Urutan Tampil')
@@ -101,7 +102,8 @@ class WahanaResource extends Resource
                     })
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image_url')
-                    ->label('Gambar'),
+                    ->label('Gambar')
+                    ->disk('public_uploads'),
                 Tables\Columns\TextColumn::make('order_column')
                     ->label('Urutan')
                     ->numeric()

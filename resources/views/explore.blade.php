@@ -29,7 +29,7 @@
         @foreach($wahanas as $wahana)
         <div class="group bg-white rounded-[32px] overflow-hidden shadow-lg border border-aqua-cream-2 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col">
           <div class="h-64 overflow-hidden relative">
-            <img src="{{ $wahana->image_url }}" alt="{{ $wahana->name }}"
+            <img src="{{ Str::startsWith($wahana->image_url, ['http://', 'https://']) ? $wahana->image_url : asset('uploads/' . $wahana->image_url) }}" alt="{{ $wahana->name }}"
                  class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                  onerror="this.src='https://picsum.photos/800/600?random={{ $loop->index }}'" />
             <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

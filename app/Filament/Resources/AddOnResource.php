@@ -53,6 +53,7 @@ class AddOnResource extends Resource
                     Forms\Components\FileUpload::make('image')
                         ->label('Gambar Produk')
                         ->image()
+                        ->disk('public_uploads')
                         ->directory('addons'),
                         
                     Forms\Components\RichEditor::make('description')
@@ -83,7 +84,8 @@ class AddOnResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Gambar'),
+                    ->label('Gambar')
+                    ->disk('public_uploads'),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Produk')
                     ->searchable()

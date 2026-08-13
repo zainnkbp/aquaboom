@@ -30,7 +30,7 @@
       <div class="flex flex-col {{ $loop->even ? 'lg:flex-row-reverse' : 'lg:flex-row' }} gap-12 items-center mb-20 bg-white rounded-[32px] overflow-hidden shadow-xl border border-aqua-cream-2 p-8 lg:p-12 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
         <div class="w-full lg:w-1/2">
           <div class="relative h-[400px] rounded-[24px] overflow-hidden ring-1 ring-aqua-gold/20">
-            <img src="{{ $dining->image_url }}" alt="{{ $dining->name }}" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" />
+            <img src="{{ Str::startsWith($dining->image_url, ['http://', 'https://']) ? $dining->image_url : asset('uploads/' . $dining->image_url) }}" alt="{{ $dining->name }}" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" />
           </div>
         </div>
         <div class="w-full lg:w-1/2 {{ $loop->even ? 'lg:pr-10' : 'lg:pl-10' }}">

@@ -2,8 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FacilityResource\Pages;
-use App\Filament\Resources\FacilityResource\RelationManagers;
+use App\Filament\Resources\DiningResource\Pages;
 use App\Models\Facility;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,13 +10,14 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class FacilityResource extends Resource
+class DiningResource extends Resource
 {
     protected static ?string $model = Facility::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-swatch';
+    protected static ?string $modelLabel = 'Dining & Culinary';
+    protected static ?string $pluralModelLabel = 'Dining & Culinary';
+    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
     protected static ?string $navigationGroup = 'CMS Landing Page';
 
     public static function form(Form $form): Form
@@ -25,7 +25,7 @@ class FacilityResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Nama Fasilitas (ID)')
+                    ->label('Nama Tempat (ID)')
                     ->required()
                     ->maxLength(255)
                     ->suffixAction(
@@ -37,16 +37,10 @@ class FacilityResource extends Resource
                             })
                     ),
                 Forms\Components\TextInput::make('name_en')
-                    ->label('Nama Fasilitas (EN)')
+                    ->label('Nama Tempat (EN)')
                     ->maxLength(255),
-                Forms\Components\Select::make('type')
-                    ->label('Tipe Fasilitas')
-                    ->options([
-                        'general' => 'Umum (General)',
-                        'gazebo' => 'Gazebo',
-                    ])
-                    ->required()
-                    ->default('general'),
+                Forms\Components\Hidden::make('type')
+                    ->default('dining'),
                 Forms\Components\Textarea::make('description')
                     ->label('Deskripsi (ID)')
                     ->hintAction(
@@ -87,7 +81,8 @@ class FacilityResource extends Resource
                     ->disk('public_uploads'),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Aktif')
-                    ->required(),
+                    ->required()
+                    ->default(true),
             ]);
     }
 
@@ -96,18 +91,15 @@ class FacilityResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('type')
+                    ->label('Nama')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image_url')
+                    ->label('Gambar')
                     ->disk('public_uploads'),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('Aktif')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -127,7 +119,7 @@ class FacilityResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('type', '!=', 'dining');
+        return parent::getEloquentQuery()->where('type', 'dining');
     }
 
     public static function getRelations(): array
@@ -140,9 +132,9 @@ class FacilityResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFacilities::route('/'),
-            'create' => Pages\CreateFacility::route('/create'),
-            'edit' => Pages\EditFacility::route('/{record}/edit'),
+            'index' => Pages\ListDinings::route('/'),
+            'create' => Pages\CreateDining::route('/create'),
+            'edit' => Pages\EditDining::route('/{record}/edit'),
         ];
     }
 }

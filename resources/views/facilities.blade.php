@@ -55,12 +55,19 @@
           </a>
         </div>
         <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div class="rounded-3xl overflow-hidden shadow-xl h-64 ring-1 ring-aqua-gold/20">
-            <img src="https://picsum.photos/600/400?random=40" alt="Gazebo Standard" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
-          <div class="rounded-3xl overflow-hidden shadow-xl h-64 ring-1 ring-aqua-gold/20">
-            <img src="https://picsum.photos/600/400?random=41" alt="VIP Gazebo" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-          </div>
+          @forelse($gazebos as $gazebo)
+            <div class="rounded-3xl overflow-hidden shadow-xl h-64 ring-1 ring-aqua-gold/20 relative group">
+              <img src="{{ Str::startsWith($gazebo->image_url, ['http://', 'https://']) ? $gazebo->image_url : asset('uploads/' . $gazebo->image_url) }}" alt="{{ $gazebo->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+              <div class="absolute bottom-4 left-4 bg-aqua-navy/80 text-white px-3 py-1 rounded-lg text-xs font-bold">{{ $gazebo->name }}</div>
+            </div>
+          @empty
+            <div class="rounded-3xl overflow-hidden shadow-xl h-64 ring-1 ring-aqua-gold/20">
+              <img src="https://picsum.photos/600/400?random=40" alt="Gazebo Standard" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+            </div>
+            <div class="rounded-3xl overflow-hidden shadow-xl h-64 ring-1 ring-aqua-gold/20">
+              <img src="https://picsum.photos/600/400?random=41" alt="VIP Gazebo" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+            </div>
+          @endforelse
         </div>
       </div>
     </section>
