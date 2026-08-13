@@ -22,9 +22,7 @@ class TicketPackageResource extends Resource
 
     protected static ?string $navigationLabel = 'Special Packages / Promo';
 
-    protected static ?string $navigationGroup = 'CMS Landing Page';
-
-    protected static ?string $modelLabel = 'Special Packages';
+    protected static ?string $modelLabel = 'Special Packages / Promo';
 
     public static function form(Form $form): Form
     {
