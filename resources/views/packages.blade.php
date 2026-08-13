@@ -40,6 +40,23 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
         @forelse($packages as $package)
+          @php
+            $buttonLink = url('/book');
+            $buttonText = App::getLocale() === 'id' ? 'Beli Sekarang' : 'Book Now';
+            $buttonClass = 'bg-aqua-navy hover:bg-black text-white';
+
+            if ($package->inquiry_type === 'whatsapp') {
+                $buttonText = App::getLocale() === 'id' ? 'Hubungi via WhatsApp' : 'Enquire via WhatsApp';
+                $buttonClass = 'bg-emerald-600 hover:bg-emerald-700 text-white';
+                $textParam = rawurlencode('Halo, saya tertarik dengan paket: ' . $package->name);
+                $buttonLink = $package->inquiry_custom_link ?: "https://wa.me/628115472233?text={$textParam}";
+            } elseif ($package->inquiry_type === 'email') {
+                $buttonText = App::getLocale() === 'id' ? 'Hubungi via Email' : 'Enquire via Email';
+                $buttonClass = 'bg-aqua-gold hover:bg-aqua-gold-2 text-white';
+                $subjectParam = rawurlencode('Inquiry for ' . $package->name);
+                $buttonLink = $package->inquiry_custom_link ?: "mailto:info@aquaboombsb.com?subject={$subjectParam}";
+            }
+          @endphp
           <div class="bg-white rounded-[28px] overflow-hidden shadow-xl border border-slate-100 flex flex-col group hover:-translate-y-2 transition-all duration-300">
             <!-- Image with Hover Overlay -->
             <div class="relative h-64 overflow-hidden bg-aqua-navy">
@@ -53,8 +70,8 @@
                 <p class="text-white text-base font-bold text-center px-6 mb-5">
                   {{ App::getLocale() === 'en' && $package->name_en ? $package->name_en : $package->name }}
                 </p>
-                <a href="{{ url('/book') }}" class="bg-white/20 hover:bg-aqua-gold border-2 border-white text-white font-black px-8 py-3 rounded-full text-sm uppercase tracking-wider transition-all">
-                  {{ App::getLocale() === 'id' ? 'PESAN SEKARANG' : 'BOOK NOW' }}
+                <a href="{{ $buttonLink }}" target="{{ $package->inquiry_type !== 'none' ? '_blank' : '_self' }}" class="bg-white/20 hover:bg-aqua-gold border-2 border-white text-white font-black px-8 py-3 rounded-full text-sm uppercase tracking-wider transition-all">
+                  {{ $buttonText }}
                 </a>
               </div>
               <!-- Badge -->
@@ -113,8 +130,8 @@
                   @endif
                 </div>
               </div>
-              <a href="{{ url('/book') }}" class="block w-full text-center bg-aqua-navy hover:bg-black text-white font-black py-4 rounded-xl text-sm uppercase tracking-wider transition-all">
-                Book Now
+              <a href="{{ $buttonLink }}" target="{{ $package->inquiry_type !== 'none' ? '_blank' : '_self' }}" class="block w-full text-center {{ $buttonClass }} font-black py-4 rounded-xl text-sm uppercase tracking-wider transition-all">
+                {{ $buttonText }}
               </a>
             </div>
           </div>

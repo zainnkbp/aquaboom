@@ -148,6 +148,8 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'bundle',
                 'image_url' => 'https://picsum.photos/600/400?random=51',
+                'inquiry_type' => 'none',
+                'inquiry_custom_link' => null,
                 'is_active' => true,
             ],
             [
@@ -160,6 +162,8 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'bundle',
                 'image_url' => 'https://picsum.photos/600/400?random=52',
+                'inquiry_type' => 'none',
+                'inquiry_custom_link' => null,
                 'is_active' => true,
             ],
             [
@@ -172,6 +176,8 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'bundle',
                 'image_url' => 'https://picsum.photos/600/400?random=53',
+                'inquiry_type' => 'whatsapp',
+                'inquiry_custom_link' => null,
                 'is_active' => true,
             ],
         ]);

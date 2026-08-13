@@ -131,6 +131,22 @@ class TicketPackageResource extends Resource
                     ->image()
                     ->disk('public_uploads')
                     ->columnSpanFull(),
+                Forms\Components\Select::make('inquiry_type')
+                    ->label('Tindakan Tombol (Inquiry/Beli)')
+                    ->options([
+                        'none' => 'Beli Online Langsung',
+                        'email' => 'Inquiry via Email',
+                        'whatsapp' => 'Inquiry via WhatsApp',
+                    ])
+                    ->default('none')
+                    ->required()
+                    ->live(),
+                Forms\Components\TextInput::make('inquiry_custom_link')
+                    ->label('Link WhatsApp / Email Kustom')
+                    ->placeholder('Contoh: https://wa.me/62811... atau mailto:sales@...')
+                    ->helperText('Kosongkan untuk menggunakan kontak utama website bawaan settings.')
+                    ->visible(fn (Get $get) => in_array($get('inquiry_type'), ['email', 'whatsapp']))
+                    ->maxLength(255),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Aktif')
                     ->default(true)

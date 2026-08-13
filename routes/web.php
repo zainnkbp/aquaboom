@@ -40,7 +40,9 @@ Route::get('/ticket', function () {
 })->name('ticket.buy');
 
 Route::get('/packages', function () {
-    $packages = \App\Models\TicketPackage::where('is_active', true)->get();
+    $packages = \App\Models\TicketPackage::where('is_active', true)
+        ->whereIn('type', ['bundle', 'flash_sale'])
+        ->get();
     return view('packages', compact('packages'));
 })->name('packages');
 
