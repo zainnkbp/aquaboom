@@ -56,7 +56,7 @@ class WahanaResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->label('Deskripsi (ID)')
                     ->helperText('Deskripsi singkat wahana dalam Bahasa Indonesia')
-                    ->suffixAction(
+                    ->hintAction(
                         Forms\Components\Actions\Action::make('translateDescription')
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')

@@ -46,7 +46,7 @@ class TicketPackageResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->label('Deskripsi Singkat (ID)')
                     ->helperText('Deskripsi singkat paket tiket dalam Bahasa Indonesia')
-                    ->suffixAction(
+                    ->hintAction(
                         Forms\Components\Actions\Action::make('translateDescription')
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
@@ -62,7 +62,7 @@ class TicketPackageResource extends Resource
                 Forms\Components\RichEditor::make('terms_and_conditions')
                     ->label('Syarat & Ketentuan Khusus (ID)')
                     ->helperText('Tuliskan S&K spesifik untuk paket ini dalam Bahasa Indonesia.')
-                    ->suffixAction(
+                    ->hintAction(
                         Forms\Components\Actions\Action::make('translateTerms')
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')

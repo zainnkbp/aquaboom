@@ -27,7 +27,7 @@ class FaqResource extends Resource
                 Forms\Components\Textarea::make('question')
                     ->label('Pertanyaan (ID)')
                     ->required()
-                    ->suffixAction(
+                    ->hintAction(
                         Forms\Components\Actions\Action::make('translateQuestion')
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
@@ -42,7 +42,7 @@ class FaqResource extends Resource
                 Forms\Components\Textarea::make('answer')
                     ->label('Jawaban (ID)')
                     ->required()
-                    ->suffixAction(
+                    ->hintAction(
                         Forms\Components\Actions\Action::make('translateAnswer')
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')

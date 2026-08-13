@@ -57,7 +57,7 @@ class AddOnResource extends Resource
                         
                     Forms\Components\RichEditor::make('description')
                         ->label('Deskripsi (ID)')
-                        ->suffixAction(
+                        ->hintAction(
                             Forms\Components\Actions\Action::make('translateDescription')
                                 ->icon('heroicon-m-language')
                                 ->tooltip('Terjemahkan ke Bahasa Inggris')

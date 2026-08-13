@@ -45,7 +45,7 @@ class FacilityResource extends Resource
                     ->default('general'),
                 Forms\Components\Textarea::make('description')
                     ->label('Deskripsi (ID)')
-                    ->suffixAction(
+                    ->hintAction(
                         Forms\Components\Actions\Action::make('translateDescription')
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
@@ -60,7 +60,7 @@ class FacilityResource extends Resource
                 Forms\Components\TagsInput::make('features')
                     ->label('Fitur / Keunggulan (ID)')
                     ->placeholder('Tambah fitur lalu tekan Enter')
-                    ->suffixAction(
+                    ->hintAction(
                         Forms\Components\Actions\Action::make('translateFeatures')
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
