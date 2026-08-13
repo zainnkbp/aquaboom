@@ -194,10 +194,7 @@
                 class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
                 Company Profile
               </a>
-              <a href="{{ url('/about') }}#awards"
-                class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
-                Awards & Achievements
-              </a>
+
               <a href="{{ url('/faq') }}"
                 class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
                 FAQ (Tanya Jawab)
@@ -372,8 +369,7 @@
                 <a href="{{ url('/about') }}"
                   class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Company
                   Profile</a>
-                <a href="{{ url('/about') }}#awards"
-                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Awards</a>
+
                 <a href="{{ url('/faq') }}"
                   class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">FAQ
                   (Tanya Jawab)</a>

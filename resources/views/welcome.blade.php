@@ -34,8 +34,8 @@
       {{-- Gold eyebrow --}}
       <div class="flex items-center gap-3 mb-6">
         <div class="h-px w-12 bg-aqua-gold"></div>
-        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">Balikpapan's No. 1 Rooftop
-          Waterpark</span>
+        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">Satu-satunya Rooftop
+          Waterpark di Indonesia</span>
       </div>
 
       {{-- Main headline --}}
