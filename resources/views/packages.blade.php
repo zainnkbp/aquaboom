@@ -118,7 +118,7 @@
                     <span class="text-aqua-gold text-xl font-black">Rp {{ number_format((float) $package->effective_price, 0, ',', '.') }}</span>
                   </div>
                   @if($package->validity_type)
-                    <p class="text-slate-400 text-xs font-semibold mt-2 italic">
+                    <p class="text-slate-400 text-[11px] font-semibold mt-2 italic">
                       @if($package->validity_type === 'weekday')
                         * Berlaku Weekday (Senin - Jumat)
                       @elseif($package->validity_type === 'weekend')
@@ -126,6 +126,11 @@
                       @else
                         * Berlaku setiap hari
                       @endif
+                    </p>
+                  @endif
+                  @if($package->sales_end)
+                    <p class="text-rose-500 text-[11px] font-bold mt-1 italic">
+                      * Promo berakhir s.d. {{ \Carbon\Carbon::parse($package->sales_end)->translatedFormat('d F Y H:i') }} WITA
                     </p>
                   @endif
                 </div>

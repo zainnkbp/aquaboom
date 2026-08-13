@@ -155,6 +155,12 @@ class TicketPackageResource extends Resource
                 Forms\Components\Section::make('Pengaturan Waktu (Dynamic Pricing)')
                     ->description('Atur kapan tiket ini bisa dibeli dan digunakan')
                     ->schema([
+                        Forms\Components\DateTimePicker::make('sales_start')
+                            ->label('Mulai Penjualan')
+                            ->helperText('Kosongkan jika ingin langsung dijual saat ini.'),
+                        Forms\Components\DateTimePicker::make('sales_end')
+                            ->label('Akhir Penjualan (Batas Waktu)')
+                            ->helperText('Paket akan otomatis tidak aktif/hilang setelah tanggal ini terlewati.'),
                         Forms\Components\Select::make('validity_type')
                             ->label('Aturan Hari')
                             ->options([
