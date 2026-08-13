@@ -199,10 +199,6 @@
                 class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
                 FAQ (Tanya Jawab)
               </a>
-              <a href="{{ url('/about') }}#career"
-                class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
-                Careers
-              </a>
             </div>
           </div>
         </div>
@@ -373,8 +369,6 @@
                 <a href="{{ url('/faq') }}"
                   class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">FAQ
                   (Tanya Jawab)</a>
-                <a href="{{ url('/about') }}#career"
-                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Career</a>
               </div>
             </div>
           </div>
@@ -488,17 +482,15 @@
             <li><a href="{{ url('/about') }}"
                 class="hover:text-aqua-gold transition-colors flex items-center gap-2"><span
                   class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>About Us</a></li>
-            <li><a href="{{ url('/about') }}#career"
-                class="hover:text-aqua-gold transition-colors flex items-center gap-2"><span
-                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>Careers</a></li>
           </ul>
         </div>
 
         <!-- Opening Hours -->
         <div>
-          <h4 class="text-xs font-black text-aqua-gold mb-5 uppercase tracking-[0.2em]">Opening Hours</h4>
-          <p class="text-white/80 text-sm font-black uppercase tracking-wider mb-1">Open Daily</p>
-          <p class="text-aqua-gold text-3xl font-black tracking-tight mb-4">9 AM — 6 PM</p>
+          <p class="text-aqua-gold text-xs font-black uppercase tracking-wider mb-1">Weekday (Hari Biasa)</p>
+          <p class="text-white text-base font-black tracking-tight mb-2">10:00 — 18:00 WITA</p>
+          <p class="text-aqua-gold text-xs font-black uppercase tracking-wider mb-1">Weekend (Hari Libur)</p>
+          <p class="text-white text-base font-black tracking-tight mb-4">09:00 — 18:00 WITA</p>
           <div class="bg-aqua-navy-2 rounded-2xl p-4 border border-aqua-gold/10">
             <p class="text-white/50 text-xs leading-relaxed font-semibold">
               <span class="text-aqua-gold/80 font-black block mb-1">📍 Lokasi</span>
