@@ -10,6 +10,7 @@ use App\Models\Facility;
 use App\Models\HomePageCard;
 use App\Models\Wahana;
 use App\Models\AddOn;
+use App\Models\TicketPackage;
 
 class LandingPageSeeder extends Seeder
 {
@@ -25,6 +26,7 @@ class LandingPageSeeder extends Seeder
         Award::truncate();
         Facility::truncate();
         AddOn::truncate();
+        TicketPackage::truncate();
 
         // Add-ons Seeding
         AddOn::insert([
@@ -131,6 +133,46 @@ class LandingPageSeeder extends Seeder
                 ]),
                 'image_url' => 'https://picsum.photos/600/400?random=48',
                 'is_active' => true
+            ],
+        ]);
+
+        // Ticket Packages (Special Offers) Seeding
+        TicketPackage::insert([
+            [
+                'name' => 'Duo Pass (Hemat 15%)',
+                'name_en' => 'Duo Pass (Save 15%)',
+                'description' => 'Meluncur bersama teman/pasangan dan hemat hingga 15% untuk 2 tiket masuk.',
+                'description_en' => 'Slide with a friend and save up to 15% on 2 entry tickets.',
+                'price' => 200000.00,
+                'discount_price' => 170000.00,
+                'discount_type' => 'amount',
+                'type' => 'bundle',
+                'image_url' => 'https://picsum.photos/600/400?random=51',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Family Bundle (4 Tiket)',
+                'name_en' => 'Family Bundle (4 Tickets)',
+                'description' => 'Paket rekreasi hemat untuk 4 orang. Cocok untuk liburan keluarga akhir pekan.',
+                'description_en' => 'Value recreation pack for 4 people. Perfect for weekend family vacations.',
+                'price' => 400000.00,
+                'discount_price' => 320000.00,
+                'discount_type' => 'amount',
+                'type' => 'bundle',
+                'image_url' => 'https://picsum.photos/600/400?random=52',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Group Splash (10+ Tiket)',
+                'name_en' => 'Group Splash (10+ Tickets)',
+                'description' => 'Bermain ramai-ramai makin seru! Dapatkan diskon khusus 20% untuk pembelian rombongan di atas 10 orang.',
+                'description_en' => 'The more the merrier! Get a special 20% discount for group bookings of more than 10 people.',
+                'price' => 1000000.00,
+                'discount_price' => 800000.00,
+                'discount_type' => 'amount',
+                'type' => 'bundle',
+                'image_url' => 'https://picsum.photos/600/400?random=53',
+                'is_active' => true,
             ],
         ]);
     }

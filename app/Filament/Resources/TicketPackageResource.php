@@ -124,6 +124,11 @@ class TicketPackageResource extends Resource
                     ->default('regular')
                     ->required()
                     ->helperText('Jenis tiket: regular, flash_sale, bundle'),
+                Forms\Components\FileUpload::make('image_url')
+                    ->label('Gambar Paket / Promo')
+                    ->image()
+                    ->disk('public_uploads')
+                    ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Aktif')
                     ->default(true)
@@ -174,6 +179,9 @@ class TicketPackageResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image_url')
+                    ->label('Gambar')
+                    ->disk('public_uploads'),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Paket')
                     ->searchable(),

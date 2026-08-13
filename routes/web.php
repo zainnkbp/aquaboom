@@ -40,7 +40,8 @@ Route::get('/ticket', function () {
 })->name('ticket.buy');
 
 Route::get('/packages', function () {
-    return view('packages');
+    $packages = \App\Models\TicketPackage::where('is_active', true)->get();
+    return view('packages', compact('packages'));
 })->name('packages');
 
 Route::get('/explore', function () {
