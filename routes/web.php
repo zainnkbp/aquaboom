@@ -49,8 +49,10 @@ Route::get('/explore', function () {
 })->name('explore');
 
 Route::get('/facilities', function () {
-    $gazebos = Facility::where('type', 'gazebo')->get();
-    return view('facilities', compact('gazebos'));
+    $facilities = Facility::where('type', '!=', 'dining')
+        ->where('is_active', true)
+        ->get();
+    return view('facilities', compact('facilities'));
 })->name('facilities');
 
 Route::get('/dining', function () {

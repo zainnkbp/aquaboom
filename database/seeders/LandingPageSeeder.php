@@ -24,7 +24,6 @@ class LandingPageSeeder extends Seeder
         Faq::truncate();
         Award::truncate();
         Facility::truncate();
-        HomePageCard::truncate();
         AddOn::truncate();
 
         // Add-ons Seeding
@@ -41,13 +40,17 @@ class LandingPageSeeder extends Seeder
             ['name' => 'Rooftop Splash Pool', 'description' => 'Nikmati sensasi berenang yang menyenangkan langsung di rooftop dengan pemandangan kota Balikpapan.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/V2.jpg', 'order_column' => 2],
             ['name' => 'Family Water Playground', 'description' => 'Wahana permainan air keluarga yang aman dan menyenangkan untuk anak-anak hingga dewasa.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/V3.jpg', 'order_column' => 3],
         ]);
+
         // Settings
         Setting::insert([
             ['key' => 'hero_video_url', 'value' => 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1', 'group' => 'homepage', 'type' => 'url'],
+            ['key' => 'hero_video_file', 'value' => null, 'group' => 'homepage', 'type' => 'file'],
             ['key' => 'hero_headline', 'value' => "BUKA SETIAP HARI\n<span class=\"gold-shimmer\">DAILY OPEN</span>", 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_subheadline', 'value' => 'Weekday: 10.00 - 18.00 | Weekend: 09.00 - 18.00', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_description', 'value' => 'Aquaboom Waterpark Balikpapan — Satu-satunya Waterpark yang berada di atas gedung bertingkat di Indonesia. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'philosophy_text', 'value' => 'Aquaboom Waterpark Balikpapan menghadirkan pengalaman rekreasi air urban yang unik. Berlokasi strategis di pusat kota Balikpapan (BSB Area), kami menawarkan keceriaan wahana air premium di atap gedung dengan pemandangan kota yang menakjubkan.', 'group' => 'about', 'type' => 'text'],
+            ['key' => 'philosophy_video_url', 'value' => 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE', 'group' => 'about', 'type' => 'url'],
+            ['key' => 'philosophy_video_file', 'value' => null, 'group' => 'about', 'type' => 'file'],
             ['key' => 'mission_text', 'value' => 'Terletak di Lantai 7 Astara Hotel - Balikpapan Superblock, Aquaboom menghadirkan standar baru rekreasi air perkotaan. Kami menggabungkan keseruan bermain air berkelas dengan aksesibilitas dan kenyamanan modern.', 'group' => 'about', 'type' => 'text'],
         ]);
 
@@ -59,21 +62,76 @@ class LandingPageSeeder extends Seeder
             ['question' => 'Apakah tersedia penyewaan loker dan handuk?', 'answer' => 'Ya, kami menyediakan fasilitas penyewaan loker penyimpanan barang berharga serta penyewaan handuk bersih untuk kenyamanan kunjungan Anda.', 'sort_order' => 4, 'is_active' => true],
         ]);
 
-        // Awards (Kosong karena tidak ada di web resmi)
-        // Award::insert([]);
-
         // Facilities
         Facility::insert([
-            ['name' => 'Oasis Food Court', 'type' => 'dining', 'description' => 'Tempat menikmati aneka makanan ringan favorit, hidangan lezat khas lokal, dan minuman segar setelah bermain air.', 'features' => json_encode(['Menu variatif', 'Minuman dingin segar', 'Area bersih nyaman']), 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/fasilitas.png', 'is_active' => true],
-        ]);
-
-        // Home Page Cards
-        HomePageCard::insert([
-            ['title' => 'Pilih Tiket Masuk', 'description' => 'Beli tiket masuk lebih mudah secara online melalui website kami untuk menikmati keseruan tak terbatas.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/Tiket.png', 'link' => '/ticket', 'link_text' => 'Pesan Tiket', 'sort_order' => 1, 'is_active' => true],
-            ['title' => 'Tentang Kami', 'description' => 'Aquaboom Waterpark Balikpapan adalah satu-satunya waterpark di Indonesia yang berada di atas gedung bertingkat.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/V1.jpg', 'link' => '/about', 'link_text' => 'Baca Selengkapnya', 'sort_order' => 2, 'is_active' => true],
-            ['title' => 'Petunjuk Arah & Lokasi', 'description' => 'Berlokasi strategis di Lantai 7 Astara Hotel, kawasan Balikpapan Super Block (BSB), Jl. Jenderal Sudirman No. 47.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/V2.jpg', 'link' => '/about#lokasi', 'link_text' => 'Lihat Lokasi', 'sort_order' => 3, 'is_active' => true],
-            ['title' => 'Fasilitas Lengkap', 'description' => 'Nikmati kenyamanan fasilitas hotel bintang 4, Musholla, Kamar Bilas bersih, Toilet, hingga Gazebo nyaman untuk bersantai.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/fasilitas.png', 'link' => '/facilities', 'link_text' => 'Lihat Fasilitas', 'sort_order' => 4, 'is_active' => true],
-            ['title' => 'Tanya Jawab (FAQ)', 'description' => 'Dapatkan jawaban lengkap mengenai ketentuan pakaian renang, penyimpanan loker, makanan, dan persyaratan lainnya.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/funfact.png', 'link' => '/faq', 'link_text' => 'Lihat FAQ', 'sort_order' => 5, 'is_active' => true],
+            [
+                'name' => 'Oasis Food Court',
+                'type' => 'dining',
+                'description' => 'Tempat menikmati aneka makanan ringan favorit, hidangan lezat khas lokal, dan minuman segar setelah bermain air.',
+                'features' => json_encode(['Menu variatif', 'Minuman dingin segar', 'Area bersih nyaman']),
+                'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/fasilitas.png',
+                'is_active' => true
+            ],
+            [
+                'name' => 'GAZEBO PRIBADI & CABANA',
+                'type' => 'gazebo',
+                'description' => 'Tingkatkan kenyamanan kunjungan Anda dengan menyewa Gazebo pribadi. Terletak di area teduh nan asri, lengkap dengan layanan pesan antar makanan, pengisian daya, dan privasi penuh.',
+                'features' => json_encode([
+                    'Layanan makanan & minuman langsung ke gazebo',
+                    'Privasi & kenyamanan maksimal',
+                    'Kapasitas 4–8 orang per gazebo'
+                ]),
+                'image_url' => 'https://picsum.photos/600/400?random=40',
+                'is_active' => true
+            ],
+            [
+                'name' => 'PENYEWAAN LOKER & HANDUK',
+                'type' => 'general',
+                'description' => 'Nikmati petualangan air tanpa rasa cemas. Kami menyediakan fasilitas loker otomatis dengan keamanan terintegrasi, serta penyewaan handuk bersih yang selalu disterilkan secara berkala.',
+                'features' => json_encode([
+                    'Sistem kunci loker menggunakan gelang RFID / pin',
+                    'Handuk premium bersih & higienis',
+                    'Lokasi loker strategis dekat ruang bilas'
+                ]),
+                'image_url' => 'https://picsum.photos/600/400?random=42',
+                'is_active' => true
+            ],
+            [
+                'name' => 'RUANG BILAS & RUANG GANTI',
+                'type' => 'general',
+                'description' => 'Ruang bilas dan ruang ganti premium kami dirancang dengan mengutamakan kebersihan dan kenyamanan. Dilengkapi dengan pancuran air hangat, bilik ganti pribadi yang luas, serta pengering rambut.',
+                'features' => json_encode([
+                    'Bilik shower pribadi dengan air hangat',
+                    'Peralatan mandi lengkap (sabun & sampo cair)',
+                    'Wastafel dan cermin rias berukuran besar'
+                ]),
+                'image_url' => 'https://picsum.photos/600/400?random=44',
+                'is_active' => true
+            ],
+            [
+                'name' => 'KLINIK PERTOLONGAN PERTAMA (P3K)',
+                'type' => 'general',
+                'description' => 'Keselamatan Anda adalah prioritas utama kami. Klinik P3K Aquaboom dilengkapi dengan peralatan medis darurat standar internasional serta dipandu oleh tim medis terlatih yang bersertifikasi.',
+                'features' => json_encode([
+                    'Perawat dan pertolongan medis siaga selama jam operasional',
+                    'Obat-obatan umum dan peralatan bantuan darurat lengkap',
+                    'Akses jalur evakuasi darurat yang cepat'
+                ]),
+                'image_url' => 'https://picsum.photos/600/400?random=46',
+                'is_active' => true
+            ],
+            [
+                'name' => 'MUSHOLA',
+                'type' => 'general',
+                'description' => 'Kami menyediakan ruang ibadah (Mushola) yang tenang, sejuk, dan bersih untuk menunjang kenyamanan ibadah Anda. Terpisah secara higienis antara area wudhu pria dan wanita.',
+                'features' => json_encode([
+                    'Tempat wudhu bersih terpisah gender',
+                    'Dilengkapi sajadah, mukena, sarung, dan Al-Quran',
+                    'Ruangan ber-AC yang nyaman'
+                ]),
+                'image_url' => 'https://picsum.photos/600/400?random=48',
+                'is_active' => true
+            ],
         ]);
     }
 }

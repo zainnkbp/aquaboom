@@ -26,16 +26,26 @@ class SettingResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('key')
                     ->required()
+                    ->disabled(fn ($context) => $context === 'edit')
                     ->maxLength(255),
-                Forms\Components\Textarea::make('value')
-                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('group')
+                    ->disabled()
                     ->maxLength(255)
                     ->default('general'),
                 Forms\Components\TextInput::make('type')
+                    ->disabled()
                     ->required()
                     ->maxLength(255)
                     ->default('text'),
+                Forms\Components\FileUpload::make('value')
+                    ->label('Berkas Video/Gambar')
+                    ->disk('public_uploads')
+                    ->visible(fn ($record) => $record?->type === 'file')
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('value')
+                    ->label('Nilai Pengaturan')
+                    ->hidden(fn ($record) => $record?->type === 'file')
+                    ->columnSpanFull(),
             ]);
     }
 

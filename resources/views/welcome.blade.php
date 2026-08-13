@@ -3,18 +3,24 @@
   {{-- ============================================================ --}}
   {{-- HERO: Fullscreen Video Background (Navy-Gold Luxury Edition) --}}
   {{-- ============================================================ --}}
-  <section class="relative bg-aqua-navy overflow-hidden h-screen min-h-[600px] max-h-[900px]"
+  <section id="hero" class="relative bg-aqua-navy overflow-hidden h-screen min-h-[600px] max-h-[900px]"
     x-data="{ videoLoaded: false }">
 
     {{-- Video Background --}}
     <div class="absolute inset-0 w-full h-full z-0">
-      {{-- YouTube embed as background (autoplay, muted, loop) --}}
+      {{-- YouTube embed or Local Video as background --}}
       <div class="relative w-full h-full pointer-events-none overflow-hidden">
-        <iframe
-          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-[56.25vw] h-auto"
-          src="{!! $settings['hero_video_url'] ?? 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1' !!}"
-          title="Aquaboom Waterpark" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
-          x-on:load="videoLoaded = true"></iframe>
+        @if(!empty($settings['hero_video_file']))
+          <video autoplay loop muted playsinline class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full object-cover" x-on:play="videoLoaded = true">
+            <source src="{{ asset('uploads/' . $settings['hero_video_file']) }}" type="video/mp4">
+          </video>
+        @else
+          <iframe
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-[56.25vw] h-auto"
+            src="{!! $settings['hero_video_url'] ?? 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1' !!}"
+            title="Aquaboom Waterpark" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
+            x-on:load="videoLoaded = true"></iframe>
+        @endif
 
         {{-- Fallback image shown until video loads --}}
         <div class="absolute inset-0 bg-cover bg-center"
@@ -111,7 +117,7 @@
   {{-- ============================================================ --}}
   {{-- VIDEO / PHILOSOPHY SECTION — Navy Dark Background --}}
   {{-- ============================================================ --}}
-  <section class="py-24 bg-aqua-navy text-white">
+  <section id="philosophy" class="py-24 bg-aqua-navy text-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         {{-- Text Details --}}
@@ -143,10 +149,16 @@
         <div class="lg:col-span-8">
           <div
             class="rounded-3xl overflow-hidden shadow-2xl relative aspect-video border border-white/10 ring-1 ring-aqua-gold/30">
-            <iframe class="w-full h-full" src="https://www.youtube.com/embed/2ugEGMhBPNE"
-              title="Aquaboom Waterpark Company Video" frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe>
+            @if(!empty($settings['philosophy_video_file']))
+              <video class="w-full h-full object-cover" controls>
+                <source src="{{ asset('uploads/' . $settings['philosophy_video_file']) }}" type="video/mp4">
+              </video>
+            @else
+              <iframe class="w-full h-full" src="{!! $settings['philosophy_video_url'] ?? 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE' !!}"
+                title="Aquaboom Waterpark Company Video" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            @endif
           </div>
           <p class="text-white/30 text-xs font-semibold mt-4 text-right">© Aquaboom Balikpapan — Company Profile Video
           </p>
@@ -158,7 +170,7 @@
   {{-- ============================================================ --}}
   {{-- DYNAMIC WATER RIDES — Ivory Cream Background --}}
   {{-- ============================================================ --}}
-  <section class="py-24 bg-aqua-cream">
+  <section id="rides" class="py-24 bg-aqua-cream">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <div class="mb-16 text-center">
         <div class="flex items-center justify-center gap-4 mb-4">
@@ -202,7 +214,7 @@
   {{-- ============================================================ --}}
   {{-- NEWSLETTER — Navy Dark Background with Gold Accents --}}
   {{-- ============================================================ --}}
-  <section class="py-24 bg-aqua-navy text-white relative overflow-hidden">
+  <section id="newsletter" class="py-24 bg-aqua-navy text-white relative overflow-hidden">
     {{-- Decorative gold ring --}}
     <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full border border-aqua-gold/10"></div>
     <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full border border-aqua-gold/10"></div>
