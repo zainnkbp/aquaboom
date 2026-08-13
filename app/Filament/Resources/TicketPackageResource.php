@@ -24,6 +24,8 @@ class TicketPackageResource extends Resource
 
     protected static ?string $modelLabel = 'Paket Tiket';
 
+    protected static ?string $navigationGroup = 'Manajemen Tiket';
+
     public static function form(Form $form): Form
     {
         return $form
