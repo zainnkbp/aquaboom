@@ -259,5 +259,22 @@ class LandingPageSeeder extends Seeder
                 'is_active' => true,
             ],
         ]);
+
+        // Auto-reset PostgreSQL sequences to prevent duplicate key errors
+        if (config('database.default') === 'pgsql') {
+            $tables = ['wahanas', 'settings', 'faqs', 'awards', 'facilities', 'add_ons', 'ticket_packages', 'audit_logs'];
+            foreach ($tables as $table) {
+                try {
+                    \Illuminate\Support\Facades\DB::statement("
+                        SELECT setval(
+                            pg_get_serial_sequence('{$table}', 'id'),
+                            coalesce((SELECT max(id) FROM {$table}), 1)
+                        )
+                    ");
+                } catch (\Exception $e) {
+                    // Silently ignore if table doesn't have id serial
+                }
+            }
+        }
     }
 }
