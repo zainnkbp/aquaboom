@@ -107,16 +107,22 @@
                 @endif
 
                 <div class="bg-aqua-cream rounded-xl p-4 mb-6 text-sm">
-                  @if($package->is_discounted)
-                    <div class="flex justify-between items-center mb-1">
-                      <span class="text-slate-500 font-semibold">Harga Normal</span>
-                      <span class="text-slate-400 line-through font-bold">Rp {{ number_format((float) $package->price, 0, ',', '.') }}</span>
+                  @if($package->price > 0)
+                    @if($package->is_discounted)
+                      <div class="flex justify-between items-center mb-1">
+                        <span class="text-slate-500 font-semibold">Harga Normal</span>
+                        <span class="text-slate-400 line-through font-bold">Rp {{ number_format((float) $package->price, 0, ',', '.') }}</span>
+                      </div>
+                    @endif
+                    <div class="flex justify-between items-center">
+                      <span class="text-aqua-navy font-black">Harga Paket</span>
+                      <span class="text-aqua-gold text-xl font-black">Rp {{ number_format((float) $package->effective_price, 0, ',', '.') }}</span>
+                    </div>
+                  @else
+                    <div class="text-center py-1 text-slate-500 font-bold italic text-xs">
+                      {{ App::getLocale() === 'id' ? 'Harga: Hubungi Kami' : 'Price: Enquire for details' }}
                     </div>
                   @endif
-                  <div class="flex justify-between items-center">
-                    <span class="text-aqua-navy font-black">Harga Paket</span>
-                    <span class="text-aqua-gold text-xl font-black">Rp {{ number_format((float) $package->effective_price, 0, ',', '.') }}</span>
-                  </div>
                   @if($package->validity_type)
                     <p class="text-slate-400 text-[11px] font-semibold mt-2 italic">
                       @if($package->validity_type === 'weekday')
