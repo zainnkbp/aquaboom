@@ -121,7 +121,7 @@ class TicketPackageResource extends Resource
                     ->options([
                         'regular' => 'Regular',
                         'flash_sale' => 'Flash Sale',
-                        'bundle' => 'Bundle',
+                        'bundle' => 'Special Deals (Inquiry)',
                     ])
                     ->default('regular')
                     ->required()
