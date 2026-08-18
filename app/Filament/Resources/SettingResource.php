@@ -37,14 +37,19 @@ class SettingResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->default('text'),
-                Forms\Components\FileUpload::make('value')
-                    ->label('Berkas Video/Gambar')
-                    ->disk('public_uploads')
-                    ->visible(fn ($record) => $record?->type === 'file')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('value')
-                    ->label('Nilai Pengaturan')
-                    ->hidden(fn ($record) => $record?->type === 'file')
+                Forms\Components\Group::make()
+                    ->schema(fn (?Setting $record): array => 
+                        $record?->type === 'file' ? [
+                            Forms\Components\FileUpload::make('value')
+                                ->label('Berkas Video/Gambar')
+                                ->disk('public_uploads')
+                                ->columnSpanFull()
+                        ] : [
+                            Forms\Components\Textarea::make('value')
+                                ->label('Nilai Pengaturan')
+                                ->columnSpanFull()
+                        ]
+                    )
                     ->columnSpanFull(),
             ]);
     }
