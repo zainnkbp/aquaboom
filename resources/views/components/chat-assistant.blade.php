@@ -12,10 +12,10 @@
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-90"
         style="display: none; width: 350px; max-width: calc(100vw - 3rem);"
-        class="bg-white rounded-[24px] shadow-2xl border border-slate-100 flex flex-col overflow-hidden"
+        class="bg-white rounded-[24px] shadow-2xl border border-slate-100 flex flex-col overflow-hidden max-h-[calc(100vh-6rem)]"
     >
         <!-- Header -->
-        <div class="bg-aqua-navy text-white p-5 flex items-center gap-3">
+        <div class="bg-aqua-navy text-white p-5 flex items-center gap-3 shrink-0">
             <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
                 <svg class="w-6 h-6 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -28,7 +28,7 @@
         </div>
 
         <!-- Chat History -->
-        <div class="flex-1 p-5 h-[350px] overflow-y-auto bg-slate-50 flex flex-col gap-4 scroll-smooth" x-ref="chatContainer">
+        <div class="flex-1 p-5 h-[350px] max-h-[350px] min-h-[150px] overflow-y-auto bg-slate-50 flex flex-col gap-4 scroll-smooth" x-ref="chatContainer">
             
             <template x-for="(msg, index) in messages" :key="index">
                 <div class="flex flex-col w-full">
@@ -54,7 +54,7 @@
         </div>
 
         <!-- Question Buttons -->
-        <div class="p-4 bg-white border-t border-slate-100">
+        <div class="p-4 bg-white border-t border-slate-100 shrink-0">
             <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 text-center">Pilih Pertanyaan</p>
             <div class="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1">
                 <template x-for="faq in faqs" :key="faq.id">
