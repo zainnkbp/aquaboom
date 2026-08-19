@@ -40,21 +40,22 @@
       {{-- Gold eyebrow --}}
       <div class="flex items-center gap-3 mb-6">
         <div class="h-px w-12 bg-aqua-gold"></div>
-        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">Satu-satunya Rooftop
-          Waterpark di Indonesia</span>
+        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">
+          {{ App::getLocale() === 'en' ? 'The Only Rooftop Waterpark in Indonesia' : 'Satu-satunya Rooftop Waterpark di Indonesia' }}
+        </span>
       </div>
 
       {{-- Main headline --}}
       <h1 class="text-6xl md:text-8xl lg:text-[7rem] font-black leading-none mb-6 uppercase text-white tracking-tight">
-        {!! $settings['hero_headline'] ?? 'WE ARE<br/><span class="gold-shimmer">OPEN DAILY</span>' !!}
+        {!! App::getLocale() === 'en' && !empty($settings['hero_headline_en']) ? $settings['hero_headline_en'] : ($settings['hero_headline'] ?? 'WE ARE<br/><span class="gold-shimmer">OPEN DAILY</span>') !!}
       </h1>
 
       {{-- Sub-headline --}}
       <p class="text-xl md:text-2xl font-black text-white/80 uppercase tracking-widest mb-3">
-        {!! $settings['hero_subheadline'] ?? '9 AM — 6 PM' !!}
+        {!! App::getLocale() === 'en' && !empty($settings['hero_subheadline_en']) ? $settings['hero_subheadline_en'] : ($settings['hero_subheadline'] ?? '9 AM — 6 PM') !!}
       </p>
       <p class="text-base text-white/55 font-semibold max-w-lg mb-10 leading-relaxed">
-        {!! $settings['hero_description'] ?? 'Aquaboom Waterpark — 7th Floor, Pentacity Mall BSB, Balikpapan. Taman air premium pertama di rooftop Kalimantan Timur.' !!}
+        {!! App::getLocale() === 'en' && !empty($settings['hero_description_en']) ? $settings['hero_description_en'] : ($settings['hero_description'] ?? 'Aquaboom Waterpark — 7th Floor, Pentacity Mall BSB, Balikpapan. Taman air premium pertama di rooftop Kalimantan Timur.') !!}
       </p>
 
       {{-- CTA Buttons --}}
@@ -131,16 +132,20 @@
             <span class="gold-shimmer">PHILOSOPHY</span>
           </h2>
           <p class="text-white/60 text-base leading-relaxed font-semibold">
-            {!! $settings['philosophy_text'] ?? 'Menghadirkan kebahagiaan sejati dengan tetap menghormati harmoni alam sekitar. Setiap tetes air, senyum staf, dan wahana dirancang dengan kepedulian mendalam.' !!}
+            {!! App::getLocale() === 'en' && !empty($settings['philosophy_text_en']) ? $settings['philosophy_text_en'] : ($settings['philosophy_text'] ?? 'Menghadirkan kebahagiaan sejati dengan tetap menghormati harmoni alam sekitar. Setiap tetes air, senyum staf, dan wahana dirancang dengan kepedulian mendalam.') !!}
           </p>
           <div class="mt-8 grid grid-cols-2 gap-4">
             <div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
               <div class="text-3xl font-black text-aqua-gold mb-1">50K+</div>
-              <div class="text-white/50 text-xs font-bold uppercase tracking-wider">Pengunjung</div>
+              <div class="text-white/50 text-xs font-bold uppercase tracking-wider">
+                {{ App::getLocale() === 'en' ? 'Visitors' : 'Pengunjung' }}
+              </div>
             </div>
             <div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
               <div class="text-3xl font-black text-aqua-gold mb-1">4★</div>
-              <div class="text-white/50 text-xs font-bold uppercase tracking-wider">Hotel Grade</div>
+              <div class="text-white/50 text-xs font-bold uppercase tracking-wider">
+                {{ App::getLocale() === 'en' ? 'Hotel Grade' : 'Kualitas Hotel' }}
+              </div>
             </div>
           </div>
         </div>
@@ -178,9 +183,14 @@
           <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">World-Class Attractions</span>
           <div class="h-px w-16 bg-aqua-gold"></div>
         </div>
-        <h2 class="text-3xl md:text-6xl font-black text-aqua-navy uppercase tracking-tight">DYNAMIC WATER RIDES</h2>
-        <p class="mt-4 text-slate-500 text-lg font-semibold max-w-2xl mx-auto">Discover world-class slides curated
-          specifically for family adventures and adrenaline junkies alike.</p>
+        <h2 class="text-3xl md:text-6xl font-black text-aqua-navy uppercase tracking-tight">
+          {{ App::getLocale() === 'en' ? 'DYNAMIC WATER RIDES' : 'WAHANA AIR DINAMIS' }}
+        </h2>
+        <p class="mt-4 text-slate-500 text-lg font-semibold max-w-2xl mx-auto">
+          {{ App::getLocale() === 'en' 
+            ? 'Discover world-class slides curated specifically for family adventures and adrenaline junkies alike.' 
+            : 'Temukan seluncuran kelas dunia yang dirancang khusus untuk petualangan keluarga dan pemacu adrenalin.' }}
+        </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -197,12 +207,16 @@
             </div>
             <div class="p-8 flex-1 flex flex-col justify-between">
               <div>
-                <h3 class="text-2xl font-black text-aqua-navy mb-3 uppercase">{{ $wahana->name }}</h3>
-                <p class="text-slate-500 text-sm font-medium leading-relaxed mb-6">{{ $wahana->description }}</p>
+                <h3 class="text-2xl font-black text-aqua-navy mb-3 uppercase">
+                  {{ App::getLocale() === 'en' && $wahana->name_en ? $wahana->name_en : $wahana->name }}
+                </h3>
+                <p class="text-slate-500 text-sm font-medium leading-relaxed mb-6">
+                  {{ App::getLocale() === 'en' && $wahana->description_en ? $wahana->description_en : $wahana->description }}
+                </p>
               </div>
               <div
                 class="flex items-center text-aqua-azure text-sm font-black uppercase tracking-wider group-hover:text-aqua-gold transition-colors">
-                Learn more &rarr;
+                {{ App::getLocale() === 'en' ? 'Learn more' : 'Info Selengkapnya' }} &rarr;
               </div>
             </div>
           </div>
@@ -222,24 +236,30 @@
     <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
       <div class="flex items-center justify-center gap-4 mb-4">
         <div class="h-px w-12 bg-aqua-gold/60"></div>
-        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">Exclusive Members</span>
+        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">
+          {{ App::getLocale() === 'en' ? 'Exclusive Members' : 'Anggota Eksklusif' }}
+        </span>
         <div class="h-px w-12 bg-aqua-gold/60"></div>
       </div>
       <h2 class="text-3xl md:text-6xl font-black uppercase mb-8 leading-tight">
-        SIGN UP FOR<br />
-        <span class="gold-shimmer">SPECIAL PROMOTIONS</span>
+        {!! App::getLocale() === 'en' ? 'SIGN UP FOR' : 'DAFTAR UNTUK' !!}<br />
+        <span class="gold-shimmer">{!! App::getLocale() === 'en' ? 'SPECIAL PROMOTIONS' : 'PROMO SPESIAL' !!}</span>
       </h2>
 
       {{-- Newsletter Form --}}
       <form action="#" method="POST" class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto text-left">
         <div>
-          <label class="block text-xs font-black uppercase tracking-wider text-white/50 mb-2">Your Name</label>
-          <input type="text" placeholder="Full name"
+          <label class="block text-xs font-black uppercase tracking-wider text-white/50 mb-2">
+            {{ App::getLocale() === 'en' ? 'Your Name' : 'Nama Anda' }}
+          </label>
+          <input type="text" placeholder="{{ App::getLocale() === 'en' ? 'Full name' : 'Nama lengkap' }}"
             class="w-full bg-white/5 text-white placeholder-white/30 border border-white/10 px-6 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium transition-colors"
             required />
         </div>
         <div>
-          <label class="block text-xs font-black uppercase tracking-wider text-white/50 mb-2">Email Address</label>
+          <label class="block text-xs font-black uppercase tracking-wider text-white/50 mb-2">
+            {{ App::getLocale() === 'en' ? 'Email Address' : 'Alamat Email' }}
+          </label>
           <input type="email" placeholder="example@email.com"
             class="w-full bg-white/5 text-white placeholder-white/30 border border-white/10 px-6 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium transition-colors"
             required />
@@ -247,11 +267,13 @@
         <div class="flex flex-col justify-end">
           <button type="submit"
             class="w-full bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black py-4 rounded-xl transition-all shadow-lg shadow-amber-900/20 uppercase tracking-wider">
-            SUBSCRIBE
+            {{ App::getLocale() === 'en' ? 'SUBSCRIBE' : 'LANGGANAN' }}
           </button>
         </div>
       </form>
-      <p class="text-white/30 text-xs mt-6 font-semibold">We respect your privacy. Unsubscribe at any time.</p>
+      <p class="text-white/30 text-xs mt-6 font-semibold">
+        {{ App::getLocale() === 'en' ? 'We respect your privacy. Unsubscribe at any time.' : 'Kami menjaga privasi Anda. Batalkan langganan kapan saja.' }}
+      </p>
     </div>
   </section>
 

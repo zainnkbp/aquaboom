@@ -38,9 +38,9 @@ class LandingPageSeeder extends Seeder
 
         // Wahanas
         Wahana::insert([
-            ['name' => 'Giant Bucket Playground', 'description' => 'Area bermain air interaktif utama dengan ember tumpah raksasa dan berbagai seluncuran seru.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/V1.jpg', 'order_column' => 1],
-            ['name' => 'Rooftop Splash Pool', 'description' => 'Nikmati sensasi berenang yang menyenangkan langsung di rooftop dengan pemandangan kota Balikpapan.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/V2.jpg', 'order_column' => 2],
-            ['name' => 'Family Water Playground', 'description' => 'Wahana permainan air keluarga yang aman dan menyenangkan untuk anak-anak hingga dewasa.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/V3.jpg', 'order_column' => 3],
+            ['name' => 'Giant Bucket Playground', 'name_en' => 'Giant Bucket Playground', 'description' => 'Area bermain air interaktif utama dengan ember tumpah raksasa dan berbagai seluncuran seru.', 'description_en' => 'Main interactive water play area with a giant spilling bucket and various exciting slides.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/V1.jpg', 'order_column' => 1],
+            ['name' => 'Rooftop Splash Pool', 'name_en' => 'Rooftop Splash Pool', 'description' => 'Nikmati sensasi berenang yang menyenangkan langsung di rooftop dengan pemandangan kota Balikpapan.', 'description_en' => 'Enjoy the sensation of fun swimming right on the rooftop with Balikpapan city views.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/V2.jpg', 'order_column' => 2],
+            ['name' => 'Family Water Playground', 'name_en' => 'Family Water Playground', 'description' => 'Wahana permainan air keluarga yang aman dan menyenangkan untuk anak-anak hingga dewasa.', 'description_en' => 'Safe and fun family water play ride for children to adults.', 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/V3.jpg', 'order_column' => 3],
         ]);
 
         // Settings
@@ -48,90 +48,159 @@ class LandingPageSeeder extends Seeder
             ['key' => 'hero_video_url', 'value' => 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1', 'group' => 'homepage', 'type' => 'url'],
             ['key' => 'hero_video_file', 'value' => null, 'group' => 'homepage', 'type' => 'file'],
             ['key' => 'hero_headline', 'value' => "BUKA SETIAP HARI\n<span class=\"gold-shimmer\">DAILY OPEN</span>", 'group' => 'homepage', 'type' => 'text'],
+            ['key' => 'hero_headline_en', 'value' => "WE ARE OPEN\n<span class=\"gold-shimmer\">OPEN DAILY</span>", 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_subheadline', 'value' => 'Weekday: 10.00 - 18.00 | Weekend: 09.00 - 18.00', 'group' => 'homepage', 'type' => 'text'],
+            ['key' => 'hero_subheadline_en', 'value' => 'Weekday: 10:00 - 18:00 | Weekend: 09:00 - 18:00', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_description', 'value' => 'Aquaboom Waterpark Balikpapan — Satu-satunya Waterpark yang berada di atas gedung bertingkat di Indonesia. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
+            ['key' => 'hero_description_en', 'value' => 'Aquaboom Waterpark Balikpapan — The only waterpark located on top of a high-rise building in Indonesia. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'philosophy_text', 'value' => 'Aquaboom Waterpark Balikpapan menghadirkan pengalaman rekreasi air urban yang unik. Berlokasi strategis di pusat kota Balikpapan (BSB Area), kami menawarkan keceriaan wahana air premium di atap gedung dengan pemandangan kota yang menakjubkan.', 'group' => 'about', 'type' => 'text'],
-            ['key' => 'philosophy_text_en', 'value' => 'Aquaboom Waterpark Balikpapan delivers a unique urban water recreation experience. Strategically located in the heart of Balikpapan (BSB Area), we offer premium rooftop water attractions with stunning city views.', 'group' => 'about', 'type' => 'text'],
+            ['key' => 'philosophy_text_en', 'value' => 'Aquaboom Waterpark Balikpapan brings a unique urban water recreation experience. Strategically located in the heart of Balikpapan (BSB Area), we offer the joy of premium water slides on the rooftop with a stunning city view.', 'group' => 'about', 'type' => 'text'],
             ['key' => 'philosophy_video_url', 'value' => 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE', 'group' => 'about', 'type' => 'url'],
             ['key' => 'philosophy_video_file', 'value' => null, 'group' => 'about', 'type' => 'file'],
             ['key' => 'mission_text', 'value' => 'Terletak di Lantai 7 Astara Hotel - Balikpapan Superblock, Aquaboom menghadirkan standar baru rekreasi air perkotaan. Kami menggabungkan keseruan bermain air berkelas dengan aksesibilitas dan kenyamanan modern.', 'group' => 'about', 'type' => 'text'],
-            ['key' => 'mission_text_en', 'value' => 'Located on the 7th floor of Astara Hotel - Balikpapan Superblock, Aquaboom introduces a new standard of urban water recreation. We combine top-tier water play excitement with modern accessibility and convenience.', 'group' => 'about', 'type' => 'text'],
+            ['key' => 'mission_text_en', 'value' => 'Located on the 7th Floor of Astara Hotel - Balikpapan Superblock, Aquaboom presents a new standard of urban water recreation. We combine the excitement of high-class water play with accessibility and modern comfort.', 'group' => 'about', 'type' => 'text'],
         ]);
 
         // FAQs
         Faq::insert([
-            ['question' => 'Jam berapa jam operasional Aquaboom?', 'answer' => 'Kami buka setiap hari. Hari Biasa (Weekday) pukul 10:00 WITA - 18:00 WITA, dan Hari Libur/Akhir Pekan (Weekend) pukul 09:00 WITA - 18:00 WITA.', 'sort_order' => 1, 'is_active' => true],
-            ['question' => 'Bagaimana ketentuan pakaian renang?', 'answer' => 'Demi kenyamanan dan keselamatan, pengunjung disarankan menggunakan pakaian renang yang nyaman. Pakaian dengan kancing besi menonjol atau ritsleting tajam dilarang di seluncuran besar.', 'sort_order' => 2, 'is_active' => true],
-            ['question' => 'Apakah boleh membawa makanan dan minuman dari luar?', 'answer' => 'Makanan dan minuman dari luar tidak diperkenankan dibawa masuk ke area waterpark untuk menjaga kebersihan dan higienitas area kolam.', 'sort_order' => 3, 'is_active' => true],
-            ['question' => 'Apakah tersedia penyewaan loker dan handuk?', 'answer' => 'Ya, kami menyediakan fasilitas penyewaan loker penyimpanan barang berharga serta penyewaan handuk bersih untuk kenyamanan kunjungan Anda.', 'sort_order' => 4, 'is_active' => true],
+            [
+                'question' => 'Jam berapa jam operasional Aquaboom?', 
+                'question_en' => 'What are the operational hours of Aquaboom?',
+                'answer' => 'Kami Buka setiap hari. Hari Biasa (Weekday) pukul 10:00 WITA - 18:00 WITA, dan Hari Libur/Akhir Pekan (Weekend) pukul 09:00 WITA - 18:00 WITA.', 
+                'answer_en' => 'We are open daily. Weekdays from 10:00 WITA - 18:00 WITA, and Weekends/Public Holidays from 09:00 WITA - 18:00 WITA.',
+                'sort_order' => 1, 
+                'is_active' => true
+            ],
+            [
+                'question' => 'Bagaimana ketentuan pakaian renang?', 
+                'question_en' => 'What is the swimming attire policy?',
+                'answer' => 'Demi kenyamanan dan keselamatan, pengunjung disarankan menggunakan pakaian renang yang nyaman. Pakaian dengan kancing besi menonjol atau ritsleting tajam dilarang di seluncuran besar.', 
+                'answer_en' => 'For comfort and safety, guests are advised to wear proper swimwear. Attire with protruding metal buttons or sharp zippers is prohibited on large slides.',
+                'sort_order' => 2, 
+                'is_active' => true
+            ],
+            [
+                'question' => 'Apakah boleh membawa makanan dan minuman dari luar?', 
+                'question_en' => 'Can we bring outside food and drinks?',
+                'answer' => 'Makanan dan minuman dari luar tidak diperkenankan dibawa masuk ke area waterpark untuk menjaga kebersihan dan higienitas area kolam.', 
+                'answer_en' => 'Outside food and beverages are not allowed inside the waterpark area to maintain the hygiene and cleanliness of the pool area.',
+                'sort_order' => 3, 
+                'is_active' => true
+            ],
+            [
+                'question' => 'Apakah tersedia penyewaan loker dan handuk?', 
+                'question_en' => 'Are towel and locker rentals available?',
+                'answer' => 'Ya, kami menyediakan fasilitas penyewaan loker penyimpanan barang berharga serta penyewaan handuk bersih untuk kenyamanan kunjungan Anda.', 
+                'answer_en' => 'Yes, we provide locker rentals for securing valuables as well as clean towel rentals for your convenience.',
+                'sort_order' => 4, 
+                'is_active' => true
+            ],
         ]);
 
         // Facilities
         Facility::insert([
             [
                 'name' => 'Oasis Food Court',
+                'name_en' => 'Oasis Food Court',
                 'type' => 'dining',
                 'description' => 'Tempat menikmati aneka makanan ringan favorit, hidangan lezat khas lokal, dan minuman segar setelah bermain air.',
+                'description_en' => 'A place to enjoy various favorite snacks, delicious local dishes, and fresh drinks after playing in the water.',
                 'features' => json_encode(['Menu variatif', 'Minuman dingin segar', 'Area bersih nyaman']),
+                'features_en' => json_encode(['Varied menu', 'Fresh cold drinks', 'Clean & comfortable area']),
                 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/fasilitas.png',
                 'is_active' => true
             ],
             [
                 'name' => 'GAZEBO PRIBADI & CABANA',
+                'name_en' => 'PRIVATE GAZEBO & CABANA',
                 'type' => 'gazebo',
                 'description' => 'Tingkatkan kenyamanan kunjungan Anda dengan menyewa Gazebo pribadi. Terletak di area teduh nan asri, lengkap dengan layanan pesan antar makanan, pengisian daya, dan privasi penuh.',
+                'description_en' => 'Enhance your visit comfort by renting a private Gazebo. Located in a shady, lush area, complete with food delivery service, charging outlets, and full privacy.',
                 'features' => json_encode([
                     'Layanan makanan & minuman langsung ke gazebo',
                     'Privasi & kenyamanan maksimal',
                     'Kapasitas 4–8 orang per gazebo'
+                ]),
+                'features_en' => json_encode([
+                    'Food & beverage service directly to the gazebo',
+                    'Maximum privacy & comfort',
+                    'Capacity of 4–8 people per gazebo'
                 ]),
                 'image_url' => 'https://picsum.photos/600/400?random=40',
                 'is_active' => true
             ],
             [
                 'name' => 'PENYEWAAN LOKER & HANDUK',
+                'name_en' => 'LOCKER & TOWEL RENTAL',
                 'type' => 'general',
                 'description' => 'Nikmati petualangan air tanpa rasa cemas. Kami menyediakan fasilitas loker otomatis dengan keamanan terintegrasi, serta penyewaan handuk bersih yang selalu disterilkan secara berkala.',
+                'description_en' => 'Enjoy water adventures without worries. We provide automated locker facilities with integrated security, and clean towels sterilized regularly.',
                 'features' => json_encode([
                     'Sistem kunci loker menggunakan gelang RFID / pin',
                     'Handuk premium bersih & higienis',
                     'Lokasi loker strategis dekat ruang bilas'
+                ]),
+                'features_en' => json_encode([
+                    'Locker locking system using RFID wristband / pin',
+                    'Premium, clean & hygienic towels',
+                    'Strategic locker locations near the shower rooms'
                 ]),
                 'image_url' => 'https://picsum.photos/600/400?random=42',
                 'is_active' => true
             ],
             [
                 'name' => 'RUANG BILAS & RUANG GANTI',
+                'name_en' => 'SHOWER & CHANGING ROOMS',
                 'type' => 'general',
                 'description' => 'Ruang bilas dan ruang ganti premium kami dirancang dengan mengutamakan kebersihan dan kenyamanan. Dilengkapi dengan pancuran air hangat, bilik ganti pribadi yang luas, serta pengering rambut.',
+                'description_en' => 'Our premium shower and changing rooms are designed with hygiene and comfort in mind. Equipped with hot showers, spacious private changing stalls, and hair dryers.',
                 'features' => json_encode([
                     'Bilik shower pribadi dengan air hangat',
                     'Peralatan mandi lengkap (sabun & sampo cair)',
                     'Wastafel dan cermin rias berukuran besar'
+                ]),
+                'features_en' => json_encode([
+                    'Private shower stalls with hot water',
+                    'Complete toiletries (liquid soap & shampoo)',
+                    'Large washbasin and vanity mirrors'
                 ]),
                 'image_url' => 'https://picsum.photos/600/400?random=44',
                 'is_active' => true
             ],
             [
                 'name' => 'KLINIK PERTOLONGAN PERTAMA (P3K)',
+                'name_en' => 'FIRST AID CLINIC',
                 'type' => 'general',
                 'description' => 'Keselamatan Anda adalah prioritas utama kami. Klinik P3K Aquaboom dilengkapi dengan peralatan medis darurat standar internasional serta dipandu oleh tim medis terlatih yang bersertifikasi.',
+                'description_en' => 'Your safety is our top priority. Aquaboom\'s First Aid Clinic is equipped with standard international emergency medical supplies and guided by certified trained medical staff.',
                 'features' => json_encode([
                     'Perawat dan pertolongan medis siaga selama jam operasional',
                     'Obat-obatan umum dan peralatan bantuan darurat lengkap',
                     'Akses jalur evakuasi darurat yang cepat'
+                ]),
+                'features_en' => json_encode([
+                    'Nurses and medical assistance standby during operating hours',
+                    'General medicines and complete emergency aid equipment',
+                    'Fast emergency evacuation access route'
                 ]),
                 'image_url' => 'https://picsum.photos/600/400?random=46',
                 'is_active' => true
             ],
             [
                 'name' => 'MUSHOLA',
+                'name_en' => 'PRAYER ROOM (MUSHOLA)',
                 'type' => 'general',
                 'description' => 'Kami menyediakan ruang ibadah (Mushola) yang tenang, sejuk, dan bersih untuk menunjang kenyamanan ibadah Anda. Terpisah secara higienis antara area wudhu pria dan wanita.',
+                'description_en' => 'We provide a quiet, cool, and clean prayer room (Mushola) for your worship comfort. Hygienically separated ablution areas for men and women.',
                 'features' => json_encode([
                     'Tempat wudhu bersih terpisah gender',
                     'Dilengkapi sajadah, mukena, sarung, dan Al-Quran',
                     'Ruangan ber-AC yang nyaman'
+                ]),
+                'features_en' => json_encode([
+                    'Clean gender-segregated ablution areas',
+                    'Equipped with prayer mats, female prayer robes, sarongs, and Al-Quran',
+                    'Comfortable air-conditioned room'
                 ]),
                 'image_url' => 'https://picsum.photos/600/400?random=48',
                 'is_active' => true
