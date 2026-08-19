@@ -51,9 +51,11 @@ class LandingPageSeeder extends Seeder
             ['key' => 'hero_subheadline', 'value' => 'Weekday: 10.00 - 18.00 | Weekend: 09.00 - 18.00', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_description', 'value' => 'Aquaboom Waterpark Balikpapan — Satu-satunya Waterpark yang berada di atas gedung bertingkat di Indonesia. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'philosophy_text', 'value' => 'Aquaboom Waterpark Balikpapan menghadirkan pengalaman rekreasi air urban yang unik. Berlokasi strategis di pusat kota Balikpapan (BSB Area), kami menawarkan keceriaan wahana air premium di atap gedung dengan pemandangan kota yang menakjubkan.', 'group' => 'about', 'type' => 'text'],
+            ['key' => 'philosophy_text_en', 'value' => 'Aquaboom Waterpark Balikpapan delivers a unique urban water recreation experience. Strategically located in the heart of Balikpapan (BSB Area), we offer premium rooftop water attractions with stunning city views.', 'group' => 'about', 'type' => 'text'],
             ['key' => 'philosophy_video_url', 'value' => 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE', 'group' => 'about', 'type' => 'url'],
             ['key' => 'philosophy_video_file', 'value' => null, 'group' => 'about', 'type' => 'file'],
             ['key' => 'mission_text', 'value' => 'Terletak di Lantai 7 Astara Hotel - Balikpapan Superblock, Aquaboom menghadirkan standar baru rekreasi air perkotaan. Kami menggabungkan keseruan bermain air berkelas dengan aksesibilitas dan kenyamanan modern.', 'group' => 'about', 'type' => 'text'],
+            ['key' => 'mission_text_en', 'value' => 'Located on the 7th floor of Astara Hotel - Balikpapan Superblock, Aquaboom introduces a new standard of urban water recreation. We combine top-tier water play excitement with modern accessibility and convenience.', 'group' => 'about', 'type' => 'text'],
         ]);
 
         // FAQs
