@@ -63,16 +63,40 @@
                     @php
                         $isWeekend = Str::contains(strtolower($pkg->name), 'weekend');
                         $isGroup = Str::contains(strtolower($pkg->name), 'group');
+                        $isDuo = Str::contains(strtolower($pkg->name), 'duo');
+                        $isFour = Str::contains(strtolower($pkg->name), 'four');
+                        
+                        // Dynamic pricing label
+                        $pricingLabel = $locale === 'id' ? 'per orang' : 'per person';
+                        if ($isDuo) {
+                            $pricingLabel = $locale === 'id' ? 'per 2 orang' : 'per 2 people';
+                        } elseif ($isFour) {
+                            $pricingLabel = $locale === 'id' ? 'per 4 orang' : 'per 4 people';
+                        } elseif ($isGroup) {
+                            $pricingLabel = $locale === 'id' ? 'per orang (min. 10)' : 'per person (min. 10)';
+                        }
+
+                        // Dynamic header gradient (wristband colors)
+                        $headerGradient = 'bg-gradient-to-br from-purple-600 to-indigo-700'; // Default / Weekday
+                        if ($isDuo) {
+                            $headerGradient = 'bg-gradient-to-br from-pink-500 to-rose-600'; // Duo Pass: Pink
+                        } elseif ($isFour) {
+                            $headerGradient = 'bg-gradient-to-br from-emerald-500 to-teal-600'; // Four Pack: Emerald
+                        } elseif ($isWeekend) {
+                            $headerGradient = 'bg-gradient-to-br from-cyan-500 to-blue-600'; // Weekend: Blue
+                        } elseif ($isGroup) {
+                            $headerGradient = 'bg-gradient-to-br from-orange-500 to-amber-600'; // Group: Orange
+                        }
+                        
                         $qty = $quantities[$pkg->id] ?? 0;
                     @endphp
 
                     <!-- Ticket Card -->
                     <div class="bg-white rounded-[28px] overflow-hidden shadow-xl border flex flex-col group hover:-translate-y-1 transition-all duration-300
-                         {{ $isWeekend ? 'border-aqua-gold ring-2 ring-aqua-gold/20' : 'border-slate-200' }}">
+                         {{ $isDuo ? 'border-pink-500/45 ring-2 ring-pink-500/10' : ($isFour ? 'border-emerald-500/45 ring-2 ring-emerald-500/10' : ($isWeekend ? 'border-blue-500/45 ring-2 ring-blue-500/10' : 'border-slate-200')) }}">
                         
                         <!-- Header Card (Exactly like Landing Page) -->
-                        <div class="h-44 flex flex-col items-center justify-center p-6 relative overflow-hidden
-                             {{ $isWeekend ? 'bg-gradient-to-br from-aqua-gold to-amber-600' : ($isGroup ? 'bg-gradient-to-br from-aqua-navy-3 to-aqua-azure' : 'bg-aqua-navy') }}">
+                        <div class="h-44 flex flex-col items-center justify-center p-6 relative overflow-hidden {{ $headerGradient }}">
                             
                             @if($isWeekend)
                                 <div class="md:absolute md:top-4 md:right-4 bg-white text-aqua-navy text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-widest mb-3 md:mb-0">
@@ -80,17 +104,16 @@
                                 </div>
                             @endif
 
-                            <span class="text-xs font-black tracking-widest uppercase mb-1
-                                 {{ $isWeekend ? 'text-aqua-navy/80' : 'text-aqua-gold/80' }}">
+                            <span class="text-xs font-black tracking-widest uppercase mb-1 text-white/80">
                                 {{ $isWeekend ? 'Weekend' : ($isGroup ? 'Group 10+' : 'Weekday') }}
                             </span>
 
                             <!-- Clear Full Price text -->
-                            <div class="text-4xl font-black tracking-tight {{ $isWeekend ? 'text-aqua-navy' : 'text-white' }}">
+                            <div class="text-4xl font-black tracking-tight text-white">
                                 Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}
                             </div>
-                            <span class="text-[10px] font-bold mt-1 {{ $isWeekend ? 'text-aqua-navy/70' : 'text-white/50' }}">
-                                {{ $locale === 'id' ? 'per orang' : 'per person' }}
+                            <span class="text-[10px] font-bold mt-1 text-white/60">
+                                {{ $pricingLabel }}
                             </span>
                         </div>
 
