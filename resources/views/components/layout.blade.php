@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ $title ?? 'Aquaboom Waterpark' }}</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <link rel="icon" type="image/png" href="/logo/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/logo/favicon.svg" />
+  <link rel="shortcut icon" href="/logo/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/logo/apple-touch-icon.png" />
+  <link rel="manifest" href="/logo/site.webmanifest" />
   @livewireStyles
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,7 +96,7 @@
         <div class="flex-shrink-0 flex items-center">
           <a href="{{ url('/') }}"
             class="bg-white/95 hover:bg-white px-3.5 py-2 rounded-2xl shadow-md transition-all duration-300 flex items-center justify-center shrink-0">
-            <img src="{{ asset('assets/img/logo-aquaboom.png') }}" alt="Aquaboom" class="h-9 w-auto object-contain">
+            <img src="{{ asset('logo/logo.png') }}" alt="Aquaboom" class="h-9 w-auto object-contain">
           </a>
         </div>
 
@@ -290,7 +295,7 @@
       <div class="p-8 flex justify-between items-center relative z-20 border-b border-aqua-gold/20">
         <a href="{{ url('/') }}"
           class="bg-white/95 hover:bg-white px-3 py-1.5 rounded-xl shadow-md transition-all duration-300 flex items-center justify-center shrink-0">
-          <img src="{{ asset('assets/img/logo-aquaboom.png') }}" alt="Aquaboom" class="h-7 w-auto object-contain">
+          <img src="{{ asset('logo/logo.png') }}" alt="Aquaboom" class="h-7 w-auto object-contain">
         </a>
         <button @click="isMobileMenuOpen = false"
           class="text-white/80 hover:text-aqua-gold transition-colors bg-aqua-navy-2 p-3 rounded-full border border-aqua-gold/20">
