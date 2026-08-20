@@ -75,6 +75,46 @@ class DiningResource extends Resource
                 Forms\Components\TagsInput::make('features_en')
                     ->label('Fitur / Keunggulan (EN)')
                     ->placeholder('Ketik fitur dalam Bahasa Inggris'),
+                Forms\Components\Section::make('Daftar Menu Makanan & Minuman')
+                    ->collapsible()
+                    ->schema([
+                        Forms\Components\Repeater::make('menu_items')
+                            ->label('Item Menu')
+                            ->itemLabel(fn (array $state): ?string => $state['name'] ?? null)
+                            ->schema([
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('name')
+                                            ->label('Nama Menu (ID)')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('name_en')
+                                            ->label('Nama Menu (EN)'),
+                                    ]),
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\Textarea::make('description')
+                                            ->label('Deskripsi Menu (ID)')
+                                            ->rows(2),
+                                        Forms\Components\Textarea::make('description_en')
+                                            ->label('Deskripsi Menu (EN)')
+                                            ->rows(2),
+                                    ]),
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('price')
+                                            ->label('Harga (Rp)')
+                                            ->numeric()
+                                            ->required()
+                                            ->default(0),
+                                        Forms\Components\FileUpload::make('image_url')
+                                            ->label('Foto Menu')
+                                            ->image()
+                                            ->disk('public_uploads'),
+                                    ]),
+                            ])
+                            ->columnSpanFull(),
+                    ])
+                    ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_url')
                     ->label('Gambar')
                     ->image()

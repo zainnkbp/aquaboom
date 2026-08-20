@@ -47,7 +47,7 @@ class LandingPageSeeder extends Seeder
         Setting::insert([
             ['key' => 'hero_video_url', 'value' => 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1', 'group' => 'homepage', 'type' => 'url'],
             ['key' => 'hero_video_file', 'value' => null, 'group' => 'homepage', 'type' => 'file'],
-            ['key' => 'hero_headline', 'value' => "BUKA<br/><span class=\"gold-shimmer\">SETIAP HARI</span>", 'group' => 'homepage', 'type' => 'text'],
+            ['key' => 'hero_headline', 'value' => "KAMI BUKA<br/><span class=\"gold-shimmer\">SETIAP HARI</span>", 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_headline_en', 'value' => "WE ARE<br/><span class=\"gold-shimmer\">OPEN DAILY</span>", 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_subheadline', 'value' => 'Weekday: 10.00 - 18.00 | Weekend: 09.00 - 18.00', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_subheadline_en', 'value' => 'Weekday: 10:00 - 18:00 | Weekend: 09:00 - 18:00', 'group' => 'homepage', 'type' => 'text'],
@@ -107,6 +107,32 @@ class LandingPageSeeder extends Seeder
                 'description_en' => 'A place to enjoy various favorite snacks, delicious local dishes, and fresh drinks after playing in the water.',
                 'features' => json_encode(['Menu variatif', 'Minuman dingin segar', 'Area bersih nyaman']),
                 'features_en' => json_encode(['Varied menu', 'Fresh cold drinks', 'Clean & comfortable area']),
+                'menu_items' => json_encode([
+                    [
+                        'name' => 'Nasi Goreng Kampung',
+                        'name_en' => 'Traditional Fried Rice',
+                        'description' => 'Nasi goreng tradisional dengan telur mata sapi, ayam suwir, acar segar, dan kerupuk renyah.',
+                        'description_en' => 'Traditional fried rice served with sunny side up egg, shredded chicken, fresh pickles, and crackers.',
+                        'price' => 35000,
+                        'image_url' => null,
+                    ],
+                    [
+                        'name' => 'Mie Goreng Spesial',
+                        'name_en' => 'Special Fried Noodles',
+                        'description' => 'Mie goreng telur dengan bakso sapi, sayuran segar, ayam suwir, dan bawang goreng.',
+                        'description_en' => 'Stir-fried egg noodles with beef meatballs, fresh vegetables, shredded chicken, and fried shallots.',
+                        'price' => 32000,
+                        'image_url' => null,
+                    ],
+                    [
+                        'name' => 'Es Teh Manis',
+                        'name_en' => 'Sweet Iced Tea',
+                        'description' => 'Teh melati seduh dingin manis menyegarkan.',
+                        'description_en' => 'Sweet refreshing chilled brewed jasmine tea.',
+                        'price' => 10000,
+                        'image_url' => null,
+                    ]
+                ]),
                 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/fasilitas.png',
                 'is_active' => true
             ],
@@ -126,6 +152,7 @@ class LandingPageSeeder extends Seeder
                     'Maximum privacy & comfort',
                     'Capacity of 4–8 people per gazebo'
                 ]),
+                'menu_items' => null,
                 'image_url' => 'https://picsum.photos/600/400?random=40',
                 'is_active' => true
             ],
@@ -145,6 +172,7 @@ class LandingPageSeeder extends Seeder
                     'Premium, clean & hygienic towels',
                     'Strategic locker locations near the shower rooms'
                 ]),
+                'menu_items' => null,
                 'image_url' => 'https://picsum.photos/600/400?random=42',
                 'is_active' => true
             ],
@@ -164,6 +192,7 @@ class LandingPageSeeder extends Seeder
                     'Complete toiletries (liquid soap & shampoo)',
                     'Large washbasin and vanity mirrors'
                 ]),
+                'menu_items' => null,
                 'image_url' => 'https://picsum.photos/600/400?random=44',
                 'is_active' => true
             ],
@@ -183,6 +212,7 @@ class LandingPageSeeder extends Seeder
                     'General medicines and complete emergency aid equipment',
                     'Fast emergency evacuation access route'
                 ]),
+                'menu_items' => null,
                 'image_url' => 'https://picsum.photos/600/400?random=46',
                 'is_active' => true
             ],
@@ -202,6 +232,7 @@ class LandingPageSeeder extends Seeder
                     'Equipped with prayer mats, female prayer robes, sarongs, and Al-Quran',
                     'Comfortable air-conditioned room'
                 ]),
+                'menu_items' => null,
                 'image_url' => 'https://picsum.photos/600/400?random=48',
                 'is_active' => true
             ],

@@ -19,6 +19,7 @@ class Facility extends Model
         'description_en',
         'features',
         'features_en',
+        'menu_items',
         'image_url',
         'is_active',
     ];
@@ -26,5 +27,6 @@ class Facility extends Model
     protected $casts = [
         'features' => 'array',
         'features_en' => 'array',
+        'menu_items' => 'array',
     ];
 }

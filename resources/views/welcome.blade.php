@@ -83,7 +83,7 @@
           </svg>
           Premium Experience
         </div>
-        <div class="w-px h-4 bg-white/20"></div>
+        <div class="w-px h-4 bg-white/20 hidden md:block"></div>
         <div class="flex items-center gap-2 text-white/50 text-xs font-bold uppercase tracking-wider">
           <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -91,7 +91,7 @@
           </svg>
           Safe & Certified
         </div>
-        <div class="w-px h-4 bg-white/20"></div>
+        <div class="w-px h-4 bg-white/20 hidden md:block"></div>
         <div class="flex items-center gap-2 text-white/50 text-xs font-bold uppercase tracking-wider">
           <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
