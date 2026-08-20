@@ -45,7 +45,7 @@ class TicketPackageResource extends Resource
                 Forms\Components\TextInput::make('name_en')
                     ->label('Nama Paket (EN)')
                     ->helperText('Nama paket tiket dalam Bahasa Inggris'),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\RichEditor::make('description')
                     ->label('Deskripsi Singkat (ID)')
                     ->helperText('Deskripsi singkat paket tiket dalam Bahasa Indonesia')
                     ->hintAction(
@@ -57,7 +57,7 @@ class TicketPackageResource extends Resource
                             })
                     )
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('description_en')
+                Forms\Components\RichEditor::make('description_en')
                     ->label('Deskripsi Singkat (EN)')
                     ->helperText('Deskripsi singkat paket tiket dalam Bahasa Inggris')
                     ->columnSpanFull(),
