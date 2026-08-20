@@ -121,9 +121,24 @@
                                     {{ $locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
                                 </h3>
                                 
-                                <div class="text-slate-600 text-sm font-semibold leading-relaxed mb-6">
-                                    {{ $locale === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description }}
-                                </div>
+                                @php
+                                    $descText = $locale === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description;
+                                    $lines = array_filter(array_map('trim', explode("\n", str_replace("\r", "", $descText))));
+                                @endphp
+                                @if(count($lines) > 0)
+                                    <ul class="space-y-2.5 text-sm text-slate-600 font-semibold mb-6">
+                                        @foreach($lines as $line)
+                                            @if(!empty($line))
+                                                <li class="flex items-center gap-2">
+                                                    <svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                    {{ $line }}
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                @endif
 
                                 @if($pkg->terms_and_conditions)
                                     <!-- Accordion Terms & Conditions -->

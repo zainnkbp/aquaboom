@@ -243,8 +243,8 @@ class LandingPageSeeder extends Seeder
             [
                 'name' => 'Tiket Regular Weekdays',
                 'name_en' => 'Regular Weekday Ticket',
-                'description' => 'Tiket masuk harian untuk hari Senin sampai Jumat. Jam operasional: 10:00 - 18:00 WITA.',
-                'description_en' => 'Daily entry ticket valid from Monday to Friday. Operational hours: 10:00 - 18:00 WITA.',
+                'description' => "Berlaku Senin - Jumat\nAkses semua wahana air\nMasuk bebas antre loket",
+                'description_en' => "Valid Monday - Friday\nAccess all water rides\nSkip the ticket counter line",
                 'price' => 95000.00,
                 'discount_price' => null,
                 'discount_type' => 'amount',
@@ -258,8 +258,8 @@ class LandingPageSeeder extends Seeder
             [
                 'name' => 'Tiket Regular Weekend',
                 'name_en' => 'Regular Weekend Ticket',
-                'description' => 'Tiket masuk harian untuk hari Sabtu, Minggu, dan Libur Nasional. Jam operasional: 09:00 - 18:00 WITA.',
-                'description_en' => 'Daily entry ticket valid on Saturday, Sunday, and National Holidays. Operational hours: 09:00 - 18:00 WITA.',
+                'description' => "Berlaku Sabtu, Minggu & Libur\nAkses semua wahana air\nPriority fast track entry\nGratis 1 Loker standar",
+                'description_en' => "Valid Sat, Sun & Holidays\nAccess all water rides\nPriority fast track entry\n1 Free Standard Locker",
                 'price' => 125000.00,
                 'discount_price' => null,
                 'discount_type' => 'amount',
@@ -273,8 +273,8 @@ class LandingPageSeeder extends Seeder
             [
                 'name' => 'Duo Pass',
                 'name_en' => 'Duo Pass',
-                'description' => 'Tiket masuk untuk 2 orang + 2 handuk + 1 locker standar gratis + 30 menit foot massage masing-masing. Hemat hingga 15%!',
-                'description_en' => 'Entry ticket for 2 people + 2 pool towels + 1 locker standard + 30 mins foot massage each. Save up to 15%!',
+                'description' => "Berlaku setiap hari (Weekday & Weekend)\nTiket masuk untuk 2 orang\nGratis 2 handuk kolam & 1 loker standar\nGratis 30 menit foot massage masing-masing\nHemat hingga 15%",
+                'description_en' => "Valid every day (Weekday & Weekend)\nEntry ticket for 2 people\nFree 2 pool towels & 1 standard locker\nFree 30 mins foot massage each\nSave up to 15%",
                 'price' => 320000.00,
                 'discount_price' => 270000.00,
                 'discount_type' => 'amount',
@@ -288,8 +288,8 @@ class LandingPageSeeder extends Seeder
             [
                 'name' => 'Four Pack Pass',
                 'name_en' => 'Four Pack Pass',
-                'description' => 'Tiket masuk untuk 4 orang (dewasa/anak) + 4 handuk kolam gratis + 1 family locker + Voucher makanan Rp 100.000 + 10% off spa treatment per orang. Hemat hingga 25%!',
-                'description_en' => 'Entry ticket for 4 people + 4 pool towels + 1 family locker + Food Voucher Rp 100.000 + 10% off spa treatment per person. Save up to 25%!',
+                'description' => "Berlaku setiap hari (Weekday & Weekend)\nTiket masuk untuk 4 orang\nGratis 4 handuk kolam & 1 family locker\nVoucher makan & minum Rp 100.000\nDiskon 10% spa treatment per orang\nHemat hingga 25%",
+                'description_en' => "Valid every day (Weekday & Weekend)\nEntry for 4 people\nFree 4 pool towels & 1 family locker\nFood & beverage voucher Rp 100,000\n10% off spa treatment per person\nSave up to 25%",
                 'price' => 600000.00,
                 'discount_price' => 450000.00,
                 'discount_type' => 'amount',
