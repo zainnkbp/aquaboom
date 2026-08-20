@@ -73,12 +73,27 @@
             rgba(22, 15, 48, 0.3) 100%);
 }
 
-/* Ticket Rich Description Styles */
+/* Ticket Rich Description Styles with custom Gold checkmarks */
 .ticket-rich-description ul {
-    list-style-type: disc !important;
-    padding-left: 1.25rem !important;
+    list-style-type: none !important;
+    padding-left: 0 !important;
     margin-top: 0.5rem !important;
     margin-bottom: 0.5rem !important;
+}
+.ticket-rich-description ul li {
+    position: relative !important;
+    padding-left: 1.5rem !important;
+    margin-bottom: 0.35rem !important;
+    list-style: none !important;
+}
+.ticket-rich-description ul li::before {
+    content: "✓" !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: -1px !important;
+    color: var(--color-aqua-gold, #F09628) !important;
+    font-weight: 900 !important;
+    font-size: 1rem !important;
 }
 .ticket-rich-description ol {
     list-style-type: decimal !important;
@@ -86,6 +101,6 @@
     margin-top: 0.5rem !important;
     margin-bottom: 0.5rem !important;
 }
-.ticket-rich-description li {
+.ticket-rich-description ol li {
     margin-bottom: 0.25rem !important;
 }
