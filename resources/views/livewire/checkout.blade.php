@@ -121,42 +121,9 @@
                                     {{ $locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
                                 </h3>
                                 
-                                <ul class="space-y-2.5 text-sm text-slate-600 font-semibold mb-6">
-                                    @if($isWeekend)
-                                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                            {{ $locale === 'id' ? 'Berlaku Sabtu, Minggu & Libur' : 'Valid Sat, Sun & Holidays' }}
-                                        </li>
-                                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                            {{ $locale === 'id' ? 'Akses semua wahana air' : 'Access all water rides' }}
-                                        </li>
-                                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                            Priority fast track entry
-                                        </li>
-                                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                            {{ $locale === 'id' ? 'Gratis 1 Loker standar' : '1 Free Standard Locker' }}
-                                        </li>
-                                    @elseif($isGroup)
-                                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                            {{ $locale === 'id' ? 'Minimal pembelian 10 tiket' : 'Minimum purchase of 10 tickets' }}
-                                        </li>
-                                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                            {{ $locale === 'id' ? 'Berlaku setiap hari' : 'Valid every day' }}
-                                        </li>
-                                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                            Dedicated coordinator
-                                        </li>
-                                    @else
-                                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                            {{ $locale === 'id' ? 'Berlaku Senin - Jumat' : 'Valid Monday - Friday' }}
-                                        </li>
-                                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                            {{ $locale === 'id' ? 'Akses semua wahana air' : 'Access all water rides' }}
-                                        </li>
-                                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                            {{ $locale === 'id' ? 'Masuk bebas antre loket' : 'Skip the ticket counter line' }}
-                                        </li>
-                                    @endif
-                                </ul>
+                                <div class="text-slate-600 text-sm font-semibold leading-relaxed mb-6">
+                                    {{ $locale === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description }}
+                                </div>
 
                                 @if($pkg->terms_and_conditions)
                                     <!-- Accordion Terms & Conditions -->
