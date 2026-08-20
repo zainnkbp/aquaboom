@@ -112,9 +112,6 @@
                             <div class="text-4xl font-black tracking-tight text-white">
                                 Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}
                             </div>
-                            <span class="text-[10px] font-bold mt-1 text-white/60">
-                                {{ $pricingLabel }}
-                            </span>
                         </div>
 
                         <!-- Card Body (Beautiful features with Gold checkmarks) -->
