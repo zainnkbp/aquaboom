@@ -38,15 +38,15 @@
     <div class="relative z-20 max-w-7xl mx-auto h-full px-6 lg:px-14 flex flex-col justify-center items-start pt-24">
 
       {{-- Gold eyebrow --}}
-      <div class="flex items-center gap-3 mb-6">
-        <div class="h-px w-12 bg-aqua-gold"></div>
-        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">
+      <div class="flex items-center gap-3 mb-6 flex-wrap">
+        <div class="h-px w-12 bg-aqua-gold hidden sm:block"></div>
+        <span class="text-aqua-gold text-[10px] sm:text-xs font-black tracking-[0.2em] sm:tracking-[0.3em] uppercase">
           {{ App::getLocale() === 'en' ? 'The Only Rooftop Waterpark in Indonesia' : 'Satu-satunya Rooftop Waterpark di Indonesia' }}
         </span>
       </div>
 
       {{-- Main headline --}}
-      <h1 class="text-6xl md:text-8xl lg:text-[7rem] font-black leading-none mb-6 uppercase text-white tracking-tight">
+      <h1 class="text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] font-black leading-none mb-6 uppercase text-white tracking-tight">
         {!! App::getLocale() === 'en' && !empty($settings['hero_headline_en']) ? $settings['hero_headline_en'] : ($settings['hero_headline'] ?? 'WE ARE<br/><span class="gold-shimmer">OPEN DAILY</span>') !!}
       </h1>
 
