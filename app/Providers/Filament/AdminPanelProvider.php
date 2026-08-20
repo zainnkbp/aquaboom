@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Inter')
             ->brandName('Aquaboom CMS')
+            ->favicon(asset('logo/favicon-96x96.png'))
             ->sidebarCollapsibleOnDesktop()
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
