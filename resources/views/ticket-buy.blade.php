@@ -107,7 +107,7 @@
               <img src="https://picsum.photos/600/400?random=53" alt="Birthday Package" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <div class="absolute inset-0 bg-aqua-navy/70 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <p class="text-white text-sm font-bold text-center px-5 mb-4">Celebrate your special day!</p>
-                <a href="#packages" class="bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-7 py-2.5 rounded-full text-sm uppercase tracking-wider transition-all">BOOK NOW</a>
+                <a href="mailto:info@aquaboombsb.com?subject=Birthday Package" class="bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-7 py-2.5 rounded-full text-sm uppercase tracking-wider transition-all">ENQUIRE NOW</a>
               </div>
               <div class="absolute top-3 left-3 bg-aqua-gold text-aqua-navy text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">🎂 Birthday</div>
               <div class="absolute top-3 right-3 bg-white/90 text-aqua-navy text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">Populer</div>
@@ -121,7 +121,7 @@
                   <span class="text-aqua-gold font-black text-lg">Rp 1.800.000</span>
                 </div>
               </div>
-              <a href="#packages" class="mt-4 block w-full text-center bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all">Book Now</a>
+              <a href="mailto:info@aquaboombsb.com?subject=Birthday Package" class="mt-4 block w-full text-center bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all">Enquire Now</a>
             </div>
           </div>
 
@@ -131,7 +131,7 @@
               <img src="https://picsum.photos/600/400?random=54" alt="Annual Pass" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-60" />
               <div class="absolute inset-0 bg-aqua-navy/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <p class="text-white text-sm font-bold text-center px-5 mb-4">Unlimited thrills all year!</p>
-                <a href="#packages" class="bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-7 py-2.5 rounded-full text-sm uppercase tracking-wider transition-all">BOOK NOW</a>
+                <a href="mailto:info@aquaboombsb.com?subject=Annual Pass" class="bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-7 py-2.5 rounded-full text-sm uppercase tracking-wider transition-all">ENQUIRE NOW</a>
               </div>
               <div class="absolute top-3 left-3 bg-aqua-gold/20 border border-aqua-gold/50 text-aqua-gold text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">Annual Pass</div>
             </div>
@@ -144,7 +144,7 @@
                   <div class="flex justify-between mt-1"><span class="text-white/70 text-xs font-bold">Anak (2-11 th)</span><span class="text-aqua-gold font-black">Rp 660.000</span></div>
                 </div>
               </div>
-              <a href="#packages" class="mt-4 block w-full text-center bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all">Book Now</a>
+              <a href="mailto:info@aquaboombsb.com?subject=Annual Pass" class="mt-4 block w-full text-center bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black py-3.5 rounded-xl text-sm uppercase tracking-wider transition-all">Enquire Now</a>
             </div>
           </div>
 

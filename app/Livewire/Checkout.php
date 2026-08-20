@@ -58,7 +58,7 @@ class Checkout extends Component
 
     public function refreshPackages()
     {
-        $allPackages = TicketPackage::where('is_active', true)->get();
+        $allPackages = TicketPackage::where('is_active', true)->where('inquiry_type', 'none')->get();
         
         $this->packages = $allPackages->filter(function ($pkg) {
             return $pkg->isValidForDate($this->visit_date);
