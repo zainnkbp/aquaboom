@@ -105,7 +105,7 @@
                             @endif
 
                             <span class="text-xs font-black tracking-widest uppercase mb-1 text-white/80">
-                                {{ $isWeekend ? 'Weekend' : ($isGroup ? 'Group 10+' : 'Weekday') }}
+                                {{ $pkg->validity_type === 'weekday' ? 'Weekday' : ($pkg->validity_type === 'weekend' ? 'Weekend' : ($pkg->validity_type === 'all_days' ? ($locale === 'id' ? 'Setiap Hari' : 'Everyday') : 'Weekday')) }}
                             </span>
 
                             <!-- Clear Full Price text -->
