@@ -47,8 +47,8 @@ class LandingPageSeeder extends Seeder
         Setting::insert([
             ['key' => 'hero_video_url', 'value' => 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1', 'group' => 'homepage', 'type' => 'url'],
             ['key' => 'hero_video_file', 'value' => null, 'group' => 'homepage', 'type' => 'file'],
-            ['key' => 'hero_headline', 'value' => "BUKA SETIAP HARI\n<span class=\"gold-shimmer\">DAILY OPEN</span>", 'group' => 'homepage', 'type' => 'text'],
-            ['key' => 'hero_headline_en', 'value' => "WE ARE OPEN\n<span class=\"gold-shimmer\">OPEN DAILY</span>", 'group' => 'homepage', 'type' => 'text'],
+            ['key' => 'hero_headline', 'value' => "BUKA<br/><span class=\"gold-shimmer\">SETIAP HARI</span>", 'group' => 'homepage', 'type' => 'text'],
+            ['key' => 'hero_headline_en', 'value' => "WE ARE<br/><span class=\"gold-shimmer\">OPEN DAILY</span>", 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_subheadline', 'value' => 'Weekday: 10.00 - 18.00 | Weekend: 09.00 - 18.00', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_subheadline_en', 'value' => 'Weekday: 10:00 - 18:00 | Weekend: 09:00 - 18:00', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_description', 'value' => 'Aquaboom Waterpark Balikpapan — Satu-satunya Waterpark yang berada di atas gedung bertingkat di Indonesia. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
