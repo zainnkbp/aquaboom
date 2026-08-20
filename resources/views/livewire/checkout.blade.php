@@ -1,14 +1,14 @@
 <form wire:submit="submit" class="flex flex-col h-full bg-white font-sans">
     
     <!-- Top Bar -->
-    <div class="px-6 md:px-10 py-4 bg-aqua-navy text-white flex justify-between items-center border-b border-aqua-gold/20">
+    <div class="px-4 md:px-10 py-4 bg-aqua-navy text-white flex justify-between items-center border-b border-aqua-gold/20">
         <span class="text-sm font-black tracking-widest uppercase">
             {{ $locale === 'id' ? 'FORMULIR PEMESANAN TIKET' : 'TICKET BOOKING FORM' }}
         </span>
     </div>
 
     <!-- Step 1: Visit Date -->
-    <div class="px-6 md:px-10 py-8 bg-aqua-cream border-b border-slate-100">
+    <div class="px-4 md:px-10 py-8 bg-aqua-cream border-b border-slate-100">
         <div class="max-w-5xl mx-auto">
             <div class="flex items-center gap-3 mb-6">
                 <div class="h-px w-8 bg-aqua-gold"></div>
@@ -42,7 +42,7 @@
     </div>
 
     <!-- Step 2: Choose Tickets (Premium Cards - Redesigned to be Big and Detailed) -->
-    <div class="px-6 md:px-10 py-12 max-w-5xl mx-auto w-full">
+    <div class="px-4 md:px-10 py-12 max-w-5xl mx-auto w-full">
         <div class="flex items-center gap-3 mb-8">
             <div class="h-px w-8 bg-aqua-gold"></div>
             <span class="text-aqua-gold text-xs font-black uppercase tracking-[0.2em]">Step 2</span>
@@ -75,7 +75,7 @@
                              {{ $isWeekend ? 'bg-gradient-to-br from-aqua-gold to-amber-600' : ($isGroup ? 'bg-gradient-to-br from-aqua-navy-3 to-aqua-azure' : 'bg-aqua-navy') }}">
                             
                             @if($isWeekend)
-                                <div class="absolute top-4 right-4 bg-white text-aqua-navy text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-widest">
+                                <div class="md:absolute md:top-4 md:right-4 bg-white text-aqua-navy text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-widest mb-3 md:mb-0">
                                     {{ $locale === 'id' ? 'Paling Populer' : 'Most Popular' }}
                                 </div>
                             @endif
@@ -184,7 +184,7 @@
     </div>
 
     <!-- Step 3: Add-Ons (Optional Facilities like Gazebos, Tubes, Lockers) -->
-    <div class="px-6 md:px-10 py-12 bg-aqua-cream border-t border-b border-slate-100">
+    <div class="px-4 md:px-10 py-12 bg-aqua-cream border-t border-b border-slate-100">
         <div class="max-w-5xl mx-auto">
             <div class="flex items-center gap-3 mb-8">
                 <div class="h-px w-8 bg-aqua-gold"></div>
@@ -200,9 +200,9 @@
                         $addonQty = $addon_quantities[$addon->id] ?? 0;
                     @endphp
                     <!-- Add-On Row -->
-                    <div class="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-sm flex items-center gap-6">
-                        <img src="{{ $addon->image ?? 'https://picsum.photos/400/300?random='.$addon->id }}" alt="{{ $addon->name }}" class="w-24 h-24 rounded-2xl object-cover ring-1 ring-aqua-gold/20 shrink-0" />
-                        <div class="flex-1 flex flex-col justify-between h-full min-h-[96px]">
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+                        <img src="{{ $addon->image ?? 'https://picsum.photos/400/300?random='.$addon->id }}" alt="{{ $addon->name }}" class="w-full sm:w-24 h-48 sm:h-24 rounded-2xl object-cover ring-1 ring-aqua-gold/20 shrink-0" />
+                        <div class="flex-1 flex flex-col justify-between w-full min-h-[96px]">
                             <div>
                                 <h4 class="font-black text-aqua-navy text-base uppercase leading-tight">
                                     {{ $locale === 'en' && $addon->name_en ? $addon->name_en : $addon->name }}
@@ -229,7 +229,7 @@
     </div>
 
     <!-- Step 4: Contact Information -->
-    <div class="px-6 md:px-10 py-12 max-w-5xl mx-auto w-full">
+    <div class="px-4 md:px-10 py-12 max-w-5xl mx-auto w-full">
         <div class="flex items-center gap-3 mb-8">
             <div class="h-px w-8 bg-aqua-gold"></div>
             <span class="text-aqua-gold text-xs font-black uppercase tracking-[0.2em]">Step 4</span>
@@ -239,7 +239,7 @@
         </div>
 
         <!-- Contact Form Fields -->
-        <div class="bg-aqua-cream p-8 md:p-10 rounded-[32px] border border-slate-200/60 space-y-6 shadow-sm mb-10">
+        <div class="bg-aqua-cream p-5 md:p-10 rounded-[32px] border border-slate-200/60 space-y-6 shadow-sm mb-10">
             <div>
                 <label for="name" class="block text-xs font-black text-aqua-navy uppercase tracking-widest mb-3">
                     {{ $locale === 'id' ? 'Nama Lengkap' : 'Full Name' }}
@@ -375,7 +375,7 @@
         @error('termsAccepted') <span class="text-red-500 text-xs font-bold mb-6 block">{{ $message }}</span> @enderror
 
         <!-- Billing Summary & Submit -->
-        <div class="bg-aqua-navy text-white rounded-[32px] p-8 md:p-10 border border-aqua-gold/20 shadow-xl">
+        <div class="bg-aqua-navy text-white rounded-[32px] p-5 md:p-10 border border-aqua-gold/20 shadow-xl">
             <h4 class="text-xs font-black uppercase text-aqua-gold tracking-widest mb-6 pb-4 border-b border-white/10">
                 {{ $locale === 'id' ? 'RINCIAN PEMBAYARAN' : 'BILLING SUMMARY' }}
             </h4>
