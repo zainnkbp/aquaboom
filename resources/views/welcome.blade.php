@@ -9,7 +9,12 @@
     {{-- Video Background --}}
     <div class="absolute inset-0 w-full h-full z-0">
       {{-- YouTube embed or Local Video as background --}}
-      <div class="relative w-full h-full pointer-events-none overflow-hidden">
+      {{-- Mobile Static Background (Visible on mobile, hidden on desktop) --}}
+      <div class="absolute inset-0 bg-cover bg-center lg:hidden"
+        style="background-image: url('https://picsum.photos/1920/1080?random=99');"></div>
+
+      {{-- Desktop Video Background (Hidden on mobile, visible on desktop) --}}
+      <div class="relative w-full h-full pointer-events-none overflow-hidden hidden lg:block">
         @if(!empty($settings['hero_video_file']))
           <video autoplay loop muted playsinline class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full object-cover" x-on:play="videoLoaded = true">
             <source src="{{ asset('uploads/' . $settings['hero_video_file']) }}" type="video/mp4">

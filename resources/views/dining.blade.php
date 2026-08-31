@@ -65,12 +65,42 @@
               @endif
             @endif
 
-            <button 
-              @click="activeMenu = {{ json_encode($dining->menu_items) }}; activeDiningName = '{{ App::getLocale() === 'en' && $dining->name_en ? $dining->name_en : $dining->name }}'; isMenuOpen = true"
-              class="inline-block bg-aqua-azure hover:bg-aqua-azure-2 text-white font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all shadow-md mt-4"
-            >
-              {{ App::getLocale() === 'id' ? 'Lihat Detail Menu' : 'View Menu Details' }}
-            </button>
+            @if(!empty($dining->menu_items) && is_array($dining->menu_items))
+              @php
+                $isNewFormat = !empty($dining->menu_items) && is_string($dining->menu_items[0]);
+              @endphp
+
+              @if($isNewFormat)
+                <div class="mt-8 w-full">
+                  <span class="text-xs font-black text-aqua-gold uppercase tracking-wider block mb-4">
+                    {{ App::getLocale() === 'id' ? 'Buku Menu & Daftar Harga' : 'Menu Book & Pricing' }}
+                  </span>
+                  <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    @foreach($dining->menu_items as $menuImage)
+                      @php
+                        $imageUrl = Str::startsWith($menuImage, ['http://', 'https://']) ? $menuImage : asset('uploads/' . $menuImage);
+                      @endphp
+                      <div 
+                        @click="activeMenu = '{{ $imageUrl }}'; activeDiningName = '{{ App::getLocale() === 'en' && $dining->name_en ? $dining->name_en : $dining->name }}'; isMenuOpen = true" 
+                        class="group relative aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ring-1 ring-slate-100 bg-slate-100"
+                      >
+                        <img src="{{ $imageUrl }}" alt="Menu" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                        </div>
+                      </div>
+                    @endforeach
+                  </div>
+                </div>
+              @else
+                <button 
+                  @click="activeMenu = {{ json_encode($dining->menu_items) }}; activeDiningName = '{{ App::getLocale() === 'en' && $dining->name_en ? $dining->name_en : $dining->name }}'; isMenuOpen = true"
+                  class="inline-block bg-aqua-azure hover:bg-aqua-azure-2 text-white font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all shadow-md mt-4"
+                >
+                  {{ App::getLocale() === 'id' ? 'Lihat Detail Menu' : 'View Menu Details' }}
+                </button>
+              @endif
+            @endif
           </div>
         </div>
         @endforeach
@@ -78,7 +108,7 @@
       </div>
     </section>
 
-    <!-- Alpine Modal for Dining Menu -->
+    <!-- Alpine Modal for Dining Menu / Image Lightbox -->
     <div 
       x-show="isMenuOpen" 
       class="fixed inset-0 z-[150] flex items-center justify-center p-4"
@@ -94,66 +124,73 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
         @click="isMenuOpen = false" 
-        class="absolute inset-0 bg-aqua-navy/80 backdrop-blur-md"
+        class="absolute inset-0 bg-aqua-navy/90 backdrop-blur-md"
       ></div>
 
-      <!-- Modal Content -->
-      <div 
-        x-show="isMenuOpen"
-        x-transition:enter="ease-out duration-300 transform"
-        x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-        x-transition:leave="ease-in duration-200 transform"
-        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-        x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-        class="bg-white rounded-[32px] w-full max-w-3xl max-h-[85vh] overflow-hidden shadow-2xl relative z-10 flex flex-col border border-slate-100"
-      >
-        <!-- Header -->
-        <div class="p-6 md:p-8 border-b border-slate-100 flex justify-between items-center bg-aqua-navy text-white shrink-0">
-          <div>
-            <span class="text-aqua-gold text-[10px] font-black uppercase tracking-widest block mb-1">
-              {{ App::getLocale() === 'en' ? 'CULINARY MENU' : 'DAFTAR MENU KULINER' }}
-            </span>
-            <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-white" x-text="activeDiningName"></h3>
-          </div>
+      <!-- Lightbox Content (If activeMenu is a string image URL) -->
+      <template x-if="activeMenu && typeof activeMenu === 'string'">
+        <div 
+          x-show="isMenuOpen"
+          x-transition:enter="ease-out duration-300 transform"
+          x-transition:enter-start="opacity-0 scale-95"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="ease-in duration-200 transform"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-95"
+          class="relative max-w-4xl max-h-[90vh] overflow-hidden z-10 flex flex-col items-center"
+        >
+          <img :src="activeMenu" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl ring-1 ring-white/10" />
           <button 
             @click="isMenuOpen = false"
-            class="text-white/80 hover:text-aqua-gold transition-colors bg-white/10 hover:bg-white/20 p-3 rounded-full border border-white/10"
+            class="absolute top-4 right-4 text-white hover:text-aqua-gold transition-colors bg-black/60 hover:bg-black/80 p-3 rounded-full border border-white/10 shadow-lg"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
+      </template>
 
-        <!-- Menu Items List -->
-        <div class="flex-1 overflow-y-auto p-6 md:p-8 bg-aqua-cream/50 space-y-6">
-          <template x-if="!activeMenu || activeMenu.length === 0">
-            <div class="text-center py-12">
-              <p class="text-slate-400 font-bold italic text-sm">
-                {{ App::getLocale() === 'en' ? 'No menu items listed yet.' : 'Belum ada menu yang terdaftar.' }}
-              </p>
+      <!-- Old Style Modal Content (If activeMenu is an array of objects) -->
+      <template x-if="activeMenu && typeof activeMenu === 'object'">
+        <div 
+          x-show="isMenuOpen"
+          x-transition:enter="ease-out duration-300 transform"
+          x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+          x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+          x-transition:leave="ease-in duration-200 transform"
+          x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+          x-transition:leave-end="opacity-0 scale-95 translate-y-4"
+          class="bg-white rounded-[32px] w-full max-w-3xl max-h-[85vh] overflow-hidden shadow-2xl relative z-10 flex flex-col border border-slate-100"
+        >
+          <!-- Header -->
+          <div class="p-6 md:p-8 border-b border-slate-100 flex justify-between items-center bg-aqua-navy text-white shrink-0">
+            <div>
+              <span class="text-aqua-gold text-[10px] font-black uppercase tracking-widest block mb-1">
+                {{ App::getLocale() === 'en' ? 'CULINARY MENU' : 'DAFTAR MENU KULINER' }}
+              </span>
+              <h3 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-white" x-text="activeDiningName"></h3>
             </div>
-          </template>
-          
-          <template x-if="activeMenu && activeMenu.length > 0">
+            <button 
+              @click="isMenuOpen = false"
+              class="text-white/80 hover:text-aqua-gold transition-colors bg-white/10 hover:bg-white/20 p-3 rounded-full border border-white/10"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Menu Items List -->
+          <div class="flex-1 overflow-y-auto p-6 md:p-8 bg-aqua-cream/50 space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <template x-for="(item, idx) in activeMenu" :key="idx">
                 <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex gap-4 hover:shadow-md transition-shadow duration-200">
-                  <!-- Food Photo Placeholder or Uploaded Image -->
                   <div class="w-20 h-20 rounded-xl overflow-hidden bg-aqua-cream flex-shrink-0 border border-slate-100">
                     <template x-if="item.image_url">
                       <img :src="'/uploads/' + item.image_url" class="w-full h-full object-cover" />
                     </template>
-                    <template x-if="!item.image_url">
-                      <div class="w-full h-full flex items-center justify-center text-slate-300">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                      </div>
-                    </template>
                   </div>
-                  
                   <div class="flex-1 flex flex-col justify-between">
                     <div>
                       <h4 class="font-black text-base text-aqua-navy" x-text="('{{ App::getLocale() }}' === 'en' && item.name_en) ? item.name_en : item.name"></h4>
@@ -166,9 +203,9 @@
                 </div>
               </template>
             </div>
-          </template>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 
