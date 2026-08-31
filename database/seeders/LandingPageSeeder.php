@@ -108,30 +108,7 @@ class LandingPageSeeder extends Seeder
                 'features' => json_encode(['Menu variatif', 'Minuman dingin segar', 'Area bersih nyaman']),
                 'features_en' => json_encode(['Varied menu', 'Fresh cold drinks', 'Clean & comfortable area']),
                 'menu_items' => json_encode([
-                    [
-                        'name' => 'Nasi Goreng Kampung',
-                        'name_en' => 'Traditional Fried Rice',
-                        'description' => 'Nasi goreng tradisional dengan telur mata sapi, ayam suwir, acar segar, dan kerupuk renyah.',
-                        'description_en' => 'Traditional fried rice served with sunny side up egg, shredded chicken, fresh pickles, and crackers.',
-                        'price' => 35000,
-                        'image_url' => null,
-                    ],
-                    [
-                        'name' => 'Mie Goreng Spesial',
-                        'name_en' => 'Special Fried Noodles',
-                        'description' => 'Mie goreng telur dengan bakso sapi, sayuran segar, ayam suwir, dan bawang goreng.',
-                        'description_en' => 'Stir-fried egg noodles with beef meatballs, fresh vegetables, shredded chicken, and fried shallots.',
-                        'price' => 32000,
-                        'image_url' => null,
-                    ],
-                    [
-                        'name' => 'Es Teh Manis',
-                        'name_en' => 'Sweet Iced Tea',
-                        'description' => 'Teh melati seduh dingin manis menyegarkan.',
-                        'description_en' => 'Sweet refreshing chilled brewed jasmine tea.',
-                        'price' => 10000,
-                        'image_url' => null,
-                    ]
+                    'dining-menus/01M1BCTTDQWETSW9NMWYF62QYN.webp'
                 ]),
                 'image_url' => 'https://aquaboombsb.com/wp-content/uploads/2023/12/fasilitas.png',
                 'is_active' => true
