@@ -180,3 +180,9 @@ Route::middleware('auth')->group(function () {
         return view('my-tickets', compact('transactions'));
     })->name('my.tickets');
 });
+
+// DOKU Payment Gateway Routes
+Route::get('/payment/doku/pay/{order_id}', [\App\Http\Controllers\PaymentController::class, 'redirectToPayment'])->name('payment.doku.pay');
+Route::post('/payment/doku/notification', [\App\Http\Controllers\PaymentController::class, 'handleNotification'])->name('payment.doku.notification');
+Route::get('/payment/doku/redirect', [\App\Http\Controllers\PaymentController::class, 'paymentRedirect'])->name('payment.doku.redirect');
+

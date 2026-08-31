@@ -345,7 +345,7 @@ class Checkout extends Component
                 $userId = $user->id;
             }
 
-            // MOCK PAYMENT: Create transaction with status 'paid'
+            // DOKU INTEGRATION: Create transaction with status 'pending'
             $transaction = Transaction::create([
                 'user_id' => $userId,
                 'order_id' => $order_id,
@@ -356,7 +356,7 @@ class Checkout extends Component
                 'subtotal' => $subtotal,
                 'discount_amount' => $discountAmount,
                 'total_price' => $totalPrice,
-                'status' => 'paid', // MOCK: Auto Paid!
+                'status' => 'pending',
                 'promo_code_id' => $promoId,
             ]);
 
@@ -385,11 +385,8 @@ class Checkout extends Component
             return $transaction;
         });
 
-        // Mock Send Email
-        Mail::to($this->customer_email)->send(new TicketSent($transaction));
-
-        // Redirect to E-Ticket page
-        return redirect()->route('ticket.show', ['order_id' => $order_id]);
+        // Redirect to Doku Payment Route
+        return redirect()->route('payment.doku.pay', ['order_id' => $order_id]);
     }
 
     public function render()
