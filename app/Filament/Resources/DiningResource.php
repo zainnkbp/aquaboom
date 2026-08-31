@@ -86,7 +86,12 @@ class DiningResource extends Resource
                             ->reorderable()
                             ->disk('public_uploads')
                             ->directory('dining-menus')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->afterStateHydrated(function (Forms\Components\FileUpload $component, $state) {
+                                if (is_array($state) && !empty($state) && is_array($state[0])) {
+                                    $component->state([]);
+                                }
+                            }),
                     ])
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_url')
