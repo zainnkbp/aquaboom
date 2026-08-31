@@ -19,7 +19,7 @@ Route::get('/', function () {
     $settings = Setting::pluck('value', 'key');
     
     return view('welcome', compact('wahanas', 'homeCards', 'settings'));
-});
+})->name('home');
 
 Route::get('/v0', function () {
     $wahanas = Wahana::orderBy('order_column')->get();
