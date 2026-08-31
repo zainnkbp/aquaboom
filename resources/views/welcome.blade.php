@@ -3,7 +3,7 @@
   {{-- ============================================================ --}}
   {{-- HERO: Fullscreen Video Background (Navy-Gold Luxury Edition) --}}
   {{-- ============================================================ --}}
-  <section id="hero" class="relative bg-aqua-navy overflow-hidden h-screen min-h-[600px] max-h-[900px]"
+  <section id="hero" class="relative bg-aqua-navy overflow-hidden min-h-screen lg:h-screen lg:max-h-[900px] flex flex-col justify-center py-16 lg:py-0"
     x-data="{ videoLoaded: false }">
 
     {{-- Video Background --}}
@@ -35,7 +35,7 @@
     </div>
 
     {{-- Hero Content --}}
-    <div class="relative z-20 max-w-7xl mx-auto h-full px-6 lg:px-14 flex flex-col justify-center items-start pt-24">
+    <div class="relative z-20 max-w-7xl mx-auto px-6 lg:px-14 flex flex-col justify-center items-start pt-24 pb-12 w-full">
 
       {{-- Gold eyebrow --}}
       <div class="flex items-center gap-3 mb-6 flex-wrap">
