@@ -23,152 +23,159 @@
         </button>
     </header>
 
-    {{-- Main Viewfinder Section --}}
+    {{-- Main Viewfinder & Camera Section --}}
     <main class="w-full max-w-md mx-auto flex-1 flex flex-col items-center justify-center my-3 relative">
         
-        {{-- Camera Viewfinder Active State --}}
-        <div x-show="!$wire.scanResult" class="w-full flex flex-col items-center">
+        {{-- Persistent Camera Frame Container --}}
+        <div class="w-full relative aspect-square sm:aspect-[4/5] max-h-[65vh] bg-black rounded-3xl overflow-hidden shadow-2xl border-2 border-slate-800/80">
             
-            {{-- Native Camera Frame --}}
-            <div class="w-full relative aspect-square sm:aspect-[4/5] max-h-[65vh] bg-black rounded-3xl overflow-hidden shadow-2xl border-2 border-slate-800/80">
-                
-                {{-- HTML5 Video Feed --}}
-                <div id="reader" class="w-full h-full object-cover"></div>
+            {{-- Persistent HTML5 Video Stream --}}
+            <div id="reader" class="w-full h-full object-cover"></div>
 
-                {{-- Camera HUD & Laser Reticle Overlay --}}
-                <div class="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-6 z-10">
+            {{-- Camera HUD & Laser Reticle Overlay (Active when no result) --}}
+            <div x-show="!$wire.scanResult" class="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-6 z-10">
+                
+                {{-- Central Target Frame --}}
+                <div class="w-64 h-64 sm:w-72 sm:h-72 relative flex items-center justify-center">
                     
-                    {{-- Central Target Frame --}}
-                    <div class="w-64 h-64 sm:w-72 sm:h-72 relative flex items-center justify-center">
+                    {{-- 4 Corner Brackets --}}
+                    <div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-amber-400 rounded-tl-xl shadow-lg shadow-amber-400/50"></div>
+                    <div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-amber-400 rounded-tr-xl shadow-lg shadow-amber-400/50"></div>
+                    <div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-amber-400 rounded-bl-xl shadow-lg shadow-amber-400/50"></div>
+                    <div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-amber-400 rounded-br-xl shadow-lg shadow-amber-400/50"></div>
+                    
+                    {{-- Animated Scanning Laser Line --}}
+                    <div class="absolute inset-x-2 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_15px_#f59e0b] animate-scan"></div>
+                    
+                    {{-- Center subtle reticle --}}
+                    <div class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center">
+                        <div class="w-1.5 h-1.5 bg-amber-400 rounded-full animate-ping"></div>
+                    </div>
+                </div>
+
+                {{-- Camera status instruction --}}
+                <div class="mt-6 bg-slate-950/85 backdrop-blur-md px-4 py-1.5 rounded-full border border-slate-700/60 shadow-lg">
+                    <p class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                        Posisikan QR Code di dalam kotak
+                    </p>
+                </div>
+            </div>
+
+            {{-- Camera Loading / Permission Fallback --}}
+            <div x-show="!isCameraReady && !$wire.scanResult" class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center p-6 text-center z-0">
+                <div class="w-12 h-12 border-4 border-amber-400/30 border-t-amber-400 rounded-full animate-spin mb-4"></div>
+                <p class="text-sm font-bold text-white">Memuat Kamera...</p>
+                <p class="text-xs text-slate-400 mt-1 max-w-xs">Pastikan Anda telah mengizinkan akses kamera di browser ini.</p>
+            </div>
+
+            {{-- Validation Result Modals (Overlaid directly on top of camera) --}}
+            
+            {{-- 1. Success State Modal Overlay --}}
+            @if($scanResult === 'success')
+                <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/95 via-slate-950/95 to-slate-950 p-6 flex flex-col items-center justify-between text-center text-white z-30 animate-scale-up overflow-y-auto">
+                    <div class="w-full flex flex-col items-center my-auto">
+                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/40 mb-4 animate-bounce">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
                         
-                        {{-- Corner Brackets --}}
-                        <div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-amber-400 rounded-tl-xl shadow-lg shadow-amber-400/50"></div>
-                        <div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-amber-400 rounded-tr-xl shadow-lg shadow-amber-400/50"></div>
-                        <div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-amber-400 rounded-bl-xl shadow-lg shadow-amber-400/50"></div>
-                        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-amber-400 rounded-br-xl shadow-lg shadow-amber-400/50"></div>
+                        <h2 class="text-3xl font-black tracking-tight text-white mb-1">TIKET VALID!</h2>
+                        <p class="text-emerald-300 font-bold text-xs uppercase tracking-widest mb-5">Silakan Masuk ke Aquaboom</p>
                         
-                        {{-- Animated Scanning Laser Line --}}
-                        <div class="absolute inset-x-2 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_15px_#f59e0b] animate-scan"></div>
-                        
-                        {{-- Center subtle reticle --}}
-                        <div class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center">
-                            <div class="w-1.5 h-1.5 bg-amber-400 rounded-full animate-ping"></div>
+                        <div class="w-full bg-slate-900/90 backdrop-blur-md rounded-2xl p-4 text-left border border-slate-800 space-y-2.5 mb-2">
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Nama Pengunjung</span>
+                                <span class="font-extrabold text-base text-white">{{ $ticketDetails['customer'] }}</span>
+                            </div>
+                            
+                            <div class="border-t border-slate-800 pt-2.5 flex justify-between items-end">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Rincian Paket</span>
+                                    <span class="text-xs text-emerald-400 font-semibold">{{ $ticketDetails['items'] }}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-3xl font-black text-amber-400">{{ $ticketDetails['total'] }}</span>
+                                    <span class="text-[11px] font-extrabold text-slate-300 ml-0.5">PAX</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {{-- Camera status instruction --}}
-                    <div class="mt-6 bg-slate-950/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-slate-700/60 shadow-lg">
-                        <p class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-                            Posisikan QR Code di dalam kotak
-                        </p>
-                    </div>
-                </div>
-
-                {{-- Camera Loading / Permission Fallback --}}
-                <div x-show="!isCameraReady" class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center p-6 text-center z-0">
-                    <div class="w-12 h-12 border-4 border-amber-400/30 border-t-amber-400 rounded-full animate-spin mb-4"></div>
-                    <p class="text-sm font-bold text-white">Memuat Kamera...</p>
-                    <p class="text-xs text-slate-400 mt-1 max-w-xs">Pastikan Anda telah mengizinkan akses kamera di browser ini.</p>
-                </div>
-            </div>
-
-            {{-- Camera Controls Action Bar --}}
-            <div class="w-full flex items-center justify-between gap-3 mt-4 px-2">
-                
-                {{-- Switch Camera (Front/Back) Button --}}
-                <button @click="switchCamera()" 
-                        type="button"
-                        class="flex-1 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold py-3.5 px-4 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5 text-amber-400 transition-transform duration-500" :class="{'rotate-180': isFrontCamera}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                    <span class="text-xs font-extrabold uppercase tracking-wider" x-text="isFrontCamera ? 'Kamera Depan' : 'Kamera Belakang'"></span>
-                </button>
-
-                {{-- Toggle Manual Input Button --}}
-                <button @click="showManualInput = !showManualInput" 
-                        type="button"
-                        class="bg-slate-900 hover:bg-slate-800 active:scale-95 text-slate-300 font-bold p-3.5 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center">
-                    <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                </button>
-            </div>
-
-            {{-- Collapsible Manual Input Drawer --}}
-            <div x-show="showManualInput" 
-                 x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0 -translate-y-2"
-                 x-transition:enter-end="opacity-100 translate-y-0"
-                 class="w-full bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-xl mt-3">
-                <p class="text-xs font-semibold text-slate-400 mb-2">Input Manual Order ID:</p>
-                <div class="flex gap-2">
-                    <input type="text" 
-                           wire:model="orderId" 
-                           placeholder="Contoh: 3c359058-..." 
-                           class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-amber-400">
-                    <button wire:click="processScan($wire.orderId)" 
-                            class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black px-5 py-2.5 rounded-xl text-sm transition-all active:scale-95">
-                        Cek
+                    <button wire:click="resetScan" 
+                            @click="restartCameraSoon()"
+                            type="button"
+                            class="w-full bg-emerald-400 hover:bg-emerald-300 active:scale-95 text-slate-950 font-black text-base py-4 rounded-2xl shadow-xl shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 mt-4">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                        SCAN TIKET BERIKUTNYA
                     </button>
                 </div>
-            </div>
+            @endif
+
+            {{-- 2. Error / Denied State Modal Overlay --}}
+            @if($scanResult && $scanResult !== 'success')
+                <div class="absolute inset-0 bg-gradient-to-b from-red-950/95 via-slate-950/95 to-slate-950 p-6 flex flex-col items-center justify-between text-center text-white z-30 animate-scale-up overflow-y-auto">
+                    <div class="w-full flex flex-col items-center my-auto">
+                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-500 text-white shadow-lg shadow-red-500/40 mb-4 animate-pulse">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </div>
+                        
+                        <h2 class="text-3xl font-black tracking-tight text-white mb-2">TIKET DITOLAK!</h2>
+                        
+                        <div class="w-full bg-red-950/50 rounded-2xl p-4 border border-red-900/60 text-center mb-2">
+                            <p class="text-red-200 font-bold text-sm leading-relaxed">{{ $errorMessage }}</p>
+                        </div>
+                    </div>
+                    
+                    <button wire:click="resetScan" 
+                            @click="restartCameraSoon()"
+                            type="button"
+                            class="w-full bg-white hover:bg-slate-200 active:scale-95 text-red-600 font-black text-base py-4 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 mt-4">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        COBA SCAN LAGI
+                    </button>
+                </div>
+            @endif
 
         </div>
 
-        {{-- Success State Modal Overlay --}}
-        @if($scanResult === 'success')
-            <div class="w-full bg-gradient-to-b from-emerald-900/90 to-slate-950 rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-emerald-500/40 text-center text-white transform transition-all animate-scale-up z-30">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/40 mb-5 animate-bounce">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                
-                <h2 class="text-3xl font-black tracking-tight text-white mb-1">TIKET VALID!</h2>
-                <p class="text-emerald-300 font-bold text-sm uppercase tracking-wider mb-6">Silakan Masuk ke Aquaboom</p>
-                
-                <div class="bg-slate-900/90 backdrop-blur-md rounded-2xl p-5 mb-6 text-left border border-slate-800 space-y-3">
-                    <div>
-                        <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Nama Pengunjung</span>
-                        <span class="font-extrabold text-lg text-white">{{ $ticketDetails['customer'] }}</span>
-                    </div>
-                    
-                    <div class="border-t border-slate-800 pt-3 flex justify-between items-end">
-                        <div>
-                            <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Total Masuk</span>
-                            <span class="text-xs text-emerald-400 font-semibold">{{ $ticketDetails['items'] }}</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-3xl font-black text-amber-400">{{ $ticketDetails['total'] }}</span>
-                            <span class="text-xs font-extrabold text-slate-300 ml-1">PAX</span>
-                        </div>
-                    </div>
-                </div>
+        {{-- Camera Controls Action Bar (Active when in camera mode) --}}
+        <div x-show="!$wire.scanResult" class="w-full flex items-center justify-between gap-3 mt-4 px-1">
+            
+            {{-- Switch Camera (Front/Back) Button --}}
+            <button @click="switchCamera()" 
+                    type="button"
+                    class="flex-1 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold py-3.5 px-4 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center gap-2">
+                <svg class="w-5 h-5 text-amber-400 transition-transform duration-500" :class="{'rotate-180': isFrontCamera}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                <span class="text-xs font-extrabold uppercase tracking-wider" x-text="isFrontCamera ? 'Kamera Depan' : 'Kamera Belakang'"></span>
+            </button>
 
-                <button wire:click="resetScan" 
-                        class="w-full bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black text-lg py-4 rounded-2xl shadow-xl shadow-emerald-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-                    SCAN TIKET BERIKUTNYA
+            {{-- Toggle Manual Input Button --}}
+            <button @click="showManualInput = !showManualInput" 
+                    type="button"
+                    class="bg-slate-900 hover:bg-slate-800 active:scale-95 text-slate-300 font-bold p-3.5 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            </button>
+        </div>
+
+        {{-- Collapsible Manual Input Drawer --}}
+        <div x-show="showManualInput && !$wire.scanResult" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 -translate-y-2"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             class="w-full bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-xl mt-3">
+            <p class="text-xs font-semibold text-slate-400 mb-2">Input Manual Order ID:</p>
+            <div class="flex gap-2">
+                <input type="text" 
+                       wire:model="orderId" 
+                       placeholder="Contoh: 3c359058-..." 
+                       class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-amber-400">
+                <button wire:click="processScan($wire.orderId)" 
+                        type="button"
+                        class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black px-5 py-2.5 rounded-xl text-sm transition-all active:scale-95">
+                    Cek
                 </button>
             </div>
-        @endif
-
-        {{-- Error / Denied State Modal Overlay --}}
-        @if($scanResult && $scanResult !== 'success')
-            <div class="w-full bg-gradient-to-b from-red-950/90 to-slate-950 rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-red-500/40 text-center text-white transform transition-all animate-scale-up z-30">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-500 text-white shadow-lg shadow-red-500/40 mb-5 animate-pulse">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </div>
-                
-                <h2 class="text-3xl font-black tracking-tight text-white mb-2">TIKET DITOLAK!</h2>
-                
-                <div class="bg-red-950/40 rounded-2xl p-4 mb-6 border border-red-900/60 text-center">
-                    <p class="text-red-200 font-semibold text-sm leading-relaxed">{{ $errorMessage }}</p>
-                </div>
-                
-                <button wire:click="resetScan" 
-                        class="w-full bg-white hover:bg-slate-200 text-red-600 font-black text-lg py-4 rounded-2xl shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                    COBA SCAN LAGI
-                </button>
-            </div>
-        @endif
+        </div>
 
     </main>
 
@@ -188,10 +195,28 @@
                 cameras: [],
                 currentCameraIndex: 0,
 
-                async initScanner() {
+                initScanner() {
+                    this.$watch('$wire.scanResult', (val) => {
+                        if (!val) {
+                            this.restartCameraSoon();
+                        }
+                    });
+
                     this.$nextTick(() => {
                         this.startCamera();
                     });
+                },
+
+                async stopCamera() {
+                    if (this.html5QrCode) {
+                        try {
+                            if (this.html5QrCode.isScanning) {
+                                await this.html5QrCode.stop();
+                            }
+                        } catch (e) {
+                            console.warn("Camera stop warning:", e);
+                        }
+                    }
                 },
 
                 async startCamera() {
@@ -200,15 +225,10 @@
 
                     this.isCameraReady = false;
 
-                    if (this.html5QrCode) {
-                        try {
-                            if (this.html5QrCode.isScanning) {
-                                await this.html5QrCode.stop();
-                            }
-                        } catch (e) {
-                            console.warn("Camera stop error:", e);
-                        }
-                    } else {
+                    // Ensure clean stop
+                    await this.stopCamera();
+
+                    if (!this.html5QrCode) {
                         this.html5QrCode = new Html5Qrcode("reader");
                     }
 
@@ -262,9 +282,16 @@
                     await this.startCamera();
                 },
 
+                restartCameraSoon() {
+                    this.isCameraReady = false;
+                    setTimeout(() => {
+                        this.startCamera();
+                    }, 100);
+                },
+
                 handleScanSuccess(decodedText) {
                     if (navigator.vibrate) {
-                        navigator.vibrate(150);
+                        try { navigator.vibrate(150); } catch(e) {}
                     }
                     if (this.html5QrCode && this.html5QrCode.isScanning) {
                         this.html5QrCode.stop().then(() => {
@@ -281,12 +308,13 @@
 
         document.addEventListener('livewire:initialized', () => {
             Livewire.on('restart-scanner', () => {
-                setTimeout(() => {
-                    const alpineData = document.querySelector('[x-data="scannerApp()"]');
-                    if (alpineData && alpineData.__x) {
-                        alpineData.__x.$data.startCamera();
+                const alpineElem = document.querySelector('[x-data]');
+                if (alpineElem && window.Alpine) {
+                    const data = Alpine.$data(alpineElem);
+                    if (data && typeof data.startCamera === 'function') {
+                        data.restartCameraSoon();
                     }
-                }, 150);
+                }
             });
         });
     </script>
