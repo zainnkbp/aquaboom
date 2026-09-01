@@ -116,17 +116,37 @@ class PaymentController extends Controller
      */
     public function paymentRedirect(Request $request)
     {
-        // Cari transaksi berdasarkan invoice number DOKU
-        $invoiceNumber = $request->query('invoice_number');
-        
-        if ($invoiceNumber) {
-            $transaction = Transaction::whereRaw("replace(order_id::text, '-', '') = ?", [$invoiceNumber])->first();
-            if ($transaction) {
-                return redirect()->route('ticket.show', ['order_id' => $transaction->order_id])
-                    ->with('success', 'Pembayaran Anda sedang diproses/berhasil.');
-            }
+        $orderId = $request->query('order_id');
+        $invoiceNumber = $request->query('invoice_number') 
+            ?? $request->query('INVOICE') 
+            ?? $request->query('transidmerchant');
+
+        $transaction = null;
+
+        if ($orderId) {
+            $transaction = Transaction::where('order_id', $orderId)->first();
         }
 
-        return redirect()->route('home')->with('success', 'Transaksi Anda telah selesai.');
+        if (!$transaction && $invoiceNumber) {
+            $transaction = Transaction::whereRaw("replace(order_id::text, '-', '') = ?", [$invoiceNumber])->first();
+        }
+
+        if ($transaction) {
+            // Selesaikan transaksi & kirim email e-ticket jika status masih pending
+            if ($transaction->status === 'pending') {
+                $transaction->update(['status' => 'paid']);
+                try {
+                    Mail::to($transaction->customer_email)->send(new TicketSent($transaction));
+                    Log::info('PaymentRedirect: Transaction settled and E-Ticket sent to ' . $transaction->customer_email);
+                } catch (\Exception $e) {
+                    Log::error('PaymentRedirect: Failed sending E-Ticket email: ' . $e->getMessage());
+                }
+            }
+
+            return redirect()->route('ticket.show', ['order_id' => $transaction->order_id])
+                ->with('success', 'Pembayaran Anda berhasil! Berikut adalah E-Ticket Anda.');
+        }
+
+        return redirect()->route('ticket.buy')->with('info', 'Transaksi telah diproses. Silakan cek email Anda untuk e-ticket.');
     }
 }

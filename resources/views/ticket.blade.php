@@ -143,8 +143,8 @@
             <div class="flex justify-between items-center pt-2">
               <span class="text-slate-400 font-medium">Status Pembayaran</span>
               <span
-                class="bg-teal-100 text-teal-800 font-bold px-4 py-1.5 rounded-full text-xs shadow-sm"
-                >LUNAS - (Mock Payment)</span
+                class="{{ $transaction->status === 'paid' ? 'bg-teal-100 text-teal-800' : ($transaction->status === 'pending' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800') }} font-black px-4 py-1.5 rounded-full text-xs shadow-sm uppercase tracking-wider"
+                >{{ $transaction->status === 'paid' ? 'LUNAS (PAID)' : ($transaction->status === 'pending' ? 'MENUNGGU PEMBAYARAN' : 'BATAL / GAGAL') }}</span
               >
             </div>
           </div>

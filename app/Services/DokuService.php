@@ -43,7 +43,7 @@ class DokuService
             'order' => [
                 'invoice_number' => $invoiceNumber,
                 'amount' => (int) round($transaction->total_price),
-                'callback_url' => route('payment.doku.redirect'),
+                'callback_url' => route('payment.doku.redirect', ['order_id' => $transaction->order_id, 'invoice_number' => $invoiceNumber]),
                 'auto_redirect' => true,
             ],
             'payment' => [
