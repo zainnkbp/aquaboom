@@ -25,6 +25,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public const ROLE_ADMIN = 'admin';
     public const ROLE_VALIDATOR = 'validator';
     public const ROLE_OPERATOR = 'operator';
+    public const ROLE_CUSTOMER = 'customer';
 
     /**
      * Human friendly labels used by the admin panel.
@@ -36,9 +37,14 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return [
             self::ROLE_SUPER_ADMIN => 'Super Admin',
             self::ROLE_ADMIN => 'Admin',
-            self::ROLE_VALIDATOR => 'Validator',
+            self::ROLE_VALIDATOR => 'Validator (Satpam)',
             self::ROLE_OPERATOR => 'Operator',
         ];
+    }
+
+    public function transactions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Transaction::class);
     }
 
     public function canAccessPanel(Panel $panel): bool

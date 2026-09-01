@@ -17,9 +17,9 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-shield-check';
     protected static ?string $navigationGroup = 'Sistem & Keamanan';
-    protected static ?string $navigationLabel = 'Manajemen Akun';
+    protected static ?string $navigationLabel = 'Akun Staff & Petugas';
     protected static ?string $modelLabel = 'Akun Staff';
 
     public static function form(Form $form): Form
@@ -107,6 +107,17 @@ class UserResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereIn('role', [
+                \App\Models\User::ROLE_SUPER_ADMIN,
+                \App\Models\User::ROLE_ADMIN,
+                \App\Models\User::ROLE_OPERATOR,
+                \App\Models\User::ROLE_VALIDATOR,
             ]);
     }
 
