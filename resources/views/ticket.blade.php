@@ -140,12 +140,52 @@
               <span class="text-slate-400 font-medium">Jumlah Tiket</span>
               <span class="font-bold text-[#0f2726] text-base">{{ App\Models\TransactionItem::where('transaction_id', $transaction->id)->sum('quantity') }} Pax</span>
             </div>
-            <div class="flex justify-between items-center pt-2">
+            <div class="flex justify-between items-center pt-2 border-b border-slate-100 pb-3">
               <span class="text-slate-400 font-medium">Status Pembayaran</span>
               <span
                 class="{{ $transaction->status === 'paid' ? 'bg-teal-100 text-teal-800' : ($transaction->status === 'pending' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800') }} font-black px-4 py-1.5 rounded-full text-xs shadow-sm uppercase tracking-wider"
                 >{{ $transaction->status === 'paid' ? 'LUNAS (PAID)' : ($transaction->status === 'pending' ? 'MENUNGGU PEMBAYARAN' : 'BATAL / GAGAL') }}</span
               >
+            </div>
+
+            <!-- Rincian Pembelian Tiket & Fasilitas -->
+            <div class="pt-2">
+              <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-2.5">Rincian Pembelian:</span>
+              <div class="space-y-2.5 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                @foreach($transaction->items as $item)
+                  <div class="flex justify-between items-center text-xs">
+                    <div>
+                      <span class="font-bold text-slate-800 block">{{ $item->ticketPackage->name ?? 'Tiket Masuk' }}</span>
+                      <span class="text-slate-400 text-[11px]">{{ $item->quantity }} Tiket @ Rp {{ number_format($item->price_per_ticket, 0, ',', '.') }}</span>
+                    </div>
+                    <span class="font-black text-slate-900">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</span>
+                  </div>
+                @endforeach
+
+                @if($transaction->addOns && $transaction->addOns->count() > 0)
+                  @foreach($transaction->addOns as $addon)
+                    <div class="flex justify-between items-center text-xs pt-2 border-t border-slate-200/70">
+                      <div>
+                        <span class="font-bold text-slate-800 block">{{ $addon->addOn->name ?? 'Fasilitas Tambahan' }}</span>
+                        <span class="text-slate-400 text-[11px]">{{ $addon->quantity }}x Sewa @ Rp {{ number_format($addon->price_per_unit, 0, ',', '.') }}</span>
+                      </div>
+                      <span class="font-black text-slate-900">Rp {{ number_format($addon->subtotal, 0, ',', '.') }}</span>
+                    </div>
+                  @endforeach
+                @endif
+
+                @if($transaction->discount_amount > 0)
+                  <div class="flex justify-between items-center text-xs pt-2 border-t border-slate-200/70 text-emerald-600">
+                    <span class="font-bold">Potongan Diskon Promo</span>
+                    <span class="font-black">- Rp {{ number_format($transaction->discount_amount, 0, ',', '.') }}</span>
+                  </div>
+                @endif
+
+                <div class="flex justify-between items-center text-sm pt-2.5 border-t-2 border-slate-200">
+                  <span class="font-black text-slate-900">Total Dibayar</span>
+                  <span class="font-black text-waterbom-orange text-base">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
