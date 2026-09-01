@@ -11,7 +11,7 @@
       {{-- YouTube embed or Local Video as background --}}
       {{-- Mobile Static Background (Visible on mobile, hidden on desktop) --}}
       <div class="absolute inset-0 bg-cover bg-center lg:hidden"
-        style="background-image: url('https://picsum.photos/1920/1080?random=99');"></div>
+        style="background-image: url('{{ asset('assets/img/default.jpeg') }}');"></div>
 
       {{-- Desktop Video Background (Hidden on mobile, visible on desktop) --}}
       <div class="relative w-full h-full pointer-events-none overflow-hidden hidden lg:block">
@@ -29,7 +29,7 @@
 
         {{-- Fallback image shown until video loads --}}
         <div class="absolute inset-0 bg-cover bg-center"
-          style="background-image: url('https://picsum.photos/1920/1080?random=99');" x-show="!videoLoaded"></div>
+          style="background-image: url('{{ asset('assets/img/default.jpeg') }}');" x-show="!videoLoaded"></div>
       </div>
 
       {{-- Deep Navy Overlay: left darker for text readability, right lighter for cinematic feel --}}

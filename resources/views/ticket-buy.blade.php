@@ -4,7 +4,7 @@
   <!-- Page Header -->
   <div class="pt-36 pb-20 bg-aqua-navy relative overflow-hidden">
     <div class="absolute inset-0 opacity-10">
-      <img src="https://picsum.photos/1920/600?random=70" alt="bg" class="w-full h-full object-cover" />
+      <img src="{{ asset('assets/img/default.jpeg') }}" alt="bg" class="w-full h-full object-cover" />
     </div>
     <div class="absolute inset-0 bg-gradient-to-b from-aqua-navy/60 to-aqua-navy"></div>
     <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">

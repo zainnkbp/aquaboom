@@ -4,7 +4,7 @@
   <!-- Page Header -->
   <div class="pt-36 pb-20 bg-aqua-navy relative overflow-hidden">
     <div class="absolute inset-0 z-0">
-      <img src="https://picsum.photos/1920/600?random=50" alt="Packages Header" class="w-full h-full object-cover opacity-20 mix-blend-overlay" />
+      <img src="{{ asset('assets/img/default.jpeg') }}" alt="Packages Header" class="w-full h-full object-cover opacity-20 mix-blend-overlay" />
       <div class="absolute inset-0 bg-gradient-to-b from-waterbom-dark/80 to-waterbom-dark"></div>
     </div>
     <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
