@@ -43,6 +43,6 @@ class ScannerLogin extends Component
 
     public function render()
     {
-        return view('livewire.scanner-login')->layout('components.layout');
+        return view('livewire.scanner-login')->layout('components.scanner-layout');
     }
 }

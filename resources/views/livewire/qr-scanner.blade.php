@@ -1,137 +1,322 @@
-<div class="min-h-screen bg-aqua-navy flex flex-col p-4 relative" x-data="scannerApp()" x-init="initScanner()">
-    
-    {{-- Header --}}
-    <header class="flex justify-between items-center bg-aqua-navy-2 p-4 rounded-2xl shadow-lg border border-aqua-gold/20 mb-4">
-        <div>
-            <h1 class="text-xl font-bold text-white">Scanner Tiket</h1>
-            <p class="text-xs text-aqua-gold">Pintu Masuk Aquaboom</p>
+<div class="min-h-screen bg-slate-950 flex flex-col justify-between p-3 sm:p-5 relative select-none" 
+     x-data="scannerApp()" 
+     x-init="initScanner()">
+
+    {{-- Top Bar / Header --}}
+    <header class="w-full max-w-md mx-auto flex justify-between items-center bg-slate-900/90 backdrop-blur-md px-4 py-3 rounded-2xl border border-slate-800 shadow-xl z-20">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-400 flex items-center justify-center font-black text-slate-950 text-sm shadow-md shadow-amber-500/20">
+                AQB
+            </div>
+            <div>
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <h1 class="text-sm font-bold text-white tracking-wide">VALIDATOR LOKET</h1>
+                </div>
+                <p class="text-[11px] text-amber-400/90 font-medium">Petugas: {{ auth()->user()->name ?? 'Satpam' }}</p>
+            </div>
         </div>
-        <button wire:click="logout" class="bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors border border-red-500/30">
+
+        <button wire:click="logout" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border border-red-500/20 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
             Keluar
         </button>
     </header>
 
-    {{-- Main Scanner Area --}}
-    <main class="flex-1 flex flex-col items-center justify-center">
+    {{-- Main Viewfinder Section --}}
+    <main class="w-full max-w-md mx-auto flex-1 flex flex-col items-center justify-center my-3 relative">
         
-        {{-- Default State: Camera View --}}
-        @if(!$scanResult)
-            <div class="w-full max-w-sm bg-aqua-navy-2 rounded-3xl overflow-hidden shadow-2xl border border-aqua-gold/20 relative">
-                <div id="reader" class="w-full bg-black aspect-[3/4]"></div>
+        {{-- Camera Viewfinder Active State --}}
+        <div x-show="!$wire.scanResult" class="w-full flex flex-col items-center">
+            
+            {{-- Native Camera Frame --}}
+            <div class="w-full relative aspect-square sm:aspect-[4/5] max-h-[65vh] bg-black rounded-3xl overflow-hidden shadow-2xl border-2 border-slate-800/80">
                 
-                {{-- Fallback Manual Input --}}
-                <div class="p-4 border-t border-aqua-gold/25">
-                    <p class="text-xs text-center text-white/60 mb-2">Kamera bermasalah? Ketik manual:</p>
-                    <div class="flex gap-2">
-                        <input type="text" wire:model="orderId" placeholder="Order ID..." class="flex-1 bg-aqua-navy border border-aqua-gold/20 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-aqua-gold">
-                        <button wire:click="processScan($wire.orderId)" class="bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy px-4 py-2 rounded-xl font-bold transition-all">Cek</button>
+                {{-- HTML5 Video Feed --}}
+                <div id="reader" class="w-full h-full object-cover"></div>
+
+                {{-- Camera HUD & Laser Reticle Overlay --}}
+                <div class="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-6 z-10">
+                    
+                    {{-- Central Target Frame --}}
+                    <div class="w-64 h-64 sm:w-72 sm:h-72 relative flex items-center justify-center">
+                        
+                        {{-- Corner Brackets --}}
+                        <div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-amber-400 rounded-tl-xl shadow-lg shadow-amber-400/50"></div>
+                        <div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-amber-400 rounded-tr-xl shadow-lg shadow-amber-400/50"></div>
+                        <div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-amber-400 rounded-bl-xl shadow-lg shadow-amber-400/50"></div>
+                        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-amber-400 rounded-br-xl shadow-lg shadow-amber-400/50"></div>
+                        
+                        {{-- Animated Scanning Laser Line --}}
+                        <div class="absolute inset-x-2 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent shadow-[0_0_15px_#f59e0b] animate-scan"></div>
+                        
+                        {{-- Center subtle reticle --}}
+                        <div class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center">
+                            <div class="w-1.5 h-1.5 bg-amber-400 rounded-full animate-ping"></div>
+                        </div>
+                    </div>
+
+                    {{-- Camera status instruction --}}
+                    <div class="mt-6 bg-slate-950/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-slate-700/60 shadow-lg">
+                        <p class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                            Posisikan QR Code di dalam kotak
+                        </p>
                     </div>
                 </div>
+
+                {{-- Camera Loading / Permission Fallback --}}
+                <div x-show="!isCameraReady" class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center p-6 text-center z-0">
+                    <div class="w-12 h-12 border-4 border-amber-400/30 border-t-amber-400 rounded-full animate-spin mb-4"></div>
+                    <p class="text-sm font-bold text-white">Memuat Kamera...</p>
+                    <p class="text-xs text-slate-400 mt-1 max-w-xs">Pastikan Anda telah mengizinkan akses kamera di browser ini.</p>
+                </div>
             </div>
-        @endif
 
-        {{-- Success State --}}
-        @if($scanResult === 'success')
-            <div class="w-full max-w-sm bg-green-500 rounded-3xl p-8 shadow-2xl text-center text-white transform transition-all scale-105">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 mb-6">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <h2 class="text-3xl font-black mb-2">VALID!</h2>
-                <p class="text-green-100 text-lg mb-6">Silakan Masuk</p>
+            {{-- Camera Controls Action Bar --}}
+            <div class="w-full flex items-center justify-between gap-3 mt-4 px-2">
                 
-                <div class="bg-black/20 rounded-2xl p-4 mb-8 text-left">
-                    <p class="text-sm text-green-100 mb-1">Nama Pemesan:</p>
-                    <p class="font-bold text-lg mb-3">{{ $ticketDetails['customer'] }}</p>
+                {{-- Switch Camera (Front/Back) Button --}}
+                <button @click="switchCamera()" 
+                        type="button"
+                        class="flex-1 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold py-3.5 px-4 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 text-amber-400 transition-transform duration-500" :class="{'rotate-180': isFrontCamera}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    <span class="text-xs font-extrabold uppercase tracking-wider" x-text="isFrontCamera ? 'Kamera Depan' : 'Kamera Belakang'"></span>
+                </button>
+
+                {{-- Toggle Manual Input Button --}}
+                <button @click="showManualInput = !showManualInput" 
+                        type="button"
+                        class="bg-slate-900 hover:bg-slate-800 active:scale-95 text-slate-300 font-bold p-3.5 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                </button>
+            </div>
+
+            {{-- Collapsible Manual Input Drawer --}}
+            <div x-show="showManualInput" 
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 -translate-y-2"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 class="w-full bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-xl mt-3">
+                <p class="text-xs font-semibold text-slate-400 mb-2">Input Manual Order ID:</p>
+                <div class="flex gap-2">
+                    <input type="text" 
+                           wire:model="orderId" 
+                           placeholder="Contoh: 3c359058-..." 
+                           class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-amber-400">
+                    <button wire:click="processScan($wire.orderId)" 
+                            class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black px-5 py-2.5 rounded-xl text-sm transition-all active:scale-95">
+                        Cek
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        {{-- Success State Modal Overlay --}}
+        @if($scanResult === 'success')
+            <div class="w-full bg-gradient-to-b from-emerald-900/90 to-slate-950 rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-emerald-500/40 text-center text-white transform transition-all animate-scale-up z-30">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/40 mb-5 animate-bounce">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                
+                <h2 class="text-3xl font-black tracking-tight text-white mb-1">TIKET VALID!</h2>
+                <p class="text-emerald-300 font-bold text-sm uppercase tracking-wider mb-6">Silakan Masuk ke Aquaboom</p>
+                
+                <div class="bg-slate-900/90 backdrop-blur-md rounded-2xl p-5 mb-6 text-left border border-slate-800 space-y-3">
+                    <div>
+                        <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Nama Pengunjung</span>
+                        <span class="font-extrabold text-lg text-white">{{ $ticketDetails['customer'] }}</span>
+                    </div>
                     
-                    <p class="text-sm text-green-100 mb-1">Total Masuk:</p>
-                    <p class="font-black text-4xl mb-2">{{ $ticketDetails['total'] }} ORANG</p>
-                    
-                    <p class="text-xs text-green-200 border-t border-green-400/30 pt-2 mt-2">
-                        Detail: {{ $ticketDetails['items'] }}
-                    </p>
+                    <div class="border-t border-slate-800 pt-3 flex justify-between items-end">
+                        <div>
+                            <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Total Masuk</span>
+                            <span class="text-xs text-emerald-400 font-semibold">{{ $ticketDetails['items'] }}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-3xl font-black text-amber-400">{{ $ticketDetails['total'] }}</span>
+                            <span class="text-xs font-extrabold text-slate-300 ml-1">PAX</span>
+                        </div>
+                    </div>
                 </div>
 
-                <button wire:click="resetScan" class="w-full bg-white text-green-600 font-bold text-lg py-4 rounded-xl shadow-lg hover:bg-green-50 transition-colors">
-                    SCAN TIKET SELANJUTNYA
+                <button wire:click="resetScan" 
+                        class="w-full bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black text-lg py-4 rounded-2xl shadow-xl shadow-emerald-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                    SCAN TIKET BERIKUTNYA
                 </button>
             </div>
         @endif
 
-        {{-- Error State --}}
+        {{-- Error / Denied State Modal Overlay --}}
         @if($scanResult && $scanResult !== 'success')
-            <div class="w-full max-w-sm bg-red-500 rounded-3xl p-8 shadow-2xl text-center text-white transform transition-all scale-105">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 mb-6">
+            <div class="w-full bg-gradient-to-b from-red-950/90 to-slate-950 rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-red-500/40 text-center text-white transform transition-all animate-scale-up z-30">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-500 text-white shadow-lg shadow-red-500/40 mb-5 animate-pulse">
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </div>
-                <h2 class="text-3xl font-black mb-2">DITOLAK!</h2>
-                <p class="text-red-100 text-lg mb-6">{{ $errorMessage }}</p>
                 
-                <button wire:click="resetScan" class="w-full bg-white text-red-600 font-bold text-lg py-4 rounded-xl shadow-lg hover:bg-red-50 transition-colors">
-                    COBA LAGI
+                <h2 class="text-3xl font-black tracking-tight text-white mb-2">TIKET DITOLAK!</h2>
+                
+                <div class="bg-red-950/40 rounded-2xl p-4 mb-6 border border-red-900/60 text-center">
+                    <p class="text-red-200 font-semibold text-sm leading-relaxed">{{ $errorMessage }}</p>
+                </div>
+                
+                <button wire:click="resetScan" 
+                        class="w-full bg-white hover:bg-slate-200 text-red-600 font-black text-lg py-4 rounded-2xl shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    COBA SCAN LAGI
                 </button>
             </div>
         @endif
 
     </main>
 
-    {{-- Script for Scanner --}}
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    {{-- Footer Info --}}
+    <footer class="w-full max-w-md mx-auto text-center py-1">
+        <p class="text-[10px] text-slate-500 font-medium tracking-wider uppercase">Aquaboom Gate Access Management • 2026</p>
+    </footer>
+
+    {{-- Scanner Script Implementation --}}
     <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('scannerApp', () => ({
-                html5QrcodeScanner: null,
-                
-                initScanner() {
+        function scannerApp() {
+            return {
+                html5QrCode: null,
+                isCameraReady: false,
+                isFrontCamera: false,
+                showManualInput: false,
+                cameras: [],
+                currentCameraIndex: 0,
+
+                async initScanner() {
                     this.$nextTick(() => {
                         this.startCamera();
                     });
                 },
 
-                startCamera() {
-                    const reader = document.getElementById('reader');
-                    if (!reader) return;
+                async startCamera() {
+                    const readerElem = document.getElementById('reader');
+                    if (!readerElem) return;
 
-                    if (this.html5QrcodeScanner) {
-                        this.html5QrcodeScanner.clear();
+                    this.isCameraReady = false;
+
+                    if (this.html5QrCode) {
+                        try {
+                            if (this.html5QrCode.isScanning) {
+                                await this.html5QrCode.stop();
+                            }
+                        } catch (e) {
+                            console.warn("Camera stop error:", e);
+                        }
+                    } else {
+                        this.html5QrCode = new Html5Qrcode("reader");
                     }
 
-                    this.html5QrcodeScanner = new Html5QrcodeScanner(
-                        "reader",
-                        { fps: 10, qrbox: {width: 250, height: 250} },
-                        /* verbose= */ false);
-                        
-                    this.html5QrcodeScanner.render((decodedText) => {
-                        // On Success
-                        if (this.html5QrcodeScanner) {
-                            this.html5QrcodeScanner.clear();
-                        }
-                        this.$wire.processScan(decodedText);
-                    }, (error) => {
-                        // Ignore continuous scan errors
-                    });
-                }
-            }));
-        });
+                    const config = {
+                        fps: 15,
+                        qrbox: (viewfinderWidth, viewfinderHeight) => {
+                            const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
+                            const qrboxSize = Math.floor(minEdge * 0.75);
+                            return { width: qrboxSize, height: qrboxSize };
+                        },
+                        aspectRatio: 1.0,
+                    };
 
-        // Listen for reset event from Livewire
+                    const facingMode = this.isFrontCamera ? "user" : "environment";
+
+                    try {
+                        await this.html5QrCode.start(
+                            { facingMode: facingMode },
+                            config,
+                            (decodedText) => {
+                                this.handleScanSuccess(decodedText);
+                            },
+                            () => {}
+                        );
+                        this.isCameraReady = true;
+                    } catch (err) {
+                        console.warn("FacingMode failed, trying device list fallback:", err);
+                        try {
+                            this.cameras = await Html5Qrcode.getCameras();
+                            if (this.cameras && this.cameras.length > 0) {
+                                const selectedCam = this.cameras[this.currentCameraIndex % this.cameras.length];
+                                await this.html5QrCode.start(
+                                    selectedCam.id,
+                                    config,
+                                    (decodedText) => {
+                                        this.handleScanSuccess(decodedText);
+                                    },
+                                    () => {}
+                                );
+                                this.isCameraReady = true;
+                            }
+                        } catch (camErr) {
+                            console.error("Camera completely failed:", camErr);
+                        }
+                    }
+                },
+
+                async switchCamera() {
+                    this.isFrontCamera = !this.isFrontCamera;
+                    this.currentCameraIndex++;
+                    await this.startCamera();
+                },
+
+                handleScanSuccess(decodedText) {
+                    if (navigator.vibrate) {
+                        navigator.vibrate(150);
+                    }
+                    if (this.html5QrCode && this.html5QrCode.isScanning) {
+                        this.html5QrCode.stop().then(() => {
+                            this.$wire.processScan(decodedText);
+                        }).catch(() => {
+                            this.$wire.processScan(decodedText);
+                        });
+                    } else {
+                        this.$wire.processScan(decodedText);
+                    }
+                }
+            }
+        }
+
         document.addEventListener('livewire:initialized', () => {
             Livewire.on('restart-scanner', () => {
-                // Alpine init will handle it because DOM element 'reader' returns
                 setTimeout(() => {
                     const alpineData = document.querySelector('[x-data="scannerApp()"]');
-                    if(alpineData) {
+                    if (alpineData && alpineData.__x) {
                         alpineData.__x.$data.startCamera();
                     }
-                }, 100);
+                }, 150);
             });
         });
     </script>
-    
+
+    {{-- Clean Custom HUD Animation Styles --}}
     <style>
-        /* Override html5-qrcode styles to make it look dark mode */
-        #reader { border: none !important; border-radius: 1.5rem 1.5rem 0 0; overflow: hidden; }
-        #reader__dashboard_section_csr span { color: white !important; }
-        #reader button { background: #3b82f6 !important; color: white !important; border-radius: 0.5rem !important; border: none !important; padding: 0.5rem 1rem !important; margin: 0.5rem 0 !important; font-weight: bold; cursor: pointer; }
-        #reader select { background: #1e293b !important; color: white !important; border: 1px solid #334155 !important; border-radius: 0.5rem !important; padding: 0.5rem !important; }
+        #reader video {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: 1.5rem !important;
+        }
+        #reader {
+            border: none !important;
+        }
+        @keyframes scan {
+            0% { top: 5%; opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { top: 95%; opacity: 0; }
+        }
+        .animate-scan {
+            animation: scan 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        @keyframes scaleUp {
+            0% { transform: scale(0.92); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-scale-up {
+            animation: scaleUp 0.25s ease-out forwards;
+        }
     </style>
 </div>
