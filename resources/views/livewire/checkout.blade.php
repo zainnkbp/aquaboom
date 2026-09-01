@@ -188,7 +188,7 @@
                     @endphp
                     <!-- Add-On Row -->
                     <div class="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-                        <img src="{{ $addon->image ?? 'https://picsum.photos/400/300?random='.$addon->id }}" alt="{{ $addon->name }}" class="w-full sm:w-24 h-48 sm:h-24 rounded-2xl object-cover ring-1 ring-aqua-gold/20 shrink-0" />
+                        <img src="{{ $addon->image_url }}" alt="{{ $addon->name }}" onerror="this.onerror=null; this.src='{{ asset('assets/img/default-addon.svg') }}';" class="w-full sm:w-24 h-48 sm:h-24 rounded-2xl object-cover ring-1 ring-aqua-gold/20 shrink-0" />
                         <div class="flex-1 flex flex-col justify-between w-full min-h-[96px]">
                             <div>
                                 <h4 class="font-black text-aqua-navy text-base uppercase leading-tight">
