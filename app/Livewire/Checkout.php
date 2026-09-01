@@ -328,6 +328,9 @@ class Checkout extends Component
 
             $totalPrice = max(0, $ticketSubtotal - $discountAmount + $addonSubtotal);
 
+            // Auto-align Postgres sequences defensively to prevent any duplicate key errors
+            \App\Services\PostgresSequenceFixer::fix();
+
             // Hybrid Account Flow: Check or auto-create User
             $userId = null;
             if (auth()->check()) {
