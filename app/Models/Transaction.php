@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
-    use HasAuditLog, SoftDeletes;
+    use HasAuditLog, SoftDeletes, \App\Models\Concerns\AutoFixPostgresSequence;
 
     protected $guarded = [];
 

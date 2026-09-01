@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TransactionAddOn extends Model
 {
+    use \App\Models\Concerns\AutoFixPostgresSequence;
+
     protected $guarded = [];
 }

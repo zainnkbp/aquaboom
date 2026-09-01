@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TicketPackage extends Model
 {
-    use HasAuditLog, SoftDeletes;
+    use HasAuditLog, SoftDeletes, \App\Models\Concerns\AutoFixPostgresSequence;
 
     protected $guarded = [];
 

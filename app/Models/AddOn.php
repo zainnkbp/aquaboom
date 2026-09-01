@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class AddOn extends Model
 {
-    use HasAuditLog;
+    use HasAuditLog, \App\Models\Concerns\AutoFixPostgresSequence;
 
     protected $guarded = [];
 

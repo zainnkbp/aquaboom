@@ -19,7 +19,7 @@ use Filament\Models\Contracts\HasAvatar;
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, \App\Models\Concerns\HasAuditLog;
+    use HasFactory, Notifiable, \App\Models\Concerns\HasAuditLog, \App\Models\Concerns\AutoFixPostgresSequence;
 
     public const ROLE_SUPER_ADMIN = 'super_admin';
     public const ROLE_ADMIN = 'admin';
