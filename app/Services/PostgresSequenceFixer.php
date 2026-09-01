@@ -17,15 +17,27 @@ class PostgresSequenceFixer
         }
 
         try {
-            if ($targetTable) {
-                $tables = [(object)['table_name' => $targetTable]];
-            } else {
-                $tables = DB::select("SELECT table_name FROM information_schema.columns WHERE table_schema = 'public' AND column_name = 'id'");
-            }
+            $tableNames = $targetTable 
+                ? [$targetTable] 
+                : [
+                    'users', 
+                    'transactions', 
+                    'transaction_items', 
+                    'transaction_add_ons', 
+                    'ticket_packages', 
+                    'add_ons', 
+                    'facilities', 
+                    'wahanas', 
+                    'promo_codes', 
+                    'referral_codes', 
+                    'awards', 
+                    'faqs', 
+                    'settings', 
+                    'home_page_cards'
+                ];
 
-            foreach ($tables as $t) {
-                $table = $t->table_name;
-                $seq = DB::select("SELECT pg_get_serial_sequence('\"" . $table . "\"', 'id') as seq");
+            foreach ($tableNames as $table) {
+                $seq = DB::select("SELECT pg_get_serial_sequence('public." . $table . "', 'id') as seq");
                 if (!empty($seq[0]->seq)) {
                     $seqName = $seq[0]->seq;
                     DB::statement("SELECT setval('" . $seqName . "', COALESCE((SELECT MAX(id) FROM \"" . $table . "\"), 1))");
