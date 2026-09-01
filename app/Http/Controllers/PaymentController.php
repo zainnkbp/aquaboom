@@ -48,7 +48,7 @@ class PaymentController extends Controller
 
         Log::error('DOKU Redirect Failed for Order ID: ' . $order_id);
         
-        return redirect()->route('checkout')->with('error', 'Gagal memproses pembayaran DOKU. Silakan coba kembali.');
+        return redirect()->route('ticket.buy')->with('error', 'Gagal memproses sesi pembayaran DOKU. Pastikan kredensial DOKU di file .env sudah lengkap.');
     }
 
     /**

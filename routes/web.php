@@ -35,6 +35,10 @@ Route::get('/book', function () {
     return redirect()->route('ticket.buy');
 })->name('book');
 
+Route::get('/checkout', function () {
+    return redirect()->route('ticket.buy');
+})->name('checkout');
+
 Route::get('/ticket', function () {
     $now = now();
     $specialPackages = \App\Models\TicketPackage::where('is_active', true)
