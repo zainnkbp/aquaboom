@@ -33,7 +33,7 @@ class ScannerLogin extends Component
         $user = User::where('pin', $this->pin)->first();
 
         if ($user && $user->hasRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN, User::ROLE_VALIDATOR)) {
-            Auth::login($user);
+            Auth::login($user, remember: true);
             return redirect()->route('scanner.app');
         }
 

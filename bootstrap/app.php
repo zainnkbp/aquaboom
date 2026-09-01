@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\VerifyCsrfToken::class,
         );
         $middleware->redirectGuestsTo(function (Request $request) {
-            if ($request->is('scanner*')) {
+            if ($request->is('scanner*') || ($request->headers->get('referer') && str_contains($request->headers->get('referer'), '/scanner'))) {
                 return route('scanner.login');
             }
             return '/admin/login';

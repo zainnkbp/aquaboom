@@ -23,16 +23,28 @@ class QrScanner extends Component
 
     public function processScan($code)
     {
-        $this->orderId = trim($code);
+        $rawCode = trim($code);
         $this->scanResult = null;
         $this->errorMessage = '';
         $this->ticketDetails = [];
 
-        if (empty($this->orderId)) {
+        if (empty($rawCode)) {
             return;
         }
 
-        $transaction = Transaction::with('items.ticketPackage')->where('order_id', $this->orderId)->first();
+        // Ekstraksi UUID jika scanner memindai format URL
+        if (preg_match('/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/', $rawCode, $matches)) {
+            $this->orderId = $matches[0];
+        } else {
+            $this->orderId = $rawCode;
+        }
+
+        $cleanOrderId = str_replace('-', '', $this->orderId);
+
+        $transaction = Transaction::with('items.ticketPackage')
+            ->where('order_id', $this->orderId)
+            ->orWhereRaw("replace(order_id::text, '-', '') = ?", [$cleanOrderId])
+            ->first();
 
         if (!$transaction) {
             $this->scanResult = 'not_found';
