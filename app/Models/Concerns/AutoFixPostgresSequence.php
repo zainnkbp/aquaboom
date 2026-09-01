@@ -10,14 +10,23 @@ trait AutoFixPostgresSequence
     public static function bootAutoFixPostgresSequence(): void
     {
         static::creating(function ($model) {
-            if (!$model->id && DB::getDriverName() === 'pgsql') {
+            $keyName = $model->getKeyName();
+
+            // If primary key is auto-increment integer and not explicitly set
+            if (empty($model->{$keyName})) {
                 try {
                     $table = $model->getTable();
-                    $maxId = (int) DB::table($table)->max('id');
-                    if ($maxId > 0) {
-                        $seq = DB::select("SELECT pg_get_serial_sequence('public." . $table . "', 'id') as seq");
+                    $maxId = (int) DB::table($table)->max($keyName);
+                    $nextId = $maxId + 1;
+
+                    // Explicitly set the unique incrementing ID
+                    $model->{$keyName} = $nextId;
+
+                    // Also synchronize Postgres sequence if using PostgreSQL
+                    if (DB::getDriverName() === 'pgsql') {
+                        $seq = DB::select("SELECT pg_get_serial_sequence('public." . $table . "', '" . $keyName . "') as seq");
                         if (!empty($seq[0]->seq)) {
-                            DB::statement("SELECT setval('" . $seq[0]->seq . "', " . $maxId . ")");
+                            DB::statement("SELECT setval('" . $seq[0]->seq . "', " . $nextId . ")");
                         }
                     }
                 } catch (\Throwable $e) {
