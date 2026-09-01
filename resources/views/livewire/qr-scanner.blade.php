@@ -69,27 +69,42 @@
                 </div>
 
                 {{-- Camera Loading / Permission Fallback --}}
-                <div x-show="!isCameraReady" class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center p-6 text-center z-0">
+                <div x-show="!isCameraReady" class="absolute inset-0 bg-slate-900/95 flex flex-col items-center justify-center p-6 text-center z-20">
                     <div class="w-12 h-12 border-4 border-amber-400/30 border-t-amber-400 rounded-full animate-spin mb-4"></div>
-                    <p class="text-sm font-bold text-white">Memuat Kamera...</p>
-                    <p class="text-xs text-slate-400 mt-1 max-w-xs">Pastikan Anda telah mengizinkan akses kamera di browser ini.</p>
+                    <p class="text-sm font-bold text-white">Menghubungkan Kamera...</p>
+                    <p class="text-xs text-slate-400 mt-1 max-w-xs mb-4">Pastikan izin kamera telah diaktifkan di browser Anda.</p>
+                    <button @click="restart()" 
+                            type="button" 
+                            class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-xs px-4 py-2 rounded-xl shadow-lg transition-all flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        Refresh Kamera
+                    </button>
                 </div>
             </div>
 
             {{-- Camera Controls Action Bar --}}
-            <div class="w-full flex items-center justify-between gap-3 mt-4 px-2">
+            <div class="w-full flex items-center justify-between gap-2.5 mt-4 px-1">
                 
                 {{-- Switch Camera (Front/Back) Button --}}
                 <button @click="switchCamera()" 
                         type="button"
-                        class="flex-1 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold py-3.5 px-4 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center gap-2">
+                        class="flex-1 bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold py-3.5 px-3 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center gap-2">
                     <svg class="w-5 h-5 text-amber-400 transition-transform duration-500" :class="{'rotate-180': isFrontCamera}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                     <span class="text-xs font-extrabold uppercase tracking-wider" x-text="isFrontCamera ? 'Kamera Depan' : 'Kamera Belakang'"></span>
+                </button>
+
+                {{-- Quick Refresh Camera Button --}}
+                <button @click="restart()" 
+                        type="button"
+                        title="Refresh / Muat Ulang Kamera"
+                        class="bg-slate-900 hover:bg-slate-800 active:scale-95 text-amber-400 hover:text-amber-300 font-bold p-3.5 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                 </button>
 
                 {{-- Toggle Manual Input Button --}}
                 <button @click="showManualInput = !showManualInput" 
                         type="button"
+                        title="Input Manual Order ID"
                         class="bg-slate-900 hover:bg-slate-800 active:scale-95 text-slate-300 font-bold p-3.5 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center">
                     <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                 </button>
@@ -310,6 +325,19 @@
             border: none !important;
             width: 100% !important;
             height: 100% !important;
+            position: relative !important;
+        }
+        /* Sembunyikan kotak putih dan bayangan bawaan html5-qrcode */
+        #qr-shaded-region,
+        #reader__scan_region,
+        #reader__scan_region svg,
+        #reader__scan_region div,
+        #reader img {
+            display: none !important;
+            opacity: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            visibility: hidden !important;
         }
         @keyframes scan {
             0% { top: 5%; opacity: 0; }
