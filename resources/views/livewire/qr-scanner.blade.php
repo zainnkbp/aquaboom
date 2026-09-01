@@ -102,7 +102,7 @@
                 </button>
 
                 {{-- Toggle Manual Input Button --}}
-                <button @click="showManualInput = !showManualInput" 
+                <button @click="showManualInput = !showManualInput; $nextTick(() => { if (showManualInput) $refs.manualInput.focus(); })" 
                         type="button"
                         title="Input Manual Order ID"
                         class="bg-slate-900 hover:bg-slate-800 active:scale-95 text-slate-300 font-bold p-3.5 rounded-2xl border border-slate-700 shadow-lg transition-all flex items-center justify-center">
@@ -110,23 +110,35 @@
                 </button>
             </div>
 
-            {{-- Collapsible Manual Input Drawer --}}
+            {{-- Collapsible Manual Input Drawer with Smart Mask --}}
             <div x-show="showManualInput" 
                  x-transition:enter="transition ease-out duration-200"
                  x-transition:enter-start="opacity-0 -translate-y-2"
                  x-transition:enter-end="opacity-100 translate-y-0"
                  class="w-full bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-xl mt-3">
-                <p class="text-xs font-semibold text-slate-400 mb-2">Input Manual Order ID:</p>
-                <div class="flex gap-2">
+                <div class="flex justify-between items-center mb-2">
+                    <p class="text-xs font-bold text-slate-300">Input Manual Kode Tiket:</p>
+                    <span class="text-[10px] text-amber-400 font-mono">Format: AQB-XXXX-XXXX-XXXX</span>
+                </div>
+                <form @submit.prevent="submitManual()" class="flex gap-2">
                     <input type="text" 
-                           wire:model="orderId" 
-                           placeholder="Contoh: AQB-7K8M-9P2X-4N5Q" 
-                           class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-amber-400 uppercase">
-                    <button wire:click="processScan($wire.orderId)" 
+                           x-ref="manualInput"
+                           x-model="manualCode"
+                           x-on:input="formatTicketInput($event)"
+                           placeholder="AQB-XXXX-XXXX-XXXX" 
+                           maxlength="18"
+                           autocomplete="off"
+                           autocorrect="off"
+                           spellcheck="false"
+                           class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-amber-400 uppercase tracking-widest text-center font-bold">
+                    <button type="submit" 
                             class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black px-5 py-2.5 rounded-xl text-sm transition-all active:scale-95">
                         Cek
                     </button>
-                </div>
+                </form>
+                <p class="text-[10px] text-slate-500 text-center mt-2">
+                    Cukup ketik huruf/angka, tanda strip (-) dan huruf kapital akan terisi otomatis.
+                </p>
             </div>
 
         </div>
@@ -208,10 +220,52 @@
                 cameras: [],
                 currentCameraIndex: 0,
 
+                manualCode: '',
+
                 async initScanner() {
                     this.$nextTick(() => {
                         this.startCamera();
                     });
+                },
+
+                formatTicketInput(event) {
+                    let inputVal = event.target.value;
+                    if (!inputVal) {
+                        this.manualCode = '';
+                        this.$wire.set('orderId', '');
+                        return;
+                    }
+                    
+                    // Bersihkan hanya huruf dan angka lalu ubah ke huruf besar
+                    let clean = inputVal.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                    
+                    // Jika diawali AQB, pisahkan untuk pemformatan seragam
+                    if (clean.startsWith('AQB')) {
+                        clean = clean.substring(3);
+                    }
+                    
+                    // Batasi maksimal 12 karakter inti
+                    clean = clean.substring(0, 12);
+                    
+                    let formatted = 'AQB';
+                    if (clean.length > 0) {
+                        formatted += '-' + clean.substring(0, 4);
+                    }
+                    if (clean.length > 4) {
+                        formatted += '-' + clean.substring(4, 8);
+                    }
+                    if (clean.length > 8) {
+                        formatted += '-' + clean.substring(8, 12);
+                    }
+                    
+                    this.manualCode = formatted;
+                    this.$wire.set('orderId', formatted);
+                },
+
+                submitManual() {
+                    if (this.manualCode) {
+                        this.$wire.processScan(this.manualCode);
+                    }
                 },
 
                 async startCamera() {
