@@ -11,6 +11,16 @@ class ScannerLogin extends Component
 {
     public $pin = '';
 
+    public function mount()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->hasRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN, User::ROLE_VALIDATOR)) {
+                return redirect()->route('scanner.app');
+            }
+        }
+    }
+
     public function updatedPin()
     {
         if (strlen($this->pin) === 6) {
@@ -22,12 +32,12 @@ class ScannerLogin extends Component
     {
         $user = User::where('pin', $this->pin)->first();
 
-        if ($user) {
+        if ($user && $user->hasRole(User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN, User::ROLE_VALIDATOR)) {
             Auth::login($user);
             return redirect()->route('scanner.app');
         }
 
-        $this->addError('pin', 'PIN tidak valid.');
+        $this->addError('pin', 'PIN tidak valid atau tidak memiliki izin validator.');
         $this->pin = ''; // Reset pin on failure
     }
 

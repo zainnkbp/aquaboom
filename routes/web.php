@@ -102,7 +102,7 @@ Route::get('/faq', function () {
 })->name('faq');
 
 // Scanner App Routes
-Route::get('/scanner/login', ScannerLogin::class)->name('scanner.login')->middleware('guest');
+Route::get('/scanner/login', ScannerLogin::class)->name('scanner.login');
 Route::get('/scanner', QrScanner::class)->name('scanner.app')->middleware('auth');
 
 // Language Switcher Route

@@ -20,7 +20,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
         );
-        $middleware->redirectGuestsTo('/admin/login');
+        $middleware->redirectGuestsTo(function (Request $request) {
+            if ($request->is('scanner*')) {
+                return route('scanner.login');
+            }
+            return '/admin/login';
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

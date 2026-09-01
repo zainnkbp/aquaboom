@@ -9,7 +9,7 @@
             <p class="text-slate-400 text-sm">Masukkan 6 Digit PIN Satpam / Validator</p>
         </div>
 
-        <div class="space-y-6">
+        <form wire:submit="login" class="space-y-6">
             <div>
                 <input 
                     type="password" 
@@ -25,10 +25,14 @@
                 @enderror
             </div>
 
+            <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-lg py-4 rounded-xl shadow-lg transition-all transform active:scale-95 uppercase tracking-wider">
+                Masuk ke Scanner
+            </button>
+
             <p class="text-center text-xs text-slate-500">
-                Sistem akan otomatis masuk setelah 6 digit PIN terisi.
+                Sistem akan otomatis masuk saat 6 digit PIN terisi atau klik tombol Masuk.
             </p>
-        </div>
+        </form>
         
     </div>
 </div>
