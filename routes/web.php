@@ -36,7 +36,21 @@ Route::get('/book', function () {
 })->name('book');
 
 Route::get('/ticket', function () {
-    return view('ticket-buy');
+    $now = now();
+    $specialPackages = \App\Models\TicketPackage::where('is_active', true)
+        ->whereIn('type', ['bundle', 'flash_sale'])
+        ->where(function ($query) use ($now) {
+            $query->whereNull('sales_start')
+                  ->orWhere('sales_start', '<=', $now);
+        })
+        ->where(function ($query) use ($now) {
+            $query->whereNull('sales_end')
+                  ->orWhere('sales_end', '>=', $now);
+        })
+        ->orderBy('sort_order', 'asc')
+        ->get();
+
+    return view('ticket-buy', compact('specialPackages'));
 })->name('ticket.buy');
 
 Route::get('/packages', function () {

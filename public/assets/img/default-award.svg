@@ -1,0 +1,24 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgAw" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B192C"/>
+      <stop offset="100%" stop-color="#183B56"/>
+    </linearGradient>
+    <linearGradient id="goldAw" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="24" fill="url(#bgAw)"/>
+  <circle cx="200" cy="180" r="100" fill="url(#goldAw)" opacity="0.08"/>
+  
+  <!-- Trophy Icon -->
+  <path d="M160 120H240V160C240 182.091 222.091 200 200 200C177.909 200 160 182.091 160 160V120Z" stroke="url(#goldAw)" stroke-width="4" fill="#183B56" fill-opacity="0.8"/>
+  <path d="M160 135H140C134.477 135 130 139.477 130 145C130 155 140 165 160 165" stroke="url(#goldAw)" stroke-width="3"/>
+  <path d="M240 135H260C265.523 135 270 139.477 270 145C270 155 260 165 240 165" stroke="url(#goldAw)" stroke-width="3"/>
+  <path d="M200 200V225M175 225H225" stroke="url(#goldAw)" stroke-width="4" stroke-linecap="round"/>
+
+  <text x="200" y="275" text-anchor="middle" font-family="'Outfit', 'Segoe UI', sans-serif" font-size="16" font-weight="900" fill="#FFFFFF" letter-spacing="3">AQUABOOM</text>
+  <text x="200" y="300" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" font-weight="800" fill="#FCD34D" letter-spacing="1.5">AWARD &amp; CERTIFICATION</text>
+</svg>

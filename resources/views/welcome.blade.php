@@ -204,6 +204,7 @@
             class="group bg-white rounded-[32px] overflow-hidden shadow-lg border border-aqua-cream-2 hover:shadow-2xl transition-all duration-300 flex flex-col">
             <div class="h-64 overflow-hidden relative">
               <img src="{{ $wahana->image_url }}" alt="{{ $wahana->name }}"
+                onerror="this.onerror=null; this.src='{{ asset('assets/img/default-wahana.svg') }}';"
                 class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
               <div
                 class="absolute top-4 right-4 bg-aqua-navy text-aqua-gold px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider border border-aqua-gold/30">

@@ -18,4 +18,20 @@ class HomePageCard extends Model
         'is_active',
         'sort_order',
     ];
+
+    /**
+     * Accessor untuk mendapatkan URL lengkap gambar card beranda.
+     */
+    public function getImageUrlAttribute($value): string
+    {
+        if (empty($value)) {
+            return asset('assets/img/default-package.svg');
+        }
+
+        if (\Illuminate\Support\Str::startsWith($value, ['http://', 'https://'])) {
+            return $value;
+        }
+
+        return asset('uploads/' . ltrim($value, '/'));
+    }
 }

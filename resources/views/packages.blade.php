@@ -60,11 +60,7 @@
           <div class="bg-white rounded-[28px] overflow-hidden shadow-xl border border-slate-100 flex flex-col group hover:-translate-y-2 transition-all duration-300">
             <!-- Image with Hover Overlay -->
             <div class="relative h-64 overflow-hidden bg-aqua-navy">
-              @if($package->image_url)
-                <img src="{{ Str::startsWith($package->image_url, ['http://', 'https://']) ? $package->image_url : asset('uploads/' . $package->image_url) }}" alt="{{ $package->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              @else
-                <div class="w-full h-full flex items-center justify-center text-white/20 text-xs font-bold font-mono">No Image</div>
-              @endif
+              <img src="{{ $package->image_url }}" alt="{{ $package->name }}" onerror="this.onerror=null; this.src='{{ asset('assets/img/default-package.svg') }}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               <!-- Hover Overlay -->
               <div class="absolute inset-0 bg-aqua-navy/75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <p class="text-white text-base font-bold text-center px-6 mb-5">

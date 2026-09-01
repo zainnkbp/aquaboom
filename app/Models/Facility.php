@@ -29,4 +29,20 @@ class Facility extends Model
         'features_en' => 'array',
         'menu_items' => 'array',
     ];
+
+    /**
+     * Accessor untuk mendapatkan URL lengkap gambar fasilitas / area makan.
+     */
+    public function getImageUrlAttribute($value): string
+    {
+        if (empty($value)) {
+            return asset('assets/img/default-facility.svg');
+        }
+
+        if (\Illuminate\Support\Str::startsWith($value, ['http://', 'https://'])) {
+            return $value;
+        }
+
+        return asset('uploads/' . ltrim($value, '/'));
+    }
 }

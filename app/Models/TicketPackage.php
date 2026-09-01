@@ -21,6 +21,22 @@ class TicketPackage extends Model
     ];
 
     /**
+     * Accessor untuk mendapatkan URL lengkap gambar paket tiket.
+     */
+    public function getImageUrlAttribute($value): string
+    {
+        if (empty($value)) {
+            return asset('assets/img/default-package.svg');
+        }
+
+        if (\Illuminate\Support\Str::startsWith($value, ['http://', 'https://'])) {
+            return $value;
+        }
+
+        return asset('uploads/' . ltrim($value, '/'));
+    }
+
+    /**
      * Whether this package is currently discounted (has a valid discount that
      * actually lowers the price).
      */

@@ -71,8 +71,9 @@
           {{-- Image block - odd is right (order 2), even is left (order 1 on desktop) --}}
           <div class="lg:col-span-7 {{ $loop->even ? 'lg:order-1' : 'lg:order-2' }}">
             <div class="rounded-3xl overflow-hidden shadow-2xl h-[350px] lg:h-[450px] ring-1 ring-aqua-gold/20">
-              <img src="{{ Str::startsWith($facility->image_url, ['http://', 'https://']) ? $facility->image_url : asset('uploads/' . $facility->image_url) }}" 
+              <img src="{{ $facility->image_url }}" 
                    alt="{{ $facility->name }}" 
+                   onerror="this.onerror=null; this.src='{{ asset('assets/img/default-facility.svg') }}';"
                    class="w-full h-full object-cover hover:scale-102 transition-transform duration-700" />
             </div>
           </div>

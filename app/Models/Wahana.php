@@ -11,4 +11,20 @@ class Wahana extends Model
     use HasAuditLog, SoftDeletes;
 
     protected $guarded = [];
+
+    /**
+     * Accessor untuk mendapatkan URL lengkap gambar wahana.
+     */
+    public function getImageUrlAttribute($value): string
+    {
+        if (empty($value)) {
+            return asset('assets/img/default-wahana.svg');
+        }
+
+        if (\Illuminate\Support\Str::startsWith($value, ['http://', 'https://'])) {
+            return $value;
+        }
+
+        return asset('uploads/' . ltrim($value, '/'));
+    }
 }

@@ -1,0 +1,31 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgWahana" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#07192F"/>
+      <stop offset="50%" stop-color="#0E3558"/>
+      <stop offset="100%" stop-color="#07192F"/>
+    </linearGradient>
+    <linearGradient id="cyanWahana" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="goldWahana" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" rx="20" fill="url(#bgWahana)"/>
+  <circle cx="300" cy="180" r="130" fill="url(#cyanWahana)" opacity="0.08"/>
+  
+  <!-- Slide / Water Wave Icon Box -->
+  <rect x="240" y="90" width="120" height="120" rx="30" fill="#ffffff" fill-opacity="0.08" stroke="url(#cyanWahana)" stroke-width="2"/>
+  
+  <!-- Wave / Water Ride Icon -->
+  <path d="M265 160C280 145 295 175 310 160C325 145 335 155 335 155" stroke="url(#cyanWahana)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M265 175C280 160 295 190 310 175C325 160 335 170 335 170" stroke="url(#goldWahana)" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+  <circle cx="280" cy="130" r="8" fill="#38BDF8"/>
+  <circle cx="320" cy="125" r="5" fill="#FCD34D"/>
+
+  <text x="300" y="255" text-anchor="middle" font-family="'Outfit', 'Segoe UI', sans-serif" font-size="22" font-weight="900" fill="#FFFFFF" letter-spacing="4">AQUABOOM</text>
+  <text x="300" y="285" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="800" fill="#38BDF8" letter-spacing="2">WATERPARK ATTRACTION</text>
+</svg>
