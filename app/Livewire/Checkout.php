@@ -338,51 +338,59 @@ class Checkout extends Component
             } else {
                 $user = \App\Models\User::where('email', $this->customer_email)->first();
                 if (!$user) {
-                    $user = \App\Models\User::create([
-                        'name' => $this->customer_name,
-                        'email' => $this->customer_email,
-                        'password' => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(16)),
-                        'role' => 'customer',
-                    ]);
+                    $nextUserId = ((int) \App\Models\User::max('id')) + 1;
+                    $user = new \App\Models\User();
+                    $user->id = $nextUserId;
+                    $user->name = $this->customer_name;
+                    $user->email = $this->customer_email;
+                    $user->password = \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(16));
+                    $user->role = 'customer';
+                    $user->save();
                 }
                 $userId = $user->id;
             }
 
             // DOKU INTEGRATION: Create transaction with status 'pending'
-            $transaction = Transaction::create([
-                'user_id' => $userId,
-                'order_id' => $order_id,
-                'customer_name' => $this->customer_name,
-                'customer_email' => $this->customer_email,
-                'customer_phone' => $this->customer_phone,
-                'visit_date' => $this->visit_date,
-                'subtotal' => $subtotal,
-                'discount_amount' => $discountAmount,
-                'total_price' => $totalPrice,
-                'status' => 'pending',
-                'promo_code_id' => $promoId,
-            ]);
+            $nextTrxId = ((int) Transaction::max('id')) + 1;
+            $transaction = new Transaction();
+            $transaction->id = $nextTrxId;
+            $transaction->user_id = $userId;
+            $transaction->order_id = $order_id;
+            $transaction->customer_name = $this->customer_name;
+            $transaction->customer_email = $this->customer_email;
+            $transaction->customer_phone = $this->customer_phone;
+            $transaction->visit_date = $this->visit_date;
+            $transaction->subtotal = $subtotal;
+            $transaction->discount_amount = $discountAmount;
+            $transaction->total_price = $totalPrice;
+            $transaction->status = 'pending';
+            $transaction->promo_code_id = $promoId;
+            $transaction->save();
 
             foreach ($selectedPackages as $item) {
                 $itemSubtotal = $item['package']->effective_price * $item['quantity'];
-                TransactionItem::create([
-                    'transaction_id' => $transaction->id,
-                    'ticket_package_id' => $item['package']->id,
-                    'quantity' => $item['quantity'],
-                    'price' => $item['package']->effective_price,
-                    'subtotal' => $itemSubtotal,
-                ]);
+                $nextItemId = ((int) TransactionItem::max('id')) + 1;
+                $trxItem = new TransactionItem();
+                $trxItem->id = $nextItemId;
+                $trxItem->transaction_id = $transaction->id;
+                $trxItem->ticket_package_id = $item['package']->id;
+                $trxItem->quantity = $item['quantity'];
+                $trxItem->price = $item['package']->effective_price;
+                $trxItem->subtotal = $itemSubtotal;
+                $trxItem->save();
             }
 
             foreach ($selectedAddOns as $item) {
                 $itemSubtotal = $item['addon']->price * $item['quantity'];
-                \App\Models\TransactionAddOn::create([
-                    'transaction_id' => $transaction->id,
-                    'add_on_id' => $item['addon']->id,
-                    'quantity' => $item['quantity'],
-                    'price' => $item['addon']->price,
-                    'subtotal' => $itemSubtotal,
-                ]);
+                $nextAddonId = ((int) \App\Models\TransactionAddOn::max('id')) + 1;
+                $trxAddon = new \App\Models\TransactionAddOn();
+                $trxAddon->id = $nextAddonId;
+                $trxAddon->transaction_id = $transaction->id;
+                $trxAddon->add_on_id = $item['addon']->id;
+                $trxAddon->quantity = $item['quantity'];
+                $trxAddon->price = $item['addon']->price;
+                $trxAddon->subtotal = $itemSubtotal;
+                $trxAddon->save();
             }
 
             return $transaction;

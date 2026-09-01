@@ -10,27 +10,24 @@ trait AutoFixPostgresSequence
     public static function bootAutoFixPostgresSequence(): void
     {
         static::creating(function ($model) {
-            $keyName = $model->getKeyName();
-
-            // If primary key is auto-increment integer and not explicitly set
-            if (empty($model->{$keyName})) {
+            if (!$model->id) {
                 try {
                     $table = $model->getTable();
-                    $maxId = (int) DB::table($table)->max($keyName);
-                    $nextId = $maxId + 1;
+                    $maxId = (int) DB::table($table)->max('id');
+                    $model->id = $maxId + 1;
 
-                    // Explicitly set the unique incrementing ID
-                    $model->{$keyName} = $nextId;
-
-                    // Also synchronize Postgres sequence if using PostgreSQL
                     if (DB::getDriverName() === 'pgsql') {
-                        $seq = DB::select("SELECT pg_get_serial_sequence('public." . $table . "', '" . $keyName . "') as seq");
-                        if (!empty($seq[0]->seq)) {
-                            DB::statement("SELECT setval('" . $seq[0]->seq . "', " . $nextId . ")");
+                        try {
+                            $seq = DB::select("SELECT pg_get_serial_sequence('public." . $table . "', 'id') as seq");
+                            if (!empty($seq[0]->seq)) {
+                                DB::statement("SELECT setval('" . $seq[0]->seq . "', " . $model->id . ")");
+                            }
+                        } catch (\Throwable $seqEx) {
+                            // Ignored because ID is already explicitly set
                         }
                     }
                 } catch (\Throwable $e) {
-                    Log::debug("AutoFixPostgresSequence error on " . $model->getTable() . ": " . $e->getMessage());
+                    Log::debug("AutoFixPostgresSequence on " . $model->getTable() . ": " . $e->getMessage());
                 }
             }
         });
