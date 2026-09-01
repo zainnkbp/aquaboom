@@ -120,8 +120,8 @@
                 <div class="flex gap-2">
                     <input type="text" 
                            wire:model="orderId" 
-                           placeholder="Contoh: 3c359058-..." 
-                           class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-amber-400">
+                           placeholder="Contoh: AQB-7K8M-9P2X-4N5Q" 
+                           class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-amber-400 uppercase">
                     <button wire:click="processScan($wire.orderId)" 
                             class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-black px-5 py-2.5 rounded-xl text-sm transition-all active:scale-95">
                         Cek

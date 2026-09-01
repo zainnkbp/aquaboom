@@ -37,4 +37,26 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Generate format kode tiket ringkas dan ramah input manual: AQB-XXXX-XXXX-XXXX
+     * Menggunakan 12 karakter alfanumerik yang jelas tanpa huruf yang membingungkan.
+     */
+    public static function generateOrderId(): string
+    {
+        $chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+        $code = '';
+        
+        do {
+            $p1 = ''; $p2 = ''; $p3 = '';
+            for ($i = 0; $i < 4; $i++) {
+                $p1 .= $chars[random_int(0, strlen($chars) - 1)];
+                $p2 .= $chars[random_int(0, strlen($chars) - 1)];
+                $p3 .= $chars[random_int(0, strlen($chars) - 1)];
+            }
+            $code = 'AQB-' . $p1 . '-' . $p2 . '-' . $p3;
+        } while (self::where('order_id', $code)->exists());
+
+        return $code;
+    }
 }

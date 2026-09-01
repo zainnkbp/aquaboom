@@ -287,7 +287,7 @@ class Checkout extends Component
             }
         }
 
-        $order_id = (string) Str::uuid();
+        $order_id = Transaction::generateOrderId();
         $ticketSubtotal = $this->ticketSubtotal;
         $addonSubtotal = $this->addonSubtotal;
         $subtotal = $this->subtotal;

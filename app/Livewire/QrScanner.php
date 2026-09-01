@@ -23,7 +23,7 @@ class QrScanner extends Component
 
     public function processScan($code)
     {
-        $rawCode = trim($code);
+        $rawCode = strtoupper(trim($code));
         $this->scanResult = null;
         $this->errorMessage = '';
         $this->ticketDetails = [];
@@ -32,18 +32,24 @@ class QrScanner extends Component
             return;
         }
 
-        // Ekstraksi UUID jika scanner memindai format URL
-        if (preg_match('/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/', $rawCode, $matches)) {
+        // Ekstraksi format AQB-XXXX-XXXX-XXXX atau UUID jika memindai format URL
+        if (preg_match('/AQB-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}/i', $rawCode, $matches)) {
+            $this->orderId = strtoupper($matches[0]);
+        } elseif (preg_match('/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/', $rawCode, $matches)) {
             $this->orderId = $matches[0];
         } else {
             $this->orderId = $rawCode;
         }
 
-        $cleanOrderId = str_replace('-', '', $this->orderId);
+        // Pembersihan karakter strip dan spasi untuk pencocokan fleksibel
+        $normalized = str_replace(['-', ' ', '_'], '', strtoupper($this->orderId));
+        $normalizedWithoutPrefix = str_replace('AQB', '', $normalized);
 
         $transaction = Transaction::with('items.ticketPackage')
             ->where('order_id', $this->orderId)
-            ->orWhereRaw("replace(order_id::text, '-', '') = ?", [$cleanOrderId])
+            ->orWhereRaw("UPPER(order_id::text) = ?", [strtoupper($this->orderId)])
+            ->orWhereRaw("UPPER(replace(order_id::text, '-', '')) = ?", [$normalized])
+            ->orWhereRaw("UPPER(replace(replace(order_id::text, '-', ''), 'AQB', '')) = ?", [$normalizedWithoutPrefix])
             ->first();
 
         if (!$transaction) {
