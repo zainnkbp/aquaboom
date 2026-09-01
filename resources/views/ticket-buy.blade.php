@@ -78,7 +78,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           @php
-            $displayPackages = isset($specialPackages) ? $specialPackages : \App\Models\TicketPackage::where('is_active', true)->whereIn('type', ['bundle', 'flash_sale'])->orderBy('sort_order', 'asc')->get();
+            $displayPackages = isset($specialPackages) ? $specialPackages : \App\Models\TicketPackage::where('is_active', true)->whereIn('type', ['bundle', 'flash_sale'])->orderBy('id', 'asc')->get();
           @endphp
 
           @forelse($displayPackages as $package)

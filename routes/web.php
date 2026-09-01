@@ -47,7 +47,7 @@ Route::get('/ticket', function () {
             $query->whereNull('sales_end')
                   ->orWhere('sales_end', '>=', $now);
         })
-        ->orderBy('sort_order', 'asc')
+        ->orderBy('id', 'asc')
         ->get();
 
     return view('ticket-buy', compact('specialPackages'));
