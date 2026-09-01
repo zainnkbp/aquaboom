@@ -45,7 +45,7 @@ class QrScanner extends Component
         $normalized = str_replace(['-', ' ', '_'], '', strtoupper($this->orderId));
         $normalizedWithoutPrefix = str_replace('AQB', '', $normalized);
 
-        $transaction = Transaction::with('items.ticketPackage')
+        $transaction = Transaction::with(['items.ticketPackage', 'addOns.addOn'])
             ->where('order_id', $this->orderId)
             ->orWhereRaw("UPPER(order_id::text) = ?", [strtoupper($this->orderId)])
             ->orWhereRaw("UPPER(replace(order_id::text, '-', '')) = ?", [$normalized])
@@ -76,16 +76,35 @@ class QrScanner extends Component
         $transaction->save();
 
         $totalTickets = 0;
-        $details = [];
+        $ticketList = [];
         foreach ($transaction->items as $item) {
-            $details[] = $item->quantity . 'x ' . ($item->ticketPackage ? $item->ticketPackage->name : 'Tiket');
+            $name = $item->ticketPackage ? $item->ticketPackage->name : 'Tiket Masuk';
+            $ticketList[] = [
+                'qty' => $item->quantity,
+                'name' => $name,
+            ];
             $totalTickets += $item->quantity;
         }
 
+        $addonList = [];
+        foreach ($transaction->addOns as $item) {
+            $name = $item->addOn ? $item->addOn->name : 'Fasilitas Tambahan';
+            $addonList[] = [
+                'qty' => $item->quantity,
+                'name' => $name,
+            ];
+        }
+
         $this->ticketDetails = [
+            'order_id' => $transaction->order_id,
+            'customer' => $transaction->customer_name,
+            'email' => $transaction->customer_email,
+            'phone' => $transaction->customer_phone,
+            'visit_date' => \Carbon\Carbon::parse($transaction->visit_date)->translatedFormat('d F Y'),
             'total' => $totalTickets,
-            'items' => implode(', ', $details),
-            'customer' => $transaction->customer_name
+            'tickets' => $ticketList,
+            'addons' => $addonList,
+            'redeemed_at' => $transaction->redeemed_at->format('d M Y H:i'),
         ];
 
         $this->scanResult = 'success';

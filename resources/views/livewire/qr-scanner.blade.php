@@ -145,38 +145,85 @@
 
         {{-- Success State Modal Overlay (Appears on top of camera without unmounting video) --}}
         @if($scanResult === 'success')
-            <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-emerald-500/40 text-center text-white flex flex-col items-center justify-center animate-scale-up z-30">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/40 mb-4 animate-bounce">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                
-                <h2 class="text-3xl font-black tracking-tight text-white mb-1">TIKET VALID!</h2>
-                <p class="text-emerald-300 font-bold text-sm uppercase tracking-wider mb-5">Silakan Masuk ke Aquaboom</p>
-                
-                <div class="w-full bg-slate-900/90 rounded-2xl p-5 mb-5 text-left border border-slate-800 space-y-3">
-                    <div>
-                        <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Nama Pengunjung</span>
-                        <span class="font-extrabold text-lg text-white">{{ $ticketDetails['customer'] }}</span>
+            <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-2xl border-2 border-emerald-500/40 text-center text-white flex flex-col justify-between animate-scale-up z-30 overflow-y-auto">
+                <div class="w-full">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/40 mb-2">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"></path></svg>
                     </div>
                     
-                    <div class="border-t border-slate-800 pt-3 flex justify-between items-end">
+                    <h2 class="text-2xl font-black tracking-tight text-white">TIKET VALID!</h2>
+                    <p class="text-emerald-400 font-extrabold text-xs uppercase tracking-wider mb-3">Silakan Masuk ke Aquaboom</p>
+                    
+                    {{-- Detail Card --}}
+                    <div class="w-full bg-slate-900/95 rounded-2xl p-4 text-left border border-slate-800 space-y-3 shadow-inner">
+                        
+                        {{-- Order ID & Visitor Header --}}
+                        <div class="flex justify-between items-start border-b border-slate-800 pb-2.5">
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Nama Pengunjung</span>
+                                <span class="font-black text-base text-white">{{ $ticketDetails['customer'] }}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Kode Tiket</span>
+                                <span class="font-mono font-black text-xs text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-lg">{{ $ticketDetails['order_id'] }}</span>
+                            </div>
+                        </div>
+
+                        {{-- Total Pax & Visit Date --}}
+                        <div class="flex justify-between items-center bg-slate-950/80 px-3 py-2 rounded-xl border border-slate-800/80">
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase block">Kunjungan</span>
+                                <span class="text-xs font-bold text-slate-200">{{ $ticketDetails['visit_date'] }}</span>
+                            </div>
+                            <div class="text-right flex items-baseline gap-1">
+                                <span class="text-2xl font-black text-emerald-400">{{ $ticketDetails['total'] }}</span>
+                                <span class="text-xs font-extrabold text-slate-300">PAX</span>
+                            </div>
+                        </div>
+
+                        {{-- Rincian Paket Tiket --}}
                         <div>
-                            <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Total Masuk</span>
-                            <span class="text-xs text-emerald-400 font-semibold">{{ $ticketDetails['items'] }}</span>
+                            <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block mb-1.5">Rincian Tiket:</span>
+                            <div class="space-y-1.5">
+                                @foreach($ticketDetails['tickets'] as $ticket)
+                                    <div class="flex justify-between items-center bg-slate-950/60 px-3 py-1.5 rounded-xl text-xs border border-slate-800/50">
+                                        <span class="font-medium text-slate-200">{{ $ticket['name'] }}</span>
+                                        <span class="font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-lg border border-emerald-500/20">{{ $ticket['qty'] }}x</span>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
-                        <div class="text-right">
-                            <span class="text-3xl font-black text-amber-400">{{ $ticketDetails['total'] }}</span>
-                            <span class="text-xs font-extrabold text-slate-300 ml-1">PAX</span>
-                        </div>
+
+                        {{-- Rincian Fasilitas Tambahan / Add-Ons (Jika Ada) --}}
+                        @if(!empty($ticketDetails['addons']) && count($ticketDetails['addons']) > 0)
+                            <div class="pt-1 border-t border-slate-800">
+                                <span class="text-[10px] text-amber-400 font-extrabold uppercase tracking-wider block mb-1.5 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                    Fasilitas Tambahan (Add-Ons):
+                                </span>
+                                <div class="space-y-1.5">
+                                    @foreach($ticketDetails['addons'] as $addon)
+                                        <div class="flex justify-between items-center bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-xl text-xs">
+                                            <span class="font-bold text-amber-200">{{ $addon['name'] }}</span>
+                                            <span class="font-black text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-lg">{{ $addon['qty'] }}x</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
                 </div>
 
-                <button wire:click="resetScan" 
-                        @click="restart()"
-                        class="w-full bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black text-lg py-4 rounded-2xl shadow-xl shadow-emerald-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-                    SCAN TIKET BERIKUTNYA
-                </button>
+                {{-- Action Button --}}
+                <div class="w-full mt-3">
+                    <button wire:click="resetScan" 
+                            @click="restart()"
+                            class="w-full bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black text-base py-3.5 rounded-2xl shadow-xl shadow-emerald-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                        SCAN TIKET BERIKUTNYA
+                    </button>
+                </div>
             </div>
         @endif
 

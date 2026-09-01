@@ -28,6 +28,11 @@ class Transaction extends Model
         return $this->hasMany(TransactionItem::class);
     }
 
+    public function addOns(): HasMany
+    {
+        return $this->hasMany(TransactionAddOn::class);
+    }
+
     public function promoCode(): BelongsTo
     {
         return $this->belongsTo(PromoCode::class);
