@@ -1,5 +1,5 @@
 <x-layout>
-  <x-slot:title>FAQ - Aquaboom Waterpark</x-slot:title>
+  <x-slot:title>{{ App::getLocale() === 'en' ? 'FAQ - Frequently Asked Questions - Aquaboom Waterpark' : 'Tanya Jawab (FAQ) - Aquaboom Waterpark' }}</x-slot:title>
   
   <!-- Page Header (Waterbom Style) -->
   <div class="pt-36 pb-20 bg-aqua-cream border-b border-slate-200">

@@ -30,7 +30,9 @@ class UserResource extends Resource
                     Forms\Components\FileUpload::make('avatar_url')
                         ->label('Foto Profil')
                         ->avatar()
+                        ->disk('public_uploads')
                         ->directory('avatars')
+                        ->dehydrated(fn ($state) => filled($state))
                         ->imageEditor()
                         ->columnSpanFull(),
                     Forms\Components\TextInput::make('name')

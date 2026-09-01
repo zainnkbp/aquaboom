@@ -1,5 +1,5 @@
 <x-layout>
-  <x-slot:title>Activate Account - Aquaboom Waterpark</x-slot:title>
+  <x-slot:title>{{ App::getLocale() === 'en' ? 'Activate Account - Aquaboom Waterpark' : 'Aktivasi Akun Pengunjung - Aquaboom Waterpark' }}</x-slot:title>
   
   <div class="min-h-screen pt-36 pb-20 bg-aqua-cream flex items-center justify-center px-6">
     <div class="w-full max-w-lg bg-white rounded-[32px] shadow-2xl border border-aqua-cream-2 p-8 md:p-12 relative overflow-hidden">

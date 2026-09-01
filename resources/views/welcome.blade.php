@@ -1,4 +1,5 @@
 <x-layout>
+  <x-slot:title>{{ App::getLocale() === 'en' ? 'Aquaboom Waterpark - The Only Rooftop Waterpark in East Kalimantan' : 'Aquaboom Waterpark - Rooftop Waterpark Pertama di Kalimantan Timur' }}</x-slot:title>
 
   {{-- ============================================================ --}}
   {{-- HERO: Fullscreen Video Background (Navy-Gold Luxury Edition) --}}

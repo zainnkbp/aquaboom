@@ -50,11 +50,27 @@ class AddOnResource extends Resource
                         ->numeric()
                         ->prefix('Rp'),
                         
+                    Forms\Components\Placeholder::make('current_image_preview')
+                        ->label('Foto Produk Saat Ini')
+                        ->content(function ($record) {
+                            if (!$record || empty($record->image)) {
+                                return new \Illuminate\Support\HtmlString('<span class="text-xs text-slate-400">Belum ada foto</span>');
+                            }
+                            $url = filter_var($record->image, FILTER_VALIDATE_URL)
+                                ? $record->image
+                                : (str_starts_with($record->image, 'assets/') ? asset($record->image) : asset('uploads/' . $record->image));
+                            return new \Illuminate\Support\HtmlString('<div class="mt-1"><img src="' . e($url) . '" alt="Preview" class="w-48 h-32 object-cover rounded-xl border border-slate-700 shadow-md"></div>');
+                        })
+                        ->visible(fn ($record) => $record && filled($record->image)),
+                        
                     Forms\Components\FileUpload::make('image')
-                        ->label('Gambar Produk')
+                        ->label('Unggah Foto Produk Baru')
                         ->image()
                         ->disk('public_uploads')
-                        ->directory('addons'),
+                        ->directory('addons')
+                        ->visibility('public')
+                        ->dehydrated(fn ($state) => filled($state))
+                        ->helperText('Abaikan jika tidak ingin mengubah foto. Upload foto baru untuk mengganti foto saat ini.'),
                         
                     Forms\Components\RichEditor::make('description')
                         ->label('Deskripsi (ID)')

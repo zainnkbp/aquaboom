@@ -126,10 +126,27 @@ class TicketPackageResource extends Resource
                     ->default('regular')
                     ->required()
                     ->helperText('Jenis tiket: regular, flash_sale, bundle'),
+                Forms\Components\Placeholder::make('current_image_preview')
+                    ->label('Foto Paket / Promo Saat Ini')
+                    ->content(function ($record) {
+                        if (!$record || empty($record->image_url)) {
+                            return new \Illuminate\Support\HtmlString('<span class="text-xs text-slate-400">Belum ada foto</span>');
+                        }
+                        $url = filter_var($record->image_url, FILTER_VALIDATE_URL)
+                            ? $record->image_url
+                            : (str_starts_with($record->image_url, 'assets/') ? asset($record->image_url) : asset('uploads/' . $record->image_url));
+                        return new \Illuminate\Support\HtmlString('<div class="mt-1"><img src="' . e($url) . '" alt="Preview" class="w-48 h-32 object-cover rounded-xl border border-slate-700 shadow-md"></div>');
+                    })
+                    ->visible(fn ($record) => $record && filled($record->image_url))
+                    ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_url')
-                    ->label('Gambar Paket / Promo')
+                    ->label('Unggah Foto Paket / Promo Baru')
                     ->image()
                     ->disk('public_uploads')
+                    ->directory('packages')
+                    ->visibility('public')
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->helperText('Abaikan jika tidak ingin mengubah foto. Upload foto baru untuk mengganti foto saat ini.')
                     ->columnSpanFull(),
                 Forms\Components\Select::make('inquiry_type')
                     ->label('Tindakan Tombol (Inquiry/Beli)')

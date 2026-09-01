@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>About Us - Aquaboom Waterpark</x-slot:title>
+    <x-slot:title>{{ App::getLocale() === 'en' ? 'About Us - Aquaboom Waterpark' : 'Tentang Kami - Aquaboom Waterpark' }}</x-slot:title>
 
     <!-- Page Header (Waterbom Style) -->
     <div class="relative pt-40 pb-32 bg-aqua-navy flex items-center justify-center min-h-[500px] overflow-hidden">

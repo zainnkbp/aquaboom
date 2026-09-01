@@ -1,5 +1,5 @@
 <x-layout>
-  <x-slot:title>Explore Rides & Attractions - Aquaboom Waterpark</x-slot:title>
+  <x-slot:title>{{ App::getLocale() === 'en' ? 'Explore Rides & Attractions - Aquaboom Waterpark' : 'Jelajahi Wahana & Atraksi Air - Aquaboom Waterpark' }}</x-slot:title>
   
   <!-- Page Header — Navy Dark Hero -->
   <div class="pt-36 pb-20 bg-aqua-navy relative overflow-hidden">

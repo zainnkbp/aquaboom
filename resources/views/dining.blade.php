@@ -1,5 +1,5 @@
 <x-layout>
-  <x-slot:title>Eat & Drink - Aquaboom Waterpark</x-slot:title>
+  <x-slot:title>{{ App::getLocale() === 'en' ? 'Eat & Drink - Aquaboom Waterpark' : 'Restoran & Kuliner (Eat & Drink) - Aquaboom Waterpark' }}</x-slot:title>
   
   <div x-data="{ activeMenu: null, activeDiningName: '', isMenuOpen: false }">
     <!-- Page Header -->
