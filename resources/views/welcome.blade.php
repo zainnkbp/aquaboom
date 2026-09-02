@@ -258,6 +258,12 @@
               Venue rooftop eksklusif di lantai 7 Pentacity Mall BSB. Lengkap dengan fasilitas sewa gazebo pribadi, sound system & mic, pemandu fun team building games, dan paket makan siang buffet.
             </p>
 
+            @php
+              $salesWaHome = preg_replace('/[^0-9]/', '', $settings['contact_whatsapp'] ?? '628115472233');
+              if (str_starts_with($salesWaHome, '0')) {
+                  $salesWaHome = '62' . substr($salesWaHome, 1);
+              }
+            @endphp
             <div class="flex flex-wrap gap-4 items-center">
               <a href="{{ url('/gatherings') }}" class="inline-flex items-center gap-3 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-8 py-4 rounded-full uppercase tracking-wider text-xs transition-all shadow-xl shadow-amber-900/30 transform hover:-translate-y-1">
                 Lihat Paket Gathering Lengkap
@@ -265,7 +271,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
               </a>
-              <a href="https://wa.me/628115472233?text=Halo%20Tim%20Sales%20Aquaboom,%20saya%20ingin%20konsultasi%20penawaran%20corporate/family%20gathering" target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-black px-6 py-4 rounded-full uppercase tracking-wider text-xs transition-all shadow-md">
+              <a href="https://wa.me/{{ $salesWaHome }}?text=Halo%20Tim%20Sales%20Aquaboom,%20saya%20ingin%20konsultasi%20penawaran%20corporate/family%20gathering" target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-black px-6 py-4 rounded-full uppercase tracking-wider text-xs transition-all shadow-md">
                 Chat Tim Sales WhatsApp
               </a>
             </div>

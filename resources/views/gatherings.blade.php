@@ -278,8 +278,12 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           @foreach($gatheringPackages as $package)
             @php
+              $salesWa = preg_replace('/[^0-9]/', '', $settings['contact_whatsapp'] ?? '628115472233');
+              if (str_starts_with($salesWa, '0')) {
+                  $salesWa = '62' . substr($salesWa, 1);
+              }
               $textParam = rawurlencode("Halo Tim Sales Aquaboom, saya ingin konsultasi penawaran untuk paket gathering: " . $package->name);
-              $waLink = $package->inquiry_custom_link ?: "https://wa.me/628115472233?text={$textParam}";
+              $waLink = $package->inquiry_custom_link ?: "https://wa.me/{$salesWa}?text={$textParam}";
               
               // Fallback image selection based on package name keywords
               $fallbackImg = asset('assets/img/gathering-corporate.jpg');
@@ -337,6 +341,12 @@
   <!-- ============================================================ -->
   <!-- INTERACTIVE WHATSAPP QUOTE GENERATOR FORM                    -->
   <!-- ============================================================ -->
+  @php
+    $salesWaNumber = preg_replace('/[^0-9]/', '', $settings['contact_whatsapp'] ?? '628115472233');
+    if (str_starts_with($salesWaNumber, '0')) {
+        $salesWaNumber = '62' . substr($salesWaNumber, 1);
+    }
+  @endphp
   <section id="inquiry-form" class="py-24 bg-aqua-navy text-white relative overflow-hidden" x-data="{
     picName: '',
     companyName: '',
@@ -345,6 +355,7 @@
     eventDate: '',
     paxRange: '50 - 100 Orang',
     notes: '',
+    targetWa: '{{ $salesWaNumber }}',
     generateWaLink() {
       if (!this.picName || !this.phone) {
         alert('Mohon isi Nama PIC dan No WhatsApp Anda');
@@ -359,7 +370,7 @@
         + '👥 *Estimasi Jumlah Peserta:* ' + this.paxRange + '\n'
         + '📝 *Catatan Khusus:* ' + (this.notes || '-') + '\n\n'
         + 'Mohon informasi paket harga dan ketersediaan tanggal. Terima kasih!';
-      window.open('https://wa.me/628115472233?text=' + encodeURIComponent(text), '_blank');
+      window.open('https://wa.me/' + this.targetWa + '?text=' + encodeURIComponent(text), '_blank');
     }
   }">
     <!-- Background Rings -->
