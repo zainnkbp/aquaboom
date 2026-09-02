@@ -6,10 +6,10 @@
   <!-- ============================================================ -->
   <section class="pt-36 pb-24 bg-aqua-navy relative overflow-hidden">
     <!-- Background Texture -->
-    <div class="absolute inset-0 opacity-15">
-      <img src="{{ asset('assets/img/default.jpeg') }}" alt="Gathering Hero" class="w-full h-full object-cover" />
+    <div class="absolute inset-0 opacity-20">
+      <img src="{{ asset('assets/img/gathering-corporate.jpg') }}" alt="Gathering Hero" class="w-full h-full object-cover" />
     </div>
-    <div class="absolute inset-0 bg-gradient-to-b from-aqua-navy/70 via-aqua-navy/90 to-aqua-navy"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-aqua-navy/75 via-aqua-navy/90 to-aqua-navy"></div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 text-center">
       <div class="flex items-center justify-center gap-3 mb-4">
@@ -24,7 +24,7 @@
         {!! App::getLocale() === 'en' ? 'CREATE UNFORGETTABLE MOMENTS<br/><span class="gold-shimmer">ABOVE THE CLOUDS</span>' : 'CIPTAKAN MOMEN KEBERSAMAAN<br/><span class="gold-shimmer">DI ATAS AWAN</span>' !!}
       </h1>
 
-      <p class="text-base sm:text-lg text-white/70 font-semibold max-w-3xl mx-auto leading-relaxed mb-10">
+      <p class="text-base sm:text-lg text-white/75 font-semibold max-w-3xl mx-auto leading-relaxed mb-10">
         {{ App::getLocale() === 'en'
           ? 'Aquaboom Waterpark offers a breathtaking 7th-floor rooftop venue for corporate outings, family reunions, school study tours, and private celebrations. Enjoy exclusive group rates, dedicated coordinators, and tailored amenities.'
           : 'Aquaboom Waterpark menghadirkan venue rooftop lantai 7 Pentacity Mall untuk gathering kantor, arisan keluarga besar, study tour sekolah, dan perayaan ulang tahun. Dapatkan harga khusus rombongan, pendampingan tim event, dan fasilitas eksklusif.' }}
@@ -37,8 +37,8 @@
           </svg>
           {{ App::getLocale() === 'en' ? 'Get Instant Quote' : 'Minta Penawaran Harga' }}
         </a>
-        <a href="#packages-list" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-black px-8 py-4 rounded-full uppercase tracking-wider text-sm transition-all">
-          {{ App::getLocale() === 'en' ? 'Explore Packages' : 'Lihat Pilihan Paket' }} &darr;
+        <a href="#event-pillars" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-black px-8 py-4 rounded-full uppercase tracking-wider text-sm transition-all">
+          {{ App::getLocale() === 'en' ? 'Explore Event Types' : 'Pilihan Kategori Acara' }} &darr;
         </a>
       </div>
 
@@ -65,9 +65,9 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- 4 PILLARS OF EVENTS SECTION                                   -->
+  <!-- 4 PILLARS OF EVENTS WITH RICH PHOTOGRAPHY                    -->
   <!-- ============================================================ -->
-  <section class="py-24 bg-aqua-cream">
+  <section id="event-pillars" class="py-24 bg-aqua-cream">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <div class="text-center mb-16">
         <div class="flex items-center justify-center gap-3 mb-4">
@@ -82,91 +82,135 @@
         </h2>
         <p class="mt-4 text-slate-600 text-base font-semibold max-w-2xl mx-auto">
           {{ App::getLocale() === 'en'
-            ? 'From high-energy company gatherings to relaxing family reunions, we tailor our waterpark experience to match your event goals.'
-            : 'Mulai dari gathering perusahaan yang penuh semangat hingga arisan keluarga yang santai, kami menyesuaikan setiap detail agar acara Anda berkesan.' }}
+            ? 'From high-energy company gatherings to relaxing family reunions, explore our tailored event options.'
+            : 'Mulai dari gathering perusahaan yang penuh semangat hingga arisan keluarga yang santai, temukan paket yang tepat untuk rombongan Anda.' }}
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         
         <!-- Pillar 1: Corporate Outing -->
-        <div class="bg-white rounded-[28px] p-8 border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group">
-          <div>
-            <div class="w-14 h-14 bg-aqua-navy text-aqua-gold rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
+        <div class="bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
+          <div class="relative h-64 sm:h-72 overflow-hidden">
+            <img src="{{ asset('assets/img/gathering-corporate.jpg') }}" alt="Corporate Gathering Aquaboom" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
+            <div class="absolute top-4 left-4 bg-aqua-navy text-aqua-gold text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider border border-aqua-gold/30">
+              Corporate & BUMN
             </div>
-            <h3 class="text-xl font-black text-aqua-navy uppercase mb-3">Corporate Gathering & Outing</h3>
-            <p class="text-slate-600 font-medium text-xs leading-relaxed mb-6">
-              Tingkatkan kekompakan tim kerja (team building) dengan ice breaking water games, private sound system, dan lunch buffet di venue rooftop berkelas.
-            </p>
+            <div class="absolute bottom-4 left-6 right-6">
+              <h3 class="text-2xl font-black text-white uppercase">Corporate Gathering & Outing</h3>
+              <p class="text-white/80 text-xs font-semibold">Team Building Games • Sound System • Lunch Buffet</p>
+            </div>
           </div>
-          <ul class="space-y-2 border-t border-slate-100 pt-4 text-xs font-bold text-slate-700">
-            <li class="flex items-center gap-2 text-emerald-600">✓ Fun Team Building MC</li>
-            <li class="flex items-center gap-2 text-emerald-600">✓ Private Area & Sound System</li>
-            <li class="flex items-center gap-2 text-emerald-600">✓ Catering & Coffee Break</li>
-          </ul>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
+              Tingkatkan kekompakan dan sinergi tim kerja dengan program ice breaking water games seru, pemandu games profesional, panggung sambutan, sound system nirkabel, dan sajian buffet lezat di venue rooftop prestisius.
+            </p>
+            <div class="space-y-3 border-t border-slate-100 pt-6">
+              <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Instruktur Fun Games</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Sound System & Mic</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Private Area & Gazebo</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Lunch Buffet / Bento</span>
+              </div>
+              <a href="#inquiry-form" class="mt-4 w-full block text-center bg-aqua-navy hover:bg-black text-white font-black py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
+                Minta Proposal Outing Perusahaan &rarr;
+              </a>
+            </div>
+          </div>
         </div>
 
         <!-- Pillar 2: Family Gathering -->
-        <div class="bg-white rounded-[28px] p-8 border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group">
-          <div>
-            <div class="w-14 h-14 bg-amber-500/10 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
+        <div class="bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
+          <div class="relative h-64 sm:h-72 overflow-hidden">
+            <img src="{{ asset('assets/img/gathering-family.jpg') }}" alt="Family Gathering Aquaboom" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
+            <div class="absolute top-4 left-4 bg-amber-500 text-white text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
+              Keluarga & Komunitas
             </div>
-            <h3 class="text-xl font-black text-aqua-navy uppercase mb-3">Family Gathering & Arisan</h3>
-            <p class="text-slate-600 font-medium text-xs leading-relaxed mb-6">
-              Kumpul keluarga besar, reuni akbar, atau arisan komunitas dengan suasana ceria, kolam aman untuk anak & dewasa, serta gazebo santai.
-            </p>
+            <div class="absolute bottom-4 left-6 right-6">
+              <h3 class="text-2xl font-black text-white uppercase">Family Gathering & Arisan</h3>
+              <p class="text-white/80 text-xs font-semibold">Private Gazebo • Ban Pelampung • Suasana Ceria</p>
+            </div>
           </div>
-          <ul class="space-y-2 border-t border-slate-100 pt-4 text-xs font-bold text-slate-700">
-            <li class="flex items-center gap-2 text-emerald-600">✓ Complimentary Gazebo</li>
-            <li class="flex items-center gap-2 text-emerald-600">✓ Gratis Ban Pelampung</li>
-            <li class="flex items-center gap-2 text-emerald-600">✓ Diskon Spesial Rombongan</li>
-          </ul>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
+              Ciptakan momen kebersamaan hangat bersama keluarga besar, reuni sekolah, atau arisan komunitas. Tersedia gazebo santai, kolam dangkal aman untuk balita, kolam arus santai, dan seluncuran seru untuk dewasa.
+            </p>
+            <div class="space-y-3 border-t border-slate-100 pt-6">
+              <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Complimentary Gazebo</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Free Sewa Ban Pelampung</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Area Duduk Eksklusif</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Diskon Spesial Rombongan</span>
+              </div>
+              <a href="#inquiry-form" class="mt-4 w-full block text-center bg-aqua-navy hover:bg-black text-white font-black py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
+                Konsultasi Acara Keluarga &rarr;
+              </a>
+            </div>
+          </div>
         </div>
 
         <!-- Pillar 3: School Field Trip -->
-        <div class="bg-white rounded-[28px] p-8 border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group">
-          <div>
-            <div class="w-14 h-14 bg-aqua-azure/10 text-aqua-azure rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
+        <div class="bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
+          <div class="relative h-64 sm:h-72 overflow-hidden">
+            <img src="{{ asset('assets/img/gathering-school.jpg') }}" alt="School Field Trip Aquaboom" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
+            <div class="absolute top-4 left-4 bg-aqua-azure text-white text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
+              Sekolah & Kampus
             </div>
-            <h3 class="text-xl font-black text-aqua-navy uppercase mb-3">School Field Trip & Edu-Tour</h3>
-            <p class="text-slate-600 font-medium text-xs leading-relaxed mb-6">
-              Rekreasi edukatif bagi siswa TK, SD, SMP, SMA, dan universitas. Dilengkapi sesi edukasi keselamatan air dan pengawasan lifeguard bersertifikat.
-            </p>
+            <div class="absolute bottom-4 left-6 right-6">
+              <h3 class="text-2xl font-black text-white uppercase">School Field Trip & Edu-Tour</h3>
+              <p class="text-white/80 text-xs font-semibold">Water Safety Briefing • Free Guru • Pengawasan Lifeguard</p>
+            </div>
           </div>
-          <ul class="space-y-2 border-t border-slate-100 pt-4 text-xs font-bold text-slate-700">
-            <li class="flex items-center gap-2 text-emerald-600">✓ Free Tiket Guru Pendamping</li>
-            <li class="flex items-center gap-2 text-emerald-600">✓ Water Safety Briefing</li>
-            <li class="flex items-center gap-2 text-emerald-600">✓ Paket Hemat Siswa</li>
-          </ul>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
+              Paket rekreasi edukatif untuk siswa PAUD, TK, SD, SMP, SMA, dan universitas. Mengedepankan keselamatan maksimal dengan edukasi renang aman dan pengawasan intensif tim lifeguard bersertifikat.
+            </p>
+            <div class="space-y-3 border-t border-slate-100 pt-6">
+              <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Free Tiket Guru Pendamping</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Water Safety Briefing</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Pengawasan Lifeguard Penuh</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Tarif Khusus Pelajar</span>
+              </div>
+              <a href="#inquiry-form" class="mt-4 w-full block text-center bg-aqua-navy hover:bg-black text-white font-black py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
+                Minta Proposal Study Tour Sekolah &rarr;
+              </a>
+            </div>
+          </div>
         </div>
 
         <!-- Pillar 4: Birthday & Pool Party -->
-        <div class="bg-white rounded-[28px] p-8 border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group">
-          <div>
-            <div class="w-14 h-14 bg-rose-500/10 text-rose-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h10z" />
-              </svg>
+        <div class="bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
+          <div class="relative h-64 sm:h-72 overflow-hidden">
+            <img src="{{ asset('assets/img/gathering-birthday.jpg') }}" alt="Birthday Party Aquaboom" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
+            <div class="absolute top-4 left-4 bg-rose-600 text-white text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
+              Birthday Special
             </div>
-            <h3 class="text-xl font-black text-aqua-navy uppercase mb-3">Birthday & Private Party</h3>
-            <p class="text-slate-600 font-medium text-xs leading-relaxed mb-6">
-              Rayakan pesta ulang tahun tak terlupakan di pinggir kolam renang rooftop. Lengkap dengan dekorasi balon tematik, kids meals, dan photo spot.
-            </p>
+            <div class="absolute bottom-4 left-6 right-6">
+              <h3 class="text-2xl font-black text-white uppercase">Birthday & Private Pool Party</h3>
+              <p class="text-white/80 text-xs font-semibold">Dekorasi Tematik • Kids Meal • Sound System Ultah</p>
+            </div>
           </div>
-          <ul class="space-y-2 border-t border-slate-100 pt-4 text-xs font-bold text-slate-700">
-            <li class="flex items-center gap-2 text-emerald-600">✓ Poolside Birthday Setup</li>
-            <li class="flex items-center gap-2 text-emerald-600">✓ Kids Meal & Goodie Bag Spot</li>
-            <li class="flex items-center gap-2 text-emerald-600">✓ Sound System & Lagu Ultah</li>
-          </ul>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
+              Pesta ulang tahun impian di tepi kolam renang rooftop dengan pemandangan kota. Dilengkapi dekorasi balon warna-warni, paket kids meal, pemutaran lagu ulang tahun, dan spot foto yang Instagrammable.
+            </p>
+            <div class="space-y-3 border-t border-slate-100 pt-6">
+              <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Poolside Birthday Setup</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Paket Kids Meal Lezat</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Sound System & Mic Ultah</span>
+                <span class="flex items-center gap-1.5 text-emerald-600">✓ Gazebo Khusus Tamu Ultah</span>
+              </div>
+              <a href="#inquiry-form" class="mt-4 w-full block text-center bg-aqua-navy hover:bg-black text-white font-black py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
+                Rencanakan Pesta Ulang Tahun &rarr;
+              </a>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -174,9 +218,43 @@
   </section>
 
   <!-- ============================================================ -->
+  <!-- 3 EASY STEPS TO ORGANIZE YOUR GATHERING                      -->
+  <!-- ============================================================ -->
+  <section class="py-20 bg-white border-y border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10">
+      <div class="text-center mb-14">
+        <h2 class="text-2xl md:text-4xl font-black text-aqua-navy uppercase tracking-tight">
+          3 LANGKAH MUDAH MENGADAKAN ACARA DI AQUABOOM
+        </h2>
+        <p class="mt-2 text-slate-500 text-sm font-semibold">Tim Sales & Event Coordinator kami siap membantu Anda dari awal hingga acara selesai.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="p-8 rounded-3xl bg-aqua-cream border border-aqua-cream-2 flex flex-col items-center">
+          <div class="w-16 h-16 rounded-full bg-aqua-navy text-aqua-gold text-2xl font-black flex items-center justify-center mb-6 shadow-md">1</div>
+          <h3 class="text-lg font-black text-aqua-navy uppercase mb-2">Konsultasi Kebutuhan</h3>
+          <p class="text-slate-600 text-xs font-semibold leading-relaxed">Tentukan kategori acara, perkiraan tanggal pelaksanaan, dan estimasi jumlah peserta rombongan.</p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-aqua-cream border border-aqua-cream-2 flex flex-col items-center">
+          <div class="w-16 h-16 rounded-full bg-aqua-gold text-aqua-navy text-2xl font-black flex items-center justify-center mb-6 shadow-md">2</div>
+          <h3 class="text-lg font-black text-aqua-navy uppercase mb-2">Terima Proposal & Menu</h3>
+          <p class="text-slate-600 text-xs font-semibold leading-relaxed">Tim kami akan mengirimkan surat penawaran harga resmi (*quotation*) serta pilihan kustomisasi menu makanan.</p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-aqua-cream border border-aqua-cream-2 flex flex-col items-center">
+          <div class="w-16 h-16 rounded-full bg-emerald-600 text-white text-2xl font-black flex items-center justify-center mb-6 shadow-md">3</div>
+          <h3 class="text-lg font-black text-aqua-navy uppercase mb-2">Eksekusi Tanpa Ribet</h3>
+          <p class="text-slate-600 text-xs font-semibold leading-relaxed">Saat hari H, Anda dan tim tinggal datang menikmati keseruan. Seluruh persiapan teknis ditangani oleh staf kami.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
   <!-- DYNAMIC GATHERING PACKAGES FROM CMS                           -->
   <!-- ============================================================ -->
-  <section id="packages-list" class="py-24 bg-white">
+  <section id="packages-list" class="py-24 bg-aqua-cream">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <div class="text-center mb-16">
         <div class="flex items-center justify-center gap-3 mb-4">
@@ -202,10 +280,20 @@
             @php
               $textParam = rawurlencode("Halo Tim Sales Aquaboom, saya ingin konsultasi penawaran untuk paket gathering: " . $package->name);
               $waLink = $package->inquiry_custom_link ?: "https://wa.me/628115472233?text={$textParam}";
+              
+              // Fallback image selection based on package name keywords
+              $fallbackImg = asset('assets/img/gathering-corporate.jpg');
+              if (stripos($package->name, 'birthday') !== false || stripos($package->name, 'ulang tahun') !== false) {
+                  $fallbackImg = asset('assets/img/gathering-birthday.jpg');
+              } elseif (stripos($package->name, 'school') !== false || stripos($package->name, 'sekolah') !== false || stripos($package->name, 'edu') !== false) {
+                  $fallbackImg = asset('assets/img/gathering-school.jpg');
+              } elseif (stripos($package->name, 'family') !== false || stripos($package->name, 'keluarga') !== false || stripos($package->name, 'arisan') !== false) {
+                  $fallbackImg = asset('assets/img/gathering-family.jpg');
+              }
             @endphp
             <div class="bg-white rounded-[32px] overflow-hidden shadow-xl border border-slate-100 flex flex-col group hover:-translate-y-2 transition-all duration-300">
               <div class="relative h-64 overflow-hidden bg-aqua-navy">
-                <img src="{{ $package->image_url }}" alt="{{ $package->name }}" onerror="this.onerror=null; this.src='{{ asset('assets/img/default.jpeg') }}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src="{{ $package->image_url }}" alt="{{ $package->name }}" onerror="this.onerror=null; this.src='{{ $fallbackImg }}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div class="absolute top-4 right-4 bg-aqua-gold text-aqua-navy text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
                   Min. 10+ Pax
                 </div>
@@ -240,42 +328,6 @@
               </div>
             </div>
           @endforeach
-        </div>
-      @else
-        <!-- Fallback Default Showcase Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="bg-white rounded-[32px] p-8 border border-slate-200 shadow-xl flex flex-col justify-between">
-            <div>
-              <div class="bg-aqua-navy text-aqua-gold text-[10px] font-black uppercase px-3 py-1 rounded-full w-fit mb-4">Best Seller</div>
-              <h3 class="text-2xl font-black text-aqua-navy mb-2">PAKET OUTING CORPO-FUN</h3>
-              <p class="text-slate-600 text-sm font-semibold mb-6">Cocok untuk outing kantor & gathering BUMN/Swasta. Sudah termasuk tiket wahana, MC games, sound system, & private gazebo.</p>
-            </div>
-            <a href="https://wa.me/628115472233?text=Halo%20Tim%20Sales%20Aquaboom,%20saya%20tertarik%20dengan%20Paket%20Outing%20Corpo-Fun" target="_blank" class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-xl transition-all uppercase tracking-wider text-xs">
-              Konsultasi Paket Ini &rarr;
-            </a>
-          </div>
-
-          <div class="bg-white rounded-[32px] p-8 border border-slate-200 shadow-xl flex flex-col justify-between">
-            <div>
-              <div class="bg-amber-500 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full w-fit mb-4">Family Favorite</div>
-              <h3 class="text-2xl font-black text-aqua-navy mb-2">PAKET ARISAN & KELUARGA</h3>
-              <p class="text-slate-600 text-sm font-semibold mb-6">Paket rekreasi santai untuk keluarga besar & arisan. Termasuk gazebo eksklusif, sewa ban pelampung, dan welcome drink.</p>
-            </div>
-            <a href="https://wa.me/628115472233?text=Halo%20Tim%20Sales%20Aquaboom,%20saya%20tertarik%20dengan%20Paket%20Arisan%20dan%20Keluarga" target="_blank" class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-xl transition-all uppercase tracking-wider text-xs">
-              Konsultasi Paket Ini &rarr;
-            </a>
-          </div>
-
-          <div class="bg-white rounded-[32px] p-8 border border-slate-200 shadow-xl flex flex-col justify-between">
-            <div>
-              <div class="bg-aqua-azure text-white text-[10px] font-black uppercase px-3 py-1 rounded-full w-fit mb-4">School Special</div>
-              <h3 class="text-2xl font-black text-aqua-navy mb-2">PAKET EDU-TOUR SEKOLAH</h3>
-              <p class="text-slate-600 text-sm font-semibold mb-6">Paket wisata edukasi untuk TK hingga SMA. Dilengkapi briefing renang aman, pendampingan lifeguard, dan free tiket guru.</p>
-            </div>
-            <a href="https://wa.me/628115472233?text=Halo%20Tim%20Sales%20Aquaboom,%20saya%20tertarik%20dengan%20Paket%20Edu-Tour%20Sekolah" target="_blank" class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-xl transition-all uppercase tracking-wider text-xs">
-              Konsultasi Paket Ini &rarr;
-            </a>
-          </div>
         </div>
       @endif
 
