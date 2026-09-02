@@ -47,6 +47,10 @@ class TicketPackage extends Model
      */
     public function getIsDiscountedAttribute(): bool
     {
+        if ($this->price === null || (float) $this->price <= 0) {
+            return false;
+        }
+
         return $this->discount_price !== null
             && (float) $this->effective_price < (float) $this->price;
     }
@@ -57,6 +61,10 @@ class TicketPackage extends Model
      */
     public function getEffectivePriceAttribute(): float
     {
+        if ($this->price === null) {
+            return 0.0;
+        }
+
         $price = (float) $this->price;
 
         if ($this->discount_price === null) {
