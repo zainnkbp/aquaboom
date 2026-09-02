@@ -180,50 +180,103 @@
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         @if(isset($featuredPackages) && $featuredPackages->count() > 0)
           @foreach($featuredPackages as $pkg)
+            @php
+              $salesWa = preg_replace('/[^0-9]/', '', $settings['contact_whatsapp'] ?? '628115472233');
+              if (str_starts_with($salesWa, '0')) {
+                  $salesWa = '62' . substr($salesWa, 1);
+              }
+              $textParam = rawurlencode('Halo, saya tertarik dengan tiket/paket: ' . $pkg->name);
+              
+              if ($pkg->type === 'gathering') {
+                  $buttonLink = url('/gatherings');
+                  $buttonText = App::getLocale() === 'id' ? 'Konsultasi Gathering' : 'Enquire Gathering';
+                  $buttonClass = 'bg-emerald-600 hover:bg-emerald-700 text-white';
+                  $hoverBtnClass = 'bg-emerald-600 hover:bg-emerald-700 text-white';
+              } elseif ($pkg->inquiry_type === 'whatsapp') {
+                  $buttonLink = $pkg->inquiry_custom_link ?: "https://wa.me/{$salesWa}?text={$textParam}";
+                  $buttonText = App::getLocale() === 'id' ? 'Hubungi WhatsApp' : 'Enquire via WhatsApp';
+                  $buttonClass = 'bg-emerald-600 hover:bg-emerald-700 text-white';
+                  $hoverBtnClass = 'bg-emerald-600 hover:bg-emerald-700 text-white';
+              } else {
+                  $buttonLink = url('/ticket');
+                  $buttonText = App::getLocale() === 'id' ? 'Beli Tiket Online' : 'Buy Ticket Online';
+                  $buttonClass = 'bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy';
+                  $hoverBtnClass = 'bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy';
+              }
+            @endphp
             <div class="bg-white rounded-[28px] overflow-hidden shadow-xl border border-slate-100 flex flex-col group hover:-translate-y-2 transition-all duration-300">
-              <div class="relative h-48 overflow-hidden bg-aqua-navy">
+              <!-- Image with Hover Overlay -->
+              <div class="relative h-60 overflow-hidden bg-aqua-navy">
                 <img src="{{ $pkg->image_url }}" alt="{{ $pkg->name }}" onerror="this.onerror=null; this.src='{{ asset('assets/img/default.jpeg') }}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                
+                <!-- Hover Overlay -->
+                <div class="absolute inset-0 bg-aqua-navy/75 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p class="text-white text-sm font-bold text-center px-6 mb-4">
+                    {{ App::getLocale() === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
+                  </p>
+                  <a href="{{ $buttonLink }}" target="{{ $pkg->inquiry_type === 'whatsapp' ? '_blank' : '_self' }}" class="{{ $hoverBtnClass }} font-black px-7 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all shadow-md">
+                    {{ $buttonText }}
+                  </a>
+                </div>
+
+                <!-- Badges -->
                 @if($pkg->is_discounted)
-                  <div class="absolute top-3 left-3 bg-rose-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
-                    Promo Hemat
+                  <div class="absolute top-4 left-4 bg-rose-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-md">
+                    @if($pkg->discount_type === 'percentage')
+                      Save {{ rtrim(rtrim(number_format((float) $pkg->discount_price, 2), '0'), '.') }}%
+                    @else
+                      Promo Hemat
+                    @endif
                   </div>
                 @endif
-                <div class="absolute bottom-3 right-3 bg-aqua-navy/80 text-aqua-gold text-[10px] font-black px-2.5 py-1 rounded-md backdrop-blur-sm border border-aqua-gold/30 uppercase">
+
+                <div class="absolute top-4 right-4 bg-aqua-navy/80 text-aqua-gold text-[10px] font-black px-3 py-1 rounded-full backdrop-blur-sm border border-aqua-gold/30 uppercase">
                   {{ $pkg->validity_type === 'weekday' ? 'Weekday' : ($pkg->validity_type === 'weekend' ? 'Weekend' : 'All Days') }}
                 </div>
               </div>
 
-              <div class="p-6 flex-1 flex flex-col justify-between">
+              <!-- Card Content -->
+              <div class="p-7 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 class="text-lg font-black text-aqua-navy mb-2 uppercase line-clamp-1">
+                  <h3 class="text-xl font-black text-aqua-navy mb-2 uppercase line-clamp-2">
                     {{ App::getLocale() === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
                   </h3>
-                  <p class="text-slate-500 text-xs font-semibold leading-relaxed mb-4 line-clamp-2">
+                  <p class="text-slate-500 text-xs font-semibold leading-relaxed mb-5 line-clamp-3">
                     {{ App::getLocale() === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description }}
                   </p>
 
-                  <div class="mb-4">
+                  <div class="bg-aqua-cream rounded-xl p-3.5 mb-5 text-sm">
                     @if($pkg->price > 0)
                       @if($pkg->is_discounted)
-                        <div class="text-xs text-slate-400 line-through">Rp {{ number_format($pkg->price, 0, ',', '.') }}</div>
+                        <div class="flex justify-between items-center mb-1">
+                          <span class="text-slate-500 text-xs font-semibold">Harga Normal</span>
+                          <span class="text-slate-400 line-through text-xs font-bold">Rp {{ number_format((float) $pkg->price, 0, ',', '.') }}</span>
+                        </div>
                       @endif
-                      <div class="text-2xl font-black text-aqua-navy">
-                        Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}
-                        <span class="text-[10px] font-normal text-slate-500">/ tiket</span>
+                      <div class="flex justify-between items-center">
+                        <span class="text-aqua-navy font-black text-xs uppercase tracking-wider">
+                          {{ $pkg->type === 'gathering' ? 'Mulai Dari' : 'Harga Tiket' }}
+                        </span>
+                        <span class="text-aqua-gold text-lg font-black">
+                          Rp {{ number_format((float) $pkg->effective_price, 0, ',', '.') }}
+                          <span class="text-[10px] font-normal text-slate-500">/ {{ $pkg->type === 'gathering' ? 'orang' : 'tiket' }}</span>
+                        </span>
                       </div>
                     @else
-                      <div class="text-base font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 inline-block">
-                        Penawaran Kustom
+                      <div class="text-center py-1">
+                        <span class="text-emerald-700 font-black text-xs uppercase tracking-wider">
+                          {{ App::getLocale() === 'id' ? 'Penawaran Kustom / By Request' : 'Custom Quote on Request' }}
+                        </span>
                       </div>
                     @endif
                   </div>
                 </div>
 
-                <a href="{{ $pkg->type === 'gathering' ? url('/gatherings') : url('/ticket') }}" class="w-full text-center {{ $pkg->type === 'gathering' ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-aqua-gold hover:bg-aqua-gold-2' }} text-aqua-navy font-black py-3 rounded-xl transition-all shadow-md uppercase tracking-wider text-xs block">
-                  {{ $pkg->type === 'gathering' ? 'Konsultasi Gathering' : 'Beli Tiket Online' }}
+                <a href="{{ $buttonLink }}" target="{{ $pkg->inquiry_type === 'whatsapp' ? '_blank' : '_self' }}" class="block w-full text-center {{ $buttonClass }} font-black py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-md">
+                  {{ $buttonText }}
                 </a>
               </div>
             </div>
