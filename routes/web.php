@@ -76,21 +76,7 @@ Route::get('/checkout', function () {
 })->name('checkout');
 
 Route::get('/ticket', function () {
-    $now = now();
-    $specialPackages = \App\Models\TicketPackage::where('is_active', true)
-        ->whereIn('type', ['bundle', 'flash_sale'])
-        ->where(function ($query) use ($now) {
-            $query->whereNull('sales_start')
-                  ->orWhere('sales_start', '<=', $now);
-        })
-        ->where(function ($query) use ($now) {
-            $query->whereNull('sales_end')
-                  ->orWhere('sales_end', '>=', $now);
-        })
-        ->orderBy('id', 'asc')
-        ->get();
-
-    return view('ticket-buy', compact('specialPackages'));
+    return view('ticket-buy');
 })->name('ticket.buy');
 
 Route::get('/packages', function () {
