@@ -95,10 +95,10 @@ class TicketPackageResource extends Resource
                     ->helperText('Pilih paket tiket lain di sini, maka teks Syarat & Ketentuan-nya akan otomatis tersalin ke kotak di atas!'),
                 Forms\Components\TextInput::make('price')
                     ->label('Harga Normal')
-                    ->required()
+                    ->nullable()
                     ->numeric()
                     ->prefix('Rp')
-                    ->helperText('Harga normal tiket'),
+                    ->helperText('Harga normal tiket. Kosongkan jika harga bersifat kustom / berdasarkan penawaran khusus rombongan (harga tidak akan ditampilkan di website).'),
                 Forms\Components\Select::make('discount_type')
                     ->label('Jenis Diskon')
                     ->options([

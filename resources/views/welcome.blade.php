@@ -206,13 +206,19 @@
                   </p>
 
                   <div class="mb-4">
-                    @if($pkg->is_discounted)
-                      <div class="text-xs text-slate-400 line-through">Rp {{ number_format($pkg->price, 0, ',', '.') }}</div>
+                    @if($pkg->price > 0)
+                      @if($pkg->is_discounted)
+                        <div class="text-xs text-slate-400 line-through">Rp {{ number_format($pkg->price, 0, ',', '.') }}</div>
+                      @endif
+                      <div class="text-2xl font-black text-aqua-navy">
+                        Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}
+                        <span class="text-[10px] font-normal text-slate-500">/ tiket</span>
+                      </div>
+                    @else
+                      <div class="text-base font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 inline-block">
+                        Penawaran Kustom
+                      </div>
                     @endif
-                    <div class="text-2xl font-black text-aqua-navy">
-                      Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}
-                      <span class="text-[10px] font-normal text-slate-500">/ tiket</span>
-                    </div>
                   </div>
                 </div>
 
