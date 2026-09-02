@@ -183,11 +183,11 @@
                   @endif
                 </div>
 
-                <a href="{{ $waLink }}" target="_blank" class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 uppercase tracking-wider text-xs">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <a href="{{ $waLink }}" target="_blank" class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 px-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 uppercase tracking-wider text-xs leading-normal">
+                  <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
                   </svg>
-                  Tanya & Minta Penawaran Paket Ini
+                  <span>Tanya & Minta Penawaran Paket Ini</span>
                 </a>
               </div>
             </div>
@@ -259,7 +259,7 @@
         </p>
       </div>
 
-      <div class="bg-white/5 border border-white/15 rounded-[32px] p-8 md:p-12 backdrop-blur-xl shadow-2xl">
+      <div class="bg-white/5 border border-white/15 rounded-[32px] p-6 sm:p-8 md:p-12 backdrop-blur-xl shadow-2xl">
         <form @submit.prevent="generateWaLink()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">Nama Lengkap PIC *</label>
@@ -309,11 +309,11 @@
           </div>
 
           <div class="md:col-span-2 mt-4 text-center">
-            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black px-12 py-5 rounded-full uppercase tracking-wider text-sm transition-all shadow-2xl shadow-emerald-900/40 transform hover:-translate-y-1">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black px-6 sm:px-10 py-4 sm:py-5 rounded-full uppercase tracking-wider text-xs sm:text-sm transition-all shadow-2xl shadow-emerald-900/40 transform hover:-translate-y-1 text-center">
+              <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
               </svg>
-              Kirim Permintaan Penawaran via WhatsApp
+              <span>Kirim Permintaan Penawaran via WhatsApp</span>
             </button>
             <p class="text-white/40 text-xs mt-3">Formulir akan otomatis membuka chat WhatsApp resmi Sales Aquaboom Waterpark.</p>
           </div>
