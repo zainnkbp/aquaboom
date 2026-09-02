@@ -26,6 +26,10 @@ class AddOn extends Model
             return $this->image;
         }
 
+        if (Str::startsWith($this->image, 'assets/')) {
+            return asset($this->image);
+        }
+
         return asset('uploads/' . ltrim($this->image, '/'));
     }
 }

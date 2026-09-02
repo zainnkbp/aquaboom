@@ -43,6 +43,10 @@ class Facility extends Model
             return $value;
         }
 
+        if (\Illuminate\Support\Str::startsWith($value, 'assets/')) {
+            return asset($value);
+        }
+
         return asset('uploads/' . ltrim($value, '/'));
     }
 }

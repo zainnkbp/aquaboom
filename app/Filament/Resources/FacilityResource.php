@@ -116,7 +116,10 @@ class FacilityResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image_url')
-                    ->disk('public_uploads'),
+                    ->label('Foto Fasilitas')
+                    ->state(fn ($record): ?string => $record->image_url)
+                    ->square()
+                    ->size(50),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')

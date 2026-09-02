@@ -226,8 +226,10 @@ class TicketPackageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image_url')
-                    ->label('Gambar')
-                    ->disk('public_uploads'),
+                    ->label('Foto / Banner')
+                    ->state(fn (TicketPackage $record): ?string => $record->image_url)
+                    ->square()
+                    ->size(52),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Paket')
                     ->searchable(),

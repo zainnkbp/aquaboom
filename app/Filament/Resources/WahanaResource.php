@@ -117,8 +117,10 @@ class WahanaResource extends Resource
                     })
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image_url')
-                    ->label('Gambar')
-                    ->disk('public_uploads'),
+                    ->label('Foto Wahana')
+                    ->state(fn ($record): ?string => $record->image_url)
+                    ->square()
+                    ->size(50),
                 Tables\Columns\TextColumn::make('order_column')
                     ->label('Urutan')
                     ->numeric()

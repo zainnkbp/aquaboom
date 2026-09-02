@@ -100,8 +100,10 @@ class AddOnResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Gambar')
-                    ->disk('public_uploads'),
+                    ->label('Foto Produk')
+                    ->state(fn ($record): ?string => $record->image_url)
+                    ->square()
+                    ->size(50),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Produk')
                     ->searchable()
