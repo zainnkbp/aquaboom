@@ -70,8 +70,11 @@
     <!-- Top Utility Bar (Desktop Only) - Hides on scroll -->
     <div :class="scrolled ? 'h-0 opacity-0 overflow-hidden py-0 border-none' : 'border-b border-white/10 py-2'"
       class="hidden lg:block transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-6 lg:px-10 flex justify-end items-center gap-4 text-[10px]">
-        <span class="text-white/40 font-semibold mr-auto tracking-wider uppercase">Aquaboom Waterpark Balikpapan</span>
+      <div class="max-w-7xl mx-auto px-6 lg:px-10 flex justify-between items-center gap-4 text-[11px]">
+        <a href="{{ url('/gatherings') }}" class="text-aqua-gold hover:text-white font-bold tracking-wider uppercase flex items-center gap-2 transition-colors">
+          <span class="bg-aqua-gold text-aqua-navy text-[9px] font-black px-2 py-0.5 rounded-full">PROMO</span>
+          <span>🎉 {{ App::getLocale() === 'en' ? 'Special Corporate & Group Gathering Rates (Min. 10 Pax) — Inquire Now!' : 'Paket Promo Corporate & Family Gathering (Min. 10 Pax) — Konsultasi Sekarang!' }}</span>
+        </a>
 
         <!-- Language Switcher (Compact utility style) -->
         <div class="flex items-center bg-white/5 rounded-full p-0.5 border border-white/10 shrink-0">
@@ -179,6 +182,16 @@
                   </svg>
                 </div>
                 Special Packages
+              </a>
+              <a href="{{ url('/gatherings') }}"
+                class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
+                <div class="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                Corporate & Family Gathering
               </a>
             </div>
           </div>
@@ -351,6 +364,11 @@
                 <a href="{{ url('/packages') }}"
                   class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Special
                   Packages</a>
+                <a href="{{ url('/gatherings') }}"
+                  class="text-aqua-gold font-bold hover:text-white p-3 rounded-xl transition-all text-sm flex items-center justify-between">
+                  <span>Corporate & Family Gathering</span>
+                  <span class="bg-aqua-gold/20 text-aqua-gold text-[10px] px-2 py-0.5 rounded-md uppercase font-black">Group</span>
+                </a>
               </div>
             </div>
           </div>

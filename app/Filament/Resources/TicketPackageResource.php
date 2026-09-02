@@ -117,15 +117,16 @@ class TicketPackageResource extends Resource
                     ->maxValue(fn (Get $get): ?float => $get('discount_type') === 'percentage' ? 100 : null)
                     ->helperText('Harga setelah diskon (atau persentase diskon jika jenis diskon = persentase). Kosongkan bila tidak ada diskon.'),
                 Forms\Components\Select::make('type')
-                    ->label('Jenis Tiket')
+                    ->label('Jenis Tiket / Kategori')
                     ->options([
-                        'regular' => 'Regular',
-                        'flash_sale' => 'Flash Sale',
-                        'bundle' => 'Special Deals (Inquiry)',
+                        'regular' => 'Regular (Tiket Masuk Harian)',
+                        'flash_sale' => 'Flash Sale (Promo Terbatas)',
+                        'bundle' => 'Special Deals / Paket Promo',
+                        'gathering' => 'Corporate & Family Gathering (Rombongan)',
                     ])
                     ->default('regular')
                     ->required()
-                    ->helperText('Jenis tiket: regular, flash_sale, bundle'),
+                    ->helperText('Pilih kategori paket. Paket Gathering akan otomatis tampil pada halaman /gatherings.'),
                 Forms\Components\Placeholder::make('current_image_preview')
                     ->label('Foto Paket / Promo Saat Ini')
                     ->content(function ($record) {
@@ -151,9 +152,9 @@ class TicketPackageResource extends Resource
                 Forms\Components\Select::make('inquiry_type')
                     ->label('Tindakan Tombol (Inquiry/Beli)')
                     ->options([
-                        'none' => 'Beli Online Langsung',
-                        'email' => 'Inquiry via Email',
-                        'whatsapp' => 'Inquiry via WhatsApp',
+                        'none' => 'Beli Online Langsung (Kasir Web)',
+                        'email' => 'Inquiry via Email Sales',
+                        'whatsapp' => 'Inquiry via WhatsApp Sales',
                     ])
                     ->default('none')
                     ->required()
@@ -165,9 +166,13 @@ class TicketPackageResource extends Resource
                     ->visible(fn (Get $get) => in_array($get('inquiry_type'), ['email', 'whatsapp']))
                     ->maxLength(255),
                 Forms\Components\Toggle::make('is_active')
-                    ->label('Aktif')
+                    ->label('Status Aktif')
                     ->default(true)
-                    ->helperText('Centang jika paket tiket aktif dan bisa dibeli'),
+                    ->helperText('Centang jika paket tiket aktif dan dapat dilihat oleh publik.'),
+                Forms\Components\Toggle::make('is_featured_home')
+                    ->label('Tampilkan di Beranda (Featured Promo di Home)')
+                    ->default(false)
+                    ->helperText('Aktifkan untuk memunculkan kartu paket/promo ini langsung di Halaman Utama (Landing Page).'),
                 
                 Forms\Components\Section::make('Pengaturan Waktu (Dynamic Pricing)')
                     ->description('Atur kapan tiket ini bisa dibeli dan digunakan')
@@ -239,9 +244,27 @@ class TicketPackageResource extends Resource
                             : 'Rp '.number_format((float) $state, 0, ',', '.')))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type')
-                    ->label('Jenis')
+                    ->label('Kategori')
+                    ->formatStateUsing(fn ($state) => match($state) {
+                        'regular' => 'Reguler',
+                        'flash_sale' => 'Flash Sale',
+                        'bundle' => 'Promo Deals',
+                        'gathering' => 'Gathering & Event',
+                        default => $state,
+                    })
                     ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'regular' => 'info',
+                        'flash_sale' => 'danger',
+                        'bundle' => 'warning',
+                        'gathering' => 'success',
+                        default => 'gray',
+                    })
                     ->searchable(),
+                Tables\Columns\IconColumn::make('is_featured_home')
+                    ->label('Di Beranda')
+                    ->boolean()
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
                     ->boolean(),

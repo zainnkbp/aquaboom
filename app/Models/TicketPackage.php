@@ -16,6 +16,7 @@ class TicketPackage extends Model
         'price' => 'decimal:2',
         'discount_price' => 'decimal:2',
         'is_active' => 'boolean',
+        'is_featured_home' => 'boolean',
         'valid_dates' => 'array',
         'valid_days' => 'array',
     ];

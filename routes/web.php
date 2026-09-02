@@ -18,8 +18,44 @@ Route::get('/', function () {
     $homeCards = HomePageCard::orderBy('sort_order')->get();
     $settings = Setting::pluck('value', 'key');
     
-    return view('welcome', compact('wahanas', 'homeCards', 'settings'));
+    // Featured Tickets & Promo Deals for Home Page
+    $now = now();
+    $featuredPackages = \App\Models\TicketPackage::where('is_active', true)
+        ->where(function ($query) use ($now) {
+            $query->whereNull('sales_start')->orWhere('sales_start', '<=', $now);
+        })
+        ->where(function ($query) use ($now) {
+            $query->whereNull('sales_end')->orWhere('sales_end', '>=', $now);
+        })
+        ->orderByRaw('is_featured_home DESC, id ASC')
+        ->take(4)
+        ->get();
+
+    return view('welcome', compact('wahanas', 'homeCards', 'settings', 'featuredPackages'));
 })->name('home');
+
+Route::get('/gatherings', function () {
+    $now = now();
+    $gatheringPackages = \App\Models\TicketPackage::where('is_active', true)
+        ->where('type', 'gathering')
+        ->where(function ($query) use ($now) {
+            $query->whereNull('sales_start')->orWhere('sales_start', '<=', $now);
+        })
+        ->where(function ($query) use ($now) {
+            $query->whereNull('sales_end')->orWhere('sales_end', '>=', $now);
+        })
+        ->get();
+    $settings = Setting::pluck('value', 'key');
+    return view('gatherings', compact('gatheringPackages', 'settings'));
+})->name('gatherings');
+
+Route::get('/corporate-gathering', function () {
+    return redirect()->route('gatherings');
+});
+
+Route::get('/group-events', function () {
+    return redirect()->route('gatherings');
+});
 
 Route::get('/v0', function () {
     $wahanas = Wahana::orderBy('order_column')->get();

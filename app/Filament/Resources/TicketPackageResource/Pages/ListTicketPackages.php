@@ -16,4 +16,19 @@ class ListTicketPackages extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    public function getTabs(): array
+    {
+        return [
+            'all' => \Filament\Resources\Components\Tab::make('Semua Paket'),
+            'regular' => \Filament\Resources\Components\Tab::make('Tiket Reguler')
+                ->modifyQueryUsing(fn ($query) => $query->where('type', 'regular')),
+            'promo' => \Filament\Resources\Components\Tab::make('Promo & Flash Sale')
+                ->modifyQueryUsing(fn ($query) => $query->whereIn('type', ['bundle', 'flash_sale'])),
+            'gathering' => \Filament\Resources\Components\Tab::make('Corporate & Gathering')
+                ->modifyQueryUsing(fn ($query) => $query->where('type', 'gathering')),
+            'featured' => \Filament\Resources\Components\Tab::make('Featured di Home')
+                ->modifyQueryUsing(fn ($query) => $query->where('is_featured_home', true)),
+        ];
+    }
 }
