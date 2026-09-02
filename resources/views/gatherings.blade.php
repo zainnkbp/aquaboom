@@ -88,131 +88,58 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        
-        <!-- Pillar 1: Corporate Outing -->
-        <div class="bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
-          <div class="relative h-64 sm:h-72 overflow-hidden">
-            <img src="{{ asset('assets/img/gathering-corporate.jpg') }}" alt="Corporate Gathering Aquaboom" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
-            <div class="absolute top-4 left-4 bg-aqua-navy text-aqua-gold text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider border border-aqua-gold/30">
-              Corporate & BUMN
-            </div>
-            <div class="absolute bottom-4 left-6 right-6">
-              <h3 class="text-2xl font-black text-white uppercase">Corporate Gathering & Outing</h3>
-              <p class="text-white/80 text-xs font-semibold">Team Building Games • Sound System • Lunch Buffet</p>
-            </div>
-          </div>
-          <div class="p-8 flex-1 flex flex-col justify-between">
-            <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
-              Tingkatkan kekompakan dan sinergi tim kerja dengan program ice breaking water games seru, pemandu games profesional, panggung sambutan, sound system nirkabel, dan sajian buffet lezat di venue rooftop prestisius.
-            </p>
-            <div class="space-y-3 border-t border-slate-100 pt-6">
-              <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Instruktur Fun Games</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Sound System & Mic</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Private Area & Gazebo</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Lunch Buffet / Bento</span>
+        @if(isset($gatheringEvents) && $gatheringEvents->count() > 0)
+          @foreach($gatheringEvents as $event)
+            @php
+              $badgeBg = match($event->badge_color) {
+                  'amber' => 'bg-amber-500 text-white',
+                  'azure' => 'bg-aqua-azure text-white',
+                  'rose' => 'bg-rose-600 text-white',
+                  'emerald' => 'bg-emerald-600 text-white',
+                  default => 'bg-aqua-navy text-aqua-gold border border-aqua-gold/30',
+              };
+              $eventTitle = App::getLocale() === 'en' && $event->title_en ? $event->title_en : $event->title;
+              $eventSubtitle = App::getLocale() === 'en' && $event->subtitle_en ? $event->subtitle_en : $event->subtitle;
+              $eventDesc = App::getLocale() === 'en' && $event->description_en ? $event->description_en : $event->description;
+              $eventFeatures = App::getLocale() === 'en' && !empty($event->features_en) ? $event->features_en : ($event->features ?? []);
+              $eventBtnText = App::getLocale() === 'en' && $event->button_text_en ? $event->button_text_en : $event->button_text;
+            @endphp
+            <div class="bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
+              <div class="relative h-64 sm:h-72 overflow-hidden bg-aqua-navy">
+                <img src="{{ $event->image_url }}" alt="{{ $eventTitle }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
+                @if($event->badge_text)
+                  <div class="absolute top-4 left-4 {{ $badgeBg }} text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
+                    {{ $event->badge_text }}
+                  </div>
+                @endif
+                <div class="absolute bottom-4 left-6 right-6">
+                  <h3 class="text-2xl font-black text-white uppercase">{{ $eventTitle }}</h3>
+                  @if($eventSubtitle)
+                    <p class="text-white/80 text-xs font-semibold">{{ $eventSubtitle }}</p>
+                  @endif
+                </div>
               </div>
-              <a href="#inquiry-form" class="mt-4 w-full block text-center bg-aqua-navy hover:bg-black text-white font-black py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
-                Minta Proposal Outing Perusahaan &rarr;
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pillar 2: Family Gathering -->
-        <div class="bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
-          <div class="relative h-64 sm:h-72 overflow-hidden">
-            <img src="{{ asset('assets/img/gathering-family.jpg') }}" alt="Family Gathering Aquaboom" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
-            <div class="absolute top-4 left-4 bg-amber-500 text-white text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
-              Keluarga & Komunitas
-            </div>
-            <div class="absolute bottom-4 left-6 right-6">
-              <h3 class="text-2xl font-black text-white uppercase">Family Gathering & Arisan</h3>
-              <p class="text-white/80 text-xs font-semibold">Private Gazebo • Ban Pelampung • Suasana Ceria</p>
-            </div>
-          </div>
-          <div class="p-8 flex-1 flex flex-col justify-between">
-            <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
-              Ciptakan momen kebersamaan hangat bersama keluarga besar, reuni sekolah, atau arisan komunitas. Tersedia gazebo santai, kolam dangkal aman untuk balita, kolam arus santai, dan seluncuran seru untuk dewasa.
-            </p>
-            <div class="space-y-3 border-t border-slate-100 pt-6">
-              <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Complimentary Gazebo</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Free Sewa Ban Pelampung</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Area Duduk Eksklusif</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Diskon Spesial Rombongan</span>
+              <div class="p-8 flex-1 flex flex-col justify-between">
+                <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
+                  {{ $eventDesc }}
+                </p>
+                <div class="space-y-3 border-t border-slate-100 pt-6">
+                  @if(!empty($eventFeatures))
+                    <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
+                      @foreach($eventFeatures as $feat)
+                        <span class="flex items-center gap-1.5 text-emerald-600">✓ {{ $feat }}</span>
+                      @endforeach
+                    </div>
+                  @endif
+                  <a href="{{ $event->button_action ?: '#inquiry-form' }}" class="mt-4 w-full block text-center bg-aqua-navy hover:bg-black text-white font-black py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
+                    {{ $eventBtnText ?: 'Minta Penawaran Acara →' }}
+                  </a>
+                </div>
               </div>
-              <a href="#inquiry-form" class="mt-4 w-full block text-center bg-aqua-navy hover:bg-black text-white font-black py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
-                Konsultasi Acara Keluarga &rarr;
-              </a>
             </div>
-          </div>
-        </div>
-
-        <!-- Pillar 3: School Field Trip -->
-        <div class="bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
-          <div class="relative h-64 sm:h-72 overflow-hidden">
-            <img src="{{ asset('assets/img/gathering-school.jpg') }}" alt="School Field Trip Aquaboom" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
-            <div class="absolute top-4 left-4 bg-aqua-azure text-white text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
-              Sekolah & Kampus
-            </div>
-            <div class="absolute bottom-4 left-6 right-6">
-              <h3 class="text-2xl font-black text-white uppercase">School Field Trip & Edu-Tour</h3>
-              <p class="text-white/80 text-xs font-semibold">Water Safety Briefing • Free Guru • Pengawasan Lifeguard</p>
-            </div>
-          </div>
-          <div class="p-8 flex-1 flex flex-col justify-between">
-            <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
-              Paket rekreasi edukatif untuk siswa PAUD, TK, SD, SMP, SMA, dan universitas. Mengedepankan keselamatan maksimal dengan edukasi renang aman dan pengawasan intensif tim lifeguard bersertifikat.
-            </p>
-            <div class="space-y-3 border-t border-slate-100 pt-6">
-              <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Free Tiket Guru Pendamping</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Water Safety Briefing</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Pengawasan Lifeguard Penuh</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Tarif Khusus Pelajar</span>
-              </div>
-              <a href="#inquiry-form" class="mt-4 w-full block text-center bg-aqua-navy hover:bg-black text-white font-black py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
-                Minta Proposal Study Tour Sekolah &rarr;
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pillar 4: Birthday & Pool Party -->
-        <div class="bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
-          <div class="relative h-64 sm:h-72 overflow-hidden">
-            <img src="{{ asset('assets/img/gathering-birthday.jpg') }}" alt="Birthday Party Aquaboom" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
-            <div class="absolute top-4 left-4 bg-rose-600 text-white text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
-              Birthday Special
-            </div>
-            <div class="absolute bottom-4 left-6 right-6">
-              <h3 class="text-2xl font-black text-white uppercase">Birthday & Private Pool Party</h3>
-              <p class="text-white/80 text-xs font-semibold">Dekorasi Tematik • Kids Meal • Sound System Ultah</p>
-            </div>
-          </div>
-          <div class="p-8 flex-1 flex flex-col justify-between">
-            <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
-              Pesta ulang tahun impian di tepi kolam renang rooftop dengan pemandangan kota. Dilengkapi dekorasi balon warna-warni, paket kids meal, pemutaran lagu ulang tahun, dan spot foto yang Instagrammable.
-            </p>
-            <div class="space-y-3 border-t border-slate-100 pt-6">
-              <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Poolside Birthday Setup</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Paket Kids Meal Lezat</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Sound System & Mic Ultah</span>
-                <span class="flex items-center gap-1.5 text-emerald-600">✓ Gazebo Khusus Tamu Ultah</span>
-              </div>
-              <a href="#inquiry-form" class="mt-4 w-full block text-center bg-aqua-navy hover:bg-black text-white font-black py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
-                Rencanakan Pesta Ulang Tahun &rarr;
-              </a>
-            </div>
-          </div>
-        </div>
-
+          @endforeach
+        @endif
       </div>
     </div>
   </section>
