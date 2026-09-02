@@ -45,9 +45,8 @@ Route::get('/gatherings', function () {
             $query->whereNull('sales_end')->orWhere('sales_end', '>=', $now);
         })
         ->get();
-    $gatheringEvents = \App\Models\GatheringEvent::where('is_active', true)->orderBy('sort_order')->get();
     $settings = Setting::pluck('value', 'key');
-    return view('gatherings', compact('gatheringPackages', 'gatheringEvents', 'settings'));
+    return view('gatherings', compact('gatheringPackages', 'settings'));
 })->name('gatherings');
 
 Route::get('/corporate-gathering', function () {

@@ -37,8 +37,8 @@
           </svg>
           {{ App::getLocale() === 'en' ? 'Get Instant Quote' : 'Minta Penawaran Harga' }}
         </a>
-        <a href="#event-pillars" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-black px-8 py-4 rounded-full uppercase tracking-wider text-sm transition-all">
-          {{ App::getLocale() === 'en' ? 'Explore Event Types' : 'Pilihan Kategori Acara' }} &darr;
+        <a href="#packages-list" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-black px-8 py-4 rounded-full uppercase tracking-wider text-sm transition-all">
+          {{ App::getLocale() === 'en' ? 'Explore Packages' : 'Lihat Pilihan Paket' }} &darr;
         </a>
       </div>
 
@@ -65,89 +65,9 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- 4 PILLARS OF EVENTS WITH RICH PHOTOGRAPHY                    -->
-  <!-- ============================================================ -->
-  <section id="event-pillars" class="py-24 bg-aqua-cream">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="text-center mb-16">
-        <div class="flex items-center justify-center gap-3 mb-4">
-          <div class="h-px w-10 bg-aqua-gold"></div>
-          <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">
-            {{ App::getLocale() === 'en' ? 'Event Categories' : 'Kategori Acara' }}
-          </span>
-          <div class="h-px w-10 bg-aqua-gold"></div>
-        </div>
-        <h2 class="text-3xl md:text-5xl font-black text-aqua-navy uppercase tracking-tight">
-          {{ App::getLocale() === 'en' ? 'CUSTOM SOLUTIONS FOR EVERY GROUP' : 'SOLUSI TERBAIK UNTUK SETIAP ACARA' }}
-        </h2>
-        <p class="mt-4 text-slate-600 text-base font-semibold max-w-2xl mx-auto">
-          {{ App::getLocale() === 'en'
-            ? 'From high-energy company gatherings to relaxing family reunions, explore our tailored event options.'
-            : 'Mulai dari gathering perusahaan yang penuh semangat hingga arisan keluarga yang santai, temukan paket yang tepat untuk rombongan Anda.' }}
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        @if(isset($gatheringEvents) && $gatheringEvents->count() > 0)
-          @foreach($gatheringEvents as $event)
-            @php
-              $badgeBg = match($event->badge_color) {
-                  'amber' => 'bg-amber-500 text-white',
-                  'azure' => 'bg-aqua-azure text-white',
-                  'rose' => 'bg-rose-600 text-white',
-                  'emerald' => 'bg-emerald-600 text-white',
-                  default => 'bg-aqua-navy text-aqua-gold border border-aqua-gold/30',
-              };
-              $eventTitle = App::getLocale() === 'en' && $event->title_en ? $event->title_en : $event->title;
-              $eventSubtitle = App::getLocale() === 'en' && $event->subtitle_en ? $event->subtitle_en : $event->subtitle;
-              $eventDesc = App::getLocale() === 'en' && $event->description_en ? $event->description_en : $event->description;
-              $eventFeatures = App::getLocale() === 'en' && !empty($event->features_en) ? $event->features_en : ($event->features ?? []);
-              $eventBtnText = App::getLocale() === 'en' && $event->button_text_en ? $event->button_text_en : $event->button_text;
-            @endphp
-            <div class="bg-white rounded-[32px] overflow-hidden border border-slate-100 shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col group">
-              <div class="relative h-64 sm:h-72 overflow-hidden bg-aqua-navy">
-                <img src="{{ $event->image_url }}" alt="{{ $eventTitle }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
-                @if($event->badge_text)
-                  <div class="absolute top-4 left-4 {{ $badgeBg }} text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
-                    {{ $event->badge_text }}
-                  </div>
-                @endif
-                <div class="absolute bottom-4 left-6 right-6">
-                  <h3 class="text-2xl font-black text-white uppercase">{{ $eventTitle }}</h3>
-                  @if($eventSubtitle)
-                    <p class="text-white/80 text-xs font-semibold">{{ $eventSubtitle }}</p>
-                  @endif
-                </div>
-              </div>
-              <div class="p-8 flex-1 flex flex-col justify-between">
-                <p class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
-                  {{ $eventDesc }}
-                </p>
-                <div class="space-y-3 border-t border-slate-100 pt-6">
-                  @if(!empty($eventFeatures))
-                    <div class="grid grid-cols-2 gap-2 text-xs font-bold text-slate-700">
-                      @foreach($eventFeatures as $feat)
-                        <span class="flex items-center gap-1.5 text-emerald-600">✓ {{ $feat }}</span>
-                      @endforeach
-                    </div>
-                  @endif
-                  <a href="{{ $event->button_action ?: '#inquiry-form' }}" class="mt-4 w-full block text-center bg-aqua-navy hover:bg-black text-white font-black py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
-                    {{ $eventBtnText ?: 'Minta Penawaran Acara →' }}
-                  </a>
-                </div>
-              </div>
-            </div>
-          @endforeach
-        @endif
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================ -->
   <!-- 3 EASY STEPS TO ORGANIZE YOUR GATHERING                      -->
   <!-- ============================================================ -->
-  <section class="py-20 bg-white border-y border-slate-200">
+  <section class="py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <div class="text-center mb-14">
         <h2 class="text-2xl md:text-4xl font-black text-aqua-navy uppercase tracking-tight">
@@ -179,7 +99,7 @@
   </section>
 
   <!-- ============================================================ -->
-  <!-- DYNAMIC GATHERING PACKAGES FROM CMS                           -->
+  <!-- DYNAMIC GATHERING PACKAGES (100% FROM MANAJEMEN TIKET CMS)   -->
   <!-- ============================================================ -->
   <section id="packages-list" class="py-24 bg-aqua-cream">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
@@ -192,17 +112,17 @@
           <div class="h-px w-10 bg-aqua-gold"></div>
         </div>
         <h2 class="text-3xl md:text-5xl font-black text-aqua-navy uppercase tracking-tight">
-          {{ App::getLocale() === 'en' ? 'FEATURED GROUP PACKAGES' : 'PAKET ROMBONGAN SPESIAL' }}
+          {{ App::getLocale() === 'en' ? 'FEATURED GROUP PACKAGES' : 'PAKET ROMBONGAN & EVENT SPESIAL' }}
         </h2>
         <p class="mt-4 text-slate-600 text-base font-semibold max-w-2xl mx-auto">
           {{ App::getLocale() === 'en'
-            ? 'Choose from our most popular group packages or contact us for a tailor-made quotation.'
-            : 'Pilih paket favorit di bawah ini atau konsultasikan kebutuhan kustom rombongan Anda langsung dengan tim kami.' }}
+            ? 'Explore our group packages managed directly by our event team, or contact us for a customized quote.'
+            : 'Pilih paket favorit di bawah ini yang dapat Anda sesuaikan, atau mintalah proposal kustom langsung ke tim kami.' }}
         </p>
       </div>
 
       @if(isset($gatheringPackages) && $gatheringPackages->count() > 0)
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
           @foreach($gatheringPackages as $package)
             @php
               $salesWa = preg_replace('/[^0-9]/', '', $settings['contact_whatsapp'] ?? '628115472233');
@@ -223,29 +143,42 @@
               }
             @endphp
             <div class="bg-white rounded-[32px] overflow-hidden shadow-xl border border-slate-100 flex flex-col group hover:-translate-y-2 transition-all duration-300">
-              <div class="relative h-64 overflow-hidden bg-aqua-navy">
-                <img src="{{ $package->image_url }}" alt="{{ $package->name }}" onerror="this.onerror=null; this.src='{{ $fallbackImg }}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="relative h-64 sm:h-72 overflow-hidden bg-aqua-navy">
+                <img src="{{ $package->image_url }}" alt="{{ $package->name }}" onerror="this.onerror=null; this.src='{{ $fallbackImg }}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy via-aqua-navy/30 to-transparent"></div>
                 <div class="absolute top-4 right-4 bg-aqua-gold text-aqua-navy text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
                   Min. 10+ Pax
+                </div>
+                <div class="absolute bottom-4 left-6 right-6">
+                  <h3 class="text-2xl font-black text-white uppercase">
+                    {{ App::getLocale() === 'en' && $package->name_en ? $package->name_en : $package->name }}
+                  </h3>
                 </div>
               </div>
 
               <div class="p-8 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 class="text-2xl font-black text-aqua-navy mb-3 uppercase">
-                    {{ App::getLocale() === 'en' && $package->name_en ? $package->name_en : $package->name }}
-                  </h3>
-                  <p class="text-slate-600 font-semibold text-sm leading-relaxed mb-6">
-                    {{ App::getLocale() === 'en' && $package->description_en ? $package->description_en : $package->description }}
-                  </p>
+                  <div class="text-slate-600 font-medium text-sm leading-relaxed mb-6 prose max-w-none">
+                    {!! App::getLocale() === 'en' && $package->description_en ? $package->description_en : $package->description !!}
+                  </div>
+
+                  @if(!empty($package->terms_and_conditions))
+                    <div class="mb-6 p-5 bg-aqua-cream rounded-2xl border border-aqua-cream-2 text-xs font-semibold text-slate-700 leading-relaxed whitespace-pre-line">
+                      <div class="font-black text-aqua-navy uppercase tracking-wider mb-2">Fasilitas & Ketentuan:</div>
+                      {{ $package->terms_and_conditions }}
+                    </div>
+                  @endif
 
                   @if($package->price > 0)
-                    <div class="mb-6 p-4 bg-aqua-cream rounded-2xl border border-aqua-cream-2">
-                      <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Mulai Dari</div>
-                      <div class="text-2xl font-black text-aqua-navy">
-                        Rp {{ number_format($package->effective_price, 0, ',', '.') }}
-                        <span class="text-xs font-normal text-slate-500">/ orang</span>
+                    <div class="mb-6 p-4 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-center">
+                      <div>
+                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Harga Paket Mulai</div>
+                        <div class="text-2xl font-black text-aqua-navy">
+                          Rp {{ number_format($package->effective_price, 0, ',', '.') }}
+                          <span class="text-xs font-normal text-slate-500">/ orang</span>
+                        </div>
                       </div>
+                      <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black px-3 py-1 rounded-full uppercase">All-Access</span>
                     </div>
                   @endif
                 </div>
@@ -254,11 +187,18 @@
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
                   </svg>
-                  Tanya Penawaran Paket Ini
+                  Tanya & Minta Penawaran Paket Ini
                 </a>
               </div>
             </div>
           @endforeach
+        </div>
+      @else
+        <div class="bg-white rounded-3xl p-12 text-center max-w-xl mx-auto shadow-md border border-slate-200">
+          <p class="text-slate-600 font-semibold text-sm mb-6">Belum ada paket gathering yang dipublikasikan. Silakan hubungi tim sales kami untuk penawaran kustom rombongan Anda.</p>
+          <a href="#inquiry-form" class="inline-block bg-aqua-navy text-white font-black px-8 py-3.5 rounded-full text-xs uppercase tracking-wider">
+            Minta Penawaran Kustom &rarr;
+          </a>
         </div>
       @endif
 
