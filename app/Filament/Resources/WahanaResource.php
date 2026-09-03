@@ -136,6 +136,7 @@ class WahanaResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->reorderable('order_column')
             ->defaultSort('order_column')
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

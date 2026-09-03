@@ -38,7 +38,7 @@ class Checkout extends Component
         $this->visit_date = date('Y-m-d');
         $this->refreshPackages();
         
-        $this->addons = \App\Models\AddOn::where('is_active', true)->get();
+        $this->addons = \App\Models\AddOn::where('is_active', true)->orderBy('sort_order', 'asc')->orderBy('id', 'asc')->get();
         foreach ($this->addons as $addon) {
             $this->addon_quantities[$addon->id] = 0;
         }
@@ -58,7 +58,11 @@ class Checkout extends Component
 
     public function refreshPackages()
     {
-        $allPackages = TicketPackage::where('is_active', true)->where('inquiry_type', 'none')->get();
+        $allPackages = TicketPackage::where('is_active', true)
+            ->where('inquiry_type', 'none')
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('id', 'asc')
+            ->get();
         
         $this->packages = $allPackages->filter(function ($pkg) {
             return $pkg->isValidForDate($this->visit_date);

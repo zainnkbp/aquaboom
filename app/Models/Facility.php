@@ -22,6 +22,7 @@ class Facility extends Model
         'menu_items',
         'image_url',
         'is_active',
+        'sort_order',
     ];
 
     protected $casts = [

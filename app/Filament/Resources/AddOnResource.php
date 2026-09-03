@@ -117,6 +117,8 @@ class AddOnResource extends Resource
                     ->boolean()
                     ->sortable(),
             ])
+            ->reorderable('sort_order')
+            ->defaultSort('sort_order', 'asc')
             ->filters([
                 //
             ])

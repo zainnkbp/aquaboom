@@ -29,7 +29,7 @@ Route::get('/', function () {
         ->where(function ($query) use ($now) {
             $query->whereNull('sales_end')->orWhere('sales_end', '>=', $now);
         })
-        ->orderByRaw('is_featured_home DESC, id ASC')
+        ->orderByRaw('is_featured_home DESC, sort_order ASC, id ASC')
         ->take(3)
         ->get();
 
@@ -46,6 +46,8 @@ Route::get('/gatherings', function () {
         ->where(function ($query) use ($now) {
             $query->whereNull('sales_end')->orWhere('sales_end', '>=', $now);
         })
+        ->orderBy('sort_order', 'asc')
+        ->orderBy('id', 'asc')
         ->get();
     $settings = Setting::pluck('value', 'key');
     return view('gatherings', compact('gatheringPackages', 'settings'));
@@ -93,6 +95,8 @@ Route::get('/packages', function () {
             $query->whereNull('sales_end')
                   ->orWhere('sales_end', '>=', $now);
         })
+        ->orderBy('sort_order', 'asc')
+        ->orderBy('id', 'asc')
         ->get();
     return view('packages', compact('packages'));
 })->name('packages');
@@ -105,12 +109,18 @@ Route::get('/explore', function () {
 Route::get('/facilities', function () {
     $facilities = Facility::where('type', '!=', 'dining')
         ->where('is_active', true)
+        ->orderBy('sort_order', 'asc')
+        ->orderBy('id', 'asc')
         ->get();
     return view('facilities', compact('facilities'));
 })->name('facilities');
 
 Route::get('/dining', function () {
-    $dinings = Facility::where('type', 'dining')->get();
+    $dinings = Facility::where('type', 'dining')
+        ->where('is_active', true)
+        ->orderBy('sort_order', 'asc')
+        ->orderBy('id', 'asc')
+        ->get();
     return view('dining', compact('dinings'));
 })->name('dining');
 
