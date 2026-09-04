@@ -36,7 +36,7 @@ class AddOnResource extends Resource
                                 ->icon('heroicon-m-language')
                                 ->tooltip('Terjemahkan ke Bahasa Inggris')
                                 ->action(function (Forms\Set $set, $state) {
-                                    $set('name_en', \App\Services\TranslationService::translate($state));
+                                    \App\Services\TranslationService::translateField($set, $state, 'name_en', 'Nama Produk');
                                 })
                         ),
                     
@@ -79,7 +79,7 @@ class AddOnResource extends Resource
                                 ->icon('heroicon-m-language')
                                 ->tooltip('Terjemahkan ke Bahasa Inggris')
                                 ->action(function (Forms\Set $set, $state) {
-                                    $set('description_en', \App\Services\TranslationService::translate($state));
+                                    \App\Services\TranslationService::translateField($set, $state, 'description_en', 'Deskripsi Produk');
                                 })
                         )
                         ->columnSpanFull(),

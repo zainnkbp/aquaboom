@@ -33,7 +33,7 @@ class FacilityResource extends Resource
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
                             ->action(function (Forms\Set $set, $state) {
-                                $set('name_en', \App\Services\TranslationService::translate($state));
+                                \App\Services\TranslationService::translateField($set, $state, 'name_en', 'Nama Fasilitas');
                             })
                     ),
                 Forms\Components\TextInput::make('name_en')
@@ -54,7 +54,7 @@ class FacilityResource extends Resource
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
                             ->action(function (Forms\Set $set, $state) {
-                                $set('description_en', \App\Services\TranslationService::translate($state));
+                                \App\Services\TranslationService::translateField($set, $state, 'description_en', 'Deskripsi Fasilitas');
                             })
                     )
                     ->columnSpanFull(),
@@ -69,13 +69,7 @@ class FacilityResource extends Resource
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
                             ->action(function (Forms\Set $set, $state) {
-                                if (is_array($state)) {
-                                    $translated = [];
-                                    foreach ($state as $feature) {
-                                        $translated[] = \App\Services\TranslationService::translate($feature);
-                                    }
-                                    $set('features_en', $translated);
-                                }
+                                \App\Services\TranslationService::translateArrayField($set, $state, 'features_en', 'Fitur');
                             })
                     ),
                 Forms\Components\TagsInput::make('features_en')

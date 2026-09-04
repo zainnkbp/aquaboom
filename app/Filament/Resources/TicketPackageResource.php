@@ -39,7 +39,7 @@ class TicketPackageResource extends Resource
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
                             ->action(function (Forms\Set $set, $state) {
-                                $set('name_en', \App\Services\TranslationService::translate($state));
+                                \App\Services\TranslationService::translateField($set, $state, 'name_en', 'Nama Paket');
                             })
                     ),
                 Forms\Components\TextInput::make('name_en')
@@ -53,7 +53,7 @@ class TicketPackageResource extends Resource
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
                             ->action(function (Forms\Set $set, $state) {
-                                $set('description_en', \App\Services\TranslationService::translate($state));
+                                \App\Services\TranslationService::translateField($set, $state, 'description_en', 'Deskripsi Paket');
                             })
                     )
                     ->columnSpanFull(),
@@ -69,7 +69,7 @@ class TicketPackageResource extends Resource
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
                             ->action(function (Forms\Set $set, $state) {
-                                $set('terms_and_conditions_en', \App\Services\TranslationService::translate($state));
+                                \App\Services\TranslationService::translateField($set, $state, 'terms_and_conditions_en', 'Syarat & Ketentuan');
                             })
                     )
                     ->columnSpanFull(),

@@ -32,7 +32,7 @@ class FaqResource extends Resource
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
                             ->action(function (Forms\Set $set, $state) {
-                                $set('question_en', \App\Services\TranslationService::translate($state));
+                                \App\Services\TranslationService::translateField($set, $state, 'question_en', 'Pertanyaan');
                             })
                     )
                     ->columnSpanFull(),
@@ -47,7 +47,7 @@ class FaqResource extends Resource
                             ->icon('heroicon-m-language')
                             ->tooltip('Terjemahkan ke Bahasa Inggris')
                             ->action(function (Forms\Set $set, $state) {
-                                $set('answer_en', \App\Services\TranslationService::translate($state));
+                                \App\Services\TranslationService::translateField($set, $state, 'answer_en', 'Jawaban');
                             })
                     )
                     ->columnSpanFull(),
