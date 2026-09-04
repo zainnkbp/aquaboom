@@ -1,7 +1,45 @@
 <x-layout>
   <x-slot:title>{{ App::getLocale() === 'en' ? 'Eat & Drink - Aquaboom Waterpark' : 'Restoran & Kuliner (Eat & Drink) - Aquaboom Waterpark' }}</x-slot:title>
   
-  <div x-data="{ activeMenu: null, activeDiningName: '', isMenuOpen: false }">
+  <div 
+    x-data="{ 
+      isMenuOpen: false, 
+      activeDiningName: '', 
+      activeMenuList: [], 
+      activeMenuIndex: 0,
+      activeLegacyMenu: null,
+      openLightbox(list, index, diningName) {
+        if (typeof list === 'string') {
+          this.activeMenuList = [list];
+          this.activeMenuIndex = 0;
+          this.activeLegacyMenu = null;
+        } else if (Array.isArray(list) && list.length > 0 && typeof list[0] === 'string') {
+          this.activeMenuList = list;
+          this.activeMenuIndex = index || 0;
+          this.activeLegacyMenu = null;
+        } else if (Array.isArray(list)) {
+          this.activeLegacyMenu = list;
+          this.activeMenuList = [];
+          this.activeMenuIndex = 0;
+        }
+        this.activeDiningName = diningName;
+        this.isMenuOpen = true;
+      },
+      nextMenu() {
+        if (this.activeMenuList.length > 1) {
+          this.activeMenuIndex = (this.activeMenuIndex + 1) % this.activeMenuList.length;
+        }
+      },
+      prevMenu() {
+        if (this.activeMenuList.length > 1) {
+          this.activeMenuIndex = (this.activeMenuIndex - 1 + this.activeMenuList.length) % this.activeMenuList.length;
+        }
+      }
+    }"
+    @keydown.escape.window="isMenuOpen = false"
+    @keydown.arrow-right.window="if (isMenuOpen && activeMenuList.length > 1) nextMenu()"
+    @keydown.arrow-left.window="if (isMenuOpen && activeMenuList.length > 1) prevMenu()"
+  >
     <!-- Page Header -->
     <div class="pt-36 pb-20 bg-aqua-navy relative overflow-hidden">
       <div class="absolute inset-0 opacity-10">
@@ -71,30 +109,116 @@
               @endphp
 
               @if($isNewFormat)
-                <div class="mt-8 w-full">
-                  <span class="text-xs font-black text-aqua-gold uppercase tracking-wider block mb-4">
-                    {{ App::getLocale() === 'id' ? 'Buku Menu & Daftar Harga' : 'Menu Book & Pricing' }}
-                  </span>
-                  <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    @foreach($dining->menu_items as $menuImage)
-                      @php
-                        $imageUrl = Str::startsWith($menuImage, ['http://', 'https://']) ? $menuImage : asset('uploads/' . $menuImage);
-                      @endphp
-                      <div 
-                        @click="activeMenu = '{{ $imageUrl }}'; activeDiningName = '{{ App::getLocale() === 'en' && $dining->name_en ? $dining->name_en : $dining->name }}'; isMenuOpen = true" 
-                        class="group relative aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ring-1 ring-slate-100 bg-slate-100"
-                      >
-                        <img src="{{ $imageUrl }}" alt="Menu" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
-                        </div>
+                @php
+                  $allMenuUrls = [];
+                  foreach ($dining->menu_items as $m) {
+                    if (is_string($m)) {
+                      $allMenuUrls[] = Str::startsWith($m, ['http://', 'https://']) ? $m : asset('uploads/' . $m);
+                    }
+                  }
+                  $menuChunks = array_chunk($allMenuUrls, 3);
+                  $totalChunks = count($menuChunks);
+                  $diningTitle = App::getLocale() === 'en' && $dining->name_en ? $dining->name_en : $dining->name;
+                @endphp
+
+                <div 
+                  x-data="{
+                    currentSection: 0,
+                    totalSections: {{ $totalChunks }},
+                    nextSection() {
+                      if (this.currentSection < this.totalSections - 1) {
+                        this.currentSection++;
+                      } else {
+                        this.currentSection = 0;
+                      }
+                    },
+                    prevSection() {
+                      if (this.currentSection > 0) {
+                        this.currentSection--;
+                      } else {
+                        this.currentSection = this.totalSections - 1;
+                      }
+                    }
+                  }"
+                  class="mt-8 w-full"
+                >
+                  <!-- Section Header: Original title + Navigation buttons if more than 3 items -->
+                  <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-black text-aqua-gold uppercase tracking-wider block">
+                      {{ App::getLocale() === 'id' ? 'Buku Menu & Daftar Harga' : 'Menu Book & Pricing' }}
+                    </span>
+
+                    @if($totalChunks > 1)
+                    <div class="flex items-center gap-2">
+                      <span class="text-[11px] font-bold text-slate-400">
+                        <span x-text="currentSection + 1"></span> / {{ $totalChunks }}
+                      </span>
+                      <div class="flex items-center gap-1">
+                        <button 
+                          type="button"
+                          @click="prevSection()"
+                          class="w-7 h-7 rounded-full bg-slate-100 hover:bg-aqua-navy hover:text-aqua-gold text-slate-600 flex items-center justify-center transition-all shadow-sm active:scale-95"
+                          aria-label="Previous menu section"
+                        >
+                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <button 
+                          type="button"
+                          @click="nextSection()"
+                          class="w-7 h-7 rounded-full bg-slate-100 hover:bg-aqua-navy hover:text-aqua-gold text-slate-600 flex items-center justify-center transition-all shadow-sm active:scale-95"
+                          aria-label="Next menu section"
+                        >
+                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </button>
                       </div>
-                    @endforeach
+                    </div>
+                    @endif
+                  </div>
+
+                  <!-- Slider Viewport: Keeps exact 3-column grid per section -->
+                  <div 
+                    x-data="{
+                      touchStartX: 0,
+                      touchEndX: 0
+                    }"
+                    @touchstart="touchStartX = $event.changedTouches[0].screenX"
+                    @touchend="
+                      touchEndX = $event.changedTouches[0].screenX;
+                      if (touchStartX - touchEndX > 45) nextSection();
+                      if (touchEndX - touchStartX > 45) prevSection();
+                    "
+                    class="relative overflow-hidden w-full"
+                  >
+                    <div 
+                      class="flex transition-transform duration-500 ease-out w-full"
+                      :style="`transform: translateX(-${currentSection * 100}%);`"
+                    >
+                      @foreach($menuChunks as $chunkIndex => $chunk)
+                        <div class="w-full flex-shrink-0">
+                          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            @foreach($chunk as $itemIndex => $menuImage)
+                              @php
+                                $globalIndex = ($chunkIndex * 3) + $itemIndex;
+                              @endphp
+                              <div 
+                                @click="openLightbox({{ json_encode($allMenuUrls) }}, {{ $globalIndex }}, '{{ addslashes($diningTitle) }}')" 
+                                class="group relative aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ring-1 ring-slate-100 bg-slate-100"
+                              >
+                                <img src="{{ $menuImage }}" alt="Menu" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                                </div>
+                              </div>
+                            @endforeach
+                          </div>
+                        </div>
+                      @endforeach
+                    </div>
                   </div>
                 </div>
               @else
                 <button 
-                  @click="activeMenu = {{ json_encode($dining->menu_items) }}; activeDiningName = '{{ App::getLocale() === 'en' && $dining->name_en ? $dining->name_en : $dining->name }}'; isMenuOpen = true"
+                  @click="openLightbox({{ json_encode($dining->menu_items) }}, 0, '{{ addslashes(App::getLocale() === 'en' && $dining->name_en ? $dining->name_en : $dining->name) }}')"
                   class="inline-block bg-aqua-azure hover:bg-aqua-azure-2 text-white font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all shadow-md mt-4"
                 >
                   {{ App::getLocale() === 'id' ? 'Lihat Detail Menu' : 'View Menu Details' }}
@@ -108,10 +232,11 @@
       </div>
     </section>
 
-    <!-- Alpine Modal for Dining Menu / Image Lightbox -->
+    <!-- Alpine Modal for Dining Menu / Image Lightbox Slider -->
     <div 
       x-show="isMenuOpen" 
-      class="fixed inset-0 z-[150] flex items-center justify-center p-4"
+      x-cloak
+      class="fixed inset-0 z-[150] flex flex-col items-center justify-center p-3 sm:p-6"
       style="display: none;"
     >
       <!-- Backdrop -->
@@ -124,11 +249,11 @@
         x-transition:leave-start="opacity-100"
         x-transition:leave-end="opacity-0"
         @click="isMenuOpen = false" 
-        class="absolute inset-0 bg-aqua-navy/90 backdrop-blur-md"
+        class="fixed inset-0 bg-black/50 backdrop-blur-md cursor-pointer"
       ></div>
 
-      <!-- Lightbox Content (If activeMenu is a string image URL) -->
-      <template x-if="activeMenu && typeof activeMenu === 'string'">
+      <!-- Lightbox Content (Slider for Array of Menu Images) -->
+      <template x-if="activeMenuList && activeMenuList.length > 0">
         <div 
           x-show="isMenuOpen"
           x-transition:enter="ease-out duration-300 transform"
@@ -137,22 +262,96 @@
           x-transition:leave="ease-in duration-200 transform"
           x-transition:leave-start="opacity-100 scale-100"
           x-transition:leave-end="opacity-0 scale-95"
-          class="relative max-w-4xl max-h-[90vh] overflow-hidden z-10 flex flex-col items-center"
+          class="relative z-[155] w-full max-w-5xl h-full max-h-[92vh] flex flex-col items-center justify-between select-none pointer-events-none"
         >
-          <img :src="activeMenu" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl ring-1 ring-white/10" />
-          <button 
-            @click="isMenuOpen = false"
-            class="absolute top-4 right-4 text-white hover:text-aqua-gold transition-colors bg-black/60 hover:bg-black/80 p-3 rounded-full border border-white/10 shadow-lg"
-          >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <!-- Top Bar: Title, Page Counter, and Close Button -->
+          <div class="pointer-events-auto w-full flex items-center justify-between px-4 py-2.5 bg-black/75 backdrop-blur-md rounded-2xl border border-white/10 text-white shadow-xl shrink-0">
+            <div class="flex items-center gap-2 sm:gap-3">
+              <span class="text-aqua-gold text-xs font-black uppercase tracking-widest hidden sm:inline">
+                {{ App::getLocale() === 'en' ? 'MENU BOOK' : 'BUKU MENU' }}
+              </span>
+              <span class="text-white/40 hidden sm:inline">•</span>
+              <h3 class="text-xs sm:text-base font-black uppercase tracking-tight text-white truncate max-w-[170px] sm:max-w-md" x-text="activeDiningName"></h3>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+              <!-- Page Counter Badge -->
+              <span class="bg-white/10 text-white text-xs font-bold px-3 py-1 rounded-full border border-white/10">
+                <span x-text="activeMenuIndex + 1"></span> / <span x-text="activeMenuList.length"></span>
+              </span>
+
+              <!-- Close Button -->
+              <button 
+                type="button"
+                @click="isMenuOpen = false"
+                class="text-white/80 hover:text-white hover:bg-white/20 transition-all p-1.5 rounded-full border border-white/10 active:scale-95 cursor-pointer"
+                aria-label="Close modal"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Image Viewer Area with Left & Right Arrows -->
+          <div class="pointer-events-auto relative flex-1 w-full min-h-0 flex items-center justify-center my-2">
+            <!-- Prev Button (High Contrast Solid Navy + Gold) -->
+            <button 
+              type="button"
+              x-show="activeMenuList.length > 1"
+              @click.stop="prevMenu()"
+              style="left: 0.75rem; background-color: #160F30; border: 2px solid #F09628; box-shadow: 0 10px 30px rgba(0,0,0,0.6);"
+              class="absolute z-30 text-[#F09628] hover:text-white hover:border-[#FFC374] transition-all duration-300 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 cursor-pointer group"
+              aria-label="Previous menu image"
+            >
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <!-- Active Menu Image (Max Height 72vh & Max Width 90vw - Never overflows portrait or landscape) -->
+            <div class="w-full h-full flex items-center justify-center p-1">
+              <img 
+                :src="activeMenuList[activeMenuIndex]" 
+                :alt="activeDiningName + ' Menu ' + (activeMenuIndex + 1)"
+                style="max-height: 72vh; max-width: 100%;"
+                class="w-auto h-auto object-contain rounded-2xl shadow-2xl ring-1 ring-white/15 transition-all duration-300" 
+              />
+            </div>
+
+            <!-- Next Button (High Contrast Solid Navy + Gold) -->
+            <button 
+              type="button"
+              x-show="activeMenuList.length > 1"
+              @click.stop="nextMenu()"
+              style="right: 0.75rem; background-color: #160F30; border: 2px solid #F09628; box-shadow: 0 10px 30px rgba(0,0,0,0.6);"
+              class="absolute z-30 text-[#F09628] hover:text-white hover:border-[#FFC374] transition-all duration-300 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 cursor-pointer group"
+              aria-label="Next menu image"
+            >
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Bottom Thumbnails / Dots Navigator -->
+          <div x-show="activeMenuList.length > 1" class="pointer-events-auto flex items-center gap-2 py-1.5 px-3.5 bg-black/60 backdrop-blur-md rounded-full border border-white/10 shrink-0">
+            <template x-for="(img, i) in activeMenuList" :key="i">
+              <button 
+                type="button"
+                @click="activeMenuIndex = i"
+                class="h-2.5 transition-all duration-300 rounded-full cursor-pointer"
+                :class="activeMenuIndex === i ? 'w-8 bg-aqua-gold shadow-md' : 'w-2.5 bg-white/40 hover:bg-white/80'"
+                :aria-label="'Go to menu page ' + (i + 1)"
+              ></button>
+            </template>
+          </div>
         </div>
       </template>
 
-      <!-- Old Style Modal Content (If activeMenu is an array of objects) -->
-      <template x-if="activeMenu && typeof activeMenu === 'object'">
+      <!-- Old Style Modal Content (If legacy menu array of objects) -->
+      <template x-if="activeLegacyMenu && activeLegacyMenu.length > 0">
         <div 
           x-show="isMenuOpen"
           x-transition:enter="ease-out duration-300 transform"
@@ -184,7 +383,7 @@
           <!-- Menu Items List -->
           <div class="flex-1 overflow-y-auto p-6 md:p-8 bg-aqua-cream/50 space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <template x-for="(item, idx) in activeMenu" :key="idx">
+              <template x-for="(item, idx) in activeLegacyMenu" :key="idx">
                 <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm flex gap-4 hover:shadow-md transition-shadow duration-200">
                   <div class="w-20 h-20 rounded-xl overflow-hidden bg-aqua-cream flex-shrink-0 border border-slate-100">
                     <template x-if="item.image_url">
