@@ -132,13 +132,6 @@
         </div>
 
         <div class="aqb-ribbon-actions">
-            <a href="{{ route('admin.dashboard.v2') }}" class="aqb-btn-pill" style="border-color: rgba(244, 63, 94, 0.4); background: rgba(244, 63, 94, 0.15); color: #fb7185 !important; font-weight: 800;">
-                <svg style="width: 1rem; height: 1rem; color: #fb7185;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
-                </svg>
-                <span>Dashboard V2 Glass ↗</span>
-            </a>
-
             @if(auth()->user()->canValidateTickets())
                 <a href="{{ route('scanner.app') }}" target="_blank" class="aqb-btn-primary">
                     <svg style="width: 1.15rem; height: 1.15rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -139,13 +139,6 @@ Route::get('/faq', function () {
 Route::get('/scanner/login', ScannerLogin::class)->name('scanner.login');
 Route::get('/scanner', QrScanner::class)->name('scanner.app')->middleware('auth');
 
-// Admin Dashboard V2 (Glassmorphism UI)
-Route::middleware('auth')->group(function () {
-    Route::get('/admin/dashboard/v2', [\App\Http\Controllers\AdminDashboardV2Controller::class, 'index'])->name('admin.dashboard.v2');
-    Route::post('/admin/dashboard/v2/reschedule/{id}', [\App\Http\Controllers\AdminDashboardV2Controller::class, 'reschedule'])->name('admin.dashboard.v2.reschedule');
-    Route::post('/admin/dashboard/v2/check-in/{id}', [\App\Http\Controllers\AdminDashboardV2Controller::class, 'checkIn'])->name('admin.dashboard.v2.checkin');
-});
-
 // Language Switcher Route
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['id', 'en'])) {
