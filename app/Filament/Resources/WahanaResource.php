@@ -22,6 +22,10 @@ class WahanaResource extends Resource
 
     protected static ?string $modelLabel = 'Wahana';
 
+    protected static ?string $navigationGroup = 'CMS & Konten Web';
+
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form

@@ -22,6 +22,10 @@ class PromoCodeResource extends Resource
 
     protected static ?string $modelLabel = 'Kode Promo';
 
+    protected static ?string $navigationGroup = 'Transaksi & Penjualan';
+
+    protected static ?int $navigationSort = 4;
+
     public static function form(Form $form): Form
     {
         return $form

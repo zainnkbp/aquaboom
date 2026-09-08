@@ -18,7 +18,8 @@ class AwardResource extends Resource
     protected static ?string $model = Award::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-star';
-    protected static ?string $navigationGroup = 'CMS Landing Page';
+    protected static ?string $navigationGroup = 'CMS & Konten Web';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

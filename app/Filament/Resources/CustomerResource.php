@@ -23,13 +23,13 @@ class CustomerResource extends Resource
 
     protected static ?string $navigationGroup = 'Manajemen Pengunjung';
 
+    protected static ?int $navigationSort = 1;
+
     protected static ?string $navigationLabel = 'Akun Pengunjung (Customer)';
 
     protected static ?string $modelLabel = 'Akun Pengunjung';
 
     protected static ?string $pluralModelLabel = 'Daftar Akun Pengunjung';
-
-    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

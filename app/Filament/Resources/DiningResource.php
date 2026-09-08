@@ -18,7 +18,8 @@ class DiningResource extends Resource
     protected static ?string $modelLabel = 'Dining & Culinary';
     protected static ?string $pluralModelLabel = 'Dining & Culinary';
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
-    protected static ?string $navigationGroup = 'CMS Landing Page';
+    protected static ?string $navigationGroup = 'CMS & Konten Web';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {

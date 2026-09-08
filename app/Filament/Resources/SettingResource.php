@@ -15,8 +15,9 @@ class SettingResource extends Resource
     protected static ?string $model = Setting::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
-    protected static ?string $navigationGroup = 'CMS Landing Page';
-    protected static ?string $navigationLabel = 'Pengaturan Kontak & Web';
+    protected static ?string $navigationGroup = 'CMS & Konten Web';
+    protected static ?int $navigationSort = 6;
+    protected static ?string $navigationLabel = 'Pengaturan Web & Kontak';
     protected static ?string $modelLabel = 'Pengaturan';
     protected static ?string $pluralModelLabel = 'Pengaturan Web & Kontak';
 

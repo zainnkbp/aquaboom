@@ -22,7 +22,9 @@ class AuditLogResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Audit Trail';
 
-    protected static ?int $navigationSort = 99;
+    protected static ?string $navigationGroup = 'Sistem & Keamanan';
+
+    protected static ?int $navigationSort = 2;
 
     public static function table(Table $table): Table
     {

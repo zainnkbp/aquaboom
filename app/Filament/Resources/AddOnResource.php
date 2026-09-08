@@ -18,7 +18,8 @@ class AddOnResource extends Resource
     protected static ?string $model = AddOn::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $navigationGroup = 'Transaksi & Penjualan';
+    protected static ?int $navigationSort = 3;
     protected static ?string $navigationLabel = 'Produk Add-On';
     protected static ?string $modelLabel = 'Produk Add-On';
 

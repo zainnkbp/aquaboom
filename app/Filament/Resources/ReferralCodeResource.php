@@ -18,7 +18,8 @@ class ReferralCodeResource extends Resource
     protected static ?string $model = ReferralCode::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $navigationGroup = 'Transaksi & Penjualan';
+    protected static ?int $navigationSort = 5;
     protected static ?string $navigationLabel = 'Kode Referral';
     protected static ?string $modelLabel = 'Kode Referral';
 
