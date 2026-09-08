@@ -1,93 +1,170 @@
 <x-filament-widgets::widget>
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-[#160F30] to-slate-950 p-6 sm:p-8 text-white shadow-2xl border border-white/10">
-        <!-- Ambient decorative shapes -->
-        <div class="absolute -top-24 -right-24 w-64 h-64 bg-pink-500/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <style>
+        .aqb-ribbon {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(139, 92, 246, 0.1) 40%, rgba(15, 23, 42, 0.8) 100%);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            border-radius: 1.25rem;
+            padding: 1.25rem 1.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.25rem;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+        .aqb-ribbon::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: 20%;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
+            filter: blur(30px);
+            pointer-events-none;
+        }
+        .aqb-ribbon-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            position: relative;
+            z-index: 2;
+        }
+        .aqb-ribbon-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #f472b6;
+        }
+        .aqb-ribbon-pulse {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 9999px;
+            background-color: #10b981;
+            box-shadow: 0 0 10px #10b981;
+            display: inline-block;
+        }
+        .aqb-ribbon-heading {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .aqb-ribbon-sub {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin: 0;
+            font-weight: 500;
+        }
+        .aqb-ribbon-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.65rem;
+            position: relative;
+            z-index: 2;
+        }
+        .aqb-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #0f172a !important;
+            font-weight: 800;
+            font-size: 0.825rem;
+            padding: 0.65rem 1.15rem;
+            border-radius: 0.85rem;
+            text-decoration: none;
+            box-shadow: 0 8px 16px -4px rgba(245, 158, 11, 0.4);
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .aqb-btn-primary:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -3px rgba(245, 158, 11, 0.5);
+            color: #000 !important;
+        }
+        .aqb-btn-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0 !important;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 0.65rem 1rem;
+            border-radius: 0.85rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .aqb-btn-pill:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(244, 63, 94, 0.4);
+            color: #ffffff !important;
+            transform: translateY(-2px);
+        }
+    </style>
 
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-white/10">
-            <div>
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300 text-xs font-bold uppercase tracking-wider mb-2">
-                    <span class="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
-                    Aquaboom Management Suite
-                </div>
-                <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                    Halo, {{ auth()->user()->name }}! 👋
-                </h2>
-                <p class="text-sm text-slate-300 mt-1 max-w-2xl font-medium">
-                    Pantau kinerja penjualan tiket, kehadiran pengunjung hari ini, dan jalankan operasional gate secara real-time.
-                </p>
+    <div class="aqb-ribbon">
+        <div class="aqb-ribbon-left">
+            <div class="aqb-ribbon-badge">
+                <span class="aqb-ribbon-pulse"></span>
+                <span>Waterpark Online • Lantai 7 Pentacity Mall</span>
             </div>
-
-            @if(auth()->user()->canValidateTickets())
-                <div class="shrink-0">
-                    <a href="{{ route('scanner.app') }}" target="_blank" class="inline-flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:brightness-110 text-slate-950 font-black text-sm uppercase tracking-wider shadow-lg shadow-amber-500/20 transition-all transform active:scale-95">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-                        <span>Buka Scanner Gate</span>
-                        <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                    </a>
-                </div>
-            @endif
+            <h2 class="aqb-ribbon-heading">
+                Selamat Datang, {{ auth()->user()->name }}! 👋
+            </h2>
+            <p class="aqb-ribbon-sub">
+                {{ now()->translatedFormat('l, d F Y') }} • Pantau performa reservasi & check-in gate secara real-time.
+            </p>
         </div>
 
-        <!-- Quick Access Shortcuts Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-6">
+        <div class="aqb-ribbon-actions">
+            @if(auth()->user()->canValidateTickets())
+                <a href="{{ route('scanner.app') }}" target="_blank" class="aqb-btn-primary">
+                    <svg style="width: 1.15rem; height: 1.15rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+                    </svg>
+                    <span>Buka Scanner Gate ↗</span>
+                </a>
+            @endif
+
             @if(auth()->user()->hasPermission('transactions'))
-                <a href="{{ \App\Filament\Resources\TransactionResource::getUrl('index') }}" class="group p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-pink-500/30 transition-all duration-200 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                        </div>
-                        <span class="text-xs text-slate-400 group-hover:text-white transition-colors">Lihat →</span>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-white group-hover:text-pink-300 transition-colors">Daftar Transaksi</h4>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Reschedule & pantau order</p>
-                    </div>
+                <a href="{{ \App\Filament\Resources\TransactionResource::getUrl('index') }}" class="aqb-btn-pill">
+                    <svg style="width: 1rem; height: 1rem; color: #fb7185;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    <span>Transaksi & Reschedule</span>
                 </a>
             @endif
 
             @if(auth()->user()->hasPermission('ticket_packages'))
-                <a href="{{ \App\Filament\Resources\TicketPackageResource::getUrl('index') }}" class="group p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-amber-500/30 transition-all duration-200 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg>
-                        </div>
-                        <span class="text-xs text-slate-400 group-hover:text-white transition-colors">Atur →</span>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">Paket & Harga</h4>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Tiket weekday, weekend, bundling</p>
-                    </div>
+                <a href="{{ \App\Filament\Resources\TicketPackageResource::getUrl('index') }}" class="aqb-btn-pill">
+                    <svg style="width: 1rem; height: 1rem; color: #fbbf24;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
+                    </svg>
+                    <span>Katalog & Harga</span>
                 </a>
             @endif
 
             @if(auth()->user()->hasPermission('promos'))
-                <a href="{{ \App\Filament\Resources\PromoCodeResource::getUrl('index') }}" class="group p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-emerald-500/30 transition-all duration-200 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
-                        </div>
-                        <span class="text-xs text-slate-400 group-hover:text-white transition-colors">Kelola →</span>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">Kode Promo</h4>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Voucher diskon & promosi</p>
-                    </div>
-                </a>
-            @endif
-
-            @if(auth()->user()->hasPermission('settings'))
-                <a href="{{ \App\Filament\Resources\SettingResource::getUrl('index') }}" class="group p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-sky-500/30 transition-all duration-200 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        </div>
-                        <span class="text-xs text-slate-400 group-hover:text-white transition-colors">Buka →</span>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-white group-hover:text-sky-300 transition-colors">Pengaturan Web</h4>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Kontak WhatsApp, jam buka</p>
-                    </div>
+                <a href="{{ \App\Filament\Resources\PromoCodeResource::getUrl('index') }}" class="aqb-btn-pill">
+                    <svg style="width: 1rem; height: 1rem; color: #34d399;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                    <span>Kode Promo</span>
                 </a>
             @endif
         </div>

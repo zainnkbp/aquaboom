@@ -42,47 +42,68 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::HEAD_END,
                 fn (): string => Blade::render('
                     <style>
-                        /* Apple-esque Glassmorphism for Filament */
+                        /* Modern Glassmorphism Design System for Aquaboom CMS */
                         :root {
-                            --fi-border-radius: 1.5rem !important; /* rounded-3xl */
+                            --fi-border-radius: 1.25rem !important;
                         }
                         
-                        /* Clean Backgrounds */
+                        /* Backgrounds */
                         .fi-body {
-                            background-color: #f8fafc !important; /* slate-50 */
+                            background-color: #f8fafc !important;
                         }
                         .dark .fi-body {
-                            background-color: #160F30 !important; /* aquaboom primary background */
+                            background-color: #0c091a !important;
                         }
                         
-                        /* Glassy Cards */
-                        .fi-ta-ctn, .fi-wi, .fi-fo-fieldset, .fi-section {
-                            background: rgba(255, 255, 255, 0.7) !important;
+                        /* Unset generic widget wrapper to avoid double borders */
+                        .fi-wi {
+                            background: transparent !important;
+                            border: none !important;
+                            box-shadow: none !important;
+                        }
+
+                        /* Glassy Cards: Tables, Sections, Forms */
+                        .fi-ta-ctn, .fi-section, .fi-fo-fieldset {
+                            background: rgba(255, 255, 255, 0.85) !important;
                             backdrop-filter: blur(16px) !important;
                             -webkit-backdrop-filter: blur(16px) !important;
-                            border: 1px solid rgba(255, 255, 255, 0.4) !important;
-                            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05) !important;
+                            border: 1px solid rgba(0, 0, 0, 0.06) !important;
+                            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04) !important;
+                            border-radius: 1.25rem !important;
                         }
                         
-                        .dark .fi-ta-ctn, .dark .fi-wi, .dark .fi-fo-fieldset, .dark .fi-section {
-                            background: rgba(30, 41, 59, 0.7) !important;
-                            border: 1px solid rgba(255, 255, 255, 0.05) !important;
-                            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3) !important;
+                        .dark .fi-ta-ctn, .dark .fi-section, .dark .fi-fo-fieldset {
+                            background: rgba(22, 17, 44, 0.85) !important;
+                            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5) !important;
+                            border-radius: 1.25rem !important;
+                        }
+
+                        /* Chart Containers */
+                        .dark .fi-wi-chart {
+                            background: rgba(22, 17, 44, 0.85) !important;
+                            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                            border-radius: 1.25rem !important;
+                            padding: 1.25rem !important;
+                            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5) !important;
                         }
 
                         /* Softer Input Borders */
                         .fi-input-wrp {
-                            border-radius: 1rem !important;
+                            border-radius: 0.875rem !important;
                         }
                         
                         /* Floating Sidebar Active States */
                         .fi-sidebar-item-active > a {
-                            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(225, 29, 72, 0.05)) !important;
-                            border-radius: 1rem !important;
+                            background: linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(225, 29, 72, 0.06)) !important;
+                            border-radius: 0.875rem !important;
+                            border: 1px solid rgba(236, 72, 153, 0.2) !important;
                         }
                         
                         .dark .fi-sidebar-item-active > a {
-                            background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(225, 29, 72, 0.1)) !important;
+                            background: linear-gradient(135deg, rgba(236, 72, 153, 0.18), rgba(225, 29, 72, 0.1)) !important;
+                            border-radius: 0.875rem !important;
+                            border: 1px solid rgba(236, 72, 153, 0.3) !important;
                         }
                     </style>
                 ')
@@ -90,7 +111,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                \App\Filament\Pages\Dashboard::class,
             ])
             ->navigationItems([
                 \Filament\Navigation\NavigationItem::make('Scanner Tiket (Security)')
