@@ -42,18 +42,23 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 \Filament\Navigation\NavigationGroup::make('Operasional Gate')
                     ->icon('heroicon-o-qr-code')
+                    ->collapsible()
                     ->collapsed(false),
                 \Filament\Navigation\NavigationGroup::make('Transaksi & Penjualan')
                     ->icon('heroicon-o-banknotes')
+                    ->collapsible()
                     ->collapsed(false),
                 \Filament\Navigation\NavigationGroup::make('Manajemen Pengunjung')
                     ->icon('heroicon-o-user-group')
+                    ->collapsible()
                     ->collapsed(false),
                 \Filament\Navigation\NavigationGroup::make('CMS & Konten Web')
                     ->icon('heroicon-o-globe-alt')
+                    ->collapsible()
                     ->collapsed(false),
                 \Filament\Navigation\NavigationGroup::make('Sistem & Keamanan')
                     ->icon('heroicon-o-shield-check')
+                    ->collapsible()
                     ->collapsed(false),
             ])
             ->renderHook(
@@ -84,43 +89,73 @@ class AdminPanelProvider extends PanelProvider
                             background-color: #090614 !important;
                         }
                         
-                        /* Topbar Frosted Styling */
+                        /* Topbar Compact & Frosted Styling */
                         .fi-topbar {
                             background: rgba(255, 255, 255, 0.88) !important;
                             backdrop-filter: blur(20px) !important;
                             -webkit-backdrop-filter: blur(20px) !important;
                             border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+                            min-height: 3.5rem !important;
                         }
                         .dark .fi-topbar {
-                            background: rgba(14, 10, 28, 0.88) !important;
+                            background: rgba(14, 10, 28, 0.9) !important;
                             backdrop-filter: blur(20px) !important;
                             -webkit-backdrop-filter: blur(20px) !important;
                             border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+                            min-height: 3.5rem !important;
                         }
 
                         /* Sidebar Ultra-Modern Dark Styling */
                         .fi-sidebar {
                             background: rgba(255, 255, 255, 0.95) !important;
                             border-right: 1px solid rgba(0, 0, 0, 0.06) !important;
+                            overflow-x: hidden !important;
                         }
                         .dark .fi-sidebar {
                             background: rgba(11, 8, 22, 0.96) !important;
                             border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+                            overflow-x: hidden !important;
                         }
 
-                        /* Sidebar Group Headers */
+                        /* Compact Sidebar Nav Spacing */
+                        .fi-sidebar-nav {
+                            gap: 0.4rem !important;
+                            padding-top: 0.5rem !important;
+                            padding-bottom: 0.5rem !important;
+                        }
+
+                        .fi-sidebar-group {
+                            gap: 0.2rem !important;
+                            margin-bottom: 0.15rem !important;
+                        }
+
+                        /* Sidebar Group Headers & Accordions */
                         .fi-sidebar-group-label {
-                            font-size: 0.68rem !important;
+                            font-size: 0.66rem !important;
                             font-weight: 800 !important;
                             text-transform: uppercase !important;
                             letter-spacing: 0.08em !important;
                             color: #64748b !important;
-                            padding-top: 0.5rem !important;
+                            padding-top: 0.25rem !important;
+                            padding-bottom: 0.25rem !important;
+                        }
+
+                        .fi-sidebar-group-btn {
+                            padding-top: 0.25rem !important;
+                            padding-bottom: 0.25rem !important;
+                            border-radius: 0.6rem !important;
+                            transition: all 0.2s ease !important;
+                        }
+                        .fi-sidebar-group-btn:hover {
+                            background: rgba(255, 255, 255, 0.04) !important;
                         }
 
                         /* Navigation Items & Hover */
                         .fi-sidebar-item > a {
-                            border-radius: 0.75rem !important;
+                            border-radius: 0.65rem !important;
+                            padding-top: 0.45rem !important;
+                            padding-bottom: 0.45rem !important;
+                            font-size: 0.815rem !important;
                             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
                             border: 1px solid transparent !important;
                         }
