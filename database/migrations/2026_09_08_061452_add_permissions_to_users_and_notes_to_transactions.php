@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->json('permissions')->nullable()->after('role');
-        });
+        if (!Schema::hasColumn('users', 'permissions')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->json('permissions')->nullable()->after('role');
+            });
+        }
 
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->text('notes')->nullable()->after('status');
-        });
+        if (!Schema::hasColumn('transactions', 'notes')) {
+            Schema::table('transactions', function (Blueprint $table) {
+                $table->text('notes')->nullable()->after('status');
+            });
+        }
 
         // Grant existing admin users full initial permissions
         \Illuminate\Support\Facades\DB::table('users')
