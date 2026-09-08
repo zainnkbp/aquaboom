@@ -112,52 +112,18 @@
                             <div class="text-4xl font-black tracking-tight text-white">
                                 Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}
                             </div>
-                            <div class="text-xs font-bold text-white/80 mt-1">
-                                @if($pkg->type === 'bundle')
-                                    {{ $locale === 'en' ? '/ package' : '/ paket' }}
-                                    @if(stripos($pkg->name, 'duo') !== false)
-                                        • {{ $locale === 'en' ? 'For 2 guests' : 'Untuk 2 orang' }}
-                                    @elseif(stripos($pkg->name, 'four') !== false || stripos($pkg->name, '4') !== false)
-                                        • {{ $locale === 'en' ? 'For 4 guests' : 'Untuk 4 orang' }}
-                                    @endif
-                                @elseif($pkg->type === 'gathering')
-                                    {{ $locale === 'en' ? '/ person' : '/ orang' }}
-                                @else
-                                    {{ $locale === 'en' ? '/ ticket' : '/ tiket' }}
-                                @endif
-                            </div>
                         </div>
 
-                        <!-- Card Body (Beautiful features with checkmarks) -->
+                        <!-- Card Body (Beautiful features with Gold checkmarks) -->
                         <div class="p-8 flex-1 flex flex-col justify-between">
                             <div>
                                 <h3 class="text-xl font-black text-aqua-navy mb-4 uppercase">
                                     {{ $locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
                                 </h3>
                                 
-                                @php
-                                    $descText = $locale === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description;
-                                    $hasPlus = str_contains($descText, ' + ');
-                                @endphp
-                                @if($hasPlus)
-                                    @php
-                                        $benefitItems = explode(' + ', $descText);
-                                    @endphp
-                                    <ul class="space-y-2 mb-6">
-                                        @foreach($benefitItems as $benefitItem)
-                                            <li class="flex items-start gap-2.5 text-xs font-semibold text-slate-700">
-                                                <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-                                                </svg>
-                                                <span>{{ trim($benefitItem) }}</span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @else
-                                    <div class="text-slate-600 text-sm font-semibold leading-relaxed mb-6 ticket-rich-description">
-                                        {!! $descText !!}
-                                    </div>
-                                @endif
+                                <div class="text-slate-600 text-sm font-semibold leading-relaxed mb-6 ticket-rich-description">
+                                    {!! $locale === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description !!}
+                                </div>
 
                                 @if($pkg->terms_and_conditions)
                                     <!-- Accordion Terms & Conditions -->

@@ -3,16 +3,14 @@
   
   <!-- Page Header -->
   <div class="pt-36 pb-20 bg-aqua-navy relative overflow-hidden">
-    <div class="absolute inset-0 opacity-15">
-      <img src="{{ asset('assets/img/aquaboom.jpeg') }}" alt="bg" class="w-full h-full object-cover" />
+    <div class="absolute inset-0 opacity-10">
+      <img src="{{ asset('assets/img/default.jpeg') }}" alt="bg" class="w-full h-full object-cover" />
     </div>
     <div class="absolute inset-0 bg-gradient-to-b from-aqua-navy/60 to-aqua-navy"></div>
     <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 text-center">
       <div class="flex items-center justify-center gap-3 mb-4">
         <div class="h-px w-10 bg-aqua-gold"></div>
-        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">
-          {{ App::getLocale() === 'en' ? 'Comfort & Convenience' : 'Kenyamanan & Fasilitas' }}
-        </span>
+        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">Comfort & Convenience</span>
         <div class="h-px w-10 bg-aqua-gold"></div>
       </div>
       <h1 class="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tight">

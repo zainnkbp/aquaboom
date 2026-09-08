@@ -1,20 +1,6 @@
 @props(['faqs'])
 
-@php
-    $locale = App::getLocale();
-    $localizedFaqs = $faqs->map(function($f) use ($locale) {
-        return [
-            'id' => $f->id,
-            'question' => $locale === 'en' && !empty($f->question_en) ? $f->question_en : $f->question,
-            'answer' => $locale === 'en' && !empty($f->answer_en) ? $f->answer_en : $f->answer,
-        ];
-    });
-    $welcomeMessage = $locale === 'en'
-        ? 'Hello! I am Boomy 🌊<br/>How can I help you regarding Aquaboom Waterpark? Please choose a question below.'
-        : 'Halo! Saya Boomy 🌊<br/>Ada yang bisa saya bantu terkait Aquaboom Waterpark? Silakan pilih pertanyaan di bawah ini.';
-@endphp
-
-<div x-data="chatbotData(@js($localizedFaqs), @js($welcomeMessage))" class="fixed bottom-6 right-6 z-[100] font-sans flex flex-col items-end gap-4">
+<div x-data="chatbotData(@js($faqs))" class="fixed bottom-6 right-6 z-[100] font-sans flex flex-col items-end gap-4">
     
     <!-- Chat Window -->
     <div 
@@ -37,7 +23,7 @@
             </div>
             <div>
                 <h3 class="font-black text-sm uppercase tracking-wide">Boomy Assistant</h3>
-                <p class="text-xs text-white/60 font-semibold">{{ $locale === 'en' ? 'Always ready to help you' : 'Selalu siap membantu Anda' }}</p>
+                <p class="text-xs text-white/60 font-semibold">Selalu siap membantu Anda</p>
             </div>
         </div>
 
@@ -69,7 +55,7 @@
 
         <!-- Question Buttons -->
         <div class="p-4 bg-white border-t border-slate-100 shrink-0">
-            <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 text-center">{{ $locale === 'en' ? 'Choose a Question' : 'Pilih Pertanyaan' }}</p>
+            <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 text-center">Pilih Pertanyaan</p>
             <div class="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1">
                 <template x-for="faq in faqs" :key="faq.id">
                     <button 
@@ -100,12 +86,12 @@
 
 <script>
     document.addEventListener('alpine:init', () => {
-        Alpine.data('chatbotData', (faqData, initialMsg) => ({
+        Alpine.data('chatbotData', (faqData) => ({
             isOpen: false,
             isTyping: false,
             faqs: faqData,
             messages: [
-                { type: 'bot', text: initialMsg }
+                { type: 'bot', text: 'Halo! Saya Boomy 🌊<br/>Ada yang bisa saya bantu terkait Aquaboom Waterpark? Silakan pilih pertanyaan di bawah ini.' }
             ],
             
             askQuestion(faq) {
