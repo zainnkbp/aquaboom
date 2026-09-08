@@ -5,20 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
 use Carbon\CarbonPeriod;
+use Filament\Facades\Filament;
 use Illuminate\Http\Request;
 
-class DashboardV2Controller extends Controller
+class AdminDashboardV2Controller extends Controller
 {
-    public function __invoke(Request $request)
+    public function index()
     {
         $user = auth()->user();
-        if (!$user || !$user->canAccessPanel(\Filament\Facades\Filament::getPanel('admin'))) {
-            return redirect('/admin/login');
+
+        // Enforce staff access to admin panel
+        if (!$user || !$user->canAccessPanel(Filament::getPanel('admin'))) {
+            abort(403, 'Akses tidak diizinkan.');
         }
 
         $paidStatuses = ['paid', 'scanned'];
 
-        // 1. Key Metrics
+        // 1. Sales Today & Orders Today
         $salesToday = (float) Transaction::whereIn('status', $paidStatuses)
             ->whereDate('created_at', today())
             ->sum('total_price');
@@ -27,6 +30,7 @@ class DashboardV2Controller extends Controller
             ->whereDate('created_at', today())
             ->count();
 
+        // 2. Sales This Month vs Last Month
         $salesThisMonth = (float) Transaction::whereIn('status', $paidStatuses)
             ->whereYear('created_at', now()->year)
             ->whereMonth('created_at', now()->month)
@@ -42,7 +46,7 @@ class DashboardV2Controller extends Controller
             $monthGrowthPercent = round((($salesThisMonth - $salesLastMonth) / $salesLastMonth) * 100, 1);
         }
 
-        // Today's Manifest Pax
+        // 3. Today's Gate Manifest & Attendance
         $todayArrivals = Transaction::whereDate('visit_date', today())
             ->whereIn('status', ['paid', 'scanned', 'pending'])
             ->with(['items.ticketPackage', 'addOns.addOn'])
@@ -59,32 +63,27 @@ class DashboardV2Controller extends Controller
                 $todayCheckedInPax += $pax;
             }
         }
-        $checkInRate = $todayExpectedPax > 0 ? round(($todayCheckedInPax / $todayExpectedPax) * 100) : 0;
 
+        $todayCheckInRate = $todayExpectedPax > 0 ? round(($todayCheckedInPax / $todayExpectedPax) * 100) : 0;
+
+        // 4. Monthly Tickets Sold
         $ticketsSoldThisMonth = (int) TransactionItem::whereHas('transaction', function ($query) use ($paidStatuses) {
             $query->whereIn('status', $paidStatuses)
                 ->whereYear('created_at', now()->year)
                 ->whereMonth('created_at', now()->month);
         })->sum('quantity');
 
-        // Sparklines (7 days revenue)
-        $revenueSparkline = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $d = today()->subDays($i);
-            $revenueSparkline[] = (float) Transaction::whereIn('status', $paidStatuses)
-                ->whereDate('created_at', $d)
-                ->sum('total_price');
-        }
-
-        // 2. 14-Day Trend Chart Data
+        // 5. 14-Day Trend Data
         $start = today()->subDays(13);
         $period = CarbonPeriod::create($start, today());
+
         $chartLabels = [];
         $chartRevenue = [];
         $chartPax = [];
 
         foreach ($period as $date) {
             $chartLabels[] = $date->translatedFormat('d M');
+
             $chartRevenue[] = (float) Transaction::whereIn('status', $paidStatuses)
                 ->whereDate('created_at', $date)
                 ->sum('total_price');
@@ -95,51 +94,80 @@ class DashboardV2Controller extends Controller
             })->sum('quantity');
         }
 
-        // 3. Package Distribution
-        $items = TransactionItem::whereHas('transaction', function ($q) use ($paidStatuses) {
+        // 6. Ticket Distribution Data
+        $distItems = TransactionItem::whereHas('transaction', function ($q) use ($paidStatuses) {
             $q->whereIn('status', $paidStatuses);
         })
         ->with('ticketPackage')
         ->get()
         ->groupBy(function ($item) {
-            return $item->ticketPackage ? $item->ticketPackage->name : 'Lainnya';
+            return $item->ticketPackage ? $item->ticketPackage->name : 'Tiket Masuk';
         });
 
-        $packageLabels = [];
-        $packageValues = [];
-        foreach ($items as $name => $group) {
-            $packageLabels[] = $name;
-            $packageValues[] = $group->sum('quantity');
+        $distLabels = [];
+        $distData = [];
+        foreach ($distItems as $name => $group) {
+            $distLabels[] = $name;
+            $distData[] = (int) $group->sum('quantity');
         }
 
-        if (empty($packageLabels)) {
-            $packageLabels = ['Tiket Regular', 'Duo Pass', 'Four Pack'];
-            $packageValues = [1, 1, 1];
+        if (empty($distLabels)) {
+            $distLabels = ['Belum Ada Penjualan'];
+            $distData = [0];
         }
 
-        // 4. Recent Orders
+        // 7. Recent Orders
         $recentOrders = Transaction::with(['items.ticketPackage'])
             ->latest()
             ->limit(8)
             ->get();
 
-        return view('dashboard-v2', compact(
+        return view('admin.dashboard-v2', compact(
+            'user',
             'salesToday',
             'ordersTodayCount',
             'salesThisMonth',
+            'salesLastMonth',
             'monthGrowthPercent',
             'todayArrivals',
             'todayExpectedPax',
             'todayCheckedInPax',
-            'checkInRate',
+            'todayCheckInRate',
             'ticketsSoldThisMonth',
-            'revenueSparkline',
             'chartLabels',
             'chartRevenue',
             'chartPax',
-            'packageLabels',
-            'packageValues',
+            'distLabels',
+            'distData',
             'recentOrders'
         ));
+    }
+
+    public function reschedule(Request $request, $id)
+    {
+        $request->validate([
+            'visit_date' => 'required|date',
+            'notes' => 'nullable|string',
+        ]);
+
+        $transaction = Transaction::findOrFail($id);
+        $transaction->update([
+            'visit_date' => $request->visit_date,
+            'notes' => $request->notes,
+        ]);
+
+        return back()->with('success', "Tiket #{$transaction->order_id} berhasil di-reschedule ke {$request->visit_date}.");
+    }
+
+    public function checkIn($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+        $transaction->update([
+            'is_redeemed' => true,
+            'redeemed_at' => now(),
+            'status' => 'scanned',
+        ]);
+
+        return back()->with('success', "Tiket #{$transaction->order_id} berhasil divalidasi masuk (Check-in).");
     }
 }

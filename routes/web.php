@@ -139,6 +139,13 @@ Route::get('/faq', function () {
 Route::get('/scanner/login', ScannerLogin::class)->name('scanner.login');
 Route::get('/scanner', QrScanner::class)->name('scanner.app')->middleware('auth');
 
+// Admin Dashboard V2 (Glassmorphism UI)
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/dashboard/v2', [\App\Http\Controllers\AdminDashboardV2Controller::class, 'index'])->name('admin.dashboard.v2');
+    Route::post('/admin/dashboard/v2/reschedule/{id}', [\App\Http\Controllers\AdminDashboardV2Controller::class, 'reschedule'])->name('admin.dashboard.v2.reschedule');
+    Route::post('/admin/dashboard/v2/check-in/{id}', [\App\Http\Controllers\AdminDashboardV2Controller::class, 'checkIn'])->name('admin.dashboard.v2.checkin');
+});
+
 // Language Switcher Route
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['id', 'en'])) {
@@ -255,11 +262,4 @@ Route::middleware('auth')->group(function () {
 Route::get('/payment/doku/pay/{order_id}', [\App\Http\Controllers\PaymentController::class, 'redirectToPayment'])->name('payment.doku.pay');
 Route::post('/payment/doku/notification', [\App\Http\Controllers\PaymentController::class, 'handleNotification'])->name('payment.doku.notification');
 Route::get('/payment/doku/redirect', [\App\Http\Controllers\PaymentController::class, 'paymentRedirect'])->name('payment.doku.redirect');
-
-// Dashboard V2 (Glassmorphism Edition)
-Route::middleware('auth')->group(function () {
-    Route::get('/v2', \App\Http\Controllers\DashboardV2Controller::class)->name('dashboard.v2');
-    Route::get('/admin/v2', fn () => redirect()->route('dashboard.v2'));
-});
-
 

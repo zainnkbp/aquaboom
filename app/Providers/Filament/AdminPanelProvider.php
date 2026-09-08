@@ -114,11 +114,11 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Pages\Dashboard::class,
             ])
             ->navigationItems([
-                \Filament\Navigation\NavigationItem::make('Dashboard Glass (V2)')
-                    ->url(fn (): string => route('dashboard.v2'), shouldOpenInNewTab: false)
+                \Filament\Navigation\NavigationItem::make('Dashboard V2 (Glassmorphism)')
+                    ->url(fn (): string => route('admin.dashboard.v2'))
                     ->icon('heroicon-o-sparkles')
-                    ->group('Tampilan Baru')
-                    ->sort(0),
+                    ->badge('V2', color: 'primary')
+                    ->sort(-1),
                 \Filament\Navigation\NavigationItem::make('Scanner Tiket (Security)')
                     ->url(fn (): string => route('scanner.app'), shouldOpenInNewTab: true)
                     ->icon('heroicon-o-qr-code')
