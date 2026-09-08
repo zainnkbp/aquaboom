@@ -13,12 +13,81 @@ class QrScanner extends Component
     public $ticketDetails = [];
     public $errorMessage = '';
 
+    // Self-service PIN / Password Modal
+    public bool $showProfileModal = false;
+    public string $newPin = '';
+    public string $newPin_confirmation = '';
+    public string $currentPassword = '';
+    public string $newPassword = '';
+    public string $newPassword_confirmation = '';
+    public string $profileSuccessMessage = '';
+
     public function mount()
     {
-        // Must be authenticated to access
-        if (!auth()->check()) {
+        // Must be authenticated and authorized to access scanner
+        if (!auth()->check() || !auth()->user()->canValidateTickets()) {
             return redirect()->route('scanner.login');
         }
+    }
+
+    public function openProfileModal()
+    {
+        $this->showProfileModal = true;
+        $this->newPin = '';
+        $this->newPin_confirmation = '';
+        $this->currentPassword = '';
+        $this->newPassword = '';
+        $this->newPassword_confirmation = '';
+        $this->profileSuccessMessage = '';
+        $this->resetErrorBag();
+    }
+
+    public function closeProfileModal()
+    {
+        $this->showProfileModal = false;
+    }
+
+    public function updatePin()
+    {
+        $this->validate([
+            'newPin' => 'required|numeric|digits:6|confirmed',
+        ], [
+            'newPin.required' => 'Ketik 6 digit PIN baru.',
+            'newPin.numeric' => 'PIN harus berupa angka.',
+            'newPin.digits' => 'PIN harus tepat 6 digit.',
+            'newPin.confirmed' => 'Konfirmasi PIN tidak cocok.',
+        ]);
+
+        $user = auth()->user();
+        $user->pin = $this->newPin;
+        $user->save();
+
+        $this->profileSuccessMessage = 'PIN 6-digit berhasil diperbarui!';
+        $this->newPin = '';
+        $this->newPin_confirmation = '';
+    }
+
+    public function updatePassword()
+    {
+        $this->validate([
+            'currentPassword' => 'required|current_password',
+            'newPassword' => 'required|min:8|confirmed',
+        ], [
+            'currentPassword.required' => 'Ketik password saat ini.',
+            'currentPassword.current_password' => 'Password saat ini tidak sesuai.',
+            'newPassword.required' => 'Ketik password baru minimal 8 karakter.',
+            'newPassword.min' => 'Password baru minimal 8 karakter.',
+            'newPassword.confirmed' => 'Konfirmasi password baru tidak cocok.',
+        ]);
+
+        $user = auth()->user();
+        $user->password = \Illuminate\Support\Facades\Hash::make($this->newPassword);
+        $user->save();
+
+        $this->profileSuccessMessage = 'Password akun berhasil diperbarui!';
+        $this->currentPassword = '';
+        $this->newPassword = '';
+        $this->newPassword_confirmation = '';
     }
 
     public function processScan($code)
@@ -58,7 +127,7 @@ class QrScanner extends Component
             return;
         }
 
-        if ($transaction->status !== 'paid') {
+        if ($transaction->status !== 'paid' && $transaction->status !== 'scanned') {
             $this->scanResult = 'unpaid';
             $this->errorMessage = "Tiket belum lunas (Status: " . strtoupper($transaction->status) . ")";
             return;
@@ -66,13 +135,14 @@ class QrScanner extends Component
 
         if ($transaction->is_redeemed) {
             $this->scanResult = 'already_redeemed';
-            $this->errorMessage = "Tiket sudah hangus/dipakai pada " . $transaction->redeemed_at->format('d M Y H:i');
+            $this->errorMessage = "Tiket sudah digunakan masuk pada " . ($transaction->redeemed_at ? $transaction->redeemed_at->format('d M Y H:i') : '-');
             return;
         }
 
         // Valid -> Redeem
         $transaction->is_redeemed = true;
         $transaction->redeemed_at = now();
+        $transaction->status = 'scanned';
         $transaction->save();
 
         $totalTickets = 0;

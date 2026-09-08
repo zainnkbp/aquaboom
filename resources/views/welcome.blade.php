@@ -46,7 +46,7 @@
       <div class="flex items-center gap-3 mb-6 flex-wrap">
         <div class="h-px w-12 bg-aqua-gold hidden sm:block"></div>
         <span class="text-aqua-gold text-[10px] sm:text-xs font-black tracking-[0.2em] sm:tracking-[0.3em] uppercase">
-          {{ App::getLocale() === 'en' ? 'The Only Rooftop Waterpark in East Kalimantan' : 'Rooftop Waterpark Pertama di Kalimantan Timur' }}
+          {!! App::getLocale() === 'en' ? "Balikpapan's Iconic Rooftop Waterpark" : 'Waterpark Rooftop Ikonik di Balikpapan' !!}
         </span>
       </div>
 
@@ -60,7 +60,7 @@
         {!! App::getLocale() === 'en' && !empty($settings['hero_subheadline_en']) ? $settings['hero_subheadline_en'] : ($settings['hero_subheadline'] ?? '9 AM — 6 PM') !!}
       </p>
       <p class="text-base text-white/55 font-semibold max-w-lg mb-10 leading-relaxed">
-        {!! App::getLocale() === 'en' && !empty($settings['hero_description_en']) ? $settings['hero_description_en'] : ($settings['hero_description'] ?? 'Aquaboom Waterpark — 7th Floor, Pentacity Mall BSB, Balikpapan. Taman air premium pertama di rooftop Kalimantan Timur.') !!}
+        {!! App::getLocale() === 'en' && !empty($settings['hero_description_en']) ? $settings['hero_description_en'] : ($settings['hero_description'] ?? 'Aquaboom Waterpark Balikpapan — Pengalaman rekreasi air rooftop yang unik di lantai 7 Pentacity Mall BSB. Managed by Astara Hotel Balikpapan.') !!}
       </p>
 
       {{-- CTA Buttons --}}
@@ -131,8 +131,12 @@
             </svg>
           </div>
           <div>
-            <div class="text-white font-black text-sm uppercase tracking-wide">Pesan Online Lebih Hemat</div>
-            <div class="text-white/60 text-xs font-semibold">Hindari antrean kasir, tiket langsung kirim ke WhatsApp & Email.</div>
+            <div class="text-white font-black text-sm uppercase tracking-wide">
+              {{ App::getLocale() === 'en' ? 'Book Online & Save More' : 'Pesan Online Lebih Hemat' }}
+            </div>
+            <div class="text-white/60 text-xs font-semibold">
+              {{ App::getLocale() === 'en' ? 'Skip queue lines, tickets delivered directly to your WhatsApp & Email.' : 'Hindari antrean kasir, tiket langsung kirim ke WhatsApp & Email.' }}
+            </div>
           </div>
         </div>
 
@@ -143,14 +147,18 @@
             </svg>
           </div>
           <div>
-            <div class="text-white font-black text-sm uppercase tracking-wide">Corporate & Group Gathering</div>
-            <div class="text-white/60 text-xs font-semibold">Diskon khusus rombongan mulai 10+ pax & fasilitas MC games.</div>
+            <div class="text-white font-black text-sm uppercase tracking-wide">
+              {{ App::getLocale() === 'en' ? 'Corporate & Group Gatherings' : 'Corporate & Group Gathering' }}
+            </div>
+            <div class="text-white/60 text-xs font-semibold">
+              {{ App::getLocale() === 'en' ? 'Special group rates starting from 10+ pax with dedicated event support.' : 'Diskon khusus rombongan mulai 10+ pax & fasilitas MC games.' }}
+            </div>
           </div>
         </div>
 
         <div class="flex justify-center md:justify-end">
           <a href="{{ url('/ticket') }}" class="bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-6 py-3 rounded-full text-xs uppercase tracking-wider transition-all shadow-md transform hover:scale-105">
-            Cek Promo Hari Ini &rarr;
+            {{ App::getLocale() === 'en' ? "Today's Deals →" : 'Cek Promo Hari Ini →' }}
           </a>
         </div>
       </div>
@@ -286,7 +294,7 @@
 
       <div class="text-center mt-12">
         <a href="{{ url('/ticket') }}" class="inline-flex items-center gap-2 text-aqua-navy font-black hover:text-aqua-gold text-sm uppercase tracking-wider transition-colors border-b-2 border-aqua-gold pb-1">
-          Lihat Semua Pilihan Tiket & Add-On Fasilitas &rarr;
+          {{ App::getLocale() === 'en' ? 'View All Tickets & Add-On Facilities →' : 'Lihat Semua Pilihan Tiket & Add-On Fasilitas →' }}
         </a>
       </div>
     </div>
@@ -306,15 +314,16 @@
           <div class="lg:col-span-7">
             <div class="flex items-center gap-3 mb-4">
               <span class="bg-aqua-gold text-aqua-navy text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
-                Event & Gathering Rombongan
+                {{ App::getLocale() === 'en' ? 'Group Events & Gatherings' : 'Event & Gathering Rombongan' }}
               </span>
             </div>
             <h2 class="text-3xl md:text-5xl font-black uppercase mb-6 leading-tight">
-              Rencanakan Acara Kantor &<br/>
-              <span class="gold-shimmer">Gathering Keluarga Anda</span>
+              {!! App::getLocale() === 'en' ? 'Plan Your Corporate &<br/><span class="gold-shimmer">Family Gathering</span>' : 'Rencanakan Acara Kantor &<br/><span class="gold-shimmer">Gathering Keluarga Anda</span>' !!}
             </h2>
             <p class="text-white/70 text-sm md:text-base font-semibold leading-relaxed mb-8 max-w-xl">
-              Venue rooftop eksklusif di lantai 7 Pentacity Mall BSB. Lengkap dengan fasilitas sewa gazebo pribadi, sound system & mic, pemandu fun team building games, dan paket makan siang buffet.
+              {{ App::getLocale() === 'en'
+                ? 'Exclusive rooftop venue on the 7th floor of Pentacity Mall BSB. Complete with private gazebos, sound systems, fun team-building games, and lunch buffet packages.'
+                : 'Venue rooftop eksklusif di lantai 7 Pentacity Mall BSB. Lengkap dengan fasilitas sewa gazebo pribadi, sound system & mic, pemandu fun team building games, dan paket makan siang buffet.' }}
             </p>
 
             @php
@@ -325,13 +334,13 @@
             @endphp
             <div class="flex flex-wrap gap-4 items-center">
               <a href="{{ url('/gatherings') }}" class="inline-flex items-center gap-3 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-8 py-4 rounded-full uppercase tracking-wider text-xs transition-all shadow-xl shadow-amber-900/30 transform hover:-translate-y-1">
-                Lihat Paket Gathering Lengkap
+                {{ App::getLocale() === 'en' ? 'View Gathering Packages' : 'Lihat Paket Gathering Lengkap' }}
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
               </a>
               <a href="https://wa.me/{{ $salesWaHome }}?text=Halo%20Tim%20Sales%20Aquaboom,%20saya%20ingin%20konsultasi%20penawaran%20corporate/family%20gathering" target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-black px-6 py-4 rounded-full uppercase tracking-wider text-xs transition-all shadow-md">
-                Chat Tim Sales WhatsApp
+                {{ App::getLocale() === 'en' ? 'Chat with Sales Team' : 'Chat Tim Sales WhatsApp' }}
               </a>
             </div>
           </div>
@@ -340,19 +349,19 @@
             <div class="grid grid-cols-2 gap-4">
               <div class="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm">
                 <div class="text-2xl font-black text-aqua-gold mb-1">Outing</div>
-                <div class="text-xs text-white/70 font-semibold">Corporate & BUMN Outing Kantor</div>
+                <div class="text-xs text-white/70 font-semibold">{{ App::getLocale() === 'en' ? 'Corporate & Enterprise Outings' : 'Corporate & BUMN Outing Kantor' }}</div>
               </div>
               <div class="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm">
                 <div class="text-2xl font-black text-aqua-gold mb-1">Family</div>
-                <div class="text-xs text-white/70 font-semibold">Arisan & Reuni Keluarga Besar</div>
+                <div class="text-xs text-white/70 font-semibold">{{ App::getLocale() === 'en' ? 'Family Reunions & Social Clubs' : 'Arisan & Reuni Keluarga Besar' }}</div>
               </div>
               <div class="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm">
                 <div class="text-2xl font-black text-aqua-gold mb-1">School</div>
-                <div class="text-xs text-white/70 font-semibold">Study Tour & Field Trip Siswa</div>
+                <div class="text-xs text-white/70 font-semibold">{{ App::getLocale() === 'en' ? 'School Study Tours & Field Trips' : 'Study Tour & Field Trip Siswa' }}</div>
               </div>
               <div class="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm">
                 <div class="text-2xl font-black text-aqua-gold mb-1">Birthday</div>
-                <div class="text-xs text-white/70 font-semibold">Poolside Birthday Party Anak</div>
+                <div class="text-xs text-white/70 font-semibold">{{ App::getLocale() === 'en' ? 'Kids Poolside Birthday Parties' : 'Poolside Birthday Party Anak' }}</div>
               </div>
             </div>
           </div>
@@ -369,7 +378,7 @@
       <div class="mb-16 text-center">
         <div class="flex items-center justify-center gap-4 mb-4">
           <div class="h-px w-16 bg-aqua-gold"></div>
-          <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">World-Class Attractions</span>
+          <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">{{ App::getLocale() === 'en' ? 'World-Class Attractions' : 'Atraksi Kelas Dunia' }}</span>
           <div class="h-px w-16 bg-aqua-gold"></div>
         </div>
         <h2 class="text-3xl md:text-6xl font-black text-aqua-navy uppercase tracking-tight">
@@ -425,11 +434,10 @@
         <div class="lg:col-span-4">
           <div class="flex items-center gap-3 mb-4">
             <div class="h-px w-10 bg-aqua-gold"></div>
-            <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">Corporate Identity</span>
+            <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">{{ App::getLocale() === 'en' ? 'Corporate Identity' : 'Identitas Perusahaan' }}</span>
           </div>
           <h2 class="text-3xl lg:text-5xl font-black uppercase mb-6 leading-tight">
-            OUR<br />COMPANY<br />
-            <span class="gold-shimmer">PHILOSOPHY</span>
+            {!! App::getLocale() === 'en' ? 'OUR<br />COMPANY<br /><span class="gold-shimmer">PHILOSOPHY</span>' : 'FILOSOFI<br />PERUSAHAAN<br /><span class="gold-shimmer">KAMI</span>' !!}
           </h2>
           <p class="text-white/60 text-base leading-relaxed font-semibold">
             {!! App::getLocale() === 'en' && !empty($settings['philosophy_text_en']) ? $settings['philosophy_text_en'] : ($settings['philosophy_text'] ?? 'Menghadirkan kebahagiaan sejati dengan tetap menghormati harmoni alam sekitar. Setiap tetes air, senyum staf, dan wahana dirancang dengan kepedulian mendalam.') !!}

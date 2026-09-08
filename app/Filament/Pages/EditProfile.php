@@ -19,6 +19,15 @@ class EditProfile extends BaseEditProfile
                     ->imageEditor(),
                 $this->getNameFormComponent(),
                 $this->getEmailFormComponent(),
+                \Filament\Forms\Components\TextInput::make('pin')
+                    ->label('PIN Scanner 6 Digit')
+                    ->helperText('PIN 6-digit untuk login cepat ke Scanner Tiket Gate masuk.')
+                    ->numeric()
+                    ->password()
+                    ->revealable()
+                    ->minLength(6)
+                    ->maxLength(6)
+                    ->visible(fn (): bool => auth()->user()?->canValidateTickets() ?? false),
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
             ]);

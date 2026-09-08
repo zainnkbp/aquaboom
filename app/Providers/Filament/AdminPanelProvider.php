@@ -92,6 +92,14 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->navigationItems([
+                \Filament\Navigation\NavigationItem::make('Scanner Tiket (Security)')
+                    ->url(fn (): string => route('scanner.app'), shouldOpenInNewTab: true)
+                    ->icon('heroicon-o-qr-code')
+                    ->group('Operasional Gate')
+                    ->sort(1)
+                    ->visible(fn (): bool => auth()->user()?->canValidateTickets() ?? false),
+            ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 // Widgets\AccountWidget::class,

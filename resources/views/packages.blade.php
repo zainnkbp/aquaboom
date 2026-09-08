@@ -8,19 +8,23 @@
       <div class="absolute inset-0 bg-gradient-to-b from-waterbom-dark/80 to-waterbom-dark"></div>
     </div>
     <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
-      <span class="text-aqua-azure text-sm font-black tracking-widest uppercase mb-4 block">Special Deals</span>
+      <span class="text-aqua-azure text-sm font-black tracking-widest uppercase mb-4 block">
+        {{ App::getLocale() === 'en' ? 'Special Deals' : 'Penawaran Spesial' }}
+      </span>
       <h1 class="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tight leading-tight">
-        PACKAGES &<br/>SPECIAL OFFERS
+        {!! App::getLocale() === 'en' ? 'PACKAGES &<br/>SPECIAL OFFERS' : 'PAKET PROMO &<br/>PENAWARAN SPESIAL' !!}
       </h1>
       <p class="text-base md:text-lg text-white/70 font-semibold max-w-3xl mx-auto leading-relaxed">
-        Aquaboom is the perfect setting for special events, birthdays, family gatherings, corporate team outings or just big groups of friends wanting to have a great day out! Our team can assist you with your enquiry and customise a package with special rates for groups of more than 10 people.
+        {{ App::getLocale() === 'en'
+          ? 'Aquaboom is the perfect setting for special events, birthdays, family gatherings, corporate team outings or just big groups of friends wanting to have a great day out! Our team can assist you with your enquiry and customise a package with special rates for groups of more than 10 people.'
+          : 'Aquaboom adalah tempat sempurna untuk perayaan istimewa, ulang tahun, kumpul keluarga besar, outing kantor, hingga liburan seru bersama teman-teman! Tim kami siap melayani dan menyiapkan penawaran paket hemat terbaik untuk rombongan Anda.' }}
       </p>
       <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="{{ url('/book') }}" class="inline-block bg-aqua-gold hover:bg-aqua-gold-2 text-white font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all shadow-lg shadow-orange-500/20">
-          Book Tickets Online
+        <a href="{{ url('/ticket') }}" class="inline-block bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all shadow-lg shadow-orange-500/20">
+          {{ App::getLocale() === 'en' ? 'Book Tickets Online' : 'Beli Tiket Online' }}
         </a>
-        <a href="mailto:info@aquaboombsb.com" class="inline-block bg-white/10 hover:bg-white/20 text-white border border-white/30 font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all">
-          Group Enquiry
+        <a href="{{ url('/gatherings') }}" class="inline-block bg-white/10 hover:bg-white/20 text-white border border-white/30 font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all">
+          {{ App::getLocale() === 'en' ? 'Group Enquiry' : 'Konsultasi Rombongan' }}
         </a>
       </div>
     </div>
@@ -33,7 +37,9 @@
       <!-- Section intro note -->
       <div class="text-center mb-16">
         <p class="text-slate-600 font-semibold text-sm max-w-2xl mx-auto">
-          For bookings of fewer than 10 guests, please visit our <a href="{{ url('/ticket') }}" class="text-aqua-azure underline hover:text-aqua-gold">ticket page</a> and take advantage of our regular online discount. Our current offers and group promotions are below:
+          {!! App::getLocale() === 'en'
+            ? 'For bookings of fewer than 10 guests, please visit our <a href="' . url('/ticket') . '" class="text-aqua-azure underline hover:text-aqua-gold">ticket page</a> and take advantage of our regular online discount. Our current offers and group promotions are below:'
+            : 'Untuk pemesanan tiket harian di bawah 10 orang, silakan kunjungi <a href="' . url('/ticket') . '" class="text-aqua-azure underline hover:text-aqua-gold">halaman tiket</a> kami untuk mendapatkan harga hemat online. Pilihan paket promo dan rombongan tersedia di bawah ini:' !!}
         </p>
       </div>
 
@@ -41,7 +47,7 @@
 
         @forelse($packages as $package)
           @php
-            $buttonLink = url('/book');
+            $buttonLink = url('/ticket');
             $buttonText = App::getLocale() === 'id' ? 'Beli Sekarang' : 'Book Now';
             $buttonClass = 'bg-aqua-navy hover:bg-black text-white';
 
@@ -74,9 +80,9 @@
               @if($package->is_discounted)
                 <div class="absolute top-4 left-4 bg-aqua-gold text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">
                   @if($package->discount_type === 'percentage')
-                    Save {{ rtrim(rtrim(number_format((float) $package->discount_price, 2), '0'), '.') }}%
+                    {{ App::getLocale() === 'en' ? 'Save ' : 'Hemat ' }}{{ rtrim(rtrim(number_format((float) $package->discount_price, 2), '0'), '.') }}%
                   @else
-                    Special Price
+                    {{ App::getLocale() === 'en' ? 'Special Price' : 'Harga Spesial' }}
                   @endif
                 </div>
               @endif
@@ -106,12 +112,12 @@
                   @if($package->price > 0)
                     @if($package->is_discounted)
                       <div class="flex justify-between items-center mb-1">
-                        <span class="text-slate-500 font-semibold">Harga Normal</span>
+                        <span class="text-slate-500 font-semibold">{{ App::getLocale() === 'en' ? 'Regular Price' : 'Harga Normal' }}</span>
                         <span class="text-slate-400 line-through font-bold">Rp {{ number_format((float) $package->price, 0, ',', '.') }}</span>
                       </div>
                     @endif
                     <div class="flex justify-between items-center">
-                      <span class="text-aqua-navy font-black">Harga Paket</span>
+                      <span class="text-aqua-navy font-black">{{ App::getLocale() === 'en' ? 'Package Price' : 'Harga Paket' }}</span>
                       <span class="text-aqua-gold text-xl font-black">Rp {{ number_format((float) $package->effective_price, 0, ',', '.') }}</span>
                     </div>
                   @else
@@ -157,17 +163,23 @@
   <!-- CTA Bottom Section -->
   <section class="py-20 bg-aqua-cream border-t border-slate-200">
     <div class="max-w-3xl mx-auto px-6 text-center">
-      <span class="text-aqua-azure text-xs font-black tracking-widest uppercase mb-3 block">Still Unsure?</span>
-      <h2 class="text-3xl md:text-4xl font-black text-aqua-navy uppercase mb-4">NEED A CUSTOM PACKAGE?</h2>
+      <span class="text-aqua-azure text-xs font-black tracking-widest uppercase mb-3 block">
+        {{ App::getLocale() === 'en' ? 'Still Unsure?' : 'Masih Ragu?' }}
+      </span>
+      <h2 class="text-3xl md:text-4xl font-black text-aqua-navy uppercase mb-4">
+        {{ App::getLocale() === 'en' ? 'NEED A CUSTOM GROUP PACKAGE?' : 'BUTUH PAKET KHUSUS ROMBONGAN?' }}
+      </h2>
       <p class="text-slate-600 font-semibold text-sm max-w-xl mx-auto mb-8">
-        Tidak menemukan paket yang sesuai? Hubungi tim kami dan kami akan membantu menyusun paket eksklusif sesuai kebutuhan Anda.
+        {{ App::getLocale() === 'en'
+          ? "Can't find the right package? Contact our sales team and we will help tailor an exclusive package to your group's needs."
+          : 'Tidak menemukan paket yang sesuai? Hubungi tim kami dan kami akan membantu menyusun paket eksklusif sesuai kebutuhan Anda.' }}
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="mailto:info@aquaboombsb.com" class="inline-block bg-aqua-navy hover:bg-black text-white font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all">
-          Email Us
+        <a href="{{ url('/gatherings') }}" class="inline-block bg-aqua-navy hover:bg-black text-white font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all">
+          {{ App::getLocale() === 'en' ? 'Custom Package Enquiry' : 'Konsultasi Rombongan' }}
         </a>
-        <a href="{{ url('/book') }}" class="inline-block bg-aqua-gold hover:bg-aqua-gold-2 text-white font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all shadow-lg shadow-orange-500/20">
-          Book Standard Tickets
+        <a href="{{ url('/ticket') }}" class="inline-block bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all shadow-lg shadow-orange-500/20">
+          {{ App::getLocale() === 'en' ? 'Book Standard Tickets' : 'Beli Tiket Reguler' }}
         </a>
       </div>
     </div>

@@ -8,39 +8,54 @@ use Filament\Widgets\ChartWidget;
 
 class SalesChart extends ChartWidget
 {
-    protected static ?string $heading = 'Penjualan 7 Hari Terakhir';
+    protected static ?string $heading = 'Tren Pendapatan & Pengunjung (14 Hari Terakhir)';
 
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 3;
+
+    protected int | string | array $columnSpan = 1;
+
+    protected static ?string $maxHeight = '300px';
 
     public static function canView(): bool
     {
-        return auth()->user()?->canManageCatalog() ?? false;
+        return auth()->user()?->hasPermission('transactions') ?? false;
     }
 
     protected function getData(): array
     {
-        $start = today()->subDays(6);
+        $start = today()->subDays(13);
         $period = CarbonPeriod::create($start, today());
 
         $labels = [];
-        $values = [];
+        $revenue = [];
+        $pax = [];
 
         foreach ($period as $date) {
-            $labels[] = $date->translatedFormat('D, d M');
-            $values[] = (float) Transaction::whereIn('status', ['paid', 'scanned'])
+            $labels[] = $date->translatedFormat('d M');
+
+            $dayRevenue = (float) Transaction::whereIn('status', ['paid', 'scanned'])
                 ->whereDate('created_at', $date)
                 ->sum('total_price');
+
+            $dayPax = (int) \App\Models\TransactionItem::whereHas('transaction', function ($q) use ($date) {
+                $q->whereIn('status', ['paid', 'scanned'])
+                    ->whereDate('created_at', $date);
+            })->sum('quantity');
+
+            $revenue[] = $dayRevenue;
+            $pax[] = $dayPax;
         }
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Penjualan (Rp)',
-                    'data' => $values,
+                    'label' => 'Pendapatan (Rp)',
+                    'data' => $revenue,
                     'borderColor' => '#ec4899',
-                    'backgroundColor' => 'rgba(236, 72, 153, 0.15)',
+                    'backgroundColor' => 'rgba(236, 72, 153, 0.12)',
                     'fill' => true,
                     'tension' => 0.35,
+                    'yAxisID' => 'y',
                 ],
             ],
             'labels' => $labels,

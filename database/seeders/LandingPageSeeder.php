@@ -30,10 +30,42 @@ class LandingPageSeeder extends Seeder
 
         // Add-ons Seeding
         AddOn::insert([
-            ['name' => 'Sewa Gazebo Standard', 'description' => 'Gazebo nyaman kapasitas 4-6 orang untuk bersantai bersama keluarga, include stopkontak dan matras empuk.', 'price' => 150000.00, 'image' => 'https://picsum.photos/400/300?random=81', 'is_active' => true],
-            ['name' => 'Single Tube (Ban Single)', 'description' => 'Sewa ban renang single untuk meluncur lebih cepat dan nyaman di wahana seluncuran.', 'price' => 30000.00, 'image' => 'https://picsum.photos/400/300?random=82', 'is_active' => true],
-            ['name' => 'Double Tube (Ban Double)', 'description' => 'Sewa ban renang double untuk meluncur berpasangan bersama teman atau keluarga.', 'price' => 50000.00, 'image' => 'https://picsum.photos/400/300?random=83', 'is_active' => true],
-            ['name' => 'Loker Premium', 'description' => 'Sewa loker ukuran besar dengan pengaman kunci digital RFID untuk kenyamanan barang bawaan Anda.', 'price' => 25000.00, 'image' => 'https://picsum.photos/400/300?random=84', 'is_active' => true],
+            [
+                'name' => 'Sewa Gazebo Standard',
+                'name_en' => 'Standard Gazebo Rental',
+                'description' => 'Gazebo nyaman kapasitas 4-6 orang untuk bersantai bersama keluarga, include stopkontak dan matras empuk.',
+                'description_en' => 'Comfortable private gazebo for 4-6 guests to relax with family, includes power outlet and soft cushioned mat.',
+                'price' => 150000.00,
+                'image' => 'assets/img/aquaboom.jpeg',
+                'is_active' => true
+            ],
+            [
+                'name' => 'Single Tube (Ban Single)',
+                'name_en' => 'Single Tube Rental',
+                'description' => 'Sewa ban renang single untuk meluncur lebih cepat dan nyaman di wahana seluncuran.',
+                'description_en' => 'Single inflatable swim tube rental for faster, smoother, and more comfortable rides on the water slides.',
+                'price' => 30000.00,
+                'image' => 'assets/img/aquaboom.jpeg',
+                'is_active' => true
+            ],
+            [
+                'name' => 'Double Tube (Ban Double)',
+                'name_en' => 'Double Tube Rental',
+                'description' => 'Sewa ban renang double untuk meluncur berpasangan bersama teman atau keluarga.',
+                'description_en' => 'Tandem double swim tube rental to slide together with a partner, friend, or family member.',
+                'price' => 50000.00,
+                'image' => 'assets/img/aquaboom.jpeg',
+                'is_active' => true
+            ],
+            [
+                'name' => 'Loker Premium',
+                'name_en' => 'Premium Locker Rental',
+                'description' => 'Sewa loker ukuran besar dengan pengaman kunci digital RFID untuk kenyamanan barang bawaan Anda.',
+                'description_en' => 'Large-capacity secure locker with digital RFID keycard lock for maximum peace of mind regarding your belongings.',
+                'price' => 25000.00,
+                'image' => 'assets/img/aquaboom.jpeg',
+                'is_active' => true
+            ],
         ]);
 
         // Wahanas
@@ -51,8 +83,8 @@ class LandingPageSeeder extends Seeder
             ['key' => 'hero_headline_en', 'value' => "WE ARE<br/><span class=\"gold-shimmer\">OPEN DAILY</span>", 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_subheadline', 'value' => 'Weekday: 10.00 - 18.00 | Weekend: 09.00 - 18.00', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_subheadline_en', 'value' => 'Weekday: 10:00 - 18:00 | Weekend: 09:00 - 18:00', 'group' => 'homepage', 'type' => 'text'],
-            ['key' => 'hero_description', 'value' => 'Aquaboom Waterpark Balikpapan — Satu-satunya Waterpark yang berada di atas gedung bertingkat di Indonesia. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
-            ['key' => 'hero_description_en', 'value' => 'Aquaboom Waterpark Balikpapan — The only waterpark located on top of a high-rise building in Indonesia. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
+            ['key' => 'hero_description', 'value' => 'Aquaboom Waterpark Balikpapan — Pengalaman rekreasi air rooftop yang unik di lantai 7 Pentacity Mall BSB. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
+            ['key' => 'hero_description_en', 'value' => 'Aquaboom Waterpark Balikpapan — A unique rooftop waterpark experience on the 7th floor of Pentacity Mall BSB. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'philosophy_text', 'value' => 'Aquaboom Waterpark Balikpapan menghadirkan pengalaman rekreasi air urban yang unik. Berlokasi strategis di pusat kota Balikpapan (BSB Area), kami menawarkan keceriaan wahana air premium di atap gedung dengan pemandangan kota yang menakjubkan.', 'group' => 'about', 'type' => 'text'],
             ['key' => 'philosophy_text_en', 'value' => 'Aquaboom Waterpark Balikpapan brings a unique urban water recreation experience. Strategically located in the heart of Balikpapan (BSB Area), we offer the joy of premium water slides on the rooftop with a stunning city view.', 'group' => 'about', 'type' => 'text'],
             ['key' => 'philosophy_video_url', 'value' => 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE', 'group' => 'about', 'type' => 'url'],

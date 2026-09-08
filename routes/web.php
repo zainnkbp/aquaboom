@@ -231,6 +231,24 @@ Route::middleware('auth')->group(function () {
             ->get();
         return view('my-tickets', compact('transactions'));
     })->name('my.tickets');
+
+    Route::post('/my-tickets/change-password', function (Illuminate\Http\Request $request) {
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ], [
+            'current_password.current_password' => 'Password saat ini tidak sesuai.',
+            'password.min' => 'Password baru minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password baru tidak cocok.',
+        ]);
+
+        $user = auth()->user();
+        $user->update([
+            'password' => Illuminate\Support\Facades\Hash::make($request->password),
+        ]);
+
+        return back()->with('password_success', 'Password Anda berhasil diperbarui!');
+    })->name('my.tickets.change_password');
 });
 
 // DOKU Payment Gateway Routes

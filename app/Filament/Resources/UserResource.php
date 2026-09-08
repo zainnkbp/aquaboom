@@ -55,13 +55,28 @@ class UserResource extends Resource
                         ->options(\App\Models\User::roleOptions())
                         ->required()
                         ->live(),
+                    Forms\Components\CheckboxList::make('permissions')
+                        ->label('Hak Akses Menu & Fitur (Khusus Role Admin)')
+                        ->helperText('Pilih menu apa saja yang boleh diakses oleh Admin ini. (Super Admin otomatis memiliki semua akses).')
+                        ->options(\App\Models\User::permissionOptions())
+                        ->columns(2)
+                        ->columnSpanFull()
+                        ->visible(fn (Forms\Get $get) => $get('role') === \App\Models\User::ROLE_ADMIN)
+                        ->live(),
                     Forms\Components\TextInput::make('pin')
-                        ->label('PIN Scanner 6 Digit (Khusus Validator)')
+                        ->label('PIN Scanner 6 Digit')
+                        ->helperText('PIN 6-digit untuk otentikasi login cepat ke Scanner Gate tiket.')
                         ->numeric()
                         ->password()
+                        ->revealable()
                         ->minLength(6)
                         ->maxLength(6)
-                        ->visible(fn (Forms\Get $get) => $get('role') === \App\Models\User::ROLE_VALIDATOR)
+                        ->visible(function (Forms\Get $get) {
+                            $role = $get('role');
+                            $perms = $get('permissions') ?? [];
+                            return $role === \App\Models\User::ROLE_VALIDATOR 
+                                || ($role === \App\Models\User::ROLE_ADMIN && is_array($perms) && in_array('scanner_access', $perms));
+                        })
                         ->required(fn (Forms\Get $get) => $get('role') === \App\Models\User::ROLE_VALIDATOR),
                 ])->columns(2)
             ]);
@@ -92,9 +107,25 @@ class UserResource extends Resource
                         \App\Models\User::ROLE_OPERATOR => 'info',
                         default => 'gray',
                     }),
+                Tables\Columns\TextColumn::make('permissions')
+                    ->label('Hak Akses Menu')
+                    ->badge()
+                    ->color('info')
+                    ->formatStateUsing(function ($state, User $record) {
+                        if ($record->isSuperAdmin()) {
+                            return 'Semua Menu (Full)';
+                        }
+                        if ($record->role === User::ROLE_VALIDATOR) {
+                            return 'Khusus Scanner Gate';
+                        }
+                        if (empty($state) || !is_array($state)) {
+                            return 'Belum diatur';
+                        }
+                        return count($state) . ' Menu Aktif';
+                    }),
                 Tables\Columns\TextColumn::make('pin')
-                    ->label('Terdapat PIN')
-                    ->formatStateUsing(fn ($state) => $state ? 'Ada' : '-')
+                    ->label('PIN Scanner')
+                    ->formatStateUsing(fn ($state) => $state ? 'Aktif' : '-')
                     ->badge()
                     ->color(fn ($state) => $state ? 'success' : 'gray'),
             ])

@@ -2,7 +2,7 @@
   <x-slot:title>{{ App::getLocale() === 'en' ? 'My Tickets - Aquaboom Waterpark' : 'Tiket Saya & Riwayat Pembelian - Aquaboom Waterpark' }}</x-slot:title>
   
   <!-- Page Header -->
-  <div class="pt-36 pb-20 bg-aqua-navy relative overflow-hidden">
+  <div class="pt-36 pb-20 bg-aqua-navy relative overflow-hidden" x-data="{ showPasswordModal: {{ $errors->any() ? 'true' : 'false' }} }">
     <div class="absolute inset-0 opacity-10">
       <img src="{{ asset('assets/img/default.jpeg') }}" alt="bg" class="w-full h-full object-cover" />
     </div>
@@ -10,13 +10,77 @@
     <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 text-center">
       <div class="flex items-center justify-center gap-3 mb-4">
         <div class="h-px w-10 bg-aqua-gold"></div>
-        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">User Dashboard</span>
+        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">{{ App::getLocale() === 'en' ? 'User Dashboard' : 'Area Pengguna' }}</span>
         <div class="h-px w-10 bg-aqua-gold"></div>
       </div>
-      <h1 class="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tight">MY TICKETS</h1>
-      <p class="text-base md:text-lg text-white/60 max-w-3xl mx-auto font-semibold leading-relaxed">
-        Selamat datang kembali, <strong>{{ auth()->user()->name }}</strong>. Temukan dan kelola seluruh riwayat tiket masuk Aquaboom Waterpark Anda di bawah ini.
+      <h1 class="text-5xl md:text-7xl font-black text-white mb-4 uppercase tracking-tight">{{ App::getLocale() === 'en' ? 'MY TICKETS' : 'TIKET SAYA' }}</h1>
+      <p class="text-base md:text-lg text-white/60 max-w-3xl mx-auto font-semibold leading-relaxed mb-6">
+        {{ App::getLocale() === 'en' ? 'Welcome back, ' : 'Selamat datang kembali, ' }}<strong>{{ auth()->user()->name }}</strong>{{ App::getLocale() === 'en' ? '. Find and manage your Aquaboom ticket purchase history below.' : '. Temukan dan kelola seluruh riwayat tiket masuk Aquaboom Waterpark Anda di bawah ini.' }}
       </p>
+
+      <!-- Account Actions -->
+      <div class="flex items-center justify-center gap-3">
+        <button @click="showPasswordModal = true" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs uppercase px-5 py-2.5 rounded-xl transition-all shadow-sm">
+          <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+          <span>{{ App::getLocale() === 'en' ? 'Change Password' : 'Ganti Password' }}</span>
+        </button>
+      </div>
+
+      @if(session('password_success'))
+        <div class="mt-6 max-w-md mx-auto p-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold text-center">
+          ✓ {{ session('password_success') }}
+        </div>
+      @endif
+    </div>
+
+    <!-- Change Password Modal -->
+    <div x-show="showPasswordModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" @keydown.escape.window="showPasswordModal = false">
+      <div class="bg-aqua-navy-2 border border-white/15 rounded-3xl w-full max-w-md p-8 shadow-2xl text-left relative" @click.away="showPasswordModal = false">
+        <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+          <h3 class="text-xl font-black text-white uppercase tracking-wider">
+            {{ App::getLocale() === 'en' ? 'Change Password' : 'Ganti Password' }}
+          </h3>
+          <button @click="showPasswordModal = false" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
+            ✕
+          </button>
+        </div>
+
+        <form action="{{ route('my.tickets.change_password') }}" method="POST" class="space-y-4">
+          @csrf
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+              {{ App::getLocale() === 'en' ? 'Current Password' : 'Password Saat Ini' }}
+            </label>
+            <input type="password" name="current_password" required class="w-full text-sm bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-aqua-gold transition-colors" placeholder="••••••••">
+            @error('current_password')
+              <p class="text-rose-400 text-xs mt-1">{{ $message }}</p>
+            @enderror
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+              {{ App::getLocale() === 'en' ? 'New Password' : 'Password Baru' }}
+            </label>
+            <input type="password" name="password" required class="w-full text-sm bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-aqua-gold transition-colors" placeholder="{{ App::getLocale() === 'en' ? 'Min 8 characters' : 'Minimal 8 karakter' }}">
+            @error('password')
+              <p class="text-rose-400 text-xs mt-1">{{ $message }}</p>
+            @enderror
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+              {{ App::getLocale() === 'en' ? 'Confirm New Password' : 'Ulangi Password Baru' }}
+            </label>
+            <input type="password" name="password_confirmation" required class="w-full text-sm bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-aqua-gold transition-colors" placeholder="{{ App::getLocale() === 'en' ? 'Repeat new password' : 'Ulangi password baru' }}">
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-sm py-3.5 rounded-xl uppercase tracking-wider transition-all">
+              {{ App::getLocale() === 'en' ? 'Save New Password' : 'Simpan Password Baru' }}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -29,12 +93,14 @@
           <div class="w-20 h-20 bg-aqua-cream rounded-full flex items-center justify-center mx-auto mb-6 text-aqua-gold">
             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg>
           </div>
-          <h3 class="text-2xl font-black text-aqua-navy uppercase mb-3">Belum Ada Tiket</h3>
+          <h3 class="text-2xl font-black text-aqua-navy uppercase mb-3">{{ App::getLocale() === 'en' ? 'No Tickets Found' : 'Belum Ada Tiket' }}</h3>
           <p class="text-slate-500 font-semibold text-sm leading-relaxed mb-8">
-            Anda belum pernah memesan tiket atau bertransaksi menggunakan akun ini. Beli tiket sekarang untuk memulai petualangan seru Anda!
+            {{ App::getLocale() === 'en'
+              ? 'You have not made any ticket purchases on this account yet. Book your tickets now to start your splash adventure!'
+              : 'Anda belum pernah memesan tiket atau bertransaksi menggunakan akun ini. Beli tiket sekarang untuk memulai petualangan seru Anda!' }}
           </p>
           <a href="{{ route('ticket.buy') }}" class="inline-block bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-8 py-4 rounded-xl uppercase tracking-wider text-sm transition-all shadow-md">
-            Pesan Tiket Sekarang
+            {{ App::getLocale() === 'en' ? 'Book Tickets Now' : 'Pesan Tiket Sekarang' }}
           </a>
         </div>
       @else
@@ -44,10 +110,10 @@
               <thead>
                 <tr class="bg-aqua-navy text-white text-xs font-black uppercase tracking-wider border-b border-aqua-gold/20">
                   <th class="py-6 px-8">Order ID</th>
-                  <th class="py-6 px-6">Tanggal Kunjungan</th>
-                  <th class="py-6 px-6">Total Pembayaran</th>
+                  <th class="py-6 px-6">{{ App::getLocale() === 'en' ? 'Visit Date' : 'Tanggal Kunjungan' }}</th>
+                  <th class="py-6 px-6">{{ App::getLocale() === 'en' ? 'Total Amount' : 'Total Pembayaran' }}</th>
                   <th class="py-6 px-6">Status</th>
-                  <th class="py-6 px-8 text-right">Aksi</th>
+                  <th class="py-6 px-8 text-right">{{ App::getLocale() === 'en' ? 'Action' : 'Aksi' }}</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 text-sm font-semibold text-slate-700">
@@ -59,7 +125,7 @@
                     <td class="py-6 px-6">
                       @if($tx->status === 'paid')
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-200">
-                          <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Lunas / Paid
+                          <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> {{ App::getLocale() === 'en' ? 'Paid' : 'Lunas' }}
                         </span>
                       @elseif($tx->status === 'pending')
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
@@ -71,14 +137,14 @@
                         </span>
                       @else
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200">
-                          <span class="w-1.5 h-1.5 rounded-full bg-red-600"></span> Gagal / Failed
+                          <span class="w-1.5 h-1.5 rounded-full bg-red-600"></span> {{ App::getLocale() === 'en' ? 'Failed' : 'Gagal' }}
                         </span>
                       @endif
                     </td>
                     <td class="py-6 px-8 text-right">
                       @if($tx->status === 'paid' || $tx->status === 'scanned')
                         <a href="{{ route('ticket.show', $tx->order_id) }}" class="inline-flex items-center gap-2 bg-aqua-azure hover:bg-aqua-azure-2 text-white font-black px-5 py-2.5 rounded-xl uppercase tracking-wider text-xs transition-all shadow-sm">
-                          Lihat E-Ticket
+                          {{ App::getLocale() === 'en' ? 'View E-Ticket' : 'Lihat E-Ticket' }}
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         </a>
                       @else

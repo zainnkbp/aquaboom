@@ -10,7 +10,7 @@
     <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
       <div class="flex items-center justify-center gap-3 mb-4">
         <div class="h-px w-10 bg-aqua-gold"></div>
-        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">Secure Online</span>
+        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">{{ App::getLocale() === 'en' ? 'Secure Online Booking' : 'Pemesanan Tiket Resmi' }}</span>
         <div class="h-px w-10 bg-aqua-gold"></div>
       </div>
       <h1 class="text-5xl md:text-7xl font-black text-white mb-4 uppercase tracking-tight">
@@ -45,32 +45,32 @@
         @livewire('checkout')
       </div>
 
-      <!-- Info Bar -->
-      <div class="bg-aqua-navy rounded-[28px] p-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-white text-center border border-aqua-gold/20 shadow-xl">
+      <!-- Info Bar (1 Single Source of Truth) -->
+      <div class="bg-aqua-navy rounded-[28px] p-8 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-white text-center border border-aqua-gold/20 shadow-xl">
         <div>
-          <div class="text-aqua-gold text-3xl font-black mb-1">09:00</div>
-          <div class="text-xs font-black uppercase tracking-widest text-white/40">
-            {{ App::getLocale() === 'id' ? 'Buka' : 'Open' }}
+          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">10:00 — 18:00</div>
+          <div class="text-xs font-black uppercase tracking-widest text-white/50">
+            {{ App::getLocale() === 'en' ? 'Monday — Friday' : 'Senin — Jumat' }}
           </div>
-          <div class="text-sm font-semibold text-white/60 mt-1">
-            {{ App::getLocale() === 'id' ? 'Setiap hari' : 'Every day' }}
+          <div class="text-xs font-semibold text-white/70 mt-1">
+            {{ App::getLocale() === 'en' ? 'Regular Weekdays' : 'Hari Kerja (Weekday)' }}
           </div>
         </div>
         <div class="border-y md:border-y-0 md:border-x border-aqua-gold/15 py-6 md:py-0">
-          <div class="text-aqua-gold text-3xl font-black mb-1">18:00</div>
-          <div class="text-xs font-black uppercase tracking-widest text-white/40">
-            {{ App::getLocale() === 'id' ? 'Tutup' : 'Close' }}
+          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">09:00 — 18:00</div>
+          <div class="text-xs font-black uppercase tracking-widest text-white/50">
+            {{ App::getLocale() === 'en' ? 'Sat, Sun & Holidays' : 'Sabtu, Minggu & Libur' }}
           </div>
-          <div class="text-sm font-semibold text-white/60 mt-1">
-            {{ App::getLocale() === 'id' ? 'Tiket terakhir 17:00' : 'Last admission 17:00' }}
+          <div class="text-xs font-semibold text-amber-400 mt-1">
+            {{ App::getLocale() === 'en' ? 'Last admission: 5:00 PM WITA' : 'Batas masuk terakhir 17:00 WITA' }}
           </div>
         </div>
         <div>
-          <div class="text-aqua-gold text-3xl font-black mb-1">7th</div>
-          <div class="text-xs font-black uppercase tracking-widest text-white/40">
-            {{ App::getLocale() === 'id' ? 'Lantai' : 'Floor' }}
+          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">{{ App::getLocale() === 'en' ? '7th Floor' : 'Lantai 7' }}</div>
+          <div class="text-xs font-black uppercase tracking-widest text-white/50">
+            {{ App::getLocale() === 'en' ? 'Rooftop Location' : 'Lokasi Rooftop' }}
           </div>
-          <div class="text-sm font-semibold text-white/60 mt-1">Pentacity Mall, BSB</div>
+          <div class="text-xs font-semibold text-white/70 mt-1">Pentacity Mall, BSB Balikpapan</div>
         </div>
       </div>
 

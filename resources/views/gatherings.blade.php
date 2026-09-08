@@ -71,28 +71,42 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       <div class="text-center mb-14">
         <h2 class="text-2xl md:text-4xl font-black text-aqua-navy uppercase tracking-tight">
-          3 LANGKAH MUDAH MENGADAKAN ACARA DI AQUABOOM
+          {{ App::getLocale() === 'en' ? '3 SIMPLE STEPS TO HOST YOUR EVENT' : '3 LANGKAH MUDAH MENGADAKAN ACARA DI AQUABOOM' }}
         </h2>
-        <p class="mt-2 text-slate-500 text-sm font-semibold">Tim Sales & Event Coordinator kami siap membantu Anda dari awal hingga acara selesai.</p>
+        <p class="mt-2 text-slate-500 text-sm font-semibold">
+          {{ App::getLocale() === 'en' ? 'Our Sales & Event Coordinator team is dedicated to supporting your gathering from start to finish.' : 'Tim Sales & Event Coordinator kami siap membantu Anda dari awal hingga acara selesai.' }}
+        </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <div class="p-8 rounded-3xl bg-aqua-cream border border-aqua-cream-2 flex flex-col items-center">
           <div class="w-16 h-16 rounded-full bg-aqua-navy text-aqua-gold text-2xl font-black flex items-center justify-center mb-6 shadow-md">1</div>
-          <h3 class="text-lg font-black text-aqua-navy uppercase mb-2">Konsultasi Kebutuhan</h3>
-          <p class="text-slate-600 text-xs font-semibold leading-relaxed">Tentukan kategori acara, perkiraan tanggal pelaksanaan, dan estimasi jumlah peserta rombongan.</p>
+          <h3 class="text-lg font-black text-aqua-navy uppercase mb-2">
+            {{ App::getLocale() === 'en' ? 'Consult Your Needs' : 'Konsultasi Kebutuhan' }}
+          </h3>
+          <p class="text-slate-600 text-xs font-semibold leading-relaxed">
+            {{ App::getLocale() === 'en' ? 'Specify your event category, tentative schedule, and estimated attendee count.' : 'Tentukan kategori acara, perkiraan tanggal pelaksanaan, dan estimasi jumlah peserta rombongan.' }}
+          </p>
         </div>
 
         <div class="p-8 rounded-3xl bg-aqua-cream border border-aqua-cream-2 flex flex-col items-center">
           <div class="w-16 h-16 rounded-full bg-aqua-gold text-aqua-navy text-2xl font-black flex items-center justify-center mb-6 shadow-md">2</div>
-          <h3 class="text-lg font-black text-aqua-navy uppercase mb-2">Terima Proposal & Menu</h3>
-          <p class="text-slate-600 text-xs font-semibold leading-relaxed">Tim kami akan mengirimkan surat penawaran harga resmi (*quotation*) serta pilihan kustomisasi menu makanan.</p>
+          <h3 class="text-lg font-black text-aqua-navy uppercase mb-2">
+            {{ App::getLocale() === 'en' ? 'Receive Quotation & Menu' : 'Terima Proposal & Menu' }}
+          </h3>
+          <p class="text-slate-600 text-xs font-semibold leading-relaxed">
+            {{ App::getLocale() === 'en' ? 'Our team will send an official rate proposal along with customized meal and activity options.' : 'Tim kami akan mengirimkan surat penawaran harga resmi (*quotation*) serta pilihan kustomisasi menu makanan.' }}
+          </p>
         </div>
 
         <div class="p-8 rounded-3xl bg-aqua-cream border border-aqua-cream-2 flex flex-col items-center">
           <div class="w-16 h-16 rounded-full bg-emerald-600 text-white text-2xl font-black flex items-center justify-center mb-6 shadow-md">3</div>
-          <h3 class="text-lg font-black text-aqua-navy uppercase mb-2">Eksekusi Tanpa Ribet</h3>
-          <p class="text-slate-600 text-xs font-semibold leading-relaxed">Saat hari H, Anda dan tim tinggal datang menikmati keseruan. Seluruh persiapan teknis ditangani oleh staf kami.</p>
+          <h3 class="text-lg font-black text-aqua-navy uppercase mb-2">
+            {{ App::getLocale() === 'en' ? 'Hassle-Free Execution' : 'Eksekusi Tanpa Ribet' }}
+          </h3>
+          <p class="text-slate-600 text-xs font-semibold leading-relaxed">
+            {{ App::getLocale() === 'en' ? 'On event day, simply arrive and enjoy. All sound systems, MCs, and venue setups are handled by us.' : 'Saat hari H, Anda dan tim tinggal datang menikmati keseruan. Seluruh persiapan teknis ditangani oleh staf kami.' }}
+          </p>
         </div>
       </div>
     </div>
@@ -164,18 +178,22 @@
 
                   @if(!empty($package->terms_and_conditions))
                     <div class="mb-6 p-5 bg-aqua-cream rounded-2xl border border-aqua-cream-2 text-xs font-semibold text-slate-700 leading-relaxed whitespace-pre-line">
-                      <div class="font-black text-aqua-navy uppercase tracking-wider mb-2">Fasilitas & Ketentuan:</div>
-                      {{ $package->terms_and_conditions }}
+                      <div class="font-black text-aqua-navy uppercase tracking-wider mb-2">
+                        {{ App::getLocale() === 'en' ? 'Inclusions & Conditions:' : 'Fasilitas & Ketentuan:' }}
+                      </div>
+                      {!! App::getLocale() === 'en' && !empty($package->terms_and_conditions_en) ? $package->terms_and_conditions_en : $package->terms_and_conditions !!}
                     </div>
                   @endif
 
                   @if($package->price > 0)
                     <div class="mb-6 p-4 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-center">
                       <div>
-                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Harga Paket Mulai</div>
+                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                          {{ App::getLocale() === 'en' ? 'Package Starts From' : 'Harga Paket Mulai' }}
+                        </div>
                         <div class="text-2xl font-black text-aqua-navy">
                           Rp {{ number_format($package->effective_price, 0, ',', '.') }}
-                          <span class="text-xs font-normal text-slate-500">/ orang</span>
+                          <span class="text-xs font-normal text-slate-500">/ {{ App::getLocale() === 'en' ? 'person' : 'orang' }}</span>
                         </div>
                       </div>
                       <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black px-3 py-1 rounded-full uppercase">All-Access</span>
@@ -187,7 +205,7 @@
                   <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
                   </svg>
-                  <span>Tanya & Minta Penawaran Paket Ini</span>
+                  <span>{{ App::getLocale() === 'en' ? 'Inquire & Request Quote for this Package' : 'Tanya & Minta Penawaran Paket Ini' }}</span>
                 </a>
               </div>
             </div>
@@ -195,9 +213,11 @@
         </div>
       @else
         <div class="bg-white rounded-3xl p-12 text-center max-w-xl mx-auto shadow-md border border-slate-200">
-          <p class="text-slate-600 font-semibold text-sm mb-6">Belum ada paket gathering yang dipublikasikan. Silakan hubungi tim sales kami untuk penawaran kustom rombongan Anda.</p>
+          <p class="text-slate-600 font-semibold text-sm mb-6">
+            {{ App::getLocale() === 'en' ? 'No gathering packages are currently published. Please contact our sales team directly for custom group inquiries.' : 'Belum ada paket gathering yang dipublikasikan. Silakan hubungi tim sales kami untuk penawaran kustom rombongan Anda.' }}
+          </p>
           <a href="#inquiry-form" class="inline-block bg-aqua-navy text-white font-black px-8 py-3.5 rounded-full text-xs uppercase tracking-wider">
-            Minta Penawaran Kustom &rarr;
+            {{ App::getLocale() === 'en' ? 'Request Custom Quote →' : 'Minta Penawaran Kustom →' }}
           </a>
         </div>
       @endif
@@ -218,25 +238,25 @@
     picName: '',
     companyName: '',
     phone: '',
-    eventType: 'Corporate Gathering / Outing Kantor',
+    eventType: '{{ App::getLocale() === 'en' ? 'Corporate Gathering & Outing' : 'Corporate Gathering / Outing Kantor' }}',
     eventDate: '',
-    paxRange: '50 - 100 Orang',
+    paxRange: '50 - 100 {{ App::getLocale() === 'en' ? 'People' : 'Orang' }}',
     notes: '',
     targetWa: '{{ $salesWaNumber }}',
     generateWaLink() {
       if (!this.picName || !this.phone) {
-        alert('Mohon isi Nama PIC dan No WhatsApp Anda');
+        alert('{{ App::getLocale() === 'en' ? 'Please enter your Contact Name and WhatsApp Number' : 'Mohon isi Nama PIC dan No WhatsApp Anda' }}');
         return;
       }
-      let text = 'Halo Tim Sales Aquaboom Waterpark, saya ingin meminta surat penawaran / proposal acara:\n\n'
-        + '👤 *Nama PIC:* ' + this.picName + '\n'
-        + '🏢 *Perusahaan / Instansi:* ' + (this.companyName || '-') + '\n'
-        + '📱 *No. WhatsApp:* ' + this.phone + '\n'
-        + '🎯 *Kategori Acara:* ' + this.eventType + '\n'
-        + '📅 *Perkiraan Tanggal:* ' + (this.eventDate || 'Menyusul') + '\n'
-        + '👥 *Estimasi Jumlah Peserta:* ' + this.paxRange + '\n'
-        + '📝 *Catatan Khusus:* ' + (this.notes || '-') + '\n\n'
-        + 'Mohon informasi paket harga dan ketersediaan tanggal. Terima kasih!';
+      let text = '{{ App::getLocale() === 'en' ? 'Hello Aquaboom Sales Team, I would like to request an official event quotation:' : 'Halo Tim Sales Aquaboom Waterpark, saya ingin meminta surat penawaran / proposal acara:' }}\n\n'
+        + '👤 *PIC:* ' + this.picName + '\n'
+        + '🏢 *Company/Group:* ' + (this.companyName || '-') + '\n'
+        + '📱 *WhatsApp:* ' + this.phone + '\n'
+        + '🎯 *Category:* ' + this.eventType + '\n'
+        + '📅 *Date:* ' + (this.eventDate || '-') + '\n'
+        + '👥 *Pax:* ' + this.paxRange + '\n'
+        + '📝 *Notes:* ' + (this.notes || '-') + '\n\n'
+        + '{{ App::getLocale() === 'en' ? 'Please provide package pricing and availability. Thank you!' : 'Mohon informasi paket harga dan ketersediaan tanggal. Terima kasih!' }}';
       window.open('https://wa.me/' + this.targetWa + '?text=' + encodeURIComponent(text), '_blank');
     }
   }">
@@ -248,64 +268,80 @@
       <div class="text-center mb-12">
         <div class="flex items-center justify-center gap-3 mb-4">
           <div class="h-px w-10 bg-aqua-gold"></div>
-          <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">Fast Response WhatsApp</span>
+          <span class="text-aqua-gold text-xs font-black tracking-widest uppercase">{{ App::getLocale() === 'en' ? 'Fast Response WhatsApp' : 'Respon Cepat WhatsApp' }}</span>
           <div class="h-px w-10 bg-aqua-gold"></div>
         </div>
         <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tight">
-          FORM PERMINTAAN PENAWARAN HARGA
+          {{ App::getLocale() === 'en' ? 'REQUEST A CUSTOM EVENT QUOTE' : 'FORM PERMINTAAN PENAWARAN HARGA' }}
         </h2>
         <p class="mt-4 text-white/70 text-sm font-semibold max-w-xl mx-auto">
-          Isi formulir singkat di bawah ini. Tim Sales Executive Aquaboom akan langsung merespons dan menyiapkan proposal penawaran harga terbaik untuk rombongan Anda.
+          {{ App::getLocale() === 'en'
+            ? 'Fill in the short form below. The Aquaboom sales team will respond promptly with the best customized offer for your group.'
+            : 'Isi formulir singkat di bawah ini. Tim Sales Executive Aquaboom akan langsung merespons dan menyiapkan proposal penawaran harga terbaik untuk rombongan Anda.' }}
         </p>
       </div>
 
       <div class="bg-white/5 border border-white/15 rounded-[32px] p-6 sm:p-8 md:p-12 backdrop-blur-xl shadow-2xl">
         <form @submit.prevent="generateWaLink()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">Nama Lengkap PIC *</label>
-            <input type="text" x-model="picName" placeholder="Contoh: Bpk. Hendra Wijaya" class="w-full bg-white/10 text-white placeholder-white/40 border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm" required />
+            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">
+              {{ App::getLocale() === 'en' ? 'Full Name of Contact Person *' : 'Nama Lengkap PIC *' }}
+            </label>
+            <input type="text" x-model="picName" placeholder="{{ App::getLocale() === 'en' ? 'e.g. John Doe' : 'Contoh: Bpk. Hendra Wijaya' }}" class="w-full bg-white/10 text-white placeholder-white/40 border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm" required />
           </div>
 
           <div>
-            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">Nama Instansi / Perusahaan / Komunitas</label>
-            <input type="text" x-model="companyName" placeholder="Contoh: PT. Pertamina / Bank Mandiri" class="w-full bg-white/10 text-white placeholder-white/40 border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm" />
+            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">
+              {{ App::getLocale() === 'en' ? 'Company / Organization / Community' : 'Nama Instansi / Perusahaan / Komunitas' }}
+            </label>
+            <input type="text" x-model="companyName" placeholder="{{ App::getLocale() === 'en' ? 'e.g. Acme Corp / Bank Mandiri' : 'Contoh: PT. Pertamina / Bank Mandiri' }}" class="w-full bg-white/10 text-white placeholder-white/40 border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm" />
           </div>
 
           <div>
-            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">Nomor WhatsApp PIC *</label>
-            <input type="tel" x-model="phone" placeholder="Contoh: 081234567890" class="w-full bg-white/10 text-white placeholder-white/40 border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm" required />
+            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">
+              {{ App::getLocale() === 'en' ? 'WhatsApp Number *' : 'Nomor WhatsApp PIC *' }}
+            </label>
+            <input type="tel" x-model="phone" placeholder="081234567890" class="w-full bg-white/10 text-white placeholder-white/40 border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm" required />
           </div>
 
           <div>
-            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">Kategori Acara</label>
+            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">
+              {{ App::getLocale() === 'en' ? 'Event Category' : 'Kategori Acara' }}
+            </label>
             <select x-model="eventType" class="w-full bg-slate-900 text-white border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm">
-              <option value="Corporate Gathering / Outing Kantor">Corporate Gathering / Outing Kantor</option>
-              <option value="Family Gathering / Arisan Keluarga">Family Gathering / Arisan Keluarga</option>
-              <option value="School Field Trip / Edu-Tour Siswa">School Field Trip / Edu-Tour Siswa</option>
-              <option value="Birthday & Private Pool Party">Birthday & Private Pool Party</option>
-              <option value="Reuni Komunitas / Event Lainnya">Reuni Komunitas / Event Lainnya</option>
+              <option value="Corporate Gathering / Outing Kantor">{{ App::getLocale() === 'en' ? 'Corporate Gathering & Outing' : 'Corporate Gathering / Outing Kantor' }}</option>
+              <option value="Family Gathering / Arisan Keluarga">{{ App::getLocale() === 'en' ? 'Family Gathering & Reunion' : 'Family Gathering / Arisan Keluarga' }}</option>
+              <option value="School Field Trip / Edu-Tour Siswa">{{ App::getLocale() === 'en' ? 'School Field Trip & Edu-Tour' : 'School Field Trip / Edu-Tour Siswa' }}</option>
+              <option value="Birthday & Private Pool Party">{{ App::getLocale() === 'en' ? 'Birthday & Private Pool Party' : 'Birthday & Private Pool Party' }}</option>
+              <option value="Reuni Komunitas / Event Lainnya">{{ App::getLocale() === 'en' ? 'Community Reunion / Other Events' : 'Reuni Komunitas / Event Lainnya' }}</option>
             </select>
           </div>
 
           <div>
-            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">Rencana Tanggal Acara</label>
+            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">
+              {{ App::getLocale() === 'en' ? 'Estimated Event Date' : 'Rencana Tanggal Acara' }}
+            </label>
             <input type="date" x-model="eventDate" class="w-full bg-slate-900 text-white border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm" />
           </div>
 
           <div>
-            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">Estimasi Jumlah Peserta (Pax)</label>
+            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">
+              {{ App::getLocale() === 'en' ? 'Estimated Group Size (Pax)' : 'Estimasi Jumlah Peserta (Pax)' }}
+            </label>
             <select x-model="paxRange" class="w-full bg-slate-900 text-white border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm">
-              <option value="20 - 50 Orang">20 - 50 Orang (Rombongan Kecil)</option>
-              <option value="50 - 100 Orang">50 - 100 Orang (Medium Group)</option>
-              <option value="100 - 250 Orang">100 - 250 Orang (Large Group)</option>
-              <option value="250 - 500 Orang">250 - 500 Orang (Corporate Big Event)</option>
-              <option value="500+ Orang (Full Venue Private Hire)">500+ Orang (Full Venue Private Hire)</option>
+              <option value="20 - 50 Orang">{{ App::getLocale() === 'en' ? '20 - 50 People (Small Group)' : '20 - 50 Orang (Rombongan Kecil)' }}</option>
+              <option value="50 - 100 Orang">{{ App::getLocale() === 'en' ? '50 - 100 People (Medium Group)' : '50 - 100 Orang (Medium Group)' }}</option>
+              <option value="100 - 250 Orang">{{ App::getLocale() === 'en' ? '100 - 250 People (Large Group)' : '100 - 250 Orang (Large Group)' }}</option>
+              <option value="250 - 500 Orang">{{ App::getLocale() === 'en' ? '250 - 500 People (Corporate Big Event)' : '250 - 500 Orang (Corporate Big Event)' }}</option>
+              <option value="500+ Orang (Full Venue Private Hire)">{{ App::getLocale() === 'en' ? '500+ People (Full Venue Private Hire)' : '500+ Orang (Full Venue Private Hire)' }}</option>
             </select>
           </div>
 
           <div class="md:col-span-2">
-            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">Catatan Tambahan / Kebutuhan Fasilitas</label>
-            <textarea x-model="notes" rows="3" placeholder="Contoh: Butuh paket makan siang buffet dan instruktur fun games ice breaking..." class="w-full bg-white/10 text-white placeholder-white/40 border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm"></textarea>
+            <label class="block text-xs font-black uppercase tracking-wider text-white/70 mb-2">
+              {{ App::getLocale() === 'en' ? 'Additional Notes / Facility Requirements' : 'Catatan Tambahan / Kebutuhan Fasilitas' }}
+            </label>
+            <textarea x-model="notes" rows="3" placeholder="{{ App::getLocale() === 'en' ? 'e.g. We require lunch buffet catering and team-building ice-breaking MC...' : 'Contoh: Butuh paket makan siang buffet dan instruktur fun games ice breaking...' }}" class="w-full bg-white/10 text-white placeholder-white/40 border border-white/20 px-5 py-4 rounded-xl focus:outline-none focus:border-aqua-gold font-medium text-sm"></textarea>
           </div>
 
           <div class="md:col-span-2 mt-4 text-center">
@@ -313,9 +349,11 @@
               <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
               </svg>
-              <span>Kirim Permintaan Penawaran via WhatsApp</span>
+              <span>{{ App::getLocale() === 'en' ? 'Send Quote Request via WhatsApp' : 'Kirim Permintaan Penawaran via WhatsApp' }}</span>
             </button>
-            <p class="text-white/40 text-xs mt-3">Formulir akan otomatis membuka chat WhatsApp resmi Sales Aquaboom Waterpark.</p>
+            <p class="text-white/40 text-xs mt-3">
+              {{ App::getLocale() === 'en' ? 'This form will automatically open the official Aquaboom Sales WhatsApp chat.' : 'Formulir akan otomatis membuka chat WhatsApp resmi Sales Aquaboom Waterpark.' }}
+            </p>
           </div>
         </form>
       </div>

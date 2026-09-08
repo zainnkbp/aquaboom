@@ -8,10 +8,12 @@
       <div class="absolute bottom-0 left-0 w-32 h-32 bg-aqua-gold/10 rounded-full blur-2xl -ml-16 -mb-16"></div>
 
       <div class="relative z-10 text-center mb-8">
-        <span class="text-aqua-gold text-xs font-black tracking-widest uppercase mb-3 block">Welcome to the Club</span>
-        <h1 class="text-3xl md:text-4xl font-black text-aqua-navy uppercase tracking-tight mb-4">ACTIVATE ACCOUNT</h1>
+        <span class="text-aqua-gold text-xs font-black tracking-widest uppercase mb-3 block">{{ App::getLocale() === 'en' ? 'Welcome to the Club' : 'Selamat Datang' }}</span>
+        <h1 class="text-3xl md:text-4xl font-black text-aqua-navy uppercase tracking-tight mb-4">{{ App::getLocale() === 'en' ? 'ACTIVATE ACCOUNT' : 'AKTIVASI AKUN' }}</h1>
         <p class="text-slate-500 text-sm font-semibold leading-relaxed">
-          Hai <strong>{{ $user->name }}</strong>, silakan buat password baru Anda untuk mengaktifkan akun dan mengakses riwayat tiket Anda dengan mudah.
+          {{ App::getLocale() === 'en'
+            ? 'Hello ' . $user->name . ', please create your password to activate your account and conveniently access your e-tickets.'
+            : 'Hai ' . $user->name . ', silakan buat password baru Anda untuk mengaktifkan akun dan mengakses riwayat tiket Anda dengan mudah.' }}
         </p>
       </div>
 
@@ -30,22 +32,22 @@
         <input type="hidden" name="email" value="{{ $user->email }}">
 
         <div>
-          <label class="block text-xs font-black text-aqua-navy uppercase tracking-wider mb-2">Email Address</label>
+          <label class="block text-xs font-black text-aqua-navy uppercase tracking-wider mb-2">{{ App::getLocale() === 'en' ? 'Email Address' : 'Alamat Email' }}</label>
           <input type="text" class="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 text-sm font-bold focus:outline-none" value="{{ $user->email }}" readonly disabled>
         </div>
 
         <div>
-          <label class="block text-xs font-black text-aqua-navy uppercase tracking-wider mb-2">Password Baru</label>
-          <input type="password" name="password" required class="w-full px-5 py-4 rounded-xl border border-slate-200 bg-white text-aqua-navy text-sm font-bold focus:outline-none focus:border-aqua-gold transition-all" placeholder="Minimal 8 karakter">
+          <label class="block text-xs font-black text-aqua-navy uppercase tracking-wider mb-2">{{ App::getLocale() === 'en' ? 'New Password' : 'Password Baru' }}</label>
+          <input type="password" name="password" required class="w-full px-5 py-4 rounded-xl border border-slate-200 bg-white text-aqua-navy text-sm font-bold focus:outline-none focus:border-aqua-gold transition-all" placeholder="{{ App::getLocale() === 'en' ? 'Minimum 8 characters' : 'Minimal 8 karakter' }}">
         </div>
 
         <div>
-          <label class="block text-xs font-black text-aqua-navy uppercase tracking-wider mb-2">Konfirmasi Password</label>
-          <input type="password" name="password_confirmation" required class="w-full px-5 py-4 rounded-xl border border-slate-200 bg-white text-aqua-navy text-sm font-bold focus:outline-none focus:border-aqua-gold transition-all" placeholder="Ulangi password baru">
+          <label class="block text-xs font-black text-aqua-navy uppercase tracking-wider mb-2">{{ App::getLocale() === 'en' ? 'Confirm Password' : 'Konfirmasi Password' }}</label>
+          <input type="password" name="password_confirmation" required class="w-full px-5 py-4 rounded-xl border border-slate-200 bg-white text-aqua-navy text-sm font-bold focus:outline-none focus:border-aqua-gold transition-all" placeholder="{{ App::getLocale() === 'en' ? 'Repeat your new password' : 'Ulangi password baru' }}">
         </div>
 
         <button type="submit" class="w-full bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold font-black py-4 rounded-xl text-sm uppercase tracking-widest transition-all shadow-lg shadow-blue-950/20">
-          Aktifkan & Masuk
+          {{ App::getLocale() === 'en' ? 'Activate & Log In' : 'Aktifkan & Masuk' }}
         </button>
       </form>
     </div>

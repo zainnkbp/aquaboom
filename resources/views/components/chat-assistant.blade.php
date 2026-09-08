@@ -23,7 +23,9 @@
             </div>
             <div>
                 <h3 class="font-black text-sm uppercase tracking-wide">Boomy Assistant</h3>
-                <p class="text-xs text-white/60 font-semibold">Selalu siap membantu Anda</p>
+                <p class="text-xs text-white/60 font-semibold">
+                    {{ App::getLocale() === 'en' ? 'Always ready to help you' : 'Selalu siap membantu Anda' }}
+                </p>
             </div>
         </div>
 
@@ -55,14 +57,16 @@
 
         <!-- Question Buttons -->
         <div class="p-4 bg-white border-t border-slate-100 shrink-0">
-            <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 text-center">Pilih Pertanyaan</p>
+            <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 text-center">
+                {{ App::getLocale() === 'en' ? 'Select a Question' : 'Pilih Pertanyaan' }}
+            </p>
             <div class="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1">
                 <template x-for="faq in faqs" :key="faq.id">
                     <button 
                         @click="askQuestion(faq)"
                         :disabled="isTyping"
                         class="w-full text-left text-sm font-semibold text-aqua-navy bg-aqua-cream hover:bg-aqua-navy hover:text-aqua-gold transition-colors p-3 rounded-xl border border-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                        x-text="faq.question"
+                        x-text="isEn && faq.question_en ? faq.question_en : faq.question"
                     ></button>
                 </template>
             </div>
@@ -89,14 +93,21 @@
         Alpine.data('chatbotData', (faqData) => ({
             isOpen: false,
             isTyping: false,
+            isEn: {{ App::getLocale() === 'en' ? 'true' : 'false' }},
             faqs: faqData,
             messages: [
-                { type: 'bot', text: 'Halo! Saya Boomy 🌊<br/>Ada yang bisa saya bantu terkait Aquaboom Waterpark? Silakan pilih pertanyaan di bawah ini.' }
+                { 
+                    type: 'bot', 
+                    text: {{ App::getLocale() === 'en' ? "'Hello! I am Boomy 🌊<br/>How can I help you today regarding Aquaboom Waterpark? Please select a question below.'" : "'Halo! Saya Boomy 🌊<br/>Ada yang bisa saya bantu terkait Aquaboom Waterpark? Silakan pilih pertanyaan di bawah ini.'" }}
+                }
             ],
             
             askQuestion(faq) {
+                const questionText = this.isEn && faq.question_en ? faq.question_en : faq.question;
+                const answerText = this.isEn && faq.answer_en ? faq.answer_en : faq.answer;
+
                 // Add user message
-                this.messages.push({ type: 'user', text: faq.question });
+                this.messages.push({ type: 'user', text: questionText });
                 
                 // Scroll to bottom
                 this.scrollToBottom();
@@ -107,7 +118,7 @@
                 // Simulate delay
                 setTimeout(() => {
                     this.isTyping = false;
-                    this.messages.push({ type: 'bot', text: faq.answer });
+                    this.messages.push({ type: 'bot', text: answerText });
                     this.scrollToBottom();
                 }, 1000);
             },

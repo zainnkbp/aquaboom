@@ -186,7 +186,7 @@ class CustomerResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()?->canViewTransactions() ?? false;
+        return auth()->user()?->hasPermission('transactions') ?? false;
     }
 
     public static function canCreate(): bool
@@ -197,7 +197,7 @@ class CustomerResource extends Resource
 
     public static function canEdit($record): bool
     {
-        return auth()->user()?->canManageCatalog() ?? false;
+        return auth()->user()?->hasPermission('transactions') ?? false;
     }
 
     public static function canDelete($record): bool

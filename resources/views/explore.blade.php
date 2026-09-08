@@ -10,7 +10,7 @@
     <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 text-center">
       <div class="flex items-center justify-center gap-3 mb-4">
         <div class="h-px w-10 bg-aqua-gold"></div>
-        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">Thrill & Chill</span>
+        <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase">{{ App::getLocale() === 'en' ? 'Thrill & Chill' : 'Keseruan & Relaksasi' }}</span>
         <div class="h-px w-10 bg-aqua-gold"></div>
       </div>
       <h1 class="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tight">

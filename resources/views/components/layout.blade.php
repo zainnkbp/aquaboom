@@ -110,7 +110,7 @@
           <div class="relative group">
             <button
               class="flex items-center gap-1.5 text-sm font-bold tracking-wide transition-colors hover:text-aqua-gold uppercase">
-              Explore
+              {{ App::getLocale() === 'en' ? 'Explore' : 'Jelajahi' }}
               <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180 text-aqua-gold/70"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
@@ -126,7 +126,7 @@
                       d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
-                Rides & Attractions
+                {{ App::getLocale() === 'en' ? 'Rides & Attractions' : 'Wahana Air & Seluncuran' }}
               </a>
               <a href="{{ url('/facilities') }}"
                 class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
@@ -136,7 +136,7 @@
                       d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                   </svg>
                 </div>
-                Premium Facilities
+                {{ App::getLocale() === 'en' ? 'Amenities & Facilities' : 'Fasilitas & Layanan' }}
               </a>
               <a href="{{ url('/dining') }}"
                 class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
@@ -146,7 +146,7 @@
                       d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14 12a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                Dining & Culinary
+                {{ App::getLocale() === 'en' ? 'Dining & Culinary' : 'Resto & Kuliner' }}
               </a>
             </div>
           </div>
@@ -155,7 +155,7 @@
           <div class="relative group">
             <button
               class="flex items-center gap-1.5 text-sm font-bold tracking-wide transition-colors hover:text-aqua-gold uppercase">
-              Tickets & Pricing
+              {{ App::getLocale() === 'en' ? 'Tickets & Deals' : 'Tiket & Promo' }}
               <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180 text-aqua-gold/70"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
@@ -171,7 +171,7 @@
                       d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                   </svg>
                 </div>
-                Tickets & Pricing
+                {{ App::getLocale() === 'en' ? 'Buy Tickets Online' : 'Beli Tiket Online' }}
               </a>
               <a href="{{ url('/packages') }}"
                 class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
@@ -181,7 +181,7 @@
                       d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
                   </svg>
                 </div>
-                Special Packages
+                {{ App::getLocale() === 'en' ? 'Special Packages' : 'Paket Promo Spesial' }}
               </a>
               <a href="{{ url('/gatherings') }}"
                 class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
@@ -191,7 +191,7 @@
                       d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                Corporate & Family Gathering
+                {{ App::getLocale() === 'en' ? 'Group & Events' : 'Rombongan & Gathering' }}
               </a>
             </div>
           </div>
@@ -200,7 +200,7 @@
           <div class="relative group">
             <button
               class="flex items-center gap-1.5 text-sm font-bold tracking-wide transition-colors hover:text-aqua-gold uppercase">
-              About Us
+              {{ App::getLocale() === 'en' ? 'About Us' : 'Tentang Kami' }}
               <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180 text-aqua-gold/70"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
@@ -210,12 +210,12 @@
               class="absolute left-1/2 -translate-x-1/2 mt-5 w-60 bg-white rounded-2xl shadow-2xl shadow-aqua-navy/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 p-3 border border-slate-100 transform translate-y-2 group-hover:translate-y-0">
               <a href="{{ url('/about') }}"
                 class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
-                Company Profile
+                {{ App::getLocale() === 'en' ? 'Company Profile' : 'Profil Perusahaan' }}
               </a>
 
               <a href="{{ url('/faq') }}"
                 class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-aqua-cream hover:text-aqua-navy rounded-xl transition-colors">
-                FAQ (Tanya Jawab)
+                {{ App::getLocale() === 'en' ? 'FAQ (Help Center)' : 'FAQ (Tanya Jawab)' }}
               </a>
             </div>
           </div>
@@ -246,7 +246,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                   </svg>
-                  My Tickets
+                  {{ App::getLocale() === 'en' ? 'My Tickets' : 'Tiket Saya' }}
                 </a>
                 <a href="{{ route('logout') }}"
                   class="flex items-center gap-2 px-4 py-2.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-lg transition-colors uppercase">
@@ -254,7 +254,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
-                  Logout
+                  {{ App::getLocale() === 'en' ? 'Logout' : 'Keluar' }}
                 </a>
               </div>
             </div>
@@ -266,14 +266,14 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              Login
+              {{ App::getLocale() === 'en' ? 'Login' : 'Masuk' }}
             </a>
           @endauth
 
           <!-- Gold CTA Button -->
           <a href="{{ url('/ticket') }}"
             class="bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy px-6 py-3 rounded-full text-sm font-black tracking-wide transform hover:scale-105 transition-all duration-300 shadow-lg shadow-amber-900/20 uppercase whitespace-nowrap">
-            BUY TICKETS NOW !
+            {{ App::getLocale() === 'en' ? 'BUY TICKETS NOW !' : 'BELI TIKET SEKARANG !' }}
           </a>
         </div>
 
@@ -325,7 +325,7 @@
           <div x-data="{ open: false }" class="bg-aqua-navy-2/80 rounded-2xl p-4 border border-aqua-gold/10">
             <button @click="open = !open"
               class="w-full flex justify-between items-center text-base font-bold text-white uppercase tracking-wide">
-              Explore
+              {{ App::getLocale() === 'en' ? 'Explore' : 'Jelajahi' }}
               <svg class="w-4 h-4 text-aqua-gold transition-transform duration-300" :class="{'rotate-180': open}"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
@@ -334,14 +334,11 @@
             <div x-show="open" x-collapse class="mt-3 pl-2 border-l-2 border-aqua-gold/30">
               <div class="flex flex-col gap-1">
                 <a href="{{ url('/explore') }}"
-                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Rides &
-                  Attractions</a>
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">{{ App::getLocale() === 'en' ? 'Rides & Attractions' : 'Wahana Air & Seluncuran' }}</a>
                 <a href="{{ url('/dining') }}"
-                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Eat &
-                  Drink</a>
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">{{ App::getLocale() === 'en' ? 'Dining & Culinary' : 'Resto & Kuliner' }}</a>
                 <a href="{{ url('/facilities') }}"
-                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Premium
-                  Facilities</a>
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">{{ App::getLocale() === 'en' ? 'Amenities & Facilities' : 'Fasilitas & Layanan' }}</a>
               </div>
             </div>
           </div>
@@ -350,7 +347,7 @@
           <div x-data="{ open: false }" class="bg-aqua-navy-2/80 rounded-2xl p-4 border border-aqua-gold/10">
             <button @click="open = !open"
               class="w-full flex justify-between items-center text-base font-bold text-white uppercase tracking-wide">
-              Tickets & Pricing
+              {{ App::getLocale() === 'en' ? 'Tickets & Deals' : 'Tiket & Promo' }}
               <svg class="w-4 h-4 text-aqua-gold transition-transform duration-300" :class="{'rotate-180': open}"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
@@ -359,14 +356,12 @@
             <div x-show="open" x-collapse class="mt-3 pl-2 border-l-2 border-aqua-gold/30">
               <div class="flex flex-col gap-1">
                 <a href="{{ url('/ticket') }}"
-                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Tickets &
-                  Pricing</a>
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">{{ App::getLocale() === 'en' ? 'Buy Tickets Online' : 'Beli Tiket Online' }}</a>
                 <a href="{{ url('/packages') }}"
-                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Special
-                  Packages</a>
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">{{ App::getLocale() === 'en' ? 'Special Packages' : 'Paket Promo Spesial' }}</a>
                 <a href="{{ url('/gatherings') }}"
                   class="text-aqua-gold font-bold hover:text-white p-3 rounded-xl transition-all text-sm flex items-center justify-between">
-                  <span>Corporate & Family Gathering</span>
+                  <span>{{ App::getLocale() === 'en' ? 'Group & Events' : 'Rombongan & Gathering' }}</span>
                   <span class="bg-aqua-gold/20 text-aqua-gold text-[10px] px-2 py-0.5 rounded-md uppercase font-black">Group</span>
                 </a>
               </div>
@@ -377,7 +372,7 @@
           <div x-data="{ open: false }" class="bg-aqua-navy-2/80 rounded-2xl p-4 border border-aqua-gold/10">
             <button @click="open = !open"
               class="w-full flex justify-between items-center text-base font-bold text-white uppercase tracking-wide">
-              About Us
+              {{ App::getLocale() === 'en' ? 'About Us' : 'Tentang Kami' }}
               <svg class="w-4 h-4 text-aqua-gold transition-transform duration-300" :class="{'rotate-180': open}"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
@@ -386,12 +381,10 @@
             <div x-show="open" x-collapse class="mt-3 pl-2 border-l-2 border-aqua-gold/30">
               <div class="flex flex-col gap-1">
                 <a href="{{ url('/about') }}"
-                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">Company
-                  Profile</a>
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">{{ App::getLocale() === 'en' ? 'Company Profile' : 'Profil Perusahaan' }}</a>
 
                 <a href="{{ url('/faq') }}"
-                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">FAQ
-                  (Tanya Jawab)</a>
+                  class="text-white/80 font-bold hover:text-aqua-gold p-3 rounded-xl transition-all text-sm">{{ App::getLocale() === 'en' ? 'FAQ (Help Center)' : 'FAQ (Tanya Jawab)' }}</a>
               </div>
             </div>
           </div>
@@ -403,16 +396,16 @@
         @auth
           <a href="{{ route('my.tickets') }}"
             class="block w-full text-center bg-white/10 border border-white/20 text-white hover:border-aqua-gold/50 px-6 py-3 rounded-full font-black text-sm uppercase tracking-wide transition-all">
-            My Tickets
+            {{ App::getLocale() === 'en' ? 'My Tickets' : 'Tiket Saya' }}
           </a>
           <a href="{{ route('logout') }}"
             class="block w-full text-center bg-red-950/20 border border-red-500/30 text-red-400 hover:bg-red-950/40 px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wide transition-all">
-            Logout
+            {{ App::getLocale() === 'en' ? 'Logout' : 'Keluar' }}
           </a>
         @else
           <a href="{{ route('login') }}"
             class="block w-full text-center bg-white/10 border border-white/20 text-white hover:border-aqua-gold/50 px-6 py-3 rounded-full font-black text-sm uppercase tracking-wide transition-all">
-            Login
+            {{ App::getLocale() === 'en' ? 'Login' : 'Masuk' }}
           </a>
         @endauth
 
@@ -456,7 +449,7 @@
           </a>
           <div class="h-px w-12 bg-aqua-gold mt-4 mb-5"></div>
           <p class="text-white/55 text-sm font-medium leading-relaxed">
-            Destinasi rekreasi air premium di rooftop Balikpapan — kelas internasional, keseruan tak terbatas.
+            {{ App::getLocale() === 'en' ? 'Premier rooftop waterpark destination in Balikpapan — exciting slides, family fun, and city skyline views.' : 'Destinasi rekreasi air premium di rooftop Balikpapan — kelas internasional, keseruan tak terbatas.' }}
           </p>
           <a href="https://jatrahotels.com/astara-balikpapan/" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-3 group hover:opacity-95 transition-all">
             <div class="w-8 h-8 rounded-full border border-aqua-gold/30 flex items-center justify-center group-hover:border-aqua-gold group-hover:scale-105 transition-all">
@@ -479,47 +472,48 @@
 
         <!-- Explore Park -->
         <div>
-          <h4 class="text-xs font-black text-aqua-gold mb-5 uppercase tracking-[0.2em]">Explore Park</h4>
+          <h4 class="text-xs font-black text-aqua-gold mb-5 uppercase tracking-[0.2em]">{{ App::getLocale() === 'en' ? 'Explore Park' : 'Jelajahi Taman' }}</h4>
           <ul class="space-y-3 text-sm text-white/60 font-semibold">
             <li><a href="{{ url('/explore') }}"
                 class="hover:text-aqua-gold transition-colors flex items-center gap-2"><span
-                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>Rides & Attractions</a></li>
+                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>{{ App::getLocale() === 'en' ? 'Rides & Attractions' : 'Wahana Air & Seluncuran' }}</a></li>
             <li><a href="{{ url('/facilities') }}"
                 class="hover:text-aqua-gold transition-colors flex items-center gap-2"><span
-                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>Premium Facilities</a></li>
+                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>{{ App::getLocale() === 'en' ? 'Amenities & Facilities' : 'Fasilitas & Layanan' }}</a></li>
             <li><a href="{{ url('/dining') }}"
                 class="hover:text-aqua-gold transition-colors flex items-center gap-2"><span
-                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>Eat & Drink</a></li>
+                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>{{ App::getLocale() === 'en' ? 'Dining & Culinary' : 'Resto & Kuliner' }}</a></li>
             <li><a href="{{ url('/faq') }}" class="hover:text-aqua-gold transition-colors flex items-center gap-2"><span
-                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>Frequently Asked Questions</a></li>
+                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>{{ App::getLocale() === 'en' ? 'Frequently Asked Questions' : 'Tanya Jawab (FAQ)' }}</a></li>
           </ul>
         </div>
 
         <!-- Tickets & Info -->
         <div>
-          <h4 class="text-xs font-black text-aqua-gold mb-5 uppercase tracking-[0.2em]">Tickets & Info</h4>
+          <h4 class="text-xs font-black text-aqua-gold mb-5 uppercase tracking-[0.2em]">{{ App::getLocale() === 'en' ? 'Tickets & Info' : 'Tiket & Info' }}</h4>
           <ul class="space-y-3 text-sm text-white/60 font-semibold">
             <li><a href="{{ url('/ticket') }}"
                 class="hover:text-aqua-gold transition-colors flex items-center gap-2"><span
-                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>Buy Tickets Online</a></li>
+                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>{{ App::getLocale() === 'en' ? 'Buy Tickets Online' : 'Beli Tiket Online' }}</a></li>
             <li><a href="{{ url('/packages') }}"
                 class="hover:text-aqua-gold transition-colors flex items-center gap-2"><span
-                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>Special Packages</a></li>
+                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>{{ App::getLocale() === 'en' ? 'Special Packages' : 'Paket Promo Spesial' }}</a></li>
             <li><a href="{{ url('/about') }}"
                 class="hover:text-aqua-gold transition-colors flex items-center gap-2"><span
-                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>About Us</a></li>
+                  class="w-1 h-1 bg-aqua-gold/50 rounded-full inline-block"></span>{{ App::getLocale() === 'en' ? 'About Us' : 'Tentang Kami' }}</a></li>
           </ul>
         </div>
 
         <!-- Opening Hours -->
         <div>
-          <p class="text-aqua-gold text-xs font-black uppercase tracking-wider mb-1">Weekday (Hari Biasa)</p>
+          <h4 class="text-xs font-black text-aqua-gold mb-5 uppercase tracking-[0.2em]">{{ App::getLocale() === 'en' ? 'Operating Hours' : 'Jam Operasional' }}</h4>
+          <p class="text-aqua-gold text-xs font-black uppercase tracking-wider mb-1">{{ App::getLocale() === 'en' ? 'Monday — Friday (Weekdays)' : 'Senin — Jumat (Hari Biasa)' }}</p>
           <p class="text-white text-base font-black tracking-tight mb-2">10:00 — 18:00 WITA</p>
-          <p class="text-aqua-gold text-xs font-black uppercase tracking-wider mb-1">Weekend (Hari Libur)</p>
+          <p class="text-aqua-gold text-xs font-black uppercase tracking-wider mb-1">{{ App::getLocale() === 'en' ? 'Saturday, Sunday & Holidays' : 'Sabtu, Minggu & Hari Libur' }}</p>
           <p class="text-white text-base font-black tracking-tight mb-4">09:00 — 18:00 WITA</p>
           <div class="bg-aqua-navy-2 rounded-2xl p-4 border border-aqua-gold/10">
             <p class="text-white/50 text-xs leading-relaxed font-semibold">
-              <span class="text-aqua-gold/80 font-black block mb-1">📍 Lokasi</span>
+              <span class="text-aqua-gold/80 font-black block mb-1">📍 {{ App::getLocale() === 'en' ? 'Rooftop Location' : 'Lokasi Rooftop' }}</span>
               7th Floor, Pentacity Mall, Balikpapan Superblock (BSB), Kalimantan Timur
             </p>
           </div>

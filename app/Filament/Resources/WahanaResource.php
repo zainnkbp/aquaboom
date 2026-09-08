@@ -176,26 +176,26 @@ class WahanaResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()?->canManageCatalog() ?? false;
+        return auth()->user()?->hasPermission('wahanas') ?? false;
     }
 
     public static function canCreate(): bool
     {
-        return auth()->user()?->canManageCatalog() ?? false;
+        return auth()->user()?->hasPermission('wahanas') ?? false;
     }
 
     public static function canEdit($record): bool
     {
-        return auth()->user()?->canManageCatalog() ?? false;
+        return auth()->user()?->hasPermission('wahanas') ?? false;
     }
 
     public static function canDelete($record): bool
     {
-        return auth()->user()?->canManageCatalog() ?? false;
+        return auth()->user()?->hasPermission('wahanas') ?? false;
     }
 
     public static function canDeleteAny(): bool
     {
-        return auth()->user()?->canManageCatalog() ?? false;
+        return auth()->user()?->hasPermission('wahanas') ?? false;
     }
 }

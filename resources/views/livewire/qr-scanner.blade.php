@@ -18,10 +18,22 @@
             </div>
         </div>
 
-        <button wire:click="logout" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border border-red-500/20 flex items-center gap-1">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-            Keluar
-        </button>
+        <div class="flex items-center gap-1.5 sm:gap-2">
+            @if(auth()->user()->canAccessPanel(\Filament\Facades\Filament::getPanel('admin')))
+                <a href="{{ url('/admin') }}" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border border-slate-700 flex items-center gap-1" title="Kembali ke CMS">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    <span class="hidden sm:inline">CMS</span>
+                </a>
+            @endif
+            <button wire:click="openProfileModal" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 hover:text-amber-300 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all border border-amber-500/20 flex items-center gap-1" title="Ubah PIN / Password">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+                <span>PIN / Akun</span>
+            </button>
+            <button wire:click="logout" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all border border-red-500/20 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                <span>Keluar</span>
+            </button>
+        </div>
     </header>
 
     {{-- Main Viewfinder Section (wire:ignore ensures Livewire never breaks the camera feed) --}}
@@ -415,6 +427,79 @@
     </script>
 
     {{-- Clean Custom HUD Animation Styles --}}
+    {{-- Modal Self-Service Ubah PIN & Password --}}
+    @if($showProfileModal)
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+            <div class="bg-slate-900 border border-slate-700 rounded-3xl w-full max-w-md p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                    <div>
+                        <h3 class="text-base font-bold text-white">Pengaturan Akun Petugas</h3>
+                        <p class="text-xs text-slate-400">{{ auth()->user()->name }} ({{ auth()->user()->email }})</p>
+                    </div>
+                    <button wire:click="closeProfileModal" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+                        ✕
+                    </button>
+                </div>
+
+                @if($profileSuccessMessage)
+                    <div class="mt-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center gap-2">
+                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <span>{{ $profileSuccessMessage }}</span>
+                    </div>
+                @endif
+
+                {{-- Form Ubah PIN 6-Digit --}}
+                <div class="mt-5 bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60">
+                    <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        Ubah PIN Scanner 6-Digit
+                    </h4>
+                    <form wire:submit="updatePin" class="space-y-3">
+                        <div>
+                            <label class="block text-[11px] text-slate-300 mb-1 font-medium">PIN Baru (6 Digit Angka)</label>
+                            <input type="password" inputmode="numeric" maxlength="6" wire:model="newPin" placeholder="••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white tracking-widest text-center font-mono focus:border-amber-400 focus:outline-none">
+                            @error('newPin') <p class="text-rose-400 text-[10px] mt-1">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-300 mb-1 font-medium">Konfirmasi PIN Baru</label>
+                            <input type="password" inputmode="numeric" maxlength="6" wire:model="newPin_confirmation" placeholder="••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white tracking-widest text-center font-mono focus:border-amber-400 focus:outline-none">
+                        </div>
+                        <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs py-2.5 rounded-xl transition-all shadow-md">
+                            Simpan PIN Baru
+                        </button>
+                    </form>
+                </div>
+
+                {{-- Form Ubah Password --}}
+                <div class="mt-4 bg-slate-800/60 p-4 rounded-2xl border border-slate-700/60">
+                    <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+                        Ubah Password Akun
+                    </h4>
+                    <form wire:submit="updatePassword" class="space-y-3">
+                        <div>
+                            <label class="block text-[11px] text-slate-300 mb-1 font-medium">Password Saat Ini</label>
+                            <input type="password" wire:model="currentPassword" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-400 focus:outline-none">
+                            @error('currentPassword') <p class="text-rose-400 text-[10px] mt-1">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-300 mb-1 font-medium">Password Baru</label>
+                            <input type="password" wire:model="newPassword" placeholder="Minimal 8 karakter" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-400 focus:outline-none">
+                            @error('newPassword') <p class="text-rose-400 text-[10px] mt-1">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-300 mb-1 font-medium">Konfirmasi Password Baru</label>
+                            <input type="password" wire:model="newPassword_confirmation" placeholder="Ulangi password baru" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-400 focus:outline-none">
+                        </div>
+                        <button type="submit" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs py-2.5 rounded-xl transition-all shadow-md">
+                            Simpan Password Baru
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <style>
         #reader video {
             width: 100% !important;

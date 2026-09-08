@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
 
 use Filament\Models\Contracts\HasAvatar;
 
-#[Fillable(['name', 'email', 'password', 'role', 'pin', 'avatar_url'])]
+#[Fillable(['name', 'email', 'password', 'role', 'pin', 'avatar_url', 'permissions'])]
 #[Hidden(['password', 'remember_token', 'pin'])]
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
@@ -37,8 +37,26 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return [
             self::ROLE_SUPER_ADMIN => 'Super Admin',
             self::ROLE_ADMIN => 'Admin',
-            self::ROLE_VALIDATOR => 'Validator (Satpam)',
-            self::ROLE_OPERATOR => 'Operator',
+            self::ROLE_VALIDATOR => 'Satpam (Validator)',
+        ];
+    }
+
+    /**
+     * Granular menu permissions available for Admin users.
+     *
+     * @return array<string, string>
+     */
+    public static function permissionOptions(): array
+    {
+        return [
+            'transactions' => 'Transaksi Tiket (Lihat, Edit, & Reschedule)',
+            'ticket_packages' => 'Katalog Tiket & Add-On (Harga, Paket, Kuota)',
+            'promos' => 'Kode Promo & Referral',
+            'wahanas' => 'Kelola Wahana & Atraksi',
+            'facilities_dining' => 'Fasilitas & Resto (Dining)',
+            'faqs_cms' => 'Informasi Web & FAQ',
+            'settings' => 'Pengaturan Web & Kontak',
+            'scanner_access' => 'Akses Scanner Tiket (Security Gate)',
         ];
     }
 
@@ -68,19 +86,36 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     }
 
     /**
+     * Check if user has specific permission. Super admin always has all permissions.
+     */
+    public function hasPermission(string $permission): bool
+    {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        if ($this->role === self::ROLE_ADMIN) {
+            $perms = $this->permissions ?? [];
+            return is_array($perms) && in_array($permission, $perms, true);
+        }
+
+        return false;
+    }
+
+    /**
      * Can manage the catalog (wahana, ticket packages, promo codes).
      */
     public function canManageCatalog(): bool
     {
-        return $this->hasRole(self::ROLE_SUPER_ADMIN, self::ROLE_ADMIN);
+        return $this->hasPermission('ticket_packages');
     }
 
     /**
-     * Can see transactions (super admin, admin, operator).
+     * Can see transactions (super admin, admin with transactions permission).
      */
     public function canViewTransactions(): bool
     {
-        return $this->hasRole(self::ROLE_SUPER_ADMIN, self::ROLE_ADMIN, self::ROLE_OPERATOR);
+        return $this->hasPermission('transactions');
     }
 
     /**
@@ -88,7 +123,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
      */
     public function canValidateTickets(): bool
     {
-        return $this->hasRole(self::ROLE_SUPER_ADMIN, self::ROLE_ADMIN, self::ROLE_VALIDATOR);
+        return $this->isSuperAdmin()
+            || $this->role === self::ROLE_VALIDATOR
+            || ($this->role === self::ROLE_ADMIN && $this->hasPermission('scanner_access'));
     }
 
     /**
@@ -101,6 +138,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'permissions' => 'array',
         ];
     }
 
