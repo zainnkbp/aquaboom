@@ -93,9 +93,9 @@
                 <h3 class="text-2xl font-black text-aqua-navy mb-3 uppercase">
                   {{ App::getLocale() === 'en' && $package->name_en ? $package->name_en : $package->name }}
                 </h3>
-                <p class="text-slate-600 font-semibold text-sm leading-relaxed mb-5">
-                  {{ App::getLocale() === 'en' && $package->description_en ? $package->description_en : $package->description }}
-                </p>
+                <div class="text-slate-600 font-semibold text-sm leading-relaxed mb-5 ticket-rich-description">
+                  {!! App::getLocale() === 'en' && $package->description_en ? $package->description_en : $package->description !!}
+                </div>
                 
                 @if($package->terms_and_conditions)
                   <div class="mb-6">

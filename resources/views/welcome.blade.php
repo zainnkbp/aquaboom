@@ -252,9 +252,9 @@
                   <h3 class="text-xl font-black text-aqua-navy mb-2 uppercase line-clamp-2">
                     {{ App::getLocale() === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
                   </h3>
-                  <p class="text-slate-500 text-xs font-semibold leading-relaxed mb-5 line-clamp-3">
-                    {{ App::getLocale() === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description }}
-                  </p>
+                  <div class="text-slate-600 text-xs font-semibold leading-relaxed mb-5 ticket-rich-description">
+                    {!! App::getLocale() === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description !!}
+                  </div>
 
                   <div class="bg-aqua-cream rounded-xl p-3.5 mb-5 text-sm">
                     @if($pkg->price > 0)
