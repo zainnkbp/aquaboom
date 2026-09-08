@@ -30,10 +30,10 @@ class LandingPageSeeder extends Seeder
 
         // Add-ons Seeding
         AddOn::insert([
-            ['name' => 'Sewa Gazebo Standard', 'description' => 'Gazebo nyaman kapasitas 4-6 orang untuk bersantai bersama keluarga, include stopkontak dan matras empuk.', 'price' => 150000.00, 'image' => 'https://picsum.photos/400/300?random=81', 'is_active' => true],
-            ['name' => 'Single Tube (Ban Single)', 'description' => 'Sewa ban renang single untuk meluncur lebih cepat dan nyaman di wahana seluncuran.', 'price' => 30000.00, 'image' => 'https://picsum.photos/400/300?random=82', 'is_active' => true],
-            ['name' => 'Double Tube (Ban Double)', 'description' => 'Sewa ban renang double untuk meluncur berpasangan bersama teman atau keluarga.', 'price' => 50000.00, 'image' => 'https://picsum.photos/400/300?random=83', 'is_active' => true],
-            ['name' => 'Loker Premium', 'description' => 'Sewa loker ukuran besar dengan pengaman kunci digital RFID untuk kenyamanan barang bawaan Anda.', 'price' => 25000.00, 'image' => 'https://picsum.photos/400/300?random=84', 'is_active' => true],
+            ['name' => 'Sewa Gazebo Standard', 'description' => 'Gazebo nyaman kapasitas 4-6 orang untuk bersantai bersama keluarga, include stopkontak dan matras empuk.', 'price' => 150000.00, 'image' => 'assets/img/aquaboom.jpeg', 'is_active' => true],
+            ['name' => 'Single Tube (Ban Single)', 'description' => 'Sewa ban renang single untuk meluncur lebih cepat dan nyaman di wahana seluncuran.', 'price' => 30000.00, 'image' => 'assets/img/aquaboom-slide2.jpg', 'is_active' => true],
+            ['name' => 'Double Tube (Ban Double)', 'description' => 'Sewa ban renang double untuk meluncur berpasangan bersama teman atau keluarga.', 'price' => 50000.00, 'image' => 'assets/img/aquaboom-slide3.jpg', 'is_active' => true],
+            ['name' => 'Loker Premium', 'description' => 'Sewa loker ukuran besar dengan pengaman kunci digital RFID untuk kenyamanan barang bawaan Anda.', 'price' => 25000.00, 'image' => 'assets/img/aquaboom_about.jpeg', 'is_active' => true],
         ]);
 
         // Wahanas
@@ -130,7 +130,7 @@ class LandingPageSeeder extends Seeder
                     'Capacity of 4–8 people per gazebo'
                 ]),
                 'menu_items' => null,
-                'image_url' => 'https://picsum.photos/600/400?random=40',
+                'image_url' => 'assets/img/aquaboom.jpeg',
                 'is_active' => true
             ],
             [
@@ -150,7 +150,7 @@ class LandingPageSeeder extends Seeder
                     'Strategic locker locations near the shower rooms'
                 ]),
                 'menu_items' => null,
-                'image_url' => 'https://picsum.photos/600/400?random=42',
+                'image_url' => 'assets/img/aquaboom_about.jpeg',
                 'is_active' => true
             ],
             [
@@ -170,7 +170,7 @@ class LandingPageSeeder extends Seeder
                     'Large washbasin and vanity mirrors'
                 ]),
                 'menu_items' => null,
-                'image_url' => 'https://picsum.photos/600/400?random=44',
+                'image_url' => 'assets/img/aquaboom-slide3.jpg',
                 'is_active' => true
             ],
             [
@@ -190,7 +190,7 @@ class LandingPageSeeder extends Seeder
                     'Fast emergency evacuation access route'
                 ]),
                 'menu_items' => null,
-                'image_url' => 'https://picsum.photos/600/400?random=46',
+                'image_url' => 'assets/img/aquaboom-slide1.jpg',
                 'is_active' => true
             ],
             [
@@ -210,7 +210,7 @@ class LandingPageSeeder extends Seeder
                     'Comfortable air-conditioned room'
                 ]),
                 'menu_items' => null,
-                'image_url' => 'https://picsum.photos/600/400?random=48',
+                'image_url' => 'assets/img/aquaboom-slide2.jpg',
                 'is_active' => true
             ],
         ]);
@@ -227,7 +227,7 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'regular',
                 'validity_type' => 'weekday',
-                'image_url' => 'https://picsum.photos/600/400?random=60',
+                'image_url' => 'assets/img/aquaboom-slide1.jpg',
                 'inquiry_type' => 'none',
                 'inquiry_custom_link' => null,
                 'is_active' => true,
@@ -242,7 +242,7 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'regular',
                 'validity_type' => 'weekend',
-                'image_url' => 'https://picsum.photos/600/400?random=61',
+                'image_url' => 'assets/img/aquaboom-slide2.jpg',
                 'inquiry_type' => 'none',
                 'inquiry_custom_link' => null,
                 'is_active' => true,
@@ -257,7 +257,7 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'bundle',
                 'validity_type' => 'all_days',
-                'image_url' => 'https://picsum.photos/600/400?random=51',
+                'image_url' => 'assets/img/aquaboom_about.jpeg',
                 'inquiry_type' => 'none',
                 'inquiry_custom_link' => null,
                 'is_active' => true,
@@ -272,7 +272,7 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'bundle',
                 'validity_type' => 'all_days',
-                'image_url' => 'https://picsum.photos/600/400?random=52',
+                'image_url' => 'assets/img/gathering-family.jpg',
                 'inquiry_type' => 'none',
                 'inquiry_custom_link' => null,
                 'is_active' => true,
@@ -287,7 +287,7 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'bundle',
                 'validity_type' => 'all_days',
-                'image_url' => 'https://picsum.photos/600/400?random=53',
+                'image_url' => 'assets/img/gathering-birthday.jpg',
                 'inquiry_type' => 'whatsapp',
                 'inquiry_custom_link' => null,
                 'is_active' => true,
@@ -302,7 +302,7 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'bundle',
                 'validity_type' => 'all_days',
-                'image_url' => 'https://picsum.photos/600/400?random=54',
+                'image_url' => 'assets/img/aquaboom.jpeg',
                 'inquiry_type' => 'whatsapp',
                 'inquiry_custom_link' => null,
                 'is_active' => true,
@@ -317,7 +317,7 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'bundle',
                 'validity_type' => 'all_days',
-                'image_url' => 'https://picsum.photos/600/400?random=55',
+                'image_url' => 'assets/img/aquaboom-slide3.jpg',
                 'inquiry_type' => 'none',
                 'inquiry_custom_link' => null,
                 'is_active' => true,
@@ -332,7 +332,7 @@ class LandingPageSeeder extends Seeder
                 'discount_type' => 'amount',
                 'type' => 'bundle',
                 'validity_type' => 'all_days',
-                'image_url' => 'https://picsum.photos/600/400?random=56',
+                'image_url' => 'assets/img/gathering-corporate.jpg',
                 'inquiry_type' => 'whatsapp',
                 'inquiry_custom_link' => null,
                 'is_active' => true,

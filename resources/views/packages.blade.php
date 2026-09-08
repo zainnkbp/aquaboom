@@ -8,19 +8,23 @@
       <div class="absolute inset-0 bg-gradient-to-b from-waterbom-dark/80 to-waterbom-dark"></div>
     </div>
     <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
-      <span class="text-aqua-azure text-sm font-black tracking-widest uppercase mb-4 block">Special Deals</span>
-      <h1 class="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tight leading-tight">
-        PACKAGES &<br/>SPECIAL OFFERS
+      <span class="text-aqua-gold text-xs font-black tracking-[0.3em] uppercase mb-4 block">
+        {{ App::getLocale() === 'en' ? 'Exclusive Packages' : 'Paket Promo Eksklusif' }}
+      </span>
+      <h1 class="text-4xl md:text-7xl font-black text-white mb-6 uppercase tracking-tight leading-tight">
+        {!! App::getLocale() === 'en' ? 'PACKAGES &<br/><span class="gold-shimmer">SPECIAL OFFERS</span>' : 'PAKET PROMO &<br/><span class="gold-shimmer">PENAWARAN SPESIAL</span>' !!}
       </h1>
       <p class="text-base md:text-lg text-white/70 font-semibold max-w-3xl mx-auto leading-relaxed">
-        Aquaboom is the perfect setting for special events, birthdays, family gatherings, corporate team outings or just big groups of friends wanting to have a great day out! Our team can assist you with your enquiry and customise a package with special rates for groups of more than 10 people.
+        {{ App::getLocale() === 'en'
+          ? 'Aquaboom is the perfect rooftop destination for family outings, birthdays, gatherings, and special deals. Enjoy bundled value passes with included towels, lockers, and recreation vouchers!'
+          : 'Aquaboom menghadirkan pilihan paket hemat terbaik untuk liburan keluarga, pasangan, hingga rombongan. Nikmati penawaran spesial hemat dengan bonus handuk, loker, dan voucher fasilitas!' }}
       </p>
       <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="{{ url('/book') }}" class="inline-block bg-aqua-gold hover:bg-aqua-gold-2 text-white font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all shadow-lg shadow-orange-500/20">
-          Book Tickets Online
+        <a href="{{ url('/ticket') }}" class="inline-block bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-10 py-4 rounded-full uppercase tracking-wider text-sm transition-all shadow-lg shadow-amber-900/20">
+          {{ App::getLocale() === 'en' ? 'Buy Tickets Online' : 'Beli Tiket Online' }}
         </a>
-        <a href="mailto:info@aquaboombsb.com" class="inline-block bg-white/10 hover:bg-white/20 text-white border border-white/30 font-black px-10 py-4 rounded-xl uppercase tracking-wider text-sm transition-all">
-          Group Enquiry
+        <a href="{{ url('/gatherings') }}" class="inline-block bg-white/10 hover:bg-white/20 text-white border border-white/30 font-black px-10 py-4 rounded-full uppercase tracking-wider text-sm transition-all">
+          {{ App::getLocale() === 'en' ? 'Group Gathering' : 'Paket Rombongan' }}
         </a>
       </div>
     </div>
@@ -33,7 +37,9 @@
       <!-- Section intro note -->
       <div class="text-center mb-16">
         <p class="text-slate-600 font-semibold text-sm max-w-2xl mx-auto">
-          For bookings of fewer than 10 guests, please visit our <a href="{{ url('/ticket') }}" class="text-aqua-azure underline hover:text-aqua-gold">ticket page</a> and take advantage of our regular online discount. Our current offers and group promotions are below:
+          {{ App::getLocale() === 'en'
+            ? 'Looking for regular daily passes? Visit our ticket booking page to select your dates directly. Check out our special bundled offers below:'
+            : 'Mencari tiket masuk harian biasa? Kunjungi halaman tiket kami untuk langsung memilih tanggal kunjungan. Lihat pilihan paket bundling hemat di bawah ini:' }}
         </p>
       </div>
 
@@ -87,9 +93,29 @@
                 <h3 class="text-2xl font-black text-aqua-navy mb-3 uppercase">
                   {{ App::getLocale() === 'en' && $package->name_en ? $package->name_en : $package->name }}
                 </h3>
-                <p class="text-slate-600 font-semibold text-sm leading-relaxed mb-5">
-                  {{ App::getLocale() === 'en' && $package->description_en ? $package->description_en : $package->description }}
-                </p>
+                @php
+                  $pDesc = App::getLocale() === 'en' && $package->description_en ? $package->description_en : $package->description;
+                  $hasPlus = str_contains($pDesc, ' + ');
+                @endphp
+                @if($hasPlus)
+                  @php
+                    $bList = explode(' + ', $pDesc);
+                  @endphp
+                  <ul class="space-y-2 mb-5">
+                    @foreach($bList as $bItem)
+                      <li class="flex items-start gap-2.5 text-xs font-semibold text-slate-700">
+                        <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>{{ trim($bItem) }}</span>
+                      </li>
+                    @endforeach
+                  </ul>
+                @else
+                  <p class="text-slate-600 font-semibold text-sm leading-relaxed mb-5">
+                    {{ $pDesc }}
+                  </p>
+                @endif
                 
                 @if($package->terms_and_conditions)
                   <div class="mb-6">
@@ -106,13 +132,43 @@
                   @if($package->price > 0)
                     @if($package->is_discounted)
                       <div class="flex justify-between items-center mb-1">
-                        <span class="text-slate-500 font-semibold">Harga Normal</span>
+                        <span class="text-slate-500 font-semibold">{{ App::getLocale() === 'en' ? 'Regular Price' : 'Harga Normal' }}</span>
                         <span class="text-slate-400 line-through font-bold">Rp {{ number_format((float) $package->price, 0, ',', '.') }}</span>
                       </div>
                     @endif
                     <div class="flex justify-between items-center">
-                      <span class="text-aqua-navy font-black">Harga Paket</span>
-                      <span class="text-aqua-gold text-xl font-black">Rp {{ number_format((float) $package->effective_price, 0, ',', '.') }}</span>
+                      <span class="text-aqua-navy font-black text-xs uppercase tracking-wider">
+                        @if($package->type === 'gathering')
+                          {{ App::getLocale() === 'en' ? 'Starts From' : 'Mulai Dari' }}
+                        @elseif($package->type === 'bundle')
+                          {{ App::getLocale() === 'en' ? 'Package Price' : 'Harga Paket' }}
+                        @else
+                          {{ App::getLocale() === 'en' ? 'Ticket Price' : 'Harga Tiket' }}
+                        @endif
+                      </span>
+                      <div class="text-right">
+                        <span class="text-aqua-gold text-xl font-black">
+                          Rp {{ number_format((float) $package->effective_price, 0, ',', '.') }}
+                          <span class="text-xs font-normal text-slate-500">
+                            @if($package->type === 'gathering')
+                              / {{ App::getLocale() === 'en' ? 'person' : 'orang' }}
+                            @elseif($package->type === 'bundle')
+                              / {{ App::getLocale() === 'en' ? 'package' : 'paket' }}
+                            @else
+                              / {{ App::getLocale() === 'en' ? 'ticket' : 'tiket' }}
+                            @endif
+                          </span>
+                        </span>
+                        @if(stripos($package->name, 'duo') !== false)
+                          <div class="text-[11px] text-slate-500 font-bold">
+                            {{ App::getLocale() === 'en' ? 'For 2 guests' : 'Untuk 2 orang' }}
+                          </div>
+                        @elseif(stripos($package->name, 'four pack') !== false || stripos($package->name, '4 pack') !== false)
+                          <div class="text-[11px] text-slate-500 font-bold">
+                            {{ App::getLocale() === 'en' ? 'For 4 guests' : 'Untuk 4 orang' }}
+                          </div>
+                        @endif
+                      </div>
                     </div>
                   @else
                     <div class="text-center py-1 text-slate-500 font-bold italic text-xs">
@@ -122,11 +178,11 @@
                   @if($package->validity_type)
                     <p class="text-slate-400 text-[11px] font-semibold mt-2 italic">
                       @if($package->validity_type === 'weekday')
-                        * Berlaku Weekday (Senin - Jumat)
+                        {{ App::getLocale() === 'en' ? '* Valid on Weekdays (Mon - Fri)' : '* Berlaku Hari Kerja (Senin - Jumat)' }}
                       @elseif($package->validity_type === 'weekend')
-                        * Berlaku Weekend (Sabtu - Minggu, Libur)
+                        {{ App::getLocale() === 'en' ? '* Valid on Weekends & Public Holidays' : '* Berlaku Akhir Pekan (Sabtu, Minggu & Libur)' }}
                       @else
-                        * Berlaku setiap hari
+                        {{ App::getLocale() === 'en' ? '* Valid every day' : '* Berlaku setiap hari' }}
                       @endif
                     </p>
                   @endif
