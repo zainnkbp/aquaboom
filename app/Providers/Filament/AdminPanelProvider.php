@@ -39,27 +39,23 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('2.6rem')
             ->favicon(asset('logo/favicon-96x96.png'))
             ->sidebarCollapsibleOnDesktop()
+            ->collapsibleNavigationGroups()
             ->navigationGroups([
                 \Filament\Navigation\NavigationGroup::make('Operasional Gate')
                     ->icon('heroicon-o-qr-code')
-                    ->collapsible()
-                    ->collapsed(false),
+                    ->collapsible(),
                 \Filament\Navigation\NavigationGroup::make('Transaksi & Penjualan')
                     ->icon('heroicon-o-banknotes')
-                    ->collapsible()
-                    ->collapsed(false),
+                    ->collapsible(),
                 \Filament\Navigation\NavigationGroup::make('Manajemen Pengunjung')
                     ->icon('heroicon-o-user-group')
-                    ->collapsible()
-                    ->collapsed(false),
+                    ->collapsible(),
                 \Filament\Navigation\NavigationGroup::make('CMS & Konten Web')
                     ->icon('heroicon-o-globe-alt')
-                    ->collapsible()
-                    ->collapsed(false),
+                    ->collapsible(),
                 \Filament\Navigation\NavigationGroup::make('Sistem & Keamanan')
                     ->icon('heroicon-o-shield-check')
-                    ->collapsible()
-                    ->collapsed(false),
+                    ->collapsible(),
             ])
             ->renderHook(
                 PanelsRenderHook::SIDEBAR_NAV_START,
