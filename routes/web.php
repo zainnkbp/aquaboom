@@ -256,3 +256,10 @@ Route::get('/payment/doku/pay/{order_id}', [\App\Http\Controllers\PaymentControl
 Route::post('/payment/doku/notification', [\App\Http\Controllers\PaymentController::class, 'handleNotification'])->name('payment.doku.notification');
 Route::get('/payment/doku/redirect', [\App\Http\Controllers\PaymentController::class, 'paymentRedirect'])->name('payment.doku.redirect');
 
+// Dashboard V2 (Glassmorphism Edition)
+Route::middleware('auth')->group(function () {
+    Route::get('/v2', \App\Http\Controllers\DashboardV2Controller::class)->name('dashboard.v2');
+    Route::get('/admin/v2', fn () => redirect()->route('dashboard.v2'));
+});
+
+
