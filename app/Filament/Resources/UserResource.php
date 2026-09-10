@@ -108,22 +108,51 @@ class UserResource extends Resource
                         \App\Models\User::ROLE_OPERATOR => 'info',
                         default => 'gray',
                     }),
-                Tables\Columns\TextColumn::make('permissions')
+                Tables\Columns\TextColumn::make('permissions_display')
                     ->label('Hak Akses Menu')
-                    ->badge()
-                    ->color('info')
-                    ->formatStateUsing(function ($state, User $record) {
+                    ->state(function (User $record): array {
                         if ($record->isSuperAdmin()) {
-                            return 'Semua Menu (Full)';
+                            return ['Semua Menu (Full Akses)'];
                         }
                         if ($record->role === User::ROLE_VALIDATOR) {
-                            return 'Khusus Scanner Gate';
+                            return ['Khusus Scanner Gate'];
                         }
-                        if (empty($state) || !is_array($state)) {
-                            return 'Belum diatur';
+                        $perms = $record->permissions;
+                        if (empty($perms) || !is_array($perms)) {
+                            return ['Belum Diatur'];
                         }
-                        return count($state) . ' Menu Aktif';
-                    }),
+                        $shortLabels = [
+                            'transactions' => 'Transaksi Tiket',
+                            'ticket_packages' => 'Katalog Tiket & Addon',
+                            'promos' => 'Kode Promo & Referral',
+                            'wahanas' => 'Wahana & Atraksi',
+                            'facilities_dining' => 'Fasilitas & Resto',
+                            'faqs_cms' => 'FAQ & CMS Web',
+                            'settings' => 'Pengaturan Web',
+                            'scanner_access' => 'Scanner Gate',
+                        ];
+                        $labels = [];
+                        foreach ($perms as $perm) {
+                            $labels[] = $shortLabels[$perm] ?? $perm;
+                        }
+                        return !empty($labels) ? $labels : ['Belum Diatur'];
+                    })
+                    ->badge()
+                    ->color(function (User $record, $state): string {
+                        if ($record->isSuperAdmin()) {
+                            return 'danger';
+                        }
+                        if ($record->role === User::ROLE_VALIDATOR) {
+                            return 'success';
+                        }
+                        if ($state === 'Belum Diatur') {
+                            return 'gray';
+                        }
+                        return 'info';
+                    })
+                    ->wrap()
+                    ->limitList(4)
+                    ->expandableLimitedList(),
                 Tables\Columns\TextColumn::make('pin')
                     ->label('PIN Scanner')
                     ->formatStateUsing(fn ($state) => $state ? 'Aktif' : '-')
