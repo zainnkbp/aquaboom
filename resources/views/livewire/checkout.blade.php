@@ -602,14 +602,16 @@
 
     <!-- Sticky Bottom Price Summary Bar (Booking.com / OTA Best Practice) -->
     @if($this->totalTickets > 0)
-        <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-10px_30px_-5px_rgba(0,0,0,0.15)] transition-all duration-300">
+        <div x-data
+             x-init="window.dispatchEvent(new CustomEvent('sticky-price-bar-toggle', { detail: { active: true } }))"
+             class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-10px_30px_-5px_rgba(0,0,0,0.15)] transition-all duration-300 animate-in slide-in-from-bottom-5">
             <!-- Top Gold/Accent Highlight Strip -->
             <div class="bg-gradient-to-r from-aqua-gold via-amber-400 to-aqua-gold h-1 w-full"></div>
             
             <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between gap-3 sm:gap-6">
                 <!-- Left: Price & Breakdown -->
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 mb-0.5">
+                <div class="flex-1 min-w-0 pr-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2 mb-0.5">
                         <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-200/60 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
                             ✨ {{ $locale === 'id' ? 'Bebas Antre di Loket' : 'Fast Track Entry' }}
                         </span>
@@ -622,14 +624,14 @@
                         <span class="text-xl sm:text-2xl md:text-3xl font-black text-aqua-navy tracking-tight">
                             Rp {{ number_format($this->totalPrice, 0, ',', '.') }}
                         </span>
-                        <span class="text-[11px] sm:text-xs font-bold text-slate-500">
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 whitespace-nowrap">
                             ({{ $this->totalTickets }} {{ $locale === 'id' ? 'Tiket' : 'Ticket(s)' }}@if($this->totalAddons > 0), {{ $this->totalAddons }} Add-on @endif)
                         </span>
                     </div>
                 </div>
 
                 <!-- Right: CTA Button -->
-                <div class="shrink-0 flex items-center gap-2">
+                <div class="shrink-0 flex items-center">
                     <button type="button" 
                             onclick="
                                 const contactSection = document.getElementById('step-4-contact');
@@ -639,13 +641,15 @@
                                     if (nameInput) setTimeout(() => nameInput.focus(), 300);
                                 }
                             "
-                            class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-1.5 sm:gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
+                            class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-4 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-1.5 sm:gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
                         <span>{{ $locale === 'id' ? 'Lanjut Isi Data' : 'Continue' }}</span>
                         <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </button>
                 </div>
             </div>
         </div>
+    @else
+        <div x-data x-init="window.dispatchEvent(new CustomEvent('sticky-price-bar-toggle', { detail: { active: false } }))" class="hidden"></div>
     @endif
 
     <!-- Modal Konfirmasi Pembayaran & Ringkasan Transparan -->

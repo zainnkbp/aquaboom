@@ -1,6 +1,9 @@
 @props(['faqs'])
 
-<div x-data="chatbotData(@js($faqs))" class="fixed bottom-6 right-6 z-[100] font-sans flex flex-col items-end gap-4">
+<div x-data="chatbotData(@js($faqs))" 
+     @sticky-price-bar-toggle.window="hasStickyBar = !!$event.detail.active"
+     :style="hasStickyBar ? 'transform: translateY(-80px);' : 'transform: translateY(0);'"
+     class="fixed bottom-6 right-6 z-[100] font-sans flex flex-col items-end gap-4 transition-transform duration-300 ease-out">
     
     <!-- Chat Window -->
     <div 
@@ -101,6 +104,7 @@
             return {
                 isOpen: false,
                 isTyping: false,
+                hasStickyBar: false,
                 isEn: {{ App::getLocale() === 'en' ? 'true' : 'false' }},
                 faqs: faqData || [],
                 messages: [

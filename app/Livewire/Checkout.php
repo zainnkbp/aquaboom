@@ -81,6 +81,7 @@ class Checkout extends Component
     {
         if (isset($this->quantities[$packageId]) && $this->quantities[$packageId] < 20) {
             $this->quantities[$packageId]++;
+            $this->dispatch('sticky-price-bar-toggle', active: $this->totalTickets > 0);
         }
     }
 
@@ -88,6 +89,7 @@ class Checkout extends Component
     {
         if (isset($this->quantities[$packageId]) && $this->quantities[$packageId] > 0) {
             $this->quantities[$packageId]--;
+            $this->dispatch('sticky-price-bar-toggle', active: $this->totalTickets > 0);
         }
     }
 
@@ -95,6 +97,7 @@ class Checkout extends Component
     {
         if (isset($this->addon_quantities[$addonId]) && $this->addon_quantities[$addonId] < 10) {
             $this->addon_quantities[$addonId]++;
+            $this->dispatch('sticky-price-bar-toggle', active: $this->totalTickets > 0);
         }
     }
 
@@ -102,6 +105,7 @@ class Checkout extends Component
     {
         if (isset($this->addon_quantities[$addonId]) && $this->addon_quantities[$addonId] > 0) {
             $this->addon_quantities[$addonId]--;
+            $this->dispatch('sticky-price-bar-toggle', active: $this->totalTickets > 0);
         }
     }
 
