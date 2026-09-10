@@ -32,6 +32,7 @@ class Checkout extends Component
     public $locale = 'id';
     public $addon_quantities = [];
     public $addons;
+    public bool $showConfirmationModal = false;
 
     public function mount()
     {
@@ -262,6 +263,50 @@ class Checkout extends Component
     public function getTotalTicketsProperty()
     {
         return array_sum($this->quantities);
+    }
+
+    public function openConfirmationModal()
+    {
+        $this->validate([
+            'visit_date' => 'required|date|after_or_equal:today',
+            'customer_name' => 'required|string|max:255',
+            'customer_email' => 'required|email|max:255',
+            'customer_phone' => 'required|string|max:20',
+            'termsAccepted' => 'accepted',
+        ], [
+            'termsAccepted.accepted' => $this->locale === 'en'
+                ? 'You must accept the Terms & Conditions and Privacy Policy.'
+                : 'Anda harus menyetujui Syarat & Ketentuan serta Kebijakan Privasi.',
+            'visit_date.required' => $this->locale === 'en' ? 'Please select a visit date.' : 'Pilih tanggal kunjungan terlebih dahulu.',
+            'customer_name.required' => $this->locale === 'en' ? 'Visitor name is required.' : 'Nama pengunjung wajib diisi.',
+            'customer_email.required' => $this->locale === 'en' ? 'Email is required.' : 'Email penerima e-ticket wajib diisi.',
+            'customer_phone.required' => $this->locale === 'en' ? 'Phone number is required.' : 'Nomor telepon/WhatsApp wajib diisi.',
+        ]);
+
+        if ($this->totalTickets <= 0) {
+            $this->addError('quantities', $this->locale === 'en' ? 'Please select at least one ticket.' : 'Silakan pilih minimal 1 tiket.');
+            return;
+        }
+
+        // Validate all selected packages against the date
+        foreach ($this->quantities as $pkgId => $qty) {
+            if ($qty > 0) {
+                $pkg = TicketPackage::find($pkgId);
+                if ($pkg && !$pkg->isValidForDate($this->visit_date)) {
+                    $this->addError('visit_date', $this->locale === 'en' 
+                        ? "Ticket package {$pkg->name} is not valid for this date."
+                        : "Paket tiket {$pkg->name} tidak berlaku untuk tanggal ini.");
+                    return;
+                }
+            }
+        }
+
+        $this->showConfirmationModal = true;
+    }
+
+    public function closeConfirmationModal()
+    {
+        $this->showConfirmationModal = false;
     }
 
     public function submit()
