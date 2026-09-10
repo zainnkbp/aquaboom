@@ -226,6 +226,20 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Pages\Dashboard::class,
             ])
             ->navigationItems([
+                \Filament\Navigation\NavigationItem::make('Kunjungan Hari Ini')
+                    ->url(fn (): string => route('filament.admin.resources.transactions.index', ['activeTab' => 'today']))
+                    ->icon('heroicon-o-calendar-days')
+                    ->badge(fn (): ?string => ($count = \App\Models\Transaction::whereDate('visit_date', today())->whereIn('status', ['paid', 'scanned'])->count()) > 0 ? (string) $count : null, color: 'success')
+                    ->sort(-2)
+                    ->visible(fn (): bool => auth()->user()?->hasPermission('transactions') ?? false),
+
+                \Filament\Navigation\NavigationItem::make('Kunjungan Expired')
+                    ->url(fn (): string => route('filament.admin.resources.transactions.index', ['activeTab' => 'expired']))
+                    ->icon('heroicon-o-clock')
+                    ->badge(fn (): ?string => ($count = \App\Models\Transaction::whereDate('visit_date', '<', today())->where('is_redeemed', false)->where('status', 'paid')->count()) > 0 ? (string) $count : null, color: 'danger')
+                    ->sort(-1)
+                    ->visible(fn (): bool => auth()->user()?->hasPermission('transactions') ?? false),
+
                 \Filament\Navigation\NavigationItem::make('Scanner Tiket (Security)')
                     ->url(fn (): string => route('scanner.app'), shouldOpenInNewTab: true)
                     ->icon('heroicon-o-qr-code')

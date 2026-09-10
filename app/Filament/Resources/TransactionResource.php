@@ -219,6 +219,14 @@ class TransactionResource extends Resource
                             ->weight('bold')
                             ->color('success'),
                     ]),
+                Section::make('Catatan Khusus / Log Reschedule')
+                    ->icon('heroicon-o-document-text')
+                    ->visible(fn (Transaction $record): bool => filled($record->notes))
+                    ->schema([
+                        TextEntry::make('notes')
+                            ->label('Catatan')
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 
@@ -258,17 +266,25 @@ class TransactionResource extends Resource
                         }
                         return implode(', ', $parts);
                     }),
-                Tables\Columns\TextColumn::make('visit_date')
-                    ->label('Tgl Kunjungan')
-                    ->date('d M Y')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('total_price')
                     ->label('Total Bayar')
                     ->money('IDR')
                     ->sortable()
+                    ->weight('bold')
+                    ->color('success'),
+                Tables\Columns\TextColumn::make('visit_date')
+                    ->label('Tgl Kunjungan')
+                    ->date('d M Y')
+                    ->sortable()
+                    ->color('primary')
                     ->weight('bold'),
+                Tables\Columns\TextColumn::make('is_redeemed')
+                    ->label('Status Masuk')
+                    ->badge()
+                    ->state(fn (Transaction $record): string => $record->is_redeemed ? 'Checked In' : 'Belum Datang')
+                    ->color(fn (Transaction $record): string => $record->is_redeemed ? 'gray' : 'success'),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
+                    ->label('Status Bayar')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'paid' => 'success',
@@ -276,18 +292,9 @@ class TransactionResource extends Resource
                         'pending' => 'warning',
                         'failed' => 'danger',
                         default => 'gray',
-                    })
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('customer_email')
-                    ->label('Email')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('customer_phone')
-                    ->label('WhatsApp')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Dibuat')
+                    ->label('Waktu Transaksi')
                     ->dateTime('d M Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -295,8 +302,14 @@ class TransactionResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\Filter::make('visit_date_today')
+                    ->label('Kunjungan Hari Ini')
+                    ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query->whereDate('visit_date', today())),
+                Tables\Filters\Filter::make('visit_date_expired')
+                    ->label('Kunjungan Expired / Terlewat')
+                    ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query->whereDate('visit_date', '<', today())->where('is_redeemed', false)->where('status', 'paid')),
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('Status')
+                    ->label('Status Pembayaran')
                     ->options([
                         'pending' => 'Pending',
                         'paid' => 'Paid (Lunas)',
@@ -305,57 +318,9 @@ class TransactionResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\Action::make('reschedule')
-                    ->label('Reschedule / Edit Status')
-                    ->icon('heroicon-m-calendar')
-                    ->color('warning')
-                    ->visible(fn (): bool => auth()->user()?->hasPermission('transactions') ?? false)
-                    ->modalHeading('Reschedule & Update Status Tiket')
-                    ->modalDescription('Ubah tanggal kedatangan pelanggan atau sesuaikan status pembayaran / pemakaian tiket.')
-                    ->form([
-                        Forms\Components\DatePicker::make('visit_date')
-                            ->label('Tanggal Kunjungan Baru')
-                            ->required(),
-                        Forms\Components\Select::make('status')
-                            ->label('Status Pembayaran')
-                            ->options([
-                                'pending' => 'Pending',
-                                'paid' => 'Paid (Lunas)',
-                                'failed' => 'Failed',
-                                'scanned' => 'Scanned (Check-in Masuk)',
-                            ])
-                            ->required(),
-                        Forms\Components\Toggle::make('is_redeemed')
-                            ->label('Sudah Check-in Masuk (Redeemed)')
-                            ->helperText('Aktifkan jika tiket sudah tervalidasi masuk di gerbang.'),
-                        Forms\Components\Textarea::make('notes')
-                            ->label('Catatan Staf (Alasan Reschedule/Update)')
-                            ->placeholder('Contoh: Customer minta reschedule ke tgl X karena kendala cuaca.'),
-                    ])
-                    ->fillForm(fn (Transaction $record): array => [
-                        'visit_date' => $record->visit_date,
-                        'status' => $record->status,
-                        'is_redeemed' => (bool) $record->is_redeemed,
-                        'notes' => $record->notes,
-                    ])
-                    ->action(function (Transaction $record, array $data): void {
-                        $record->update([
-                            'visit_date' => $data['visit_date'],
-                            'status' => $data['status'],
-                            'is_redeemed' => $data['is_redeemed'],
-                            'notes' => $data['notes'],
-                            'redeemed_at' => $data['is_redeemed'] ? ($record->redeemed_at ?? now()) : null,
-                        ]);
-
-                        \Filament\Notifications\Notification::make()
-                            ->title('Tiket Berhasil Diupdate')
-                            ->body("Data tiket {$record->order_id} berhasil diperbarui.")
-                            ->success()
-                            ->send();
-                    }),
-                Tables\Actions\EditAction::make()
-                    ->visible(fn (): bool => auth()->user()?->hasPermission('transactions') ?? false),
+                Tables\Actions\ViewAction::make()
+                    ->label('Lihat Detail')
+                    ->icon('heroicon-o-eye'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -383,8 +348,6 @@ class TransactionResource extends Resource
     {
         return [
             'index' => Pages\ListTransactions::route('/'),
-            'create' => Pages\CreateTransaction::route('/create'),
-            'edit' => Pages\EditTransaction::route('/{record}/edit'),
         ];
     }
 
@@ -401,7 +364,7 @@ class TransactionResource extends Resource
 
     public static function canEdit($record): bool
     {
-        return auth()->user()?->hasPermission('transactions') ?? false;
+        return false;
     }
 
     public static function canDelete($record): bool
