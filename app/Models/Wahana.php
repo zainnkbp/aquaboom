@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasAuditLog;
+use App\Models\Concerns\AutoFixPostgresSequence;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wahana extends Model
 {
-    use HasAuditLog, SoftDeletes;
+    use HasAuditLog, SoftDeletes, AutoFixPostgresSequence;
 
     protected $guarded = [];
 

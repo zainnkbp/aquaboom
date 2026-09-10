@@ -33,7 +33,12 @@ class PromoCodeResource extends Resource
                 Forms\Components\TextInput::make('code')
                     ->label('Kode Promo')
                     ->required()
-                    ->unique(ignoreRecord: true)
+                    ->unique(
+                        table: 'promo_codes',
+                        column: 'code',
+                        ignoreRecord: true,
+                        modifyRuleUsing: fn ($rule) => $rule->whereNull('deleted_at')
+                    )
                     ->helperText('Kode unik promo (otomatis dibuat huruf besar saat dipakai)'),
                 Forms\Components\TextInput::make('discount_percentage')
                     ->label('Diskon Persentase')
@@ -113,11 +118,15 @@ class PromoCodeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
             ]);
     }
