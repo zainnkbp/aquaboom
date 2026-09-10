@@ -76,14 +76,15 @@
     <!-- Floating Button -->
     <button 
         @click="isOpen = !isOpen" 
-        class="w-16 h-16 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform duration-300 ring-4 ring-aqua-gold/30"
+        class="w-16 h-16 bg-aqua-navy rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform duration-300 ring-4 ring-aqua-navy/30 border border-aqua-gold/30"
         :class="{'rotate-12': isOpen}"
+        aria-label="Chat Assistant"
     >
-        <svg x-show="!isOpen" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+        <svg x-show="!isOpen" class="w-8 h-8 text-aqua-gold" style="color: #F09628;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
         </svg>
-        <svg x-show="isOpen" style="display: none;" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        <svg x-show="isOpen" style="display: none; color: #F09628;" class="w-8 h-8 text-aqua-gold" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
         </svg>
     </button>
 </div>

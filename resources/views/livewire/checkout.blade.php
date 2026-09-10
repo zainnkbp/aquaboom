@@ -8,7 +8,7 @@
     </div>
 
     <!-- Step 1: Visit Date -->
-    <div class="px-4 md:px-10 py-8 bg-aqua-cream border-b border-slate-100">
+    <div id="step-1-date" class="px-4 md:px-10 py-8 bg-aqua-cream border-b border-slate-100 scroll-mt-24">
         <div class="max-w-5xl mx-auto">
             <div class="flex items-center gap-3 mb-6">
                 <div class="h-px w-8 bg-aqua-gold"></div>
@@ -19,12 +19,16 @@
             </div>
             
             <div class="flex items-center gap-4 overflow-x-auto pb-2 snap-x scrollbar-hide">
-                <button type="button" wire:click="$set('visit_date', '{{ date('Y-m-d') }}')" 
+                <button type="button" 
+                     wire:click="$set('visit_date', '{{ date('Y-m-d') }}')" 
+                     @click="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
                      class="py-4 px-10 rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 font-bold border-2
                      {{ $visit_date === date('Y-m-d') ? 'border-aqua-gold bg-aqua-navy text-white shadow-md' : 'bg-white border-slate-200 text-slate-500 hover:border-aqua-gold/50' }}">
                     {{ $locale === 'id' ? 'Hari Ini' : 'Today' }}
                 </button>
-                <button type="button" wire:click="$set('visit_date', '{{ date('Y-m-d', strtotime('+1 day')) }}')" 
+                <button type="button" 
+                     wire:click="$set('visit_date', '{{ date('Y-m-d', strtotime('+1 day')) }}')" 
+                     @click="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
                      class="py-4 px-10 rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 font-bold border-2
                      {{ $visit_date === date('Y-m-d', strtotime('+1 day')) ? 'border-aqua-gold bg-aqua-navy text-white shadow-md' : 'bg-white border-slate-200 text-slate-500 hover:border-aqua-gold/50' }}">
                     {{ $locale === 'id' ? 'Besok' : 'Tomorrow' }}
@@ -34,7 +38,9 @@
                      {{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? 'border-aqua-gold bg-aqua-navy text-white shadow-md' : 'bg-white border-slate-200 text-slate-500 hover:border-aqua-gold/50' }}">
                     <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span>{{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? \Carbon\Carbon::parse($visit_date)->format('d M Y') : ($locale === 'id' ? 'Tanggal Lain' : 'Other Date') }}</span>
-                    <input x-ref="datePicker" type="date" wire:model.live="visit_date" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+30 days')) }}" />
+                    <input x-ref="datePicker" type="date" wire:model.live="visit_date" 
+                           @change="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
+                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+30 days')) }}" />
                 </div>
             </div>
             @error('visit_date') <span class="text-red-500 text-sm mt-3 block font-semibold bg-red-50 p-4 rounded-2xl border border-red-100">{{ $message }}</span> @enderror
@@ -42,7 +48,7 @@
     </div>
 
     <!-- Step 2: Choose Tickets (Premium Cards - Redesigned to be Big and Detailed) -->
-    <div class="px-4 md:px-10 py-12 max-w-5xl mx-auto w-full">
+    <div id="step-2-tickets" class="px-4 md:px-10 py-12 max-w-5xl mx-auto w-full scroll-mt-24">
         <div class="flex items-center gap-3 mb-8">
             <div class="h-px w-8 bg-aqua-gold"></div>
             <span class="text-aqua-gold text-xs font-black uppercase tracking-[0.2em]">Step 2</span>
@@ -142,7 +148,9 @@
                             <!-- Quantity Selection -->
                             <div class="mt-6 pt-4 border-t border-slate-100">
                                 @if($qty === 0)
-                                    <button type="button" wire:click="incrementQuantity({{ $pkg->id }})" 
+                                    <button type="button" 
+                                        wire:click="incrementQuantity({{ $pkg->id }})" 
+                                        @click="setTimeout(() => { document.getElementById('step-3-addons')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 200)"
                                         class="w-full text-center py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all border-2
                                         {{ $isWeekend ? 'bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy border-aqua-gold' : ($isGroup ? 'bg-aqua-azure hover:bg-aqua-azure-2 text-white border-aqua-azure' : 'bg-aqua-navy hover:bg-aqua-navy-2 text-white border-aqua-navy') }}">
                                         {{ $locale === 'id' ? 'Pilih Tiket' : 'Select Ticket' }}
@@ -171,7 +179,7 @@
     </div>
 
     <!-- Step 3: Add-Ons (Optional Facilities like Gazebos, Tubes, Lockers) -->
-    <div class="px-4 md:px-10 py-12 bg-aqua-cream border-t border-b border-slate-100">
+    <div id="step-3-addons" class="px-4 md:px-10 py-12 bg-aqua-cream border-t border-b border-slate-100 scroll-mt-24">
         <div class="max-w-5xl mx-auto">
             <div class="flex items-center gap-3 mb-8">
                 <div class="h-px w-8 bg-aqua-gold"></div>
@@ -212,11 +220,21 @@
                     </div>
                 @endforeach
             </div>
+
+            <!-- Quick Action to Continue to Step 4 -->
+            <div class="mt-8 flex justify-end">
+                <button type="button" 
+                        onclick="document.getElementById('step-4-contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                        class="inline-flex items-center gap-2 bg-white hover:bg-aqua-navy hover:text-white border border-slate-200 hover:border-aqua-navy text-slate-700 font-bold text-xs uppercase px-6 py-3.5 rounded-xl transition-all shadow-sm group">
+                    <span>{{ $locale === 'id' ? 'Lanjut ke Data Pemesan' : 'Continue to Visitor Info' }}</span>
+                    <svg class="w-4 h-4 text-aqua-gold group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Step 4: Contact Information -->
-    <div class="px-4 md:px-10 py-12 max-w-5xl mx-auto w-full">
+    <div id="step-4-contact" class="px-4 md:px-10 py-12 max-w-5xl mx-auto w-full scroll-mt-24">
         <div class="flex items-center gap-3 mb-8">
             <div class="h-px w-8 bg-aqua-gold"></div>
             <span class="text-aqua-gold text-xs font-black uppercase tracking-[0.2em]">Step 4</span>
