@@ -306,19 +306,19 @@
 
         <!-- Terms Acceptance with Forced Popup -->
         <div x-data="{ termsModalOpen: false, termsAccepted: @entangle('termsAccepted') }" class="mb-12">
-            <div @click="termsModalOpen = true" class="flex items-start gap-4 bg-aqua-cream/50 p-6 rounded-[24px] border border-aqua-gold/10 cursor-pointer hover:bg-aqua-cream transition-colors">
+            <div @click="termsModalOpen = true" class="flex items-start gap-4 bg-aqua-cream/50 p-6 rounded-[24px] border border-aqua-gold/20 cursor-pointer hover:bg-aqua-cream transition-colors">
                 <div class="relative flex items-start pt-1">
                     <input type="checkbox" 
                         @click.prevent
-                        class="w-6 h-6 rounded-md border-aqua-gold/30 text-aqua-navy focus:ring-aqua-gold cursor-pointer transition-colors bg-white border-2" 
+                        class="w-6 h-6 rounded-md border-aqua-gold/30 text-aqua-gold focus:ring-aqua-gold cursor-pointer transition-colors bg-white border-2" 
                         id="terms_checkbox"
                         :checked="termsAccepted">
                 </div>
                 <div class="text-xs font-semibold text-slate-600 leading-relaxed select-none">
                     @if($locale === 'id')
-                        Saya menyetujui <span class="text-aqua-azure font-black hover:text-aqua-gold transition-all uppercase underline">Syarat & Ketentuan</span> serta <span class="text-aqua-azure font-black hover:text-aqua-gold transition-all uppercase underline">Kebijakan Privasi</span> yang berlaku di Aquaboom Waterpark.
+                        Saya menyetujui <span class="text-aqua-gold font-black hover:text-aqua-gold-2 transition-all uppercase underline">Syarat & Ketentuan</span> serta <span class="text-aqua-gold font-black hover:text-aqua-gold-2 transition-all uppercase underline">Kebijakan Privasi</span> yang berlaku di Aquaboom Waterpark.
                     @else
-                        I agree to the <span class="text-aqua-azure font-black hover:text-aqua-gold transition-all uppercase underline">Terms & Conditions</span> and <span class="text-aqua-azure font-black hover:text-aqua-gold transition-all uppercase underline">Privacy Policy</span> governing Aquaboom Waterpark.
+                        I agree to the <span class="text-aqua-gold font-black hover:text-aqua-gold-2 transition-all uppercase underline">Terms & Conditions</span> and <span class="text-aqua-gold font-black hover:text-aqua-gold-2 transition-all uppercase underline">Privacy Policy</span> governing Aquaboom Waterpark.
                     @endif
                 </div>
             </div>
@@ -327,13 +327,17 @@
             <div x-show="termsModalOpen" @click.stop style="display: none;" class="fixed inset-0 z-[200] flex items-center justify-center px-4">
                 <div x-show="termsModalOpen" x-transition.opacity @click="termsModalOpen = false" class="absolute inset-0 bg-aqua-navy/60 backdrop-blur-sm"></div>
                 <div x-show="termsModalOpen" x-transition class="relative bg-white w-full max-w-2xl rounded-[32px] shadow-2xl p-8 md:p-10 max-h-[80vh] flex flex-col border border-aqua-gold/20">
-                    <button type="button" @click="termsModalOpen = false" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 bg-slate-100 rounded-full p-2">
+                    <button type="button" @click="termsModalOpen = false" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 bg-slate-100 rounded-full p-2 cursor-pointer transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                     
                     <h4 class="text-xl font-black text-aqua-navy uppercase mb-6 pb-4 border-b border-slate-100 flex items-center gap-3">
-                        <svg class="w-6 h-6 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        {{ $locale === 'id' ? 'Syarat & Ketentuan Aquaboom' : 'Aquaboom Terms & Conditions' }}
+                        <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-aqua-gold/30 flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6 text-aqua-gold" style="color: #F09628 !important; stroke: #F09628 !important;" fill="none" stroke="#F09628" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <span class="tracking-tight">{{ $locale === 'id' ? 'Syarat & Ketentuan Aquaboom' : 'Aquaboom Terms & Conditions' }}</span>
                     </h4>
                     
                     <div class="flex-1 overflow-y-auto pr-2 text-sm text-slate-600 leading-relaxed font-semibold mb-6 space-y-6">
@@ -371,8 +375,11 @@
                     
                     <button type="button" 
                         @click="termsAccepted = true; @this.set('termsAccepted', true); termsModalOpen = false;" 
-                        class="w-full bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold font-black py-4 rounded-xl text-sm uppercase tracking-wider transition-all shadow-md">
-                        {{ $locale === 'id' ? 'Saya Membaca & Menyetujui' : 'I Read & Agree' }}
+                        class="w-full bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold font-black py-4 rounded-2xl text-sm uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2.5 border border-aqua-gold/30 hover:border-aqua-gold cursor-pointer">
+                        <svg class="w-5 h-5 text-aqua-gold" style="color: #F09628 !important; stroke: #F09628 !important;" fill="none" stroke="#F09628" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>{{ $locale === 'id' ? 'Saya Membaca & Menyetujui' : 'Saya Membaca & Menyetujui' }}</span>
                     </button>
                 </div>
             </div>
