@@ -8,63 +8,63 @@
     </div>
 
     <!-- Step 1: Visit Date -->
-    <div id="step-1-date" class="px-4 md:px-10 py-8 bg-aqua-cream border-b border-slate-100 scroll-mt-24">
+    <div id="step-1-date" class="px-3 md:px-10 py-3 md:py-6 bg-aqua-cream border-b border-slate-100 scroll-mt-20 md:scroll-mt-24">
         <div class="max-w-5xl mx-auto">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="h-px w-8 bg-aqua-gold"></div>
-                <span class="text-aqua-gold text-xs font-black uppercase tracking-[0.2em]">Step 1</span>
-                <span class="text-aqua-navy text-sm font-black uppercase tracking-wide">
+            <div class="flex items-center gap-2 md:gap-3 mb-2.5 md:mb-5">
+                <div class="h-px w-6 md:w-8 bg-aqua-gold"></div>
+                <span class="text-aqua-gold text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">Step 1</span>
+                <span class="text-aqua-navy text-xs md:text-sm font-black uppercase tracking-wide">
                     {{ $locale === 'id' ? 'PILIH TANGGAL KUNJUNGAN' : 'SELECT VISIT DATE' }}
                 </span>
             </div>
             
-            <div class="flex items-center gap-4 overflow-x-auto pb-2 snap-x scrollbar-hide">
+            <div class="flex items-center gap-2 md:gap-3 overflow-x-auto pb-1 md:pb-2 snap-x scrollbar-hide">
                 <button type="button" 
                      wire:click="$set('visit_date', '{{ date('Y-m-d') }}')" 
                      @click="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
-                     class="py-4 px-10 rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 font-bold border-2
-                     {{ $visit_date === date('Y-m-d') ? 'border-aqua-gold bg-aqua-navy text-white shadow-md' : 'bg-white border-slate-200 text-slate-500 hover:border-aqua-gold/50' }}">
+                     class="py-1.5 px-3.5 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
+                     {{ $visit_date === date('Y-m-d') ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
                     {{ $locale === 'id' ? 'Hari Ini' : 'Today' }}
                 </button>
                 <button type="button" 
                      wire:click="$set('visit_date', '{{ date('Y-m-d', strtotime('+1 day')) }}')" 
                      @click="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
-                     class="py-4 px-10 rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 font-bold border-2
-                     {{ $visit_date === date('Y-m-d', strtotime('+1 day')) ? 'border-aqua-gold bg-aqua-navy text-white shadow-md' : 'bg-white border-slate-200 text-slate-500 hover:border-aqua-gold/50' }}">
+                     class="py-1.5 px-3.5 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
+                     {{ $visit_date === date('Y-m-d', strtotime('+1 day')) ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
                     {{ $locale === 'id' ? 'Besok' : 'Tomorrow' }}
                 </button>
                 <div x-data @click="$refs.datePicker.showPicker()" 
-                     class="relative py-4 px-10 rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap flex items-center gap-3 snap-start shrink-0 font-bold border-2
-                     {{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? 'border-aqua-gold bg-aqua-navy text-white shadow-md' : 'bg-white border-slate-200 text-slate-500 hover:border-aqua-gold/50' }}">
-                    <svg class="w-5 h-5 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                     class="relative py-1.5 px-3.5 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap flex items-center gap-1.5 md:gap-2.5 snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
+                     {{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
+                    <svg class="w-3.5 h-3.5 md:w-4 md:h-4 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span>{{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? \Carbon\Carbon::parse($visit_date)->format('d M Y') : ($locale === 'id' ? 'Tanggal Lain' : 'Other Date') }}</span>
                     <input x-ref="datePicker" type="date" wire:model.live="visit_date" 
                            @change="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+30 days')) }}" />
                 </div>
             </div>
-            @error('visit_date') <span class="text-red-500 text-sm mt-3 block font-semibold bg-red-50 p-4 rounded-2xl border border-red-100">{{ $message }}</span> @enderror
+            @error('visit_date') <span class="text-red-500 text-xs md:text-sm mt-2 md:mt-3 block font-semibold bg-red-50 p-2.5 md:p-4 rounded-xl md:rounded-2xl border border-red-100">{{ $message }}</span> @enderror
         </div>
     </div>
 
     <!-- Step 2: Choose Tickets (Premium Cards - Redesigned to be Big and Detailed) -->
-    <div id="step-2-tickets" class="px-4 md:px-10 py-12 max-w-5xl mx-auto w-full scroll-mt-24">
-        <div class="flex items-center gap-3 mb-8">
-            <div class="h-px w-8 bg-aqua-gold"></div>
-            <span class="text-aqua-gold text-xs font-black uppercase tracking-[0.2em]">Step 2</span>
-            <span class="text-aqua-navy text-sm font-black uppercase tracking-wide">
+    <div id="step-2-tickets" class="px-3 md:px-10 py-4 md:py-10 max-w-5xl mx-auto w-full scroll-mt-20 md:scroll-mt-24">
+        <div class="flex items-center gap-2 md:gap-3 mb-3 md:mb-6">
+            <div class="h-px w-6 md:w-8 bg-aqua-gold"></div>
+            <span class="text-aqua-gold text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">Step 2</span>
+            <span class="text-aqua-navy text-xs md:text-sm font-black uppercase tracking-wide">
                 {{ $locale === 'id' ? 'PILIH JENIS TIKET' : 'SELECT TICKET TYPE' }}
             </span>
         </div>
 
         @if($packages->isEmpty())
-            <div class="bg-white rounded-3xl p-16 text-center shadow-xl border border-slate-100">
-                <p class="text-lg font-bold text-aqua-navy">
+            <div class="bg-white rounded-2xl md:rounded-3xl p-8 md:p-16 text-center shadow-xl border border-slate-100">
+                <p class="text-base md:text-lg font-bold text-aqua-navy">
                     {{ $locale === 'id' ? 'Maaf, tidak ada tiket yang tersedia untuk tanggal ini.' : 'Sorry, no tickets are available for this date.' }}
                 </p>
             </div>
         @else
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
                 @foreach($packages as $pkg)
                     @php
                         $isWeekend = Str::contains(strtolower($pkg->name), 'weekend');
@@ -98,30 +98,30 @@
                     @endphp
 
                     <!-- Ticket Card -->
-                    <div class="bg-white rounded-[28px] overflow-hidden shadow-xl border flex flex-col group hover:-translate-y-1 transition-all duration-300
+                    <div class="bg-white rounded-2xl md:rounded-[28px] overflow-hidden shadow-lg md:shadow-xl border flex flex-col group hover:-translate-y-1 transition-all duration-300
                          {{ $isDuo ? 'border-pink-500/45 ring-2 ring-pink-500/10' : ($isFour ? 'border-emerald-500/45 ring-2 ring-emerald-500/10' : ($isWeekend ? 'border-blue-500/45 ring-2 ring-blue-500/10' : 'border-slate-200')) }}">
                         
-                        <!-- Header Card (Exactly like Landing Page) -->
-                        <div class="h-44 flex flex-col items-center justify-center p-6 relative overflow-hidden {{ $headerGradient }}">
+                        <!-- Header Card -->
+                        <div class="h-28 sm:h-36 md:h-44 flex flex-col items-center justify-center p-4 md:p-6 relative overflow-hidden {{ $headerGradient }}">
                             
                             @if($isWeekend)
-                                <div class="md:absolute md:top-4 md:right-4 bg-white text-aqua-navy text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-widest mb-3 md:mb-0">
+                                <div class="absolute top-2.5 right-2.5 md:top-4 md:right-4 bg-white text-aqua-navy text-[9px] md:text-[10px] font-black uppercase px-2.5 py-0.5 md:px-3 md:py-1 rounded-full tracking-wider md:tracking-widest">
                                     {{ $locale === 'id' ? 'Paling Populer' : 'Most Popular' }}
                                 </div>
                             @endif
 
-                            <span class="text-xs font-black tracking-widest uppercase mb-1 text-white/80">
+                            <span class="text-[10px] md:text-xs font-black tracking-widest uppercase mb-0.5 md:mb-1 text-white/80">
                                 {{ $pkg->validity_type === 'weekday' ? 'Weekday' : ($pkg->validity_type === 'weekend' ? 'Weekend' : ($pkg->validity_type === 'all_days' ? ($locale === 'id' ? 'Setiap Hari' : 'Everyday') : 'Weekday')) }}
                             </span>
 
                             <!-- Clear Full Price text -->
-                            <div class="text-4xl font-black tracking-tight text-white">
+                            <div class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white">
                                 Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}
                             </div>
                         </div>
 
                         <!-- Card Body (Beautiful features with Gold checkmarks) -->
-                        <div class="p-8 flex-1 flex flex-col justify-between">
+                        <div class="p-4 sm:p-6 md:p-8 flex-1 flex flex-col justify-between">
                             <div>
                                 <h3 class="text-xl font-black text-aqua-navy mb-4 uppercase">
                                     {{ $locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}

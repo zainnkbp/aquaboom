@@ -78,7 +78,7 @@
       @endif
 
       <!-- Ticket Checkout Flow (Livewire) -->
-      <div id="packages" class="mb-12 bg-white rounded-[32px] overflow-hidden shadow-xl border border-aqua-cream-2 scroll-mt-24">
+      <div id="packages" class="mb-8 md:mb-12 bg-white rounded-2xl md:rounded-[32px] overflow-hidden shadow-xl border border-aqua-cream-2 scroll-mt-20 md:scroll-mt-24">
         @livewire('checkout')
       </div>
 
