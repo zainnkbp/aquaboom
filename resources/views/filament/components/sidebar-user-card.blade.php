@@ -3,24 +3,24 @@
 @endphp
 @if($user)
     <!-- Expanded Staff Profile Card -->
-    <div x-show="$store.sidebar.isOpen" x-cloak class="mb-2.5 p-2.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center gap-2.5 transition-colors">
-        <div class="w-8 h-8 rounded-lg bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/30 text-rose-600 dark:text-rose-400 flex items-center justify-center font-extrabold text-xs shrink-0">
+    <div x-show="$store.sidebar.isOpen" x-cloak style="margin: 0 0 0.65rem 0; padding: 0.6rem 0.75rem; border-radius: 0.85rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); display: flex; align-items: center; gap: 0.65rem;">
+        <div style="width: 2rem; height: 2rem; border-radius: 0.6rem; background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.35); color: #fb7185; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; flex-shrink: 0;">
             {{ strtoupper(substr($user->name, 0, 1)) }}
         </div>
-        <div class="flex-1 min-w-0">
-            <div class="text-xs font-bold text-slate-800 dark:text-white truncate">
+        <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 0.78rem; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                 {{ $user->name }}
             </div>
-            <div class="flex items-center gap-1.5 mt-0.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#10b981]"></span>
-                <span class="text-[0.6rem] text-rose-600 dark:text-rose-400 font-bold uppercase tracking-wider">{{ $user->role }}</span>
+            <div style="display: flex; align-items: center; gap: 0.35rem; margin-top: 0.1rem;">
+                <span style="width: 0.35rem; height: 0.35rem; border-radius: 9999px; background: #10b981; box-shadow: 0 0 6px #10b981;"></span>
+                <span style="font-size: 0.6rem; color: #fb7185; font-weight: 700; text-transform: uppercase;">{{ $user->role }}</span>
             </div>
         </div>
     </div>
 
     <!-- Collapsed Staff Profile Icon -->
-    <div x-show="!$store.sidebar.isOpen" x-cloak class="flex justify-center mb-2.5" title="{{ $user->name }} ({{ $user->role }})">
-        <div class="w-9 h-9 rounded-xl bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/30 text-rose-600 dark:text-rose-400 flex items-center justify-center font-extrabold text-sm shadow-sm">
+    <div x-show="!$store.sidebar.isOpen" x-cloak style="display: flex; justify-content: center; margin-bottom: 0.65rem;" title="{{ $user->name }} ({{ $user->role }})">
+        <div style="width: 2.2rem; height: 2.2rem; border-radius: 0.65rem; background: rgba(244, 63, 94, 0.18); border: 1px solid rgba(244, 63, 94, 0.35); color: #fb7185; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem;">
             {{ strtoupper(substr($user->name, 0, 1)) }}
         </div>
     </div>

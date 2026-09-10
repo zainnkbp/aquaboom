@@ -98,10 +98,10 @@ class AdminPanelProvider extends PanelProvider
                             min-height: 3.5rem !important;
                         }
 
-                        /* Sidebar Ultra-Modern Styling */
+                        /* Sidebar Ultra-Modern Dark Styling */
                         .fi-sidebar {
-                            background: rgba(255, 255, 255, 0.98) !important;
-                            border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+                            background: rgba(255, 255, 255, 0.95) !important;
+                            border-right: 1px solid rgba(0, 0, 0, 0.06) !important;
                             overflow-x: hidden !important;
                         }
                         .dark .fi-sidebar {
@@ -132,9 +132,6 @@ class AdminPanelProvider extends PanelProvider
                             padding-top: 0.25rem !important;
                             padding-bottom: 0.25rem !important;
                         }
-                        .dark .fi-sidebar-group-label {
-                            color: #94a3b8 !important;
-                        }
 
                         .fi-sidebar-group-btn {
                             padding-top: 0.25rem !important;
@@ -143,9 +140,6 @@ class AdminPanelProvider extends PanelProvider
                             transition: all 0.2s ease !important;
                         }
                         .fi-sidebar-group-btn:hover {
-                            background: rgba(0, 0, 0, 0.04) !important;
-                        }
-                        .dark .fi-sidebar-group-btn:hover {
                             background: rgba(255, 255, 255, 0.04) !important;
                         }
 
@@ -157,26 +151,17 @@ class AdminPanelProvider extends PanelProvider
                             font-size: 0.815rem !important;
                             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
                             border: 1px solid transparent !important;
-                            color: #334155 !important;
                         }
                         .fi-sidebar-item > a:hover {
-                            background: #f1f5f9 !important;
-                            color: #0f172a !important;
-                            transform: translateX(3px) !important;
-                        }
-                        .dark .fi-sidebar-item > a {
-                            color: #94a3b8 !important;
-                        }
-                        .dark .fi-sidebar-item > a:hover {
                             background: rgba(255, 255, 255, 0.05) !important;
-                            color: #ffffff !important;
+                            transform: translateX(3px) !important;
                         }
                         
                         /* Floating Sidebar Active States */
                         .fi-sidebar-item-active > a {
-                            background: #ffe4e6 !important;
-                            border: 1px solid #fecdd3 !important;
-                            color: #e11d48 !important;
+                            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15), rgba(225, 29, 72, 0.08)) !important;
+                            border: 1px solid rgba(244, 63, 94, 0.3) !important;
+                            color: #ffffff !important;
                             font-weight: 700 !important;
                         }
                         .dark .fi-sidebar-item-active > a {
