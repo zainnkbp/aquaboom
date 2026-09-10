@@ -47,15 +47,9 @@ class PromoCodeResource extends Resource
                     ->prefix('Rp')
                     ->helperText('Nilai diskon dalam Rupiah. Isi salah satu: persentase ATAU nominal.'),
                 Forms\Components\TextInput::make('max_uses')
-                    ->label('Maksimal Penggunaan')
+                    ->label('Maksimal Penggunaan (Kuota)')
                     ->numeric()
-                    ->helperText('Maksimal berapa kali kode promo bisa digunakan. Kosongkan untuk tanpa batas.'),
-                Forms\Components\TextInput::make('used_count')
-                    ->label('Sudah Digunakan')
-                    ->required()
-                    ->numeric()
-                    ->default(0)
-                    ->helperText('Berapa kali kode promo sudah digunakan'),
+                    ->helperText('Maksimal berapa kali kode promo bisa digunakan. Kosongkan untuk tanpa batas (unlimited).'),
                 Forms\Components\DateTimePicker::make('valid_from')
                     ->label('Berlaku Dari')
                     ->helperText('Periode awal berlaku promo. Kosongkan bila langsung berlaku.'),
