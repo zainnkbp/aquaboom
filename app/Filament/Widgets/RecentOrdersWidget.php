@@ -68,10 +68,9 @@ class RecentOrdersWidget extends BaseWidget
                     ->since(),
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
-                    ->label('Rincian')
-                    ->icon('heroicon-m-eye')
-                    ->url(fn (Transaction $record) => \App\Filament\Resources\TransactionResource::getUrl('edit', ['record' => $record])),
+                Tables\Actions\ViewAction::make()
+                    ->label('Lihat Detail')
+                    ->infolist(fn (\Filament\Infolists\Infolist $infolist) => \App\Filament\Resources\TransactionResource::infolist($infolist)),
             ])
             ->emptyStateHeading('Belum Ada Pesanan');
     }
