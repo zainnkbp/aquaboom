@@ -41,9 +41,6 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->collapsibleNavigationGroups()
             ->navigationGroups([
-                \Filament\Navigation\NavigationGroup::make('Operasional Gate')
-                    ->icon('heroicon-o-qr-code')
-                    ->collapsible(),
                 \Filament\Navigation\NavigationGroup::make('Transaksi & Penjualan')
                     ->icon('heroicon-o-banknotes')
                     ->collapsible(),
@@ -224,14 +221,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 \App\Filament\Pages\Dashboard::class,
-            ])
-            ->navigationItems([
-                \Filament\Navigation\NavigationItem::make('Scanner Tiket (Security)')
-                    ->url(fn (): string => route('scanner.app'), shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-qr-code')
-                    ->group('Operasional Gate')
-                    ->sort(1)
-                    ->visible(fn (): bool => auth()->user()?->canValidateTickets() ?? false),
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
