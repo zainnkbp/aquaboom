@@ -76,62 +76,80 @@
     <!-- Floating Button -->
     <button 
         @click="isOpen = !isOpen" 
-        class="w-16 h-16 bg-aqua-navy rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform duration-300 ring-4 ring-aqua-navy/30 border border-aqua-gold/30"
+        class="w-16 h-16 bg-aqua-navy rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-all duration-300 ring-4 ring-aqua-navy/30 border-2 border-aqua-gold/50 cursor-pointer"
         :class="{'rotate-12': isOpen}"
         aria-label="Chat Assistant"
     >
-        <svg x-show="!isOpen" class="w-8 h-8 text-aqua-gold" style="color: #F09628;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+        <!-- Closed state: Vibrant Yellow Chat Bubble Icon -->
+        <svg x-show="!isOpen" class="w-8 h-8" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z" fill="#F09628" stroke="#FBAB43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="8" cy="12" r="1.3" fill="#160F30"/>
+            <circle cx="12" cy="12" r="1.3" fill="#160F30"/>
+            <circle cx="16" cy="12" r="1.3" fill="#160F30"/>
         </svg>
-        <svg x-show="isOpen" style="display: none; color: #F09628;" class="w-8 h-8 text-aqua-gold" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+
+        <!-- Open state: Vibrant Yellow Close (X) Icon -->
+        <svg x-show="isOpen" style="display: none;" class="w-8 h-8" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 18L18 6M6 6l12 12" stroke="#F09628" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
     </button>
 </div>
 
 <script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('chatbotData', (faqData) => ({
-            isOpen: false,
-            isTyping: false,
-            isEn: {{ App::getLocale() === 'en' ? 'true' : 'false' }},
-            faqs: faqData,
-            messages: [
-                { 
-                    type: 'bot', 
-                    text: {{ App::getLocale() === 'en' ? "'Hello! I am Boomy 🌊<br/>How can I help you today regarding Aquaboom Waterpark? Please select a question below.'" : "'Halo! Saya Boomy 🌊<br/>Ada yang bisa saya bantu terkait Aquaboom Waterpark? Silakan pilih pertanyaan di bawah ini.'" }}
-                }
-            ],
-            
-            askQuestion(faq) {
-                const questionText = this.isEn && faq.question_en ? faq.question_en : faq.question;
-                const answerText = this.isEn && faq.answer_en ? faq.answer_en : faq.answer;
-
-                // Add user message
-                this.messages.push({ type: 'user', text: questionText });
-                
-                // Scroll to bottom
-                this.scrollToBottom();
-                
-                // Show typing indicator
-                this.isTyping = true;
-                
-                // Simulate delay
-                setTimeout(() => {
-                    this.isTyping = false;
-                    this.messages.push({ type: 'bot', text: answerText });
-                    this.scrollToBottom();
-                }, 1000);
-            },
-            
-            scrollToBottom() {
-                setTimeout(() => {
-                    const container = this.$refs.chatContainer;
-                    if (container) {
-                        container.scrollTop = container.scrollHeight;
+    (function() {
+        function getChatbotData(faqData) {
+            return {
+                isOpen: false,
+                isTyping: false,
+                isEn: {{ App::getLocale() === 'en' ? 'true' : 'false' }},
+                faqs: faqData || [],
+                messages: [
+                    { 
+                        type: 'bot', 
+                        text: {!! json_encode(App::getLocale() === 'en' ? 'Hello! I am Boomy 🌊<br/>How can I help you today regarding Aquaboom Waterpark? Please select a question below.' : 'Halo! Saya Boomy 🌊<br/>Ada yang bisa saya bantu terkait Aquaboom Waterpark? Silakan pilih pertanyaan di bawah ini.') !!}
                     }
-                }, 50);
-            }
-        }));
-    });
+                ],
+                
+                askQuestion(faq) {
+                    const questionText = this.isEn && faq.question_en ? faq.question_en : faq.question;
+                    const answerText = this.isEn && faq.answer_en ? faq.answer_en : faq.answer;
+
+                    // Add user message
+                    this.messages.push({ type: 'user', text: questionText });
+                    
+                    // Scroll to bottom
+                    this.scrollToBottom();
+                    
+                    // Show typing indicator
+                    this.isTyping = true;
+                    
+                    // Simulate delay
+                    setTimeout(() => {
+                        this.isTyping = false;
+                        this.messages.push({ type: 'bot', text: answerText });
+                        this.scrollToBottom();
+                    }, 1000);
+                },
+                
+                scrollToBottom() {
+                    setTimeout(() => {
+                        const container = this.$refs.chatContainer;
+                        if (container) {
+                            container.scrollTop = container.scrollHeight;
+                        }
+                    }, 50);
+                }
+            };
+        }
+
+        window.chatbotData = getChatbotData;
+
+        if (window.Alpine) {
+            window.Alpine.data('chatbotData', getChatbotData);
+        } else {
+            document.addEventListener('alpine:init', function() {
+                Alpine.data('chatbotData', getChatbotData);
+            });
+        }
+    })();
 </script>
