@@ -23,8 +23,8 @@
   </div>
 
   <!-- Main Section -->
-  <section class="py-20 bg-aqua-cream">
-    <div class="max-w-5xl mx-auto px-6">
+  <section class="py-8 md:py-16 bg-aqua-cream">
+    <div class="max-w-5xl mx-auto px-4 md:px-6">
 
       @if(session('error'))
         <div class="mb-8 p-5 bg-red-50 border border-red-200 text-red-700 rounded-2xl font-bold text-sm flex items-center gap-3 shadow-sm">
@@ -78,7 +78,7 @@
       @endif
 
       <!-- Ticket Checkout Flow (Livewire) -->
-      <div id="packages" class="mb-16 bg-white rounded-[32px] overflow-hidden shadow-xl border border-aqua-cream-2">
+      <div id="packages" class="mb-12 bg-white rounded-[32px] overflow-hidden shadow-xl border border-aqua-cream-2 scroll-mt-24">
         @livewire('checkout')
       </div>
 
@@ -113,5 +113,20 @@
 
     </div>
   </section>
+
+  <!-- Auto-scroll to booking form -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Auto-scroll directly to the ticket form if URL has #packages or #booking-form or on mobile entry
+      if (window.location.hash === '#packages' || window.location.hash === '#booking-form') {
+        setTimeout(function() {
+          var target = document.getElementById('packages');
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 150);
+      }
+    });
+  </script>
 
 </x-layout>

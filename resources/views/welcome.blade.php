@@ -65,7 +65,7 @@
 
       {{-- CTA Buttons --}}
       <div class="flex flex-col sm:flex-row gap-4">
-        <a href="{{ url('/ticket') }}"
+        <a href="{{ url('/ticket#packages') }}"
           class="inline-flex items-center gap-3 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-10 py-5 rounded-full text-base shadow-2xl shadow-amber-900/30 transform hover:-translate-y-1 transition-all uppercase tracking-wider">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"

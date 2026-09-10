@@ -274,7 +274,7 @@
           @endauth
 
           <!-- Gold CTA Button -->
-          <a href="{{ url('/ticket') }}"
+          <a href="{{ url('/ticket#packages') }}"
             class="bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy px-6 py-3 rounded-full text-sm font-black tracking-wide transform hover:scale-105 transition-all duration-300 shadow-lg shadow-amber-900/20 uppercase whitespace-nowrap">
             {{ App::getLocale() === 'en' ? 'BUY TICKETS NOW !' : 'BELI TIKET SEKARANG !' }}
           </a>
@@ -283,7 +283,7 @@
         <!-- Mobile Actions & Menu button -->
         <div class="flex lg:hidden items-center gap-2.5">
           <!-- Mobile Buy Ticket CTA -->
-          <a href="{{ url('/ticket') }}"
+          <a href="{{ url('/ticket#packages') }}"
             class="bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy px-4 py-2.5 rounded-full text-[11px] sm:text-xs font-black tracking-wide transition-all shadow-md uppercase whitespace-nowrap flex items-center gap-1.5 border border-aqua-gold-2">
             <svg class="w-3.5 h-3.5 text-aqua-navy shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
@@ -436,7 +436,7 @@
             EN
           </a>
         </div>
-        <a href="{{ url('/ticket') }}"
+        <a href="{{ url('/ticket#packages') }}"
           class="block w-full text-center bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy px-6 py-4 rounded-full font-black text-base shadow-lg shadow-amber-900/20 uppercase tracking-wide">
           {{ App::getLocale() === 'id' ? 'BELI TIKET SEKARANG !' : 'BUY TICKETS NOW !' }}
         </a>
