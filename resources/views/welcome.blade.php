@@ -1,5 +1,5 @@
 <x-layout>
-  <x-slot:title>{{ App::getLocale() === 'en' ? 'Aquaboom Waterpark - The Only Rooftop Waterpark in East Kalimantan' : 'Aquaboom Waterpark - Rooftop Waterpark Pertama di Kalimantan Timur' }}</x-slot:title>
+  <x-slot:title>{{ App::getLocale() === 'en' ? 'Aquaboom Waterpark - Premier Waterpark in Balikpapan' : 'Aquaboom Waterpark - Waterpark Pilihan di Balikpapan' }}</x-slot:title>
 
   {{-- ============================================================ --}}
   {{-- HERO: Fullscreen Video Background (Navy-Gold Luxury Edition) --}}
@@ -46,7 +46,7 @@
       <div class="flex items-center gap-3 mb-6 flex-wrap">
         <div class="h-px w-12 bg-aqua-gold hidden sm:block"></div>
         <span class="text-aqua-gold text-[10px] sm:text-xs font-black tracking-[0.2em] sm:tracking-[0.3em] uppercase">
-          {!! App::getLocale() === 'en' ? "Balikpapan's Iconic Rooftop Waterpark" : 'Waterpark Rooftop Ikonik di Balikpapan' !!}
+          {!! App::getLocale() === 'en' ? "Balikpapan's Premier Waterpark" : 'Waterpark Ikonik di Balikpapan' !!}
         </span>
       </div>
 
@@ -60,7 +60,7 @@
         {!! App::getLocale() === 'en' && !empty($settings['hero_subheadline_en']) ? $settings['hero_subheadline_en'] : ($settings['hero_subheadline'] ?? '9 AM — 6 PM') !!}
       </p>
       <p class="text-base text-white/55 font-semibold max-w-lg mb-10 leading-relaxed">
-        {!! App::getLocale() === 'en' && !empty($settings['hero_description_en']) ? $settings['hero_description_en'] : ($settings['hero_description'] ?? 'Aquaboom Waterpark Balikpapan — Pengalaman rekreasi air rooftop yang unik di lantai 7 Pentacity Mall BSB. Managed by Astara Hotel Balikpapan.') !!}
+        {!! App::getLocale() === 'en' && !empty($settings['hero_description_en']) ? $settings['hero_description_en'] : ($settings['hero_description'] ?? 'Aquaboom Waterpark Balikpapan — Pengalaman rekreasi air yang unik di 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.') !!}
       </p>
 
       {{-- CTA Buttons --}}
@@ -86,7 +86,7 @@
             <path
               d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
           </svg>
-          Premium Rooftop
+          7F Shared Common Area
         </div>
         <div class="w-px h-4 bg-white/20 hidden md:block"></div>
         <div class="flex items-center gap-2 text-white/50 text-xs font-bold uppercase tracking-wider">
@@ -184,7 +184,7 @@
         <p class="mt-4 text-slate-500 text-base font-semibold max-w-2xl mx-auto">
           {{ App::getLocale() === 'en'
             ? 'Choose your preferred package and enjoy seamless entry to all slides, pools, and water attractions.'
-            : 'Pilih tiket masuk atau promo favorit Anda untuk menikmati seluruh seluncuran, kolam arus, dan wahana rooftop.' }}
+            : 'Pilih tiket masuk atau promo favorit Anda untuk menikmati seluruh seluncuran, kolam arus, dan wahana seru.' }}
         </p>
       </div>
 
@@ -322,8 +322,8 @@
             </h2>
             <p class="text-white/70 text-sm md:text-base font-semibold leading-relaxed mb-8 max-w-xl">
               {{ App::getLocale() === 'en'
-                ? 'Exclusive rooftop venue on the 7th floor of Pentacity Mall BSB. Complete with private gazebos, sound systems, fun team-building games, and lunch buffet packages.'
-                : 'Venue rooftop eksklusif di lantai 7 Pentacity Mall BSB. Lengkap dengan fasilitas sewa gazebo pribadi, sound system & mic, pemandu fun team building games, dan paket makan siang buffet.' }}
+                ? 'Exclusive venue on the 7th floor (Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan). Complete with private gazebos, sound systems, fun team-building games, and lunch buffet packages.'
+                : 'Venue eksklusif di Lantai 7 (Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan). Lengkap dengan fasilitas sewa gazebo pribadi, sound system & mic, pemandu fun team building games, dan paket makan siang buffet.' }}
             </p>
 
             @php

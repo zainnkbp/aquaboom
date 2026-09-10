@@ -287,8 +287,8 @@
                 <a href="https://wa.me/628115900123" target="_blank" class="text-white font-bold hover:text-aqua-gold transition-colors">+62 811 5900 123</a>
               </div>
               <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
-                <span class="text-aqua-gold text-[10px] font-black uppercase tracking-widest block mb-1">Lokasi Rooftop</span>
-                <span class="text-white/80 font-semibold block leading-snug">Lantai 7, Pentacity Mall, BSB Balikpapan</span>
+                <span class="text-aqua-gold text-[10px] font-black uppercase tracking-widest block mb-1">Lokasi</span>
+                <span class="text-white/80 font-semibold block leading-snug">7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan (BSB)</span>
               </div>
             </div>
             <p class="text-[11px] text-white/40 italic pt-2 border-t border-white/10">

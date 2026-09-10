@@ -26,8 +26,8 @@
 
       <p class="text-base sm:text-lg text-white/75 font-semibold max-w-3xl mx-auto leading-relaxed mb-10">
         {{ App::getLocale() === 'en'
-          ? 'Aquaboom Waterpark offers a breathtaking 7th-floor rooftop venue for corporate outings, family reunions, school study tours, and private celebrations. Enjoy exclusive group rates, dedicated coordinators, and tailored amenities.'
-          : 'Aquaboom Waterpark menghadirkan venue rooftop lantai 7 Pentacity Mall untuk gathering kantor, arisan keluarga besar, study tour sekolah, dan perayaan ulang tahun. Dapatkan harga khusus rombongan, pendampingan tim event, dan fasilitas eksklusif.' }}
+          ? 'Aquaboom Waterpark offers a breathtaking 7F Shared Common Area venue for corporate outings, family reunions, school study tours, and private celebrations. Enjoy exclusive group rates, dedicated coordinators, and tailored amenities.'
+          : 'Aquaboom Waterpark menghadirkan venue Lantai 7 (Shared Common Area Astara Hotel & Pentacity Hotel) untuk gathering kantor, arisan keluarga besar, study tour sekolah, dan perayaan ulang tahun. Dapatkan harga khusus rombongan, pendampingan tim event, dan fasilitas eksklusif.' }}
       </p>
 
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">

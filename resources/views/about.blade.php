@@ -10,11 +10,11 @@
         </div>
         <div class="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
             <span class="text-aqua-azure text-sm font-black tracking-widest uppercase mb-4 block">{{ App::getLocale() === 'en' ? 'Our Story' : 'Kisah Kami' }}</span>
-            <h1 class="text-5xl md:text-7xl font-black mb-6 uppercase tracking-tight">{{ App::getLocale() === 'en' ? 'THE OASIS IN THE SKY' : 'OASIS DI ATAS AWAN' }}</h1>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 uppercase tracking-tight">{{ App::getLocale() === 'en' ? 'THE WATERPARK OASIS' : 'OASIS REKREASI AIR' }}</h1>
             <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-semibold leading-relaxed">
                 {{ App::getLocale() === 'en'
-                    ? 'The story behind East Kalimantan\'s premier and most iconic rooftop waterpark destination.'
-                    : 'Kisah di balik destinasi taman rekreasi air atap gedung terluas dan termegah di Kalimantan Timur.' }}
+                    ? 'The story behind Balikpapan\'s premier waterpark destination at Astara Hotel & Pentacity Hotel.'
+                    : 'Kisah di balik destinasi taman rekreasi air premium pilihan di Balikpapan (7F - Shared Common Area for Astara Hotel & Pentacity Hotel).' }}
             </p>
         </div>
     </div>
@@ -29,7 +29,7 @@
                     <span class="text-aqua-azure text-xs font-black uppercase tracking-widest mb-3 block">{{ App::getLocale() === 'en' ? 'Corporate Mission' : 'Misi Perusahaan' }}</span>
                     <h2 class="text-4xl font-black text-aqua-navy mb-8 uppercase">{{ App::getLocale() === 'en' ? 'ELEVATING URBAN RECREATION' : 'STANDAR BARU REKREASI URBAN' }}</h2>
                     <p class="text-slate-600 text-base font-semibold leading-relaxed mb-6">
-                        {!! App::getLocale() === 'en' && !empty($settings['mission_text_en']) ? $settings['mission_text_en'] : ($settings['mission_text'] ?? 'Terletak dengan anggun di atap Pentacity Mall - Balikpapan Superblock, Aquaboom menghadirkan standar baru rekreasi air urban. Kami menggabungkan keseruan seluncuran berkelas internasional dengan aksesibilitas dan kemewahan gaya hidup modern.') !!}
+                        {!! App::getLocale() === 'en' && !empty($settings['mission_text_en']) ? $settings['mission_text_en'] : ($settings['mission_text'] ?? 'Terletak di Lantai 7 (Shared Common Area Astara Hotel & Pentacity Hotel) - Balikpapan Superblock, Aquaboom menghadirkan standar baru rekreasi air perkotaan di Balikpapan. Kami menggabungkan keseruan seluncuran berkelas internasional dengan aksesibilitas dan kemewahan gaya hidup modern.') !!}
                     </p>
                     <p class="text-slate-600 text-base font-semibold leading-relaxed mb-12">
                         {{ App::getLocale() === 'en' 
@@ -45,9 +45,9 @@
                             </span>
                         </div>
                         <div>
-                            <span class="block text-5xl font-black text-[#3B82F6] mb-2">7th</span>
+                            <span class="block text-5xl font-black text-[#3B82F6] mb-2">7F</span>
                             <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                                {{ App::getLocale() === 'en' ? 'Floor Rooftop' : 'Lantai Rooftop' }}
+                                {{ App::getLocale() === 'en' ? 'Shared Common Area' : 'Shared Common Area' }}
                             </span>
                         </div>
                         <div>

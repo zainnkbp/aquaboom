@@ -453,7 +453,7 @@
           </a>
           <div class="h-px w-12 bg-aqua-gold mt-4 mb-5"></div>
           <p class="text-white/55 text-sm font-medium leading-relaxed">
-            {{ App::getLocale() === 'en' ? 'Premier rooftop waterpark destination in Balikpapan — exciting slides, family fun, and city skyline views.' : 'Destinasi rekreasi air premium di rooftop Balikpapan — kelas internasional, keseruan tak terbatas.' }}
+            {{ App::getLocale() === 'en' ? 'Premier waterpark destination in Balikpapan — exciting slides, family fun, and city views.' : 'Destinasi rekreasi air premium di Balikpapan — kelas internasional, keseruan tak terbatas.' }}
           </p>
           <a href="https://jatrahotels.com/astara-balikpapan/" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex items-center gap-3 group hover:opacity-95 transition-all">
             <div class="w-8 h-8 rounded-full border border-aqua-gold/30 flex items-center justify-center group-hover:border-aqua-gold group-hover:scale-105 transition-all">
@@ -517,8 +517,8 @@
           <p class="text-white text-base font-black tracking-tight mb-4">09:00 — 18:00 WITA</p>
           <div class="bg-aqua-navy-2 rounded-2xl p-4 border border-aqua-gold/10">
             <p class="text-white/50 text-xs leading-relaxed font-semibold">
-              <span class="text-aqua-gold/80 font-black block mb-1">📍 {{ App::getLocale() === 'en' ? 'Rooftop Location' : 'Lokasi Rooftop' }}</span>
-              7th Floor, Pentacity Mall, Balikpapan Superblock (BSB), Kalimantan Timur
+              <span class="text-aqua-gold/80 font-black block mb-1">📍 7F - Shared Common Area</span>
+              7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan, Pentacity Mall, BSB
             </p>
           </div>
         </div>

@@ -103,11 +103,11 @@
           </div>
         </div>
         <div>
-          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">{{ App::getLocale() === 'en' ? '7th Floor' : 'Lantai 7' }}</div>
+          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">{{ App::getLocale() === 'en' ? 'Floor 7F' : 'Lantai 7' }}</div>
           <div class="text-xs font-black uppercase tracking-widest text-white/50">
-            {{ App::getLocale() === 'en' ? 'Rooftop Location' : 'Lokasi Rooftop' }}
+            7F - Shared Common Area
           </div>
-          <div class="text-xs font-semibold text-white/70 mt-1">Pentacity Mall, BSB Balikpapan</div>
+          <div class="text-xs font-semibold text-white/70 mt-1">7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan</div>
         </div>
       </div>
 
