@@ -76,7 +76,7 @@
     <!-- Floating Button -->
     <button 
         @click="isOpen = !isOpen" 
-        class="w-16 h-16 bg-aqua-navy text-aqua-gold rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform duration-300 ring-4 ring-aqua-navy/30"
+        class="w-16 h-16 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform duration-300 ring-4 ring-aqua-gold/30"
         :class="{'rotate-12': isOpen}"
     >
         <svg x-show="!isOpen" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
