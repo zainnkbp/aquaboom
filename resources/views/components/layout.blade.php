@@ -71,9 +71,8 @@
   <nav :class="{'glass-nav-wb shadow-xl border-b border-aqua-gold/20': scrolled, 'bg-aqua-navy': !scrolled}"
     class="fixed w-full z-50 transition-all duration-300">
 
-    <!-- Top Utility Bar (Desktop Only) - Hides on scroll -->
-    <div :class="scrolled ? 'h-0 opacity-0 overflow-hidden py-0 border-none' : 'border-b border-white/10 py-2'"
-      class="hidden lg:block transition-all duration-300">
+    <!-- Top Utility Bar (Desktop Only) - Always Sticky & Visible -->
+    <div class="hidden lg:block border-b border-white/10 py-2">
       <div class="max-w-7xl mx-auto px-6 lg:px-10 flex justify-between items-center gap-4 text-[11px]">
         <a href="{{ url('/gatherings') }}" class="text-aqua-gold hover:text-white font-bold tracking-wider uppercase flex items-center gap-2 transition-colors">
           <span class="bg-aqua-gold text-aqua-navy text-[9px] font-black px-2 py-0.5 rounded-full">PROMO</span>
