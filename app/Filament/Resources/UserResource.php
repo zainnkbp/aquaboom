@@ -150,9 +150,7 @@ class UserResource extends Resource
                         }
                         return 'info';
                     })
-                    ->wrap()
-                    ->limitList(4)
-                    ->expandableLimitedList(),
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('pin')
                     ->label('PIN Scanner')
                     ->formatStateUsing(fn ($state) => $state ? 'Aktif' : '-')

@@ -1,12 +1,12 @@
-<div style="display: flex; align-items: center; gap: 0.65rem; text-decoration: none; overflow: hidden;">
-    <div style="width: 2.2rem; height: 2.2rem; border-radius: 0.65rem; background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 14px rgba(244, 63, 94, 0.4); flex-shrink: 0; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.2);">
-        <img src="{{ asset('logo/favicon-96x96.png') }}" alt="AQB" style="width: 100%; height: 100%; object-fit: cover;" />
+<div class="flex items-center gap-2.5 no-underline overflow-hidden">
+    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center shadow-lg shadow-rose-500/30 shrink-0 overflow-hidden border border-white/20">
+        <img src="{{ asset('logo/favicon-96x96.png') }}" alt="AQB" class="w-full h-full object-cover" />
     </div>
-    <div x-show="$store.sidebar.isOpen" x-cloak style="display: flex; flex-direction: column; line-height: 1.1; min-width: 0;">
-        <div style="display: flex; align-items: center; gap: 0.35rem;">
-            <span style="font-size: 0.98rem; font-weight: 900; letter-spacing: -0.02em; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">AQUABOOM</span>
-            <span style="background: linear-gradient(135deg, #f43f5e, #e11d48); color: #fff; font-size: 0.55rem; font-weight: 900; padding: 0.1rem 0.35rem; border-radius: 0.3rem; letter-spacing: 0.08em; box-shadow: 0 0 8px rgba(244, 63, 94, 0.4);">CMS</span>
+    <div x-show="$store.sidebar.isOpen" x-cloak class="flex flex-col leading-tight min-w-0">
+        <div class="flex items-center gap-1.5">
+            <span class="text-base font-black tracking-tight text-slate-900 dark:text-white">AQUABOOM</span>
+            <span class="bg-gradient-to-r from-rose-500 to-rose-600 text-white text-[0.55rem] font-black px-1.5 py-0.5 rounded tracking-wider shadow-sm">CMS</span>
         </div>
-        <span style="font-size: 0.62rem; color: #94a3b8; font-weight: 600; letter-spacing: 0.02em; margin-top: 0.12rem;">Waterpark Management</span>
+        <span class="text-[0.62rem] text-slate-500 dark:text-slate-400 font-semibold tracking-wide mt-0.5">Waterpark Management</span>
     </div>
 </div>
