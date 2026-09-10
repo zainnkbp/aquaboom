@@ -641,3 +641,20 @@
         </div>
     @endif
 </form>
+
+@script
+<script>
+    $wire.on('open-doku-popup', (data) => {
+        const payload = Array.isArray(data) ? data[0] : data;
+        const paymentUrl = payload?.paymentUrl || (payload && payload[0]?.paymentUrl);
+        
+        if (paymentUrl) {
+            if (typeof loadJokulCheckout === 'function') {
+                loadJokulCheckout(paymentUrl);
+            } else {
+                window.location.href = paymentUrl;
+            }
+        }
+    });
+</script>
+@endscript

@@ -176,7 +176,11 @@
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         </a>
                       @elseif($tx->status === 'pending')
-                        <a href="{{ route('payment.doku.pay', $tx->order_id) }}" class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black px-5 py-2.5 rounded-xl uppercase tracking-wider text-xs transition-all shadow-md hover:-translate-y-0.5">
+                        <a href="{{ route('payment.doku.pay', $tx->order_id) }}" 
+                           @if($tx->payment_url)
+                             onclick="if (typeof loadJokulCheckout === 'function') { event.preventDefault(); loadJokulCheckout('{{ $tx->payment_url }}'); }"
+                           @endif
+                           class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black px-5 py-2.5 rounded-xl uppercase tracking-wider text-xs transition-all shadow-md hover:-translate-y-0.5">
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
                           <span>{{ App::getLocale() === 'en' ? 'Pay Now' : 'Bayar Sekarang' }}</span>
                         </a>

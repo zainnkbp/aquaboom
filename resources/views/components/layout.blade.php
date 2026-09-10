@@ -11,6 +11,10 @@
   <link rel="shortcut icon" href="/logo/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="/logo/apple-touch-icon.png" />
   <link rel="manifest" href="/logo/site.webmanifest" />
+  
+  <!-- DOKU Jokul Checkout JS Library for Seamless In-Page Popup Modal -->
+  <script src="{{ config('services.doku.env') === 'production' ? 'https://jokul.doku.com/jokul-checkout-js/v1/jokul-checkout-1.0.0.js' : 'https://sandbox.doku.com/jokul-checkout-js/v1/jokul-checkout-1.0.0.js' }}"></script>
+  
   @livewireStyles
 
   <link rel="preconnect" href="https://fonts.googleapis.com">

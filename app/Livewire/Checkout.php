@@ -451,7 +451,30 @@ class Checkout extends Component
             return $transaction;
         });
 
-        // Redirect to Doku Payment Route
+        // Request DOKU Checkout Session directly for seamless In-Page Popup Modal
+        $dokuService = app(\App\Services\DokuService::class);
+        $session = $dokuService->createCheckoutSession($transaction);
+
+        if ($session && isset($session['response']['payment']['url'])) {
+            $paymentUrl = $session['response']['payment']['url'];
+            $paymentToken = $session['response']['uuid'] ?? null;
+
+            $transaction->update([
+                'payment_url' => $paymentUrl,
+                'payment_token' => $paymentToken,
+            ]);
+
+            $this->showConfirmationModal = false;
+
+            // Dispatch browser event to launch DOKU Jokul JS popup modal
+            $this->dispatch('open-doku-popup', [
+                'paymentUrl' => $paymentUrl,
+                'orderId' => $transaction->order_id,
+            ]);
+            return;
+        }
+
+        // Fallback: Redirect to standard payment route
         return redirect()->route('payment.doku.pay', ['order_id' => $order_id]);
     }
 
