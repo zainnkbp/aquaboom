@@ -41,7 +41,7 @@
     @if($user)
         <div class="hidden sm:flex" style="align-items: center; gap: 0.45rem;">
             <div style="display: flex; flex-direction: column; text-align: right; line-height: 1.1;">
-                <span style="font-size: 0.76rem; font-weight: 800; color: #fff;">{{ $user->name }}</span>
+                <span class="aqb-topbar-user" style="font-size: 0.76rem; font-weight: 800;">{{ $user->name }}</span>
                 <span style="font-size: 0.6rem; color: #fb7185; font-weight: 700; text-transform: uppercase;">{{ $user->role }}</span>
             </div>
         </div>

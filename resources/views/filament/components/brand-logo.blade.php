@@ -4,7 +4,7 @@
     </div>
     <div x-show="$store.sidebar.isOpen" x-cloak style="display: flex; flex-direction: column; line-height: 1.1; min-width: 0;">
         <div style="display: flex; align-items: center; gap: 0.35rem;">
-            <span style="font-size: 0.98rem; font-weight: 900; letter-spacing: -0.02em; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">AQUABOOM</span>
+            <span class="aqb-brand-text" style="font-size: 0.98rem; font-weight: 900; letter-spacing: -0.02em;">AQUABOOM</span>
             <span style="background: linear-gradient(135deg, #f43f5e, #e11d48); color: #fff; font-size: 0.55rem; font-weight: 900; padding: 0.1rem 0.35rem; border-radius: 0.3rem; letter-spacing: 0.08em; box-shadow: 0 0 8px rgba(244, 63, 94, 0.4);">CMS</span>
         </div>
         <span style="font-size: 0.62rem; color: #94a3b8; font-weight: 600; letter-spacing: 0.02em; margin-top: 0.12rem;">Waterpark Management</span>

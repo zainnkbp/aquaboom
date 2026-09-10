@@ -151,17 +151,26 @@ class AdminPanelProvider extends PanelProvider
                             font-size: 0.815rem !important;
                             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
                             border: 1px solid transparent !important;
+                            color: #334155 !important;
                         }
                         .fi-sidebar-item > a:hover {
-                            background: rgba(255, 255, 255, 0.05) !important;
+                            background: rgba(0, 0, 0, 0.04) !important;
+                            color: #0f172a !important;
                             transform: translateX(3px) !important;
+                        }
+                        .dark .fi-sidebar-item > a {
+                            color: #94a3b8 !important;
+                        }
+                        .dark .fi-sidebar-item > a:hover {
+                            background: rgba(255, 255, 255, 0.05) !important;
+                            color: #ffffff !important;
                         }
                         
                         /* Floating Sidebar Active States */
                         .fi-sidebar-item-active > a {
-                            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15), rgba(225, 29, 72, 0.08)) !important;
-                            border: 1px solid rgba(244, 63, 94, 0.3) !important;
-                            color: #ffffff !important;
+                            background: #ffe4e6 !important;
+                            border: 1px solid #fecdd3 !important;
+                            color: #e11d48 !important;
                             font-weight: 700 !important;
                         }
                         .dark .fi-sidebar-item-active > a {
@@ -171,6 +180,19 @@ class AdminPanelProvider extends PanelProvider
                             box-shadow: 0 4px 20px -3px rgba(244, 63, 94, 0.3) !important;
                             font-weight: 700 !important;
                         }
+
+                        /* Adaptive Text and Card Colors (Light / Dark Mode) */
+                        .aqb-brand-text { color: #0f172a !important; }
+                        .dark .aqb-brand-text { color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.3) !important; }
+
+                        .aqb-user-name { color: #0f172a !important; }
+                        .dark .aqb-user-name { color: #ffffff !important; }
+
+                        .aqb-topbar-user { color: #0f172a !important; }
+                        .dark .aqb-topbar-user { color: #ffffff !important; }
+
+                        .aqb-user-card { background: rgba(0, 0, 0, 0.04) !important; border: 1px solid rgba(0, 0, 0, 0.08) !important; }
+                        .dark .aqb-user-card { background: rgba(255, 255, 255, 0.03) !important; border: 1px solid rgba(255, 255, 255, 0.07) !important; }
                         
                         /* Unset generic widget wrapper to avoid double borders */
                         .fi-wi {

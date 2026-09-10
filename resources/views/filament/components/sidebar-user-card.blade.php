@@ -3,12 +3,12 @@
 @endphp
 @if($user)
     <!-- Expanded Staff Profile Card -->
-    <div x-show="$store.sidebar.isOpen" x-cloak style="margin: 0 0 0.65rem 0; padding: 0.6rem 0.75rem; border-radius: 0.85rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); display: flex; align-items: center; gap: 0.65rem;">
+    <div x-show="$store.sidebar.isOpen" x-cloak class="aqb-user-card" style="margin: 0 0 0.65rem 0; padding: 0.6rem 0.75rem; border-radius: 0.85rem; display: flex; align-items: center; gap: 0.65rem;">
         <div style="width: 2rem; height: 2rem; border-radius: 0.6rem; background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.35); color: #fb7185; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; flex-shrink: 0;">
             {{ strtoupper(substr($user->name, 0, 1)) }}
         </div>
         <div style="flex: 1; min-width: 0;">
-            <div style="font-size: 0.78rem; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            <div class="aqb-user-name" style="font-size: 0.78rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                 {{ $user->name }}
             </div>
             <div style="display: flex; align-items: center; gap: 0.35rem; margin-top: 0.1rem;">
