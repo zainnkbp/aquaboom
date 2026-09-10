@@ -106,18 +106,24 @@ class CheckoutV0 extends Component
             return null;
         }
 
-        $promo = PromoCode::where('code', strtoupper(trim($code)))
-            ->where('is_active', true)
-            ->where(function ($query) {
-                $query->whereNull('valid_from')->orWhere('valid_from', '<=', now());
-            })
-            ->where(function ($query) {
-                $query->whereNull('valid_until')->orWhere('valid_until', '>=', now());
-            })
-            ->first();
+        $cleanCode = strtoupper(trim($code));
 
-        if (! $promo) {
+        $promo = PromoCode::where('code', $cleanCode)->first();
+
+        if (! $promo || ! $promo->is_active) {
             $error = 'Kode voucher tidak ditemukan atau sudah tidak aktif.';
+            return null;
+        }
+
+        // Check valid_from (with grace window for instant activation)
+        if ($promo->valid_from && $promo->valid_from->gt(now()->addMinutes(5))) {
+            $error = 'Kode voucher baru dapat digunakan mulai ' . $promo->valid_from->translatedFormat('d M Y H:i') . '.';
+            return null;
+        }
+
+        // Check valid_until
+        if ($promo->valid_until && $promo->valid_until->isPast()) {
+            $error = 'Kode voucher sudah kedaluwarsa (berakhir pada ' . $promo->valid_until->translatedFormat('d M Y H:i') . ').';
             return null;
         }
 
