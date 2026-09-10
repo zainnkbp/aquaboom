@@ -81,8 +81,8 @@ class LandingPageSeeder extends Seeder
             ['key' => 'hero_video_file', 'value' => null, 'group' => 'homepage', 'type' => 'file'],
             ['key' => 'hero_headline', 'value' => "KAMI BUKA<br/><span class=\"gold-shimmer\">SETIAP HARI</span>", 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_headline_en', 'value' => "WE ARE<br/><span class=\"gold-shimmer\">OPEN DAILY</span>", 'group' => 'homepage', 'type' => 'text'],
-            ['key' => 'hero_subheadline', 'value' => 'Weekday: 10.00 - 18.00 | Weekend: 09.00 - 18.00', 'group' => 'homepage', 'type' => 'text'],
-            ['key' => 'hero_subheadline_en', 'value' => 'Weekday: 10:00 - 18:00 | Weekend: 09:00 - 18:00', 'group' => 'homepage', 'type' => 'text'],
+            ['key' => 'hero_subheadline', 'value' => 'Setiap Hari: 09.00 - 18.00 WITA', 'group' => 'homepage', 'type' => 'text'],
+            ['key' => 'hero_subheadline_en', 'value' => 'Daily: 09:00 AM - 6:00 PM WITA', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_description', 'value' => 'Aquaboom Waterpark Balikpapan — Pengalaman rekreasi air yang unik di 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'hero_description_en', 'value' => 'Aquaboom Waterpark Balikpapan — A unique waterpark experience on 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text'],
             ['key' => 'philosophy_text', 'value' => 'Aquaboom Waterpark Balikpapan menghadirkan pengalaman rekreasi air urban yang unik di Balikpapan. Berlokasi strategis di pusat kota Balikpapan (BSB Area), kami menawarkan keceriaan wahana air premium di 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan.', 'group' => 'about', 'type' => 'text'],
@@ -98,8 +98,8 @@ class LandingPageSeeder extends Seeder
             [
                 'question' => 'Jam berapa jam operasional Aquaboom?', 
                 'question_en' => 'What are the operational hours of Aquaboom?',
-                'answer' => 'Kami Buka setiap hari. Hari Biasa (Weekday) pukul 10:00 WITA - 18:00 WITA, dan Hari Libur/Akhir Pekan (Weekend) pukul 09:00 WITA - 18:00 WITA.', 
-                'answer_en' => 'We are open daily. Weekdays from 10:00 WITA - 18:00 WITA, and Weekends/Public Holidays from 09:00 WITA - 18:00 WITA.',
+                'answer' => 'Kami buka setiap hari (Senin — Minggu & Libur Nasional) mulai pukul 09:00 WITA - 18:00 WITA (Batas masuk terakhir pukul 17:00 WITA).', 
+                'answer_en' => 'We are open daily (Monday — Sunday & Public Holidays) from 09:00 WITA - 18:00 WITA (Last admission at 17:00 WITA).',
                 'sort_order' => 1, 
                 'is_active' => true
             ],
@@ -252,8 +252,8 @@ class LandingPageSeeder extends Seeder
             [
                 'name' => 'Tiket Regular Weekdays',
                 'name_en' => 'Regular Weekday Ticket',
-                'description' => 'Tiket masuk harian untuk hari Senin sampai Jumat. Jam operasional: 10:00 - 18:00 WITA.',
-                'description_en' => 'Daily entry ticket valid from Monday to Friday. Operational hours: 10:00 - 18:00 WITA.',
+                'description' => 'Tiket masuk harian untuk hari Senin sampai Jumat. Jam operasional: 09:00 - 18:00 WITA.',
+                'description_en' => 'Daily entry ticket valid from Monday to Friday. Operational hours: 09:00 - 18:00 WITA.',
                 'price' => 95000.00,
                 'discount_price' => null,
                 'discount_type' => 'amount',

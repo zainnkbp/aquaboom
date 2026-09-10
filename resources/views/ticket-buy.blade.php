@@ -85,21 +85,21 @@
       <!-- Info Bar (1 Single Source of Truth) -->
       <div class="bg-aqua-navy rounded-[28px] p-8 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-white text-center border border-aqua-gold/20 shadow-xl">
         <div>
-          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">10:00 — 18:00</div>
+          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">09:00 — 18:00</div>
           <div class="text-xs font-black uppercase tracking-widest text-white/50">
-            {{ App::getLocale() === 'en' ? 'Monday — Friday' : 'Senin — Jumat' }}
+            {{ App::getLocale() === 'en' ? 'Open Daily' : 'Buka Setiap Hari' }}
           </div>
           <div class="text-xs font-semibold text-white/70 mt-1">
-            {{ App::getLocale() === 'en' ? 'Regular Weekdays' : 'Hari Kerja (Weekday)' }}
+            {{ App::getLocale() === 'en' ? 'Monday — Sunday & Holidays' : 'Senin — Minggu & Hari Libur' }}
           </div>
         </div>
         <div class="border-y md:border-y-0 md:border-x border-aqua-gold/15 py-6 md:py-0">
-          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">09:00 — 18:00</div>
+          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">17:00 WITA</div>
           <div class="text-xs font-black uppercase tracking-widest text-white/50">
-            {{ App::getLocale() === 'en' ? 'Sat, Sun & Holidays' : 'Sabtu, Minggu & Libur' }}
+            {{ App::getLocale() === 'en' ? 'Last Admission' : 'Batas Masuk Terakhir' }}
           </div>
           <div class="text-xs font-semibold text-amber-400 mt-1">
-            {{ App::getLocale() === 'en' ? 'Last admission: 5:00 PM WITA' : 'Batas masuk terakhir 17:00 WITA' }}
+            {{ App::getLocale() === 'en' ? 'Entry closes at 5:00 PM WITA' : 'Batas masuk terakhir 17:00 WITA' }}
           </div>
         </div>
         <div>

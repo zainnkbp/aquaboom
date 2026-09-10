@@ -511,10 +511,9 @@
         <!-- Opening Hours -->
         <div>
           <h4 class="text-xs font-black text-aqua-gold mb-5 uppercase tracking-[0.2em]">{{ App::getLocale() === 'en' ? 'Operating Hours' : 'Jam Operasional' }}</h4>
-          <p class="text-aqua-gold text-xs font-black uppercase tracking-wider mb-1">{{ App::getLocale() === 'en' ? 'Monday — Friday (Weekdays)' : 'Senin — Jumat (Hari Biasa)' }}</p>
-          <p class="text-white text-base font-black tracking-tight mb-2">10:00 — 18:00 WITA</p>
-          <p class="text-aqua-gold text-xs font-black uppercase tracking-wider mb-1">{{ App::getLocale() === 'en' ? 'Saturday, Sunday & Holidays' : 'Sabtu, Minggu & Hari Libur' }}</p>
-          <p class="text-white text-base font-black tracking-tight mb-4">09:00 — 18:00 WITA</p>
+          <p class="text-aqua-gold text-xs font-black uppercase tracking-wider mb-1">{{ App::getLocale() === 'en' ? 'Open Daily (Monday — Sunday)' : 'Buka Setiap Hari (Senin — Minggu)' }}</p>
+          <p class="text-white text-base font-black tracking-tight mb-2">09:00 — 18:00 WITA</p>
+          <p class="text-amber-400 text-xs font-semibold mb-4">{{ App::getLocale() === 'en' ? 'Last admission: 5:00 PM WITA' : 'Batas masuk terakhir: 17:00 WITA' }}</p>
           <div class="bg-aqua-navy-2 rounded-2xl p-4 border border-aqua-gold/10">
             <p class="text-white/50 text-xs leading-relaxed font-semibold">
               <span class="text-aqua-gold/80 font-black block mb-1">📍 7F - Shared Common Area</span>
