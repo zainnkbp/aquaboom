@@ -324,63 +324,215 @@
             </div>
             
             <!-- S&K Modal Pop-up -->
-            <div x-show="termsModalOpen" @click.stop style="display: none;" class="fixed inset-0 z-[200] flex items-center justify-center px-4">
-                <div x-show="termsModalOpen" x-transition.opacity @click="termsModalOpen = false" class="absolute inset-0 bg-aqua-navy/60 backdrop-blur-sm"></div>
-                <div x-show="termsModalOpen" x-transition class="relative bg-white w-full max-w-2xl rounded-[32px] shadow-2xl p-8 md:p-10 max-h-[80vh] flex flex-col border border-aqua-gold/20">
-                    <button type="button" @click="termsModalOpen = false" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 bg-slate-100 rounded-full p-2 cursor-pointer transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
+            <div x-show="termsModalOpen" @click.stop style="display: none;" class="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-6">
+                <div x-show="termsModalOpen" x-transition.opacity @click="termsModalOpen = false" class="absolute inset-0 bg-aqua-navy/70 backdrop-blur-md"></div>
+                <div x-show="termsModalOpen" x-transition class="relative bg-white w-full max-w-2xl rounded-[32px] shadow-2xl p-6 md:p-8 max-h-[85vh] flex flex-col border border-aqua-gold/20 overflow-hidden">
                     
-                    <h4 class="text-xl font-black text-aqua-navy uppercase mb-6 pb-4 border-b border-slate-100 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-aqua-gold/30 flex items-center justify-center shrink-0">
-                            <svg class="w-6 h-6 text-aqua-gold" style="color: #F09628 !important; stroke: #F09628 !important;" fill="none" stroke="#F09628" stroke-width="2.2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
+                    <!-- Modal Header -->
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 shrink-0">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-aqua-gold/30 flex items-center justify-center shrink-0">
+                                <svg class="w-6 h-6 text-aqua-gold" style="color: #F09628 !important; stroke: #F09628 !important;" fill="none" stroke="#F09628" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-base md:text-lg font-black text-aqua-navy uppercase tracking-tight">
+                                    {{ $locale === 'id' ? 'Syarat & Ketentuan Booking Tiket' : 'Ticket Booking Terms & Conditions' }}
+                                </h4>
+                                <span class="text-xs text-aqua-gold font-bold uppercase tracking-wider">Aquaboom Balikpapan</span>
+                            </div>
                         </div>
-                        <span class="tracking-tight">{{ $locale === 'id' ? 'Syarat & Ketentuan Aquaboom' : 'Aquaboom Terms & Conditions' }}</span>
-                    </h4>
+                        <button type="button" @click="termsModalOpen = false" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
                     
-                    <div class="flex-1 overflow-y-auto pr-2 text-sm text-slate-600 leading-relaxed font-semibold mb-6 space-y-6">
-                        <div>
-                            <h5 class="font-black text-aqua-navy uppercase text-xs mb-2">1. {{ $locale === 'id' ? 'Ketentuan Umum' : 'General Rules' }}</h5>
-                            <p class="text-xs">
+                    <!-- Scrollable Modal Body -->
+                    <div class="flex-1 overflow-y-auto py-5 pr-2 text-xs md:text-sm text-slate-600 leading-relaxed font-semibold space-y-6">
+                        <div class="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-4 text-xs font-medium text-slate-700">
+                            {{ $locale === 'id' 
+                                ? 'Dengan melakukan pembelian tiket Aquaboom Balikpapan, customer dianggap telah membaca, memahami, dan menyetujui seluruh Syarat & Ketentuan berikut:'
+                                : 'By purchasing Aquaboom Balikpapan tickets, customers are deemed to have read, understood, and agreed to all of the following Terms & Conditions:'
+                            }}
+                        </div>
+
+                        <!-- 1. Ketentuan Umum -->
+                        <div class="space-y-2">
+                            <h5 class="font-black text-aqua-navy uppercase text-xs flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-md bg-aqua-navy text-white text-[10px] flex items-center justify-center font-bold">1</span>
+                                {{ $locale === 'id' ? 'Ketentuan Umum' : 'General Rules' }}
+                            </h5>
+                            <ul class="list-disc list-outside pl-5 space-y-1.5 text-xs text-slate-600">
+                                <li>{{ $locale === 'id' ? 'Tiket Aquaboom Balikpapan hanya dapat digunakan sesuai dengan tanggal kunjungan yang tercantum pada tiket.' : 'Tickets are only valid for the visit date specified on the ticket.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Tiket wajib ditunjukkan pada saat memasuki area Aquaboom, baik dalam bentuk digital maupun cetak.' : 'Tickets must be presented upon entering Aquaboom, in either digital or printed form.' }}</li>
+                                <li><strong>{{ $locale === 'id' ? 'Tiket yang telah dibeli dan dibayar tidak dapat dibatalkan, dikembalikan (refund), atau diuangkan kembali' : 'Tickets purchased and paid for are non-refundable, non-cancellable, and non-redeemable for cash' }}</strong>{{ $locale === 'id' ? ', kecuali ditentukan lain oleh pihak Aquaboom Balikpapan.' : ', unless otherwise specified by Aquaboom Balikpapan management.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Tiket tidak dapat dipindahtangankan atau diperjualbelikan kembali tanpa persetujuan dari pihak Aquaboom Balikpapan.' : 'Tickets may not be transferred or resold without prior consent from Aquaboom Balikpapan.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Customer bertanggung jawab memastikan data booking yang diberikan sudah benar, termasuk nama, jumlah tiket, tanggal kunjungan, dan informasi lainnya.' : 'Customers are responsible for ensuring all booking information (name, ticket count, visit date) is accurate.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Aquaboom Balikpapan berhak menolak akses masuk apabila terdapat ketidaksesuaian data, tiket tidak valid, atau terdapat indikasi penyalahgunaan tiket.' : 'Aquaboom Balikpapan reserves the right to deny entry if there is data discrepancy, invalid ticket, or ticket abuse indication.' }}</li>
+                            </ul>
+                        </div>
+
+                        <!-- 2. Keselamatan dan Peraturan Kolam -->
+                        <div class="space-y-2">
+                            <h5 class="font-black text-aqua-navy uppercase text-xs flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-md bg-aqua-navy text-white text-[10px] flex items-center justify-center font-bold">2</span>
+                                {{ $locale === 'id' ? 'Keselamatan dan Peraturan Kolam' : 'Pool Safety & Regulations' }}
+                            </h5>
+                            <ul class="list-disc list-outside pl-5 space-y-1.5 text-xs text-slate-600">
+                                <li>{{ $locale === 'id' ? 'Pengunjung wajib mengikuti seluruh peraturan keselamatan dan instruksi dari Lifeguard serta petugas Aquaboom Balikpapan.' : 'Visitors must follow all safety guidelines and instructions from Lifeguards and park staff.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Pengunjung wajib menggunakan fasilitas sesuai dengan ketentuan usia, tinggi badan, berat badan, atau persyaratan keselamatan yang berlaku pada masing-masing wahana.' : 'Visitors must abide by age, height, weight, and safety requirements for each specific ride/attraction.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Anak-anak wajib berada dalam pengawasan orang tua atau pendamping setiap saat.' : 'Children must be under parent or guardian supervision at all times.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Pengunjung dilarang melakukan tindakan yang dapat membahayakan diri sendiri maupun pengunjung lainnya.' : 'Dangerous behavior endangering oneself or other guests is strictly prohibited.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Penggunaan fasilitas atau wahana yang tidak sesuai dengan petunjuk keselamatan menjadi tanggung jawab pengunjung.' : 'Improper use of facilities against safety instructions is entirely the visitor\'s responsibility.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Aquaboom Balikpapan berhak menghentikan penggunaan wahana atau meminta pengunjung meninggalkan area apabila melanggar peraturan keselamatan.' : 'Aquaboom Balikpapan reserves the right to suspend ride use or request guests to leave the premises if violating safety rules.' }}</li>
+                            </ul>
+                        </div>
+
+                        <!-- 3. Barang Pribadi -->
+                        <div class="space-y-2">
+                            <h5 class="font-black text-aqua-navy uppercase text-xs flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-md bg-aqua-navy text-white text-[10px] flex items-center justify-center font-bold">3</span>
+                                {{ $locale === 'id' ? 'Barang Pribadi' : 'Personal Belongings' }}
+                            </h5>
+                            <ul class="list-disc list-outside pl-5 space-y-1.5 text-xs text-slate-600">
+                                <li>{{ $locale === 'id' ? 'Pengunjung bertanggung jawab atas barang pribadi yang dibawa ke area Aquaboom.' : 'Guests are solely responsible for personal items brought into the waterpark area.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Aquaboom Balikpapan tidak bertanggung jawab atas kehilangan, kerusakan, atau tertukarnya barang pribadi yang disebabkan oleh kelalaian pengunjung.' : 'Aquaboom Balikpapan is not liable for loss, damage, or theft of personal items caused by guest negligence.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Pengunjung disarankan menyimpan barang berharga pada tempat penyimpanan (loker) yang telah disediakan.' : 'Guests are strongly advised to secure valuables in available rental lockers.' }}</li>
+                            </ul>
+                        </div>
+
+                        <!-- 4. Ketentuan Pakaian dan Barang yang Dibawa -->
+                        <div class="space-y-2">
+                            <h5 class="font-black text-aqua-navy uppercase text-xs flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-md bg-aqua-navy text-white text-[10px] flex items-center justify-center font-bold">4</span>
+                                {{ $locale === 'id' ? 'Ketentuan Pakaian dan Barang yang Dibawa' : 'Attire & Items Policy' }}
+                            </h5>
+                            <ul class="list-disc list-outside pl-5 space-y-1.5 text-xs text-slate-600">
+                                <li>{{ $locale === 'id' ? 'Pengunjung wajib menggunakan pakaian yang sesuai untuk aktivitas kolam dan wahana air (baju renang/swimwear).' : 'Proper swimwear suitable for pool and water slide activities is mandatory.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Penggunaan barang atau perlengkapan tertentu dapat dibatasi demi keselamatan pengunjung dan kelancaran operasional.' : 'Certain equipment or accessories may be restricted for safety and operational considerations.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Makanan dan minuman dari luar dapat dibatasi sesuai dengan peraturan yang berlaku di area Aquaboom.' : 'Outside food and beverages are subject to park regulations and restrictions.' }}</li>
+                            </ul>
+                        </div>
+
+                        <!-- 5. Operasional dan Kondisi Wahana -->
+                        <div class="space-y-2">
+                            <h5 class="font-black text-aqua-navy uppercase text-xs flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-md bg-aqua-navy text-white text-[10px] flex items-center justify-center font-bold">5</span>
+                                {{ $locale === 'id' ? 'Operasional dan Kondisi Wahana' : 'Operations & Ride Conditions' }}
+                            </h5>
+                            <ul class="list-disc list-outside pl-5 space-y-1.5 text-xs text-slate-600">
+                                <li>{{ $locale === 'id' ? 'Jam operasional dapat berubah sewaktu-waktu berdasarkan kondisi operasional, cuaca, pemeliharaan, keamanan, atau keadaan lainnya.' : 'Operating hours may vary based on maintenance, weather, security, or other operational circumstances.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Beberapa wahana atau fasilitas dapat ditutup sementara untuk pemeliharaan, perbaikan, kondisi cuaca, atau alasan keselamatan.' : 'Select rides or attractions may temporarily close for maintenance, repairs, or safety.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Penutupan sementara wahana tertentu tidak otomatis memberikan hak refund atau kompensasi atas tiket yang telah dibeli.' : 'Temporary attraction closure does not entitle guests to automatic refunds or compensation.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Dalam kondisi tertentu, Aquaboom Balikpapan dapat melakukan perubahan atau pembatasan operasional demi keselamatan dan kenyamanan pengunjung.' : 'Aquaboom Balikpapan reserves the right to modify operations for safety and convenience.' }}</li>
+                            </ul>
+                        </div>
+
+                        <!-- 6. Cuaca dan Keadaan Khusus -->
+                        <div class="space-y-2">
+                            <h5 class="font-black text-aqua-navy uppercase text-xs flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-md bg-aqua-navy text-white text-[10px] flex items-center justify-center font-bold">6</span>
+                                {{ $locale === 'id' ? 'Cuaca dan Keadaan Khusus' : 'Weather & Force Majeure' }}
+                            </h5>
+                            <ul class="list-disc list-outside pl-5 space-y-1.5 text-xs text-slate-600">
+                                <li>{{ $locale === 'id' ? 'Operasional fasilitas outdoor dapat dipengaruhi oleh kondisi cuaca.' : 'Outdoor facility operations may be impacted by weather conditions.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Apabila terjadi hujan lebat, petir, atau kondisi lain yang dianggap membahayakan, beberapa wahana dapat dihentikan sementara.' : 'In case of heavy rain, lightning, or severe conditions, attractions may temporarily pause.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Keputusan terkait penghentian atau pembukaan kembali wahana berdasarkan kondisi keselamatan merupakan kewenangan manajemen Aquaboom Balikpapan.' : 'Decisions to suspend or resume rides remain the sole discretion of Aquaboom Balikpapan management.' }}</li>
+                            </ul>
+                        </div>
+
+                        <!-- 7. Tanggung Jawab Pengunjung -->
+                        <div class="space-y-2">
+                            <h5 class="font-black text-aqua-navy uppercase text-xs flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-md bg-aqua-navy text-white text-[10px] flex items-center justify-center font-bold">7</span>
+                                {{ $locale === 'id' ? 'Tanggung Jawab Pengunjung' : 'Visitor Responsibility' }}
+                            </h5>
+                            <ul class="list-disc list-outside pl-5 space-y-1.5 text-xs text-slate-600">
+                                <li>{{ $locale === 'id' ? 'Pengunjung wajib menjaga kebersihan, fasilitas, dan lingkungan Aquaboom Balikpapan.' : 'Visitors must maintain cleanliness and respect park facilities and surrounding environment.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Kerusakan fasilitas yang disebabkan oleh tindakan sengaja atau kelalaian pengunjung dapat dikenakan biaya penggantian sesuai dengan tingkat kerusakan.' : 'Damages caused intentionally or by gross negligence are subject to replacement charges.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Pengunjung wajib menghormati pengunjung lain dan mengikuti arahan petugas selama berada di area Aquaboom.' : 'Guests must respect others and adhere to staff directions throughout their visit.' }}</li>
+                            </ul>
+                        </div>
+
+                        <!-- 8. Pemrosesan Data Customer -->
+                        <div class="space-y-2">
+                            <h5 class="font-black text-aqua-navy uppercase text-xs flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-md bg-aqua-navy text-white text-[10px] flex items-center justify-center font-bold">8</span>
+                                {{ $locale === 'id' ? 'Pemrosesan Data Customer' : 'Customer Data Processing' }}
+                            </h5>
+                            <ul class="list-disc list-outside pl-5 space-y-1.5 text-xs text-slate-600">
+                                <li>{{ $locale === 'id' ? 'Dengan melakukan booking, customer menyetujui pengumpulan dan pemrosesan data pribadi yang diperlukan untuk keperluan reservasi dan layanan Aquaboom Balikpapan.' : 'By booking, customers consent to personal data collection and processing necessary for reservations.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Data customer dapat meliputi nama, nomor telepon, alamat email, jumlah pengunjung, informasi transaksi, serta data lain yang diperlukan untuk proses booking.' : 'Data collected includes name, phone number, email, guest count, and transaction details.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Data digunakan untuk keperluan pemrosesan booking, pembayaran, konfirmasi tiket, pelayanan customer, keamanan, administrasi, dan peningkatan kualitas layanan.' : 'Data is used for order processing, payment, verification, customer support, security, and service improvements.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Data customer tidak akan digunakan untuk tujuan lain di luar kebutuhan layanan tanpa dasar yang sah atau persetujuan yang diperlukan.' : 'Data will not be used for unrelated purposes without lawful basis or customer consent.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Data customer dapat dibagikan kepada pihak ketiga yang terkait dengan proses booking atau pembayaran (seperti payment gateway DOKU) dengan tetap memperhatikan perlindungan data pribadi.' : 'Data may be shared with verified service partners (e.g. licensed payment gateways) strictly for order fulfillment.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Customer memiliki hak atas data pribadinya sesuai dengan ketentuan peraturan perundang-undangan yang berlaku.' : 'Customers retain their data subject rights under applicable laws.' }}</li>
+                            </ul>
+                        </div>
+
+                        <!-- 9. Persetujuan -->
+                        <div class="space-y-2">
+                            <h5 class="font-black text-aqua-navy uppercase text-xs flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-md bg-aqua-navy text-white text-[10px] flex items-center justify-center font-bold">9</span>
+                                {{ $locale === 'id' ? 'Persetujuan' : 'Agreement & Acceptance' }}
+                            </h5>
+                            <p class="text-xs text-slate-500 mb-1">
+                                {{ $locale === 'id' ? 'Dengan menyelesaikan proses booking dan pembayaran, customer menyatakan bahwa:' : 'By completing the booking and payment process, customers state that:' }}
+                            </p>
+                            <ul class="list-disc list-outside pl-5 space-y-1.5 text-xs text-slate-600">
+                                <li>{{ $locale === 'id' ? 'Data yang diberikan adalah benar dan akurat.' : 'All information provided is true, valid, and accurate.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Customer telah membaca dan memahami Syarat & Ketentuan ini.' : 'Customer has read and understood these Terms & Conditions in full.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Customer menyetujui pemrosesan data pribadi sebagaimana dijelaskan dalam Privacy Policy Aquaboom Balikpapan.' : 'Customer consents to personal data processing as detailed in the Privacy Policy.' }}</li>
+                                <li>{{ $locale === 'id' ? 'Customer bersedia mengikuti seluruh peraturan, ketentuan keselamatan, dan instruksi petugas selama berada di area Aquaboom Balikpapan.' : 'Customer agrees to obey all park guidelines, safety rules, and staff instructions.' }}</li>
+                            </ul>
+                            <p class="text-[11px] text-slate-400 italic pt-2">
                                 {{ $locale === 'id' 
-                                    ? 'Pengunjung wajib mengikuti seluruh peraturan keselamatan dan instruksi penjaga kolam (Lifeguard). Semua transaksi yang sudah dibayar tidak dapat dibatalkan atau di-refund.' 
-                                    : 'Visitors must follow all safety rules and instructions from lifeguards. All transactions once paid are non-refundable and cannot be cancelled.' 
+                                    ? 'Aquaboom Balikpapan berhak melakukan perubahan terhadap Syarat & Ketentuan ini apabila diperlukan. Perubahan akan berlaku sejak dipublikasikan melalui media resmi Aquaboom Balikpapan.'
+                                    : 'Aquaboom Balikpapan reserves the right to update these Terms & Conditions when necessary, effective upon publication on official channels.'
                                 }}
                             </p>
                         </div>
-                        
+
+                        <!-- Tambahan Syarat Khusus Tiket yang Dipilih (Jika Ada) -->
                         @php $hasSelectedTerms = false; @endphp
                         @foreach($packages as $pkg)
                             @if(($quantities[$pkg->id] ?? 0) > 0 && ($pkg->terms_and_conditions || $pkg->terms_and_conditions_en))
-                                @php $hasSelectedTerms = true; @endphp
-                                <div>
-                                    <h5 class="font-black text-aqua-navy uppercase text-xs mb-2">
+                                @if(!$hasSelectedTerms)
+                                    <div class="pt-4 border-t border-slate-200">
+                                        <div class="flex items-center gap-2 mb-3">
+                                            <span class="bg-aqua-gold text-aqua-navy text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider">
+                                                {{ $locale === 'id' ? 'Ketentuan Tambahan Tiket' : 'Specific Ticket Policies' }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    @php $hasSelectedTerms = true; @endphp
+                                @endif
+                                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-2">
+                                    <h6 class="font-black text-aqua-navy uppercase text-xs flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-aqua-gold shrink-0" fill="none" stroke="#F09628" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
                                         {{ $locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
-                                    </h5>
-                                    <div class="text-xs font-semibold leading-relaxed border-l-2 border-aqua-gold/30 pl-3">
+                                    </h6>
+                                    <div class="text-xs font-semibold leading-relaxed border-l-2 border-aqua-gold/50 pl-3 text-slate-600">
                                         {!! $locale === 'en' && $pkg->terms_and_conditions_en ? $pkg->terms_and_conditions_en : $pkg->terms_and_conditions !!}
                                     </div>
                                 </div>
                             @endif
                         @endforeach
-                        
-                        @if(!$hasSelectedTerms)
-                            <p class="text-xs text-slate-400 italic">
-                                {{ $locale === 'id' ? '* Silakan pilih tiket terlebih dahulu di atas untuk melihat detail syarat spesifik tiket.' : '* Please select tickets above to load specific ticket policies.' }}
-                            </p>
-                        @endif
                     </div>
                     
-                    <button type="button" 
-                        @click="termsAccepted = true; @this.set('termsAccepted', true); termsModalOpen = false;" 
-                        class="w-full bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold font-black py-4 rounded-2xl text-sm uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2.5 border border-aqua-gold/30 hover:border-aqua-gold cursor-pointer">
-                        <svg class="w-5 h-5 text-aqua-gold" style="color: #F09628 !important; stroke: #F09628 !important;" fill="none" stroke="#F09628" stroke-width="2.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        <span>{{ $locale === 'id' ? 'Saya Membaca & Menyetujui' : 'Saya Membaca & Menyetujui' }}</span>
-                    </button>
+                    <!-- Modal Footer Action -->
+                    <div class="pt-4 border-t border-slate-100 shrink-0">
+                        <button type="button" 
+                            @click="termsAccepted = true; @this.set('termsAccepted', true); termsModalOpen = false;" 
+                            class="w-full bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold font-black py-4 rounded-2xl text-sm uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2.5 border border-aqua-gold/30 hover:border-aqua-gold cursor-pointer">
+                            <svg class="w-5 h-5 text-aqua-gold" style="color: #F09628 !important; stroke: #F09628 !important;" fill="none" stroke="#F09628" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>{{ $locale === 'id' ? 'Saya Membaca & Menyetujui' : 'I Read & Agree' }}</span>
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
