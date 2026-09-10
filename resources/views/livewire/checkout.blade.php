@@ -8,9 +8,9 @@
     </div>
 
     <!-- Step 1: Visit Date -->
-    <div id="step-1-date" class="px-3 md:px-10 py-3 md:py-6 bg-aqua-cream border-b border-slate-100 scroll-mt-20 md:scroll-mt-24">
+    <div id="step-1-date" class="px-3 md:px-10 py-3 md:py-8 bg-aqua-cream border-b border-slate-100 scroll-mt-20 md:scroll-mt-24">
         <div class="max-w-5xl mx-auto">
-            <div class="flex items-center gap-2 md:gap-3 mb-2.5 md:mb-5">
+            <div class="flex items-center gap-2 md:gap-3 mb-2.5 md:mb-6">
                 <div class="h-px w-6 md:w-8 bg-aqua-gold"></div>
                 <span class="text-aqua-gold text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">Step 1</span>
                 <span class="text-aqua-navy text-xs md:text-sm font-black uppercase tracking-wide">
@@ -18,25 +18,25 @@
                 </span>
             </div>
             
-            <div class="flex items-center gap-2 md:gap-3 overflow-x-auto pb-1 md:pb-2 snap-x scrollbar-hide">
+            <div class="flex items-center gap-2 md:gap-4 overflow-x-auto pb-1 md:pb-2 snap-x scrollbar-hide">
                 <button type="button" 
                      wire:click="$set('visit_date', '{{ date('Y-m-d') }}')" 
                      @click="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
-                     class="py-1.5 px-3.5 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
+                     class="py-1.5 px-3.5 md:py-4 md:px-10 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-base font-bold border md:border-2
                      {{ $visit_date === date('Y-m-d') ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
                     {{ $locale === 'id' ? 'Hari Ini' : 'Today' }}
                 </button>
                 <button type="button" 
                      wire:click="$set('visit_date', '{{ date('Y-m-d', strtotime('+1 day')) }}')" 
                      @click="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
-                     class="py-1.5 px-3.5 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
+                     class="py-1.5 px-3.5 md:py-4 md:px-10 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-base font-bold border md:border-2
                      {{ $visit_date === date('Y-m-d', strtotime('+1 day')) ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
                     {{ $locale === 'id' ? 'Besok' : 'Tomorrow' }}
                 </button>
                 <div x-data @click="$refs.datePicker.showPicker()" 
-                     class="relative py-1.5 px-3.5 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap flex items-center gap-1.5 md:gap-2.5 snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
+                     class="relative py-1.5 px-3.5 md:py-4 md:px-10 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap flex items-center gap-1.5 md:gap-3 snap-start shrink-0 text-xs md:text-base font-bold border md:border-2
                      {{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
-                    <svg class="w-3.5 h-3.5 md:w-4 md:h-4 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <svg class="w-3.5 h-3.5 md:w-5 md:h-5 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span>{{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? \Carbon\Carbon::parse($visit_date)->format('d M Y') : ($locale === 'id' ? 'Tanggal Lain' : 'Other Date') }}</span>
                     <input x-ref="datePicker" type="date" wire:model.live="visit_date" 
                            @change="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
