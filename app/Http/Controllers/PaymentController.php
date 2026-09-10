@@ -169,8 +169,15 @@ class PaymentController extends Controller
 
                 // Pengguna kembali ke web sebelum menyelesaikan pembayaran (Back to Merchant / Belum Bayar)
                 Log::info('PaymentRedirect: User returned to merchant but payment is still pending for Order ID: ' . $transaction->order_id);
+                
+                if (auth()->check()) {
+                    return redirect()->route('my.tickets')
+                        ->with('warning', 'Pesanan #' . $transaction->order_id . ' belum dibayar. Klik tombol "Bayar Sekarang" untuk melanjutkan pembayaran atau memilih metode pembayaran lain.');
+                }
+
                 return redirect()->route('ticket.buy')
-                    ->with('warning', 'Pembayaran belum diselesaikan. Silakan selesaikan pembayaran untuk mendapatkan E-Ticket Anda.');
+                    ->with('warning', 'Pesanan #' . $transaction->order_id . ' belum diselesaikan. Silakan selesaikan pembayaran untuk mendapatkan E-Ticket Anda.')
+                    ->with('pending_order_id', $transaction->order_id);
             }
 
             if ($transaction->status === 'failed') {

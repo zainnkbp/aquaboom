@@ -54,6 +54,29 @@
         </div>
       @endif
 
+      @if(session('pending_order_id'))
+        @php
+          $pendingTrx = \App\Models\Transaction::where('order_id', session('pending_order_id'))->first();
+        @endphp
+        @if($pendingTrx && $pendingTrx->status === 'pending')
+          <div class="mb-8 p-6 bg-gradient-to-r from-amber-50 via-orange-50/50 to-white border-2 border-amber-400 rounded-3xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="space-y-1 text-center md:text-left">
+              <div class="flex items-center justify-center md:justify-start gap-2">
+                <span class="w-3 h-3 rounded-full bg-amber-500 animate-ping"></span>
+                <h4 class="font-black text-amber-950 uppercase tracking-wider text-sm">Pesanan Menunggu Pembayaran (#{{ $pendingTrx->order_id }})</h4>
+              </div>
+              <p class="text-xs text-slate-600 font-semibold">
+                Total: <strong class="text-amber-600 font-black text-sm">Rp {{ number_format($pendingTrx->total_price, 0, ',', '.') }}</strong> — Klik tombol di samping untuk menyelesaikan pembayaran atau memilih metode bayar lain di DOKU.
+              </p>
+            </div>
+            <a href="{{ route('payment.doku.pay', $pendingTrx->order_id) }}" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black px-6 py-3.5 rounded-xl uppercase tracking-wider text-xs transition-all shadow-md hover:-translate-y-0.5 shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+              <span>Bayar Sekarang / Ganti Metode</span>
+            </a>
+          </div>
+        @endif
+      @endif
+
       <!-- Ticket Checkout Flow (Livewire) -->
       <div id="packages" class="mb-16 bg-white rounded-[32px] overflow-hidden shadow-xl border border-aqua-cream-2">
         @livewire('checkout')

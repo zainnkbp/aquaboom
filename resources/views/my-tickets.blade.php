@@ -88,6 +88,34 @@
   <section class="py-24 bg-aqua-cream min-h-[500px]">
     <div class="max-w-7xl mx-auto px-6 lg:px-10">
       
+      @if(session('error'))
+        <div class="mb-8 p-5 bg-red-50 border border-red-200 text-red-700 rounded-2xl font-bold text-sm flex items-center gap-3 shadow-sm">
+          <svg class="w-6 h-6 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          <span>{{ session('error') }}</span>
+        </div>
+      @endif
+
+      @if(session('warning'))
+        <div class="mb-8 p-5 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl font-bold text-sm flex items-center gap-3 shadow-sm">
+          <svg class="w-6 h-6 shrink-0 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          <span>{{ session('warning') }}</span>
+        </div>
+      @endif
+
+      @if(session('info'))
+        <div class="mb-8 p-5 bg-blue-50 border border-blue-200 text-blue-800 rounded-2xl font-bold text-sm flex items-center gap-3 shadow-sm">
+          <svg class="w-6 h-6 shrink-0 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>{{ session('info') }}</span>
+        </div>
+      @endif
+
+      @if(session('success'))
+        <div class="mb-8 p-5 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-2xl font-bold text-sm flex items-center gap-3 shadow-sm">
+          <svg class="w-6 h-6 shrink-0 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          <span>{{ session('success') }}</span>
+        </div>
+      @endif
+
       @if($transactions->isEmpty())
         <div class="bg-white rounded-[32px] border border-aqua-cream-2 p-12 text-center shadow-lg max-w-2xl mx-auto">
           <div class="w-20 h-20 bg-aqua-cream rounded-full flex items-center justify-center mx-auto mb-6 text-aqua-gold">
@@ -129,7 +157,7 @@
                         </span>
                       @elseif($tx->status === 'pending')
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Pending
+                          <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Pending
                         </span>
                       @elseif($tx->status === 'scanned')
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
@@ -146,6 +174,11 @@
                         <a href="{{ route('ticket.show', $tx->order_id) }}" class="inline-flex items-center gap-2 bg-aqua-azure hover:bg-aqua-azure-2 text-white font-black px-5 py-2.5 rounded-xl uppercase tracking-wider text-xs transition-all shadow-sm">
                           {{ App::getLocale() === 'en' ? 'View E-Ticket' : 'Lihat E-Ticket' }}
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                      @elseif($tx->status === 'pending')
+                        <a href="{{ route('payment.doku.pay', $tx->order_id) }}" class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black px-5 py-2.5 rounded-xl uppercase tracking-wider text-xs transition-all shadow-md hover:-translate-y-0.5">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                          <span>{{ App::getLocale() === 'en' ? 'Pay Now' : 'Bayar Sekarang' }}</span>
                         </a>
                       @else
                         <span class="text-slate-400 text-xs italic">-</span>
