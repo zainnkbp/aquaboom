@@ -144,6 +144,14 @@ Route::get('/faq', function () {
     return view('faq', compact('faqs'));
 })->name('faq');
 
+Route::get('/privacy-policy', function () {
+    return view('privacy');
+})->name('privacy');
+
+Route::get('/privacy', function () {
+    return redirect()->route('privacy');
+});
+
 // Scanner App Routes
 Route::get('/scanner/login', ScannerLogin::class)->name('scanner.login');
 Route::get('/scanner', QrScanner::class)->name('scanner.app')->middleware('auth');

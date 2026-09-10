@@ -530,8 +530,8 @@
         class="border-t border-aqua-gold/15 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-semibold text-white/30">
         <div>&copy; {{ date('Y') }} Aquaboom Waterpark. All rights reserved.</div>
         <div class="flex gap-6">
-          <a href="#" class="hover:text-aqua-gold transition-colors">Privacy Policy</a>
-          <a href="#" class="hover:text-aqua-gold transition-colors">Terms of Use</a>
+          <a href="{{ route('privacy') }}" class="hover:text-aqua-gold transition-colors">{{ App::getLocale() === 'en' ? 'Privacy Policy' : 'Kebijakan Privasi' }}</a>
+          <a href="#" class="hover:text-aqua-gold transition-colors">{{ App::getLocale() === 'en' ? 'Terms of Use' : 'Syarat & Ketentuan' }}</a>
         </div>
       </div>
     </div>
