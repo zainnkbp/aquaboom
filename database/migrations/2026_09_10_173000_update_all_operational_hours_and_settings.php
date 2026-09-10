@@ -26,13 +26,22 @@ return new class extends Migration
 
         Setting::updateOrCreate(
             ['key' => 'hero_description'],
-            ['value' => 'Aquaboom Waterpark Balikpapan — Pengalaman rekreasi air yang unik di 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text']
+            ['value' => 'Aquaboom Waterpark Balikpapan — Waterpark ikonik di Balikpapan yang berada di 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text']
         );
 
         Setting::updateOrCreate(
             ['key' => 'hero_description_en'],
-            ['value' => 'Aquaboom Waterpark Balikpapan — A unique waterpark experience on 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.', 'group' => 'homepage', 'type' => 'text']
+            ['value' => "Aquaboom Waterpark Balikpapan — Balikpapan's iconic waterpark located on 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.", 'group' => 'homepage', 'type' => 'text']
         );
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('home_page_cards')) {
+            \Illuminate\Support\Facades\DB::table('home_page_cards')
+                ->where('description', 'like', '%Indonesia%')
+                ->orWhere('description', 'like', '%satu-satunya%')
+                ->update([
+                    'description' => 'Aquaboom Waterpark Balikpapan — Waterpark ikonik di Balikpapan yang menghadirkan keseruan rekreasi air premium di 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan.'
+                ]);
+        }
 
         Setting::updateOrCreate(
             ['key' => 'philosophy_text'],
