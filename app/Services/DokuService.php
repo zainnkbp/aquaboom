@@ -129,4 +129,52 @@ class DokuService
 
         return hash_equals($expectedSignature, $incomingSignature);
     }
+
+    /**
+     * Memeriksa status transaksi terkini langsung ke API DOKU (Orders Status).
+     */
+    public function checkTransactionStatus(string $invoiceNumber): ?array
+    {
+        if (empty($this->clientId) || empty($this->secretKey)) {
+            Log::error('DOKU Integration Error: Credentials not configured in .env');
+            return null;
+        }
+
+        $cleanInvoice = str_replace('-', '', $invoiceNumber);
+        $target = '/orders/v1/status/' . $cleanInvoice;
+        $requestId = (string) Str::uuid();
+        $timestamp = gmdate('Y-m-d\TH:i:s\Z');
+
+        // Signature untuk HTTP GET di DOKU Checkout tidak menyertakan Digest
+        $component = "Client-Id:" . $this->clientId . "\n" .
+                     "Request-Id:" . $requestId . "\n" .
+                     "Request-Timestamp:" . $timestamp . "\n" .
+                     "Request-Target:" . $target;
+
+        $signature = 'HMACSHA256=' . base64_encode(hash_hmac('sha256', $component, $this->secretKey, true));
+
+        try {
+            $response = Http::withHeaders([
+                'Client-Id' => $this->clientId,
+                'Request-Id' => $requestId,
+                'Request-Timestamp' => $timestamp,
+                'Signature' => $signature,
+            ])->get($this->baseUrl . $target);
+
+            if ($response->successful()) {
+                Log::info('DOKU Check Status Response:', $response->json());
+                return $response->json();
+            }
+
+            Log::warning('DOKU Check Status Non-Success:', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+        } catch (\Exception $e) {
+            Log::error('DOKU Check Status Exception: ' . $e->getMessage());
+        }
+
+        return null;
+    }
 }
+

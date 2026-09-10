@@ -132,21 +132,53 @@ class PaymentController extends Controller
         }
 
         if ($transaction) {
-            // Selesaikan transaksi & kirim email e-ticket jika status masih pending
-            if ($transaction->status === 'pending') {
-                $transaction->update(['status' => 'paid']);
-                try {
-                    Mail::to($transaction->customer_email)->send(new TicketSent($transaction));
-                    Log::info('PaymentRedirect: Transaction settled and E-Ticket sent to ' . $transaction->customer_email);
-                } catch (\Exception $e) {
-                    Log::error('PaymentRedirect: Failed sending E-Ticket email: ' . $e->getMessage());
-                }
+            // Jika transaksi sudah tercatat lunas (misal via Webhook notification)
+            if (in_array($transaction->status, ['paid', 'scanned'])) {
+                return redirect()->route('ticket.show', ['order_id' => $transaction->order_id])
+                    ->with('success', 'Pembayaran Anda berhasil! Berikut adalah E-Ticket Anda.');
             }
 
-            return redirect()->route('ticket.show', ['order_id' => $transaction->order_id])
-                ->with('success', 'Pembayaran Anda berhasil! Berikut adalah E-Ticket Anda.');
+            // Jika status masih pending, lakukan verifikasi langsung ke DOKU API
+            if ($transaction->status === 'pending') {
+                $statusCheck = $this->dokuService->checkTransactionStatus($transaction->order_id);
+                $remoteStatus = strtoupper(
+                    $statusCheck['transaction']['status'] ?? 
+                    $statusCheck['order']['status'] ?? 
+                    $statusCheck['status'] ?? 
+                    ''
+                );
+
+                if ($remoteStatus === 'SUCCESS') {
+                    $transaction->update(['status' => 'paid']);
+                    try {
+                        Mail::to($transaction->customer_email)->send(new TicketSent($transaction));
+                        Log::info('PaymentRedirect: Transaction verified as PAID via DOKU API and E-Ticket sent to ' . $transaction->customer_email);
+                    } catch (\Exception $e) {
+                        Log::error('PaymentRedirect: Failed sending E-Ticket email: ' . $e->getMessage());
+                    }
+
+                    return redirect()->route('ticket.show', ['order_id' => $transaction->order_id])
+                        ->with('success', 'Pembayaran Anda berhasil! Berikut adalah E-Ticket Anda.');
+                }
+
+                if (in_array($remoteStatus, ['FAILED', 'EXPIRED', 'CANCELLED'])) {
+                    $transaction->update(['status' => 'failed']);
+                    return redirect()->route('ticket.buy')
+                        ->with('error', 'Pembayaran Anda gagal atau telah dibatalkan. Silakan ulangi pemesanan.');
+                }
+
+                // Pengguna kembali ke web sebelum menyelesaikan pembayaran (Back to Merchant / Belum Bayar)
+                Log::info('PaymentRedirect: User returned to merchant but payment is still pending for Order ID: ' . $transaction->order_id);
+                return redirect()->route('ticket.buy')
+                    ->with('warning', 'Pembayaran belum diselesaikan. Silakan selesaikan pembayaran untuk mendapatkan E-Ticket Anda.');
+            }
+
+            if ($transaction->status === 'failed') {
+                return redirect()->route('ticket.buy')
+                    ->with('error', 'Transaksi ini telah dibatalkan atau gagal.');
+            }
         }
 
-        return redirect()->route('ticket.buy')->with('info', 'Transaksi telah diproses. Silakan cek email Anda untuk e-ticket.');
+        return redirect()->route('ticket.buy')->with('info', 'Transaksi tidak ditemukan atau telah dibatalkan.');
     }
 }

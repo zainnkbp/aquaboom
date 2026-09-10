@@ -68,6 +68,15 @@ Route::get('/v0', function () {
 
 Route::get('/ticket/{order_id}', function ($order_id) {
     $transaction = Transaction::where('order_id', $order_id)->firstOrFail();
+
+    // Keamanan: Tiket hanya dapat diakses jika berstatus paid (lunas) atau scanned
+    if (!in_array($transaction->status, ['paid', 'scanned'])) {
+        if ($transaction->status === 'pending' && !empty($transaction->payment_url)) {
+            return redirect()->away($transaction->payment_url);
+        }
+        return redirect()->route('ticket.buy')->with('warning', 'Pesanan ini belum dibayar atau sedang menunggu penyelesaian pembayaran.');
+    }
+
     return view('ticket', compact('transaction'));
 })->name('ticket.show');
 
