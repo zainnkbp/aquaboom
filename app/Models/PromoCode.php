@@ -26,12 +26,6 @@ class PromoCode extends Model
         static::creating(function ($model) {
             if (!empty($model->code)) {
                 $model->code = strtoupper(trim($model->code));
-                // Automatically force-delete any soft-deleted promo code with the same code
-                // so PostgreSQL doesn't conflict with unique constraint on code and allows reuse
-                static::withTrashed()
-                    ->where('code', $model->code)
-                    ->whereNotNull('deleted_at')
-                    ->forceDelete();
             }
         });
 

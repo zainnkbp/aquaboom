@@ -37,8 +37,10 @@ class PromoCodeResource extends Resource
                         table: 'promo_codes',
                         column: 'code',
                         ignoreRecord: true,
-                        modifyRuleUsing: fn ($rule) => $rule->whereNull('deleted_at')
                     )
+                    ->validationMessages([
+                        'unique' => 'Kode promo ini sudah ada. Jika sebelumnya pernah dihapus, Anda dapat memulihkannya (Restore) melalui Filter Sampah di tabel.',
+                    ])
                     ->helperText('Kode unik promo (otomatis dibuat huruf besar saat dipakai)'),
                 Forms\Components\TextInput::make('discount_percentage')
                     ->label('Diskon Persentase')
@@ -168,13 +170,23 @@ class PromoCodeResource extends Resource
         return auth()->user()?->hasPermission('promos') ?? false;
     }
 
-    public static function canDelete($record): bool
+    public static function canRestore($record): bool
     {
         return auth()->user()?->hasPermission('promos') ?? false;
     }
 
-    public static function canDeleteAny(): bool
+    public static function canRestoreAny(): bool
     {
         return auth()->user()?->hasPermission('promos') ?? false;
+    }
+
+    public static function canForceDelete($record): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
+    }
+
+    public static function canForceDeleteAny(): bool
+    {
+        return auth()->user()?->isSuperAdmin() ?? false;
     }
 }
