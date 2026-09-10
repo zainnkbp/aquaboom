@@ -8,7 +8,7 @@
     </div>
 
     <!-- Step 1: Visit Date -->
-    <div id="step-1-date" class="px-3 md:px-10 py-3 md:py-8 bg-aqua-cream border-b border-slate-100 scroll-mt-20 md:scroll-mt-24">
+    <div id="step-1-date" class="px-3 md:px-10 py-3.5 md:py-8 bg-aqua-cream border-b border-slate-100 scroll-mt-20 md:scroll-mt-24">
         <div class="max-w-5xl mx-auto">
             <div class="flex items-center gap-2 md:gap-3 mb-2.5 md:mb-6">
                 <div class="h-px w-6 md:w-8 bg-aqua-gold"></div>
@@ -22,21 +22,21 @@
                 <button type="button" 
                      wire:click="$set('visit_date', '{{ date('Y-m-d') }}')" 
                      @click="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
-                     class="py-1.5 px-3.5 md:py-4 md:px-10 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-base font-bold border md:border-2
+                     class="py-2 px-4 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
                      {{ $visit_date === date('Y-m-d') ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
                     {{ $locale === 'id' ? 'Hari Ini' : 'Today' }}
                 </button>
                 <button type="button" 
                      wire:click="$set('visit_date', '{{ date('Y-m-d', strtotime('+1 day')) }}')" 
                      @click="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
-                     class="py-1.5 px-3.5 md:py-4 md:px-10 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-base font-bold border md:border-2
+                     class="py-2 px-4 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
                      {{ $visit_date === date('Y-m-d', strtotime('+1 day')) ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
                     {{ $locale === 'id' ? 'Besok' : 'Tomorrow' }}
                 </button>
                 <div x-data @click="$refs.datePicker.showPicker()" 
-                     class="relative py-1.5 px-3.5 md:py-4 md:px-10 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap flex items-center gap-1.5 md:gap-3 snap-start shrink-0 text-xs md:text-base font-bold border md:border-2
+                     class="relative py-2 px-4 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap flex items-center gap-1.5 md:gap-2.5 snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
                      {{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
-                    <svg class="w-3.5 h-3.5 md:w-5 md:h-5 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <svg class="w-3.5 h-3.5 md:w-4 md:h-4 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span>{{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? \Carbon\Carbon::parse($visit_date)->format('d M Y') : ($locale === 'id' ? 'Tanggal Lain' : 'Other Date') }}</span>
                     <input x-ref="datePicker" type="date" wire:model.live="visit_date" 
                            @change="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
@@ -48,8 +48,8 @@
     </div>
 
     <!-- Step 2: Choose Tickets (Premium Cards - Redesigned to be Big and Detailed) -->
-    <div id="step-2-tickets" class="px-3 md:px-10 py-4 md:py-10 max-w-5xl mx-auto w-full scroll-mt-20 md:scroll-mt-24">
-        <div class="flex items-center gap-2 md:gap-3 mb-3 md:mb-6">
+    <div id="step-2-tickets" class="px-3 md:px-10 py-5 md:py-10 max-w-5xl mx-auto w-full scroll-mt-20 md:scroll-mt-24">
+        <div class="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
             <div class="h-px w-6 md:w-8 bg-aqua-gold"></div>
             <span class="text-aqua-gold text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">Step 2</span>
             <span class="text-aqua-navy text-xs md:text-sm font-black uppercase tracking-wide">
@@ -102,26 +102,32 @@
                          {{ $isDuo ? 'border-pink-500/45 ring-2 ring-pink-500/10' : ($isFour ? 'border-emerald-500/45 ring-2 ring-emerald-500/10' : ($isWeekend ? 'border-blue-500/45 ring-2 ring-blue-500/10' : 'border-slate-200')) }}">
                         
                         <!-- Header Card -->
-                        <div class="h-28 sm:h-36 md:h-44 flex flex-col items-center justify-center p-4 md:p-6 relative overflow-hidden {{ $headerGradient }}">
-                            
+                        <div class="py-6 sm:py-7 md:py-8 px-4 sm:px-6 min-h-[135px] md:min-h-[160px] flex flex-col items-center justify-center text-center relative overflow-hidden {{ $headerGradient }} shadow-inner">
+                            <div class="absolute inset-0 bg-white/10 bg-gradient-to-b from-white/15 to-transparent pointer-events-none"></div>
+
                             @if($isWeekend)
-                                <div class="absolute top-2.5 right-2.5 md:top-4 md:right-4 bg-white text-aqua-navy text-[9px] md:text-[10px] font-black uppercase px-2.5 py-0.5 md:px-3 md:py-1 rounded-full tracking-wider md:tracking-widest">
+                                <div class="absolute top-2.5 right-2.5 md:top-3.5 md:right-3.5 bg-white text-aqua-navy text-[9px] md:text-[10px] font-black uppercase px-2.5 py-0.5 md:px-3 md:py-1 rounded-full tracking-wider md:tracking-widest shadow-sm">
                                     {{ $locale === 'id' ? 'Paling Populer' : 'Most Popular' }}
                                 </div>
                             @endif
 
-                            <span class="text-[10px] md:text-xs font-black tracking-widest uppercase mb-0.5 md:mb-1 text-white/80">
+                            <span class="text-[10px] md:text-xs font-black tracking-[0.2em] uppercase mb-1 text-white/90 drop-shadow-sm">
                                 {{ $pkg->validity_type === 'weekday' ? 'Weekday' : ($pkg->validity_type === 'weekend' ? 'Weekend' : ($pkg->validity_type === 'all_days' ? ($locale === 'id' ? 'Setiap Hari' : 'Everyday') : 'Weekday')) }}
                             </span>
 
                             <!-- Clear Full Price text -->
-                            <div class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white">
+                            <div class="text-3xl sm:text-3xl md:text-4xl font-black tracking-tight text-white drop-shadow">
                                 Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}
                             </div>
+
+                            <!-- Pricing Sub-label (e.g. per orang / per 2 orang) -->
+                            <span class="text-[11px] md:text-xs font-bold text-white/80 mt-1 uppercase tracking-wider">
+                                {{ $pricingLabel }}
+                            </span>
                         </div>
 
                         <!-- Card Body (Beautiful features with Gold checkmarks) -->
-                        <div class="p-4 sm:p-6 md:p-8 flex-1 flex flex-col justify-between">
+                        <div class="p-5 sm:p-6 md:p-8 flex-1 flex flex-col justify-between">
                             <div>
                                 <h3 class="text-xl font-black text-aqua-navy mb-4 uppercase">
                                     {{ $locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
@@ -234,7 +240,7 @@
     </div>
 
     <!-- Step 4: Contact Information -->
-    <div id="step-4-contact" class="px-4 md:px-10 py-12 max-w-5xl mx-auto w-full scroll-mt-24">
+    <div id="step-4-contact" class="px-4 md:px-10 pt-12 pb-28 md:pb-36 max-w-5xl mx-auto w-full scroll-mt-24">
         <div class="flex items-center gap-3 mb-8">
             <div class="h-px w-8 bg-aqua-gold"></div>
             <span class="text-aqua-gold text-xs font-black uppercase tracking-[0.2em]">Step 4</span>
@@ -593,6 +599,54 @@
         </div>
 
     </div>
+
+    <!-- Sticky Bottom Price Summary Bar (Booking.com / OTA Best Practice) -->
+    @if($this->totalTickets > 0)
+        <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-10px_30px_-5px_rgba(0,0,0,0.15)] transition-all duration-300">
+            <!-- Top Gold/Accent Highlight Strip -->
+            <div class="bg-gradient-to-r from-aqua-gold via-amber-400 to-aqua-gold h-1 w-full"></div>
+            
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between gap-3 sm:gap-6">
+                <!-- Left: Price & Breakdown -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-0.5">
+                        <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-200/60 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                            ✨ {{ $locale === 'id' ? 'Bebas Antre di Loket' : 'Fast Track Entry' }}
+                        </span>
+                        <span class="text-[11px] sm:text-xs text-slate-500 font-semibold truncate hidden sm:inline">
+                            • {{ $locale === 'id' ? 'Termasuk pajak & asuransi wahana' : 'Includes taxes & ride insurance' }}
+                        </span>
+                    </div>
+
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-xl sm:text-2xl md:text-3xl font-black text-aqua-navy tracking-tight">
+                            Rp {{ number_format($this->totalPrice, 0, ',', '.') }}
+                        </span>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-500">
+                            ({{ $this->totalTickets }} {{ $locale === 'id' ? 'Tiket' : 'Ticket(s)' }}@if($this->totalAddons > 0), {{ $this->totalAddons }} Add-on @endif)
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Right: CTA Button -->
+                <div class="shrink-0 flex items-center gap-2">
+                    <button type="button" 
+                            onclick="
+                                const contactSection = document.getElementById('step-4-contact');
+                                if (contactSection) {
+                                    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    const nameInput = document.getElementById('name');
+                                    if (nameInput) setTimeout(() => nameInput.focus(), 300);
+                                }
+                            "
+                            class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-1.5 sm:gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
+                        <span>{{ $locale === 'id' ? 'Lanjut Isi Data' : 'Continue' }}</span>
+                        <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- Modal Konfirmasi Pembayaran & Ringkasan Transparan -->
     @if($showConfirmationModal)

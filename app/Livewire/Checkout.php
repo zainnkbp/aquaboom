@@ -265,6 +265,11 @@ class Checkout extends Component
         return array_sum($this->quantities);
     }
 
+    public function getTotalAddonsProperty()
+    {
+        return array_sum($this->addon_quantities);
+    }
+
     public function openConfirmationModal()
     {
         $this->validate([
