@@ -600,38 +600,212 @@
     </div>
 
     <!-- Sticky Bottom Price Summary Bar (Booking.com / OTA Best Practice) -->
+    <!-- Sticky Bottom Price Summary Bar & Expandable Cart Bottom Sheet -->
     @if($this->totalTickets > 0)
-        <div x-data
+        <div x-data="{ 
+                isExpanded: false,
+                startY: 0,
+                handleTouchStart(e) {
+                    this.startY = e.touches[0].clientY;
+                },
+                handleTouchEnd(e) {
+                    const diff = this.startY - e.changedTouches[0].clientY;
+                    if (diff > 35) this.isExpanded = true;
+                    if (diff < -35) this.isExpanded = false;
+                }
+             }"
              x-init="window.dispatchEvent(new CustomEvent('sticky-price-bar-toggle', { detail: { active: true } }))"
-             class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-10px_30px_-5px_rgba(0,0,0,0.15)] transition-all duration-300 animate-in slide-in-from-bottom-5">
-            <!-- Top Gold/Accent Highlight Strip -->
-            <div class="bg-gradient-to-r from-aqua-gold via-amber-400 to-aqua-gold h-1 w-full"></div>
-            
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between gap-3 sm:gap-6">
-                <!-- Left: Price & Breakdown -->
-                <div class="flex-1 min-w-0 pr-2">
-                    <div class="flex items-center gap-1.5 sm:gap-2 mb-0.5">
-                        <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-200/60 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
-                            ✨ {{ $locale === 'id' ? 'Bebas Antre di Loket' : 'Fast Track Entry' }}
-                        </span>
-                        <span class="text-[11px] sm:text-xs text-slate-500 font-semibold truncate hidden sm:inline">
-                            • {{ $locale === 'id' ? 'Termasuk pajak & asuransi wahana' : 'Includes taxes & ride insurance' }}
-                        </span>
-                    </div>
+             @keydown.escape.window="isExpanded = false"
+             class="relative">
 
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-xl sm:text-2xl md:text-3xl font-black text-aqua-navy tracking-tight">
-                            Rp {{ number_format($this->totalPrice, 0, ',', '.') }}
-                        </span>
-                        <span class="text-[11px] sm:text-xs font-bold text-slate-500 whitespace-nowrap">
-                            ({{ $this->totalTickets }} {{ $locale === 'id' ? 'Tiket' : 'Ticket(s)' }}@if($this->totalAddons > 0), {{ $this->totalAddons }} Add-on @endif)
-                        </span>
+            <!-- Backdrop (when expanded) -->
+            <div x-show="isExpanded" 
+                 x-cloak
+                 style="display: none; z-index: 45;"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 @click="isExpanded = false"
+                 class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm cursor-pointer">
+            </div>
+
+            <!-- Drawer Bottom Sheet (Slides up from bottom) -->
+            <div x-show="isExpanded"
+                 x-cloak
+                 style="display: none; z-index: 46;"
+                 x-transition:enter="transform transition ease-out duration-300"
+                 x-transition:enter-start="translate-y-full opacity-0"
+                 x-transition:enter-end="translate-y-0 opacity-100"
+                 x-transition:leave="transform transition ease-in duration-200"
+                 x-transition:leave-start="translate-y-0 opacity-100"
+                 x-transition:leave-end="translate-y-full opacity-0"
+                 class="fixed inset-x-0 bottom-0 max-h-[85vh] sm:max-h-[75vh] bg-white rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-15px_40px_-10px_rgba(0,0,0,0.3)] border-t border-aqua-gold/30 flex flex-col overflow-hidden">
+                
+                <!-- Drawer Top Drag Handle & Header -->
+                <div @touchstart="handleTouchStart($event)" 
+                     @touchend="handleTouchEnd($event)" 
+                     class="pt-3 pb-4 px-5 sm:px-8 border-b border-slate-100 shrink-0 bg-slate-50/70 select-none">
+                    <!-- Mobile drag pill indicator -->
+                    <div class="w-12 h-1.5 bg-slate-300 hover:bg-aqua-gold rounded-full mx-auto mb-3 cursor-pointer transition-colors"
+                         @click="isExpanded = false"></div>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold flex items-center justify-center font-black text-sm">
+                                🛒
+                            </div>
+                            <div>
+                                <h3 class="text-sm sm:text-base font-black text-aqua-navy uppercase tracking-tight">
+                                    {{ $locale === 'id' ? 'Rincian Pesanan' : 'Cart Summary' }}
+                                </h3>
+                                <p class="text-[10px] sm:text-xs text-slate-500 font-semibold">
+                                    {{ $this->totalTickets }} {{ $locale === 'id' ? 'Tiket' : 'Ticket(s)' }}@if($this->totalAddons > 0), {{ $this->totalAddons }} Add-on @endif
+                                </p>
+                            </div>
+                        </div>
+
+                        <button type="button" 
+                                @click="isExpanded = false"
+                                class="text-slate-400 hover:text-aqua-navy p-2 rounded-xl hover:bg-slate-200/60 transition-colors cursor-pointer flex items-center gap-1 text-xs font-bold uppercase tracking-wider"
+                                aria-label="Tutup Rincian">
+                            <span>{{ $locale === 'id' ? 'Tutup' : 'Close' }}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Right: CTA Button -->
-                <div class="shrink-0 flex items-center">
+                <!-- Scrollable Item List with Live Qty Steppers -->
+                <div class="p-5 sm:p-8 overflow-y-auto flex-1 space-y-6 divide-y divide-slate-100">
+                    <!-- Section: Tiket -->
+                    <div class="space-y-3">
+                        <div class="text-[11px] font-black text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>🎟️</span>
+                            <span>{{ $locale === 'id' ? 'Tiket Masuk Terpilih' : 'Selected Tickets' }}</span>
+                        </div>
+
+                        <div class="space-y-3">
+                            @foreach($packages as $pkg)
+                                @php $qty = $quantities[$pkg->id] ?? 0; @endphp
+                                @if($qty > 0)
+                                    <div class="bg-aqua-cream/50 rounded-2xl p-4 border border-aqua-gold/20 flex items-center justify-between gap-3">
+                                        <div class="min-w-0 flex-1">
+                                            <h4 class="text-xs sm:text-sm font-black text-aqua-navy uppercase truncate">
+                                                {{ $locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
+                                            </h4>
+                                            <div class="text-[11px] text-slate-500 font-semibold mt-0.5">
+                                                Rp {{ number_format($pkg->effective_price, 0, ',', '.') }} / tiket
+                                            </div>
+                                            <div class="text-xs font-black text-aqua-navy mt-1">
+                                                Subtotal: <span class="text-aqua-azure">Rp {{ number_format($pkg->effective_price * $qty, 0, ',', '.') }}</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Stepper [-] [qty] [+] -->
+                                        <div class="flex items-center bg-white rounded-xl p-1 border border-aqua-gold/30 shadow-sm shrink-0">
+                                            <button type="button" 
+                                                    wire:click="decrementQuantity({{ $pkg->id }})" 
+                                                    class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-50 text-aqua-navy hover:bg-slate-200 font-black text-base transition-colors cursor-pointer">
+                                                -
+                                            </button>
+                                            <span class="text-xs font-black text-aqua-navy w-7 text-center">{{ $qty }}</span>
+                                            <button type="button" 
+                                                    wire:click="incrementQuantity({{ $pkg->id }})" 
+                                                    class="w-8 h-8 rounded-lg flex items-center justify-center bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 font-black text-base transition-colors cursor-pointer">
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Section: Add-ons (if any selected) -->
+                    @if($this->totalAddons > 0)
+                        <div class="pt-5 space-y-3">
+                            <div class="text-[11px] font-black text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <span>🏖️</span>
+                                <span>{{ $locale === 'id' ? 'Fasilitas Tambahan / Add-ons' : 'Additional Facilities' }}</span>
+                            </div>
+
+                            <div class="space-y-3">
+                                @foreach($addons as $addon)
+                                    @php $aQty = $addon_quantities[$addon->id] ?? 0; @endphp
+                                    @if($aQty > 0)
+                                        <div class="bg-aqua-cream/50 rounded-2xl p-4 border border-aqua-gold/20 flex items-center justify-between gap-3">
+                                            <div class="min-w-0 flex-1">
+                                                <h4 class="text-xs sm:text-sm font-black text-aqua-navy uppercase truncate">
+                                                    {{ $locale === 'en' && $addon->name_en ? $addon->name_en : $addon->name }}
+                                                </h4>
+                                                <div class="text-[11px] text-slate-500 font-semibold mt-0.5">
+                                                    Rp {{ number_format($addon->price, 0, ',', '.') }} / unit
+                                                </div>
+                                                <div class="text-xs font-black text-aqua-navy mt-1">
+                                                    Subtotal: <span class="text-aqua-azure">Rp {{ number_format($addon->price * $aQty, 0, ',', '.') }}</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Stepper [-] [qty] [+] -->
+                                            <div class="flex items-center bg-white rounded-xl p-1 border border-aqua-gold/30 shadow-sm shrink-0">
+                                                <button type="button" 
+                                                        wire:click="decrementAddonQuantity({{ $addon->id }})" 
+                                                        class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-50 text-aqua-navy hover:bg-slate-200 font-black text-base transition-colors cursor-pointer">
+                                                    -
+                                                </button>
+                                                <span class="text-xs font-black text-aqua-navy w-7 text-center">{{ $aQty }}</span>
+                                                <button type="button" 
+                                                        wire:click="incrementAddonQuantity({{ $addon->id }})" 
+                                                        class="w-8 h-8 rounded-lg flex items-center justify-center bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 font-black text-base transition-colors cursor-pointer">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Section: Calculation Breakdown -->
+                    <div class="pt-5 space-y-2 text-xs font-semibold">
+                        <div class="flex justify-between text-slate-600">
+                            <span>{{ $locale === 'id' ? 'Subtotal Tiket' : 'Ticket Subtotal' }}</span>
+                            <span class="font-black text-aqua-navy">Rp {{ number_format($this->ticketSubtotal, 0, ',', '.') }}</span>
+                        </div>
+                        @if($this->addonSubtotal > 0)
+                            <div class="flex justify-between text-slate-600">
+                                <span>{{ $locale === 'id' ? 'Subtotal Fasilitas Tambahan' : 'Add-on Subtotal' }}</span>
+                                <span class="font-black text-aqua-navy">Rp {{ number_format($this->addonSubtotal, 0, ',', '.') }}</span>
+                            </div>
+                        @endif
+                        @if($this->discountAmount > 0)
+                            <div class="flex justify-between text-emerald-600">
+                                <span>{{ $locale === 'id' ? 'Diskon Promo' : 'Promo Discount' }}</span>
+                                <span class="font-black">- Rp {{ number_format($this->discountAmount, 0, ',', '.') }}</span>
+                            </div>
+                        @endif
+                        <div class="pt-2 border-t border-slate-100 flex justify-between text-sm sm:text-base font-black text-aqua-navy">
+                            <span>{{ $locale === 'id' ? 'Total Pembayaran' : 'Total Amount' }}</span>
+                            <span class="text-aqua-azure">Rp {{ number_format($this->totalPrice, 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Drawer Footer (Integrated Action inside Drawer) -->
+                <div class="p-4 sm:px-8 sm:py-5 bg-slate-50 border-t border-slate-200 shrink-0 flex items-center justify-between gap-4">
+                    <div>
+                        <div class="text-[10px] font-black text-slate-400 uppercase tracking-wider">
+                            {{ $locale === 'id' ? 'Total Harga' : 'Total Price' }}
+                        </div>
+                        <div class="text-xl sm:text-2xl font-black text-aqua-navy">
+                            Rp {{ number_format($this->totalPrice, 0, ',', '.') }}
+                        </div>
+                    </div>
                     <button type="button" 
+                            @click="isExpanded = false"
                             onclick="
                                 const step3 = document.getElementById('step-3-addons');
                                 const step4 = document.getElementById('step-4-contact');
@@ -648,10 +822,88 @@
                                     if (nameInput) setTimeout(() => nameInput.focus({ preventScroll: true }), 400);
                                 }
                             "
-                            class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-1.5 sm:gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
+                            class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-6 sm:px-8 py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
                         <span>{{ $locale === 'id' ? 'Lanjut' : 'Continue' }}</span>
                         <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </button>
+                </div>
+            </div>
+
+            <!-- Sticky Bottom Bar (Always visible at bottom when items > 0) -->
+            <div @touchstart="handleTouchStart($event)" 
+                 @touchend="handleTouchEnd($event)"
+                 class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-10px_30px_-5px_rgba(0,0,0,0.15)] transition-all duration-300 animate-in slide-in-from-bottom-5">
+                
+                <!-- Mobile Drag Handle Bar & Gold Strip -->
+                <div class="relative cursor-pointer" @click="isExpanded = !isExpanded">
+                    <!-- Top Gold/Accent Highlight Strip -->
+                    <div class="bg-gradient-to-r from-aqua-gold via-amber-400 to-aqua-gold h-1 w-full"></div>
+                    <!-- Mobile drag handle pill -->
+                    <div class="py-1 flex justify-center lg:hidden">
+                        <div class="w-10 h-1 bg-slate-300 hover:bg-aqua-gold rounded-full transition-colors"></div>
+                    </div>
+                </div>
+                
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 py-2 sm:py-3.5 flex items-center justify-between gap-3 sm:gap-6">
+                    <!-- Left: Price & Breakdown + Toggle Button -->
+                    <div class="flex-1 min-w-0 pr-2">
+                        <div class="flex items-center gap-1.5 sm:gap-2 mb-0.5">
+                            <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-200/60 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                ✨ {{ $locale === 'id' ? 'Bebas Antre di Loket' : 'Fast Track Entry' }}
+                            </span>
+                            <span class="text-[11px] sm:text-xs text-slate-500 font-semibold truncate hidden sm:inline">
+                                • {{ $locale === 'id' ? 'Termasuk pajak & asuransi wahana' : 'Includes taxes & ride insurance' }}
+                            </span>
+                        </div>
+
+                        <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+                            <div class="flex items-baseline gap-2 cursor-pointer" @click="isExpanded = !isExpanded">
+                                <span class="text-xl sm:text-2xl md:text-3xl font-black text-aqua-navy tracking-tight">
+                                    Rp {{ number_format($this->totalPrice, 0, ',', '.') }}
+                                </span>
+                                <span class="text-[11px] sm:text-xs font-bold text-slate-500 whitespace-nowrap">
+                                    ({{ $this->totalTickets }} {{ $locale === 'id' ? 'Tiket' : 'Ticket(s)' }}@if($this->totalAddons > 0), {{ $this->totalAddons }} Add-on @endif)
+                                </span>
+                            </div>
+
+                            <!-- Desktop & Mobile Toggle Button -->
+                            <button type="button" 
+                                    @click="isExpanded = !isExpanded"
+                                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-aqua-gold/20 text-aqua-navy text-[10px] sm:text-xs font-black uppercase tracking-wider transition-colors border border-slate-200 hover:border-aqua-gold/40 cursor-pointer">
+                                <span x-text="isExpanded ? '{{ $locale === 'id' ? 'Tutup Rincian' : 'Hide Details' }}' : '{{ $locale === 'id' ? 'Rincian' : 'Details' }}'"></span>
+                                <svg class="w-3 h-3 transition-transform duration-200 text-aqua-gold" 
+                                     :class="{'rotate-180': isExpanded}" 
+                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right: CTA Button -->
+                    <div class="shrink-0 flex items-center">
+                        <button type="button" 
+                                onclick="
+                                    const step3 = document.getElementById('step-3-addons');
+                                    const step4 = document.getElementById('step-4-contact');
+                                    if (step3) {
+                                        const rect3 = step3.getBoundingClientRect();
+                                        if (rect3.top > 200) {
+                                            step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                            return;
+                                        }
+                                    }
+                                    if (step4) {
+                                        step4.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                        const nameInput = document.getElementById('name');
+                                        if (nameInput) setTimeout(() => nameInput.focus({ preventScroll: true }), 400);
+                                    }
+                                "
+                                class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-1.5 sm:gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
+                            <span>{{ $locale === 'id' ? 'Lanjut' : 'Continue' }}</span>
+                            <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
