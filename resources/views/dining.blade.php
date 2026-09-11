@@ -39,6 +39,7 @@
     @keydown.escape.window="isMenuOpen = false"
     @keydown.arrow-right.window="if (isMenuOpen && activeMenuList.length > 1) nextMenu()"
     @keydown.arrow-left.window="if (isMenuOpen && activeMenuList.length > 1) prevMenu()"
+    x-init="$watch('isMenuOpen', val => { document.body.classList.toggle('overflow-hidden', val); window.dispatchEvent(new CustomEvent(val ? 'hide-chat-assistant' : 'show-chat-assistant')); })"
   >
     <!-- Page Header -->
     <div class="pt-36 pb-20 bg-aqua-navy relative overflow-hidden">

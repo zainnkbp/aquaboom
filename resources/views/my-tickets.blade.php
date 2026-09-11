@@ -2,7 +2,9 @@
   <x-slot:title>{{ App::getLocale() === 'en' ? 'My Tickets - Aquaboom Waterpark' : 'Tiket Saya & Riwayat Pembelian - Aquaboom Waterpark' }}</x-slot:title>
   
   <!-- Page Header -->
-  <div class="pt-36 pb-20 bg-aqua-navy relative overflow-hidden" x-data="{ showPasswordModal: {{ $errors->any() ? 'true' : 'false' }} }">
+  <div class="pt-36 pb-20 bg-aqua-navy relative overflow-hidden" 
+       x-data="{ showPasswordModal: {{ $errors->any() ? 'true' : 'false' }} }"
+       x-init="$watch('showPasswordModal', val => { document.body.classList.toggle('overflow-hidden', val); window.dispatchEvent(new CustomEvent(val ? 'hide-chat-assistant' : 'show-chat-assistant')); })">
     <div class="absolute inset-0 opacity-10">
       <img src="{{ asset('assets/img/default.jpeg') }}" alt="bg" class="w-full h-full object-cover" />
     </div>
@@ -178,7 +180,7 @@
                       @elseif($tx->status === 'pending')
                         <a href="{{ route('payment.doku.pay', $tx->order_id) }}" 
                            @if($tx->payment_url)
-                             onclick="if (typeof loadJokulCheckout === 'function') { event.preventDefault(); loadJokulCheckout('{{ $tx->payment_url }}'); }"
+                             onclick="if (typeof loadJokulCheckout === 'function') { event.preventDefault(); window.dispatchEvent(new CustomEvent('hide-chat-assistant')); loadJokulCheckout('{{ $tx->payment_url }}'); }"
                            @endif
                            class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black px-5 py-2.5 rounded-xl uppercase tracking-wider text-xs transition-all shadow-md hover:-translate-y-0.5">
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>

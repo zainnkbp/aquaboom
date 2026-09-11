@@ -6,10 +6,13 @@
       this.activeWahana = data;
       this.isModalOpen = true;
       document.body.classList.add('overflow-hidden');
+      window.dispatchEvent(new CustomEvent('hide-chat-assistant'));
     },
     closeModal() {
       this.isModalOpen = false;
       document.body.classList.remove('overflow-hidden');
+      window.dispatchEvent(new CustomEvent('close-wahana-modal'));
+      window.dispatchEvent(new CustomEvent('show-chat-assistant'));
     }
   }"
   @open-wahana-modal.window="openModal($event.detail)"

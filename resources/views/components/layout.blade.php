@@ -63,7 +63,9 @@
 
 <body
   class="bg-aqua-cream text-aqua-navy antialiased min-h-screen flex flex-col selection:bg-aqua-gold selection:text-aqua-navy"
-  x-data="{ isMobileMenuOpen: false, scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 50)">
+  x-data="{ isMobileMenuOpen: false, scrolled: false }" 
+  @scroll.window="scrolled = (window.pageYOffset > 50)"
+  x-init="$watch('isMobileMenuOpen', val => { document.body.classList.toggle('overflow-hidden', val); window.dispatchEvent(new CustomEvent(val ? 'hide-chat-assistant' : 'show-chat-assistant')); })">
 
   <!-- ============================================================ -->
   <!-- NAVBAR — Midnight Navy with Champagne Gold accents           -->

@@ -1,10 +1,16 @@
 @props(['faqs'])
 
 <div x-data="chatbotData(@js($faqs))" 
+     x-init="initAssistant()"
      @sticky-price-bar-toggle.window="hasStickyBar = !!$event.detail.active"
-     @cart-drawer-toggle.window="isCartDrawerOpen = !!$event.detail.open"
-     :style="hasStickyBar ? 'transform: translateY(-80px);' : 'transform: translateY(0);'"
-     :class="isCartDrawerOpen ? 'opacity-0 pointer-events-none scale-90' : 'opacity-100 scale-100'"
+     @cart-drawer-toggle.window="isCartDrawerOpen = !!$event.detail.open; checkModals();"
+     @hide-chat-assistant.window="forceHidden = true; checkModals();"
+     @show-chat-assistant.window="forceHidden = false; checkModals();"
+     @open-wahana-modal.window="isWahanaModalOpen = true; checkModals();"
+     @close-wahana-modal.window="isWahanaModalOpen = false; checkModals();"
+     @keydown.escape.window="isWahanaModalOpen = false; isCartDrawerOpen = false; checkModals();"
+     :style="hasStickyBar && !isAnyModalOpen() ? 'transform: translateY(-80px);' : 'transform: translateY(0);'"
+     :class="isAnyModalOpen() ? 'opacity-0 pointer-events-none scale-0 -translate-y-4 invisible' : 'opacity-100 scale-100 visible'"
      class="fixed bottom-6 right-6 z-30 font-sans flex flex-col items-end gap-4 transition-all duration-300 ease-out">
     
     <!-- Chat Window -->
@@ -108,6 +114,9 @@
                 isTyping: false,
                 hasStickyBar: false,
                 isCartDrawerOpen: false,
+                isWahanaModalOpen: false,
+                forceHidden: false,
+                isBodyModalActive: false,
                 isEn: {{ App::getLocale() === 'en' ? 'true' : 'false' }},
                 faqs: faqData || [],
                 messages: [
@@ -116,6 +125,75 @@
                         text: {!! json_encode(App::getLocale() === 'en' ? 'Hello! I am Boomy 🌊<br/>How can I help you today regarding Aquaboom Waterpark? Please select a question below.' : 'Halo! Saya Boomy 🌊<br/>Ada yang bisa saya bantu terkait Aquaboom Waterpark? Silakan pilih pertanyaan di bawah ini.') !!}
                     }
                 ],
+
+                initAssistant() {
+                    this.checkModals();
+
+                    if (window.MutationObserver) {
+                        const observer = new MutationObserver(() => {
+                            this.checkModals();
+                        });
+                        observer.observe(document.body, { 
+                            attributes: true, 
+                            childList: true, 
+                            subtree: true, 
+                            attributeFilter: ['class', 'style'] 
+                        });
+                    }
+
+                    setInterval(() => {
+                        this.checkModals();
+                    }, 300);
+                },
+
+                checkModals() {
+                    // Check 1: Body scroll locked by any modal, drawer, or popup
+                    if (document.body.classList.contains('overflow-hidden')) {
+                        this.isBodyModalActive = true;
+                        if (this.isOpen) this.isOpen = false;
+                        return;
+                    }
+
+                    // Check 2: Any active modal overlay or dialog present in DOM outside this assistant
+                    const modalSelectors = [
+                        '.fixed.inset-0',
+                        '[role="dialog"]',
+                        '[aria-modal="true"]',
+                        '#doku-checkout-frame',
+                        'iframe[id*="jokul"]',
+                        '.swal2-container'
+                    ];
+
+                    let modalVisible = false;
+                    for (const sel of modalSelectors) {
+                        const elements = document.querySelectorAll(sel);
+                        for (const el of elements) {
+                            if (this.$el && this.$el.contains(el)) continue;
+
+                            const style = window.getComputedStyle(el);
+                            if (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
+                                const rect = el.getBoundingClientRect();
+                                if (rect.width > 150 && rect.height > 150) {
+                                    modalVisible = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (modalVisible) break;
+                    }
+
+                    this.isBodyModalActive = modalVisible;
+                    if (modalVisible && this.isOpen) {
+                        this.isOpen = false;
+                    }
+                },
+
+                isAnyModalOpen() {
+                    return this.isCartDrawerOpen || 
+                           this.isWahanaModalOpen || 
+                           this.forceHidden || 
+                           this.isBodyModalActive;
+                },
                 
                 askQuestion(faq) {
                     const questionText = this.isEn && faq.question_en ? faq.question_en : faq.question;

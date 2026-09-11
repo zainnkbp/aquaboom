@@ -311,11 +311,13 @@ class Checkout extends Component
         }
 
         $this->showConfirmationModal = true;
+        $this->dispatch('hide-chat-assistant');
     }
 
     public function closeConfirmationModal()
     {
         $this->showConfirmationModal = false;
+        $this->dispatch('show-chat-assistant');
     }
 
     public function submit()
@@ -474,6 +476,7 @@ class Checkout extends Component
             ]);
 
             $this->showConfirmationModal = false;
+            $this->dispatch('hide-chat-assistant');
 
             // Dispatch browser event to launch DOKU Jokul JS popup modal
             $this->dispatch('open-doku-popup', [

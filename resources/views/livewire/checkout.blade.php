@@ -310,8 +310,23 @@
         </div>
 
         <!-- Terms Acceptance with Forced Popup -->
-        <div x-data="{ termsModalOpen: false, termsAccepted: @entangle('termsAccepted') }" class="mb-12">
-            <div @click="termsModalOpen = true" class="flex items-start gap-4 bg-aqua-cream/50 p-6 rounded-[24px] border border-aqua-gold/20 cursor-pointer hover:bg-aqua-cream transition-colors">
+        <div x-data="{ 
+                termsModalOpen: false, 
+                termsAccepted: @entangle('termsAccepted'),
+                openTerms() {
+                    this.termsModalOpen = true;
+                    document.body.classList.add('overflow-hidden');
+                    window.dispatchEvent(new CustomEvent('hide-chat-assistant'));
+                },
+                closeTerms() {
+                    this.termsModalOpen = false;
+                    document.body.classList.remove('overflow-hidden');
+                    window.dispatchEvent(new CustomEvent('show-chat-assistant'));
+                }
+             }" 
+             @keydown.escape.window="closeTerms()"
+             class="mb-12">
+            <div @click="openTerms()" class="flex items-start gap-4 bg-aqua-cream/50 p-6 rounded-[24px] border border-aqua-gold/20 cursor-pointer hover:bg-aqua-cream transition-colors">
                 <div class="relative flex items-start pt-1">
                     <input type="checkbox" 
                         @click.prevent
@@ -330,7 +345,7 @@
             
             <!-- S&K Modal Pop-up -->
             <div x-show="termsModalOpen" @click.stop style="display: none;" class="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-6">
-                <div x-show="termsModalOpen" x-transition.opacity @click="termsModalOpen = false" class="absolute inset-0 bg-aqua-navy/70 backdrop-blur-md"></div>
+                <div x-show="termsModalOpen" x-transition.opacity @click="closeTerms()" class="absolute inset-0 bg-aqua-navy/70 backdrop-blur-md"></div>
                 <div x-show="termsModalOpen" x-transition class="relative bg-white w-full max-w-2xl rounded-[32px] shadow-2xl p-6 md:p-8 max-h-[85vh] flex flex-col border border-aqua-gold/20 overflow-hidden">
                     
                     <!-- Modal Header -->
@@ -348,7 +363,7 @@
                                 <span class="text-xs text-aqua-gold font-bold uppercase tracking-wider">Aquaboom Balikpapan</span>
                             </div>
                         </div>
-                        <button type="button" @click="termsModalOpen = false" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
+                        <button type="button" @click="closeTerms()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
@@ -529,7 +544,7 @@
                     <!-- Modal Footer Action -->
                     <div class="pt-4 border-t border-slate-100 shrink-0">
                         <button type="button" 
-                            @click="termsAccepted = true; @this.set('termsAccepted', true); termsModalOpen = false;" 
+                            @click="termsAccepted = true; @this.set('termsAccepted', true); closeTerms();" 
                             class="w-full bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold font-black py-4 rounded-2xl text-sm uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2.5 border border-aqua-gold/30 hover:border-aqua-gold cursor-pointer">
                             <svg class="w-5 h-5 text-aqua-gold" style="color: #F09628 !important; stroke: #F09628 !important;" fill="none" stroke="#F09628" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
@@ -932,9 +947,10 @@
     @if($showConfirmationModal)
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-slate-950/80 backdrop-blur-md overflow-y-auto"
              x-data
-             @keydown.escape.window="$wire.closeConfirmationModal()">
+             x-init="document.body.classList.add('overflow-hidden'); window.dispatchEvent(new CustomEvent('hide-chat-assistant'))"
+             @keydown.escape.window="$wire.closeConfirmationModal(); document.body.classList.remove('overflow-hidden'); window.dispatchEvent(new CustomEvent('show-chat-assistant'))">
             <div class="bg-white rounded-[32px] max-w-2xl w-full p-6 md:p-8 shadow-2xl border border-slate-100 relative my-auto max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
-                 @click.away="$wire.closeConfirmationModal()">
+                 @click.away="$wire.closeConfirmationModal(); document.body.classList.remove('overflow-hidden'); window.dispatchEvent(new CustomEvent('show-chat-assistant'))">
                 
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between pb-4 border-b border-slate-100 shrink-0">
@@ -1142,6 +1158,7 @@
         const paymentUrl = payload?.paymentUrl || (payload && payload[0]?.paymentUrl);
         
         if (paymentUrl) {
+            window.dispatchEvent(new CustomEvent('hide-chat-assistant'));
             if (typeof loadJokulCheckout === 'function') {
                 loadJokulCheckout(paymentUrl);
             } else {
