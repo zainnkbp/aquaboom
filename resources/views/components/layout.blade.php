@@ -58,6 +58,74 @@
       margin-top: 12px;
       border-radius: 2px;
     }
+
+    /* Custom Premium Popup Modal Frame for DOKU Jokul Checkout (Mobile & Desktop) */
+    #jokul_checkout_modal.jokul-modal {
+      position: fixed !important;
+      z-index: 999999 !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: rgba(11, 25, 44, 0.78) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      padding: 16px !important;
+      box-sizing: border-box !important;
+    }
+
+    #jokul_checkout_modal.jokul-modal[style*="display: block"] {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    #jokul_checkout_modal.jokul-modal[style*="display: none"] {
+      display: none !important;
+    }
+
+    #jokul_checkout_modal .jokul-content {
+      width: 100% !important;
+      max-width: 480px !important;
+      height: 90vh !important;
+      max-height: 740px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin: auto !important;
+      position: relative !important;
+      border-radius: 28px !important;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6) !important;
+      overflow: hidden !important;
+      background: #ffffff !important;
+      border: 1.5px solid rgba(251, 171, 67, 0.35) !important;
+    }
+
+    #jokul_checkout_modal .jokul-content iframe {
+      width: 100% !important;
+      height: 100% !important;
+      border: none !important;
+      border-radius: 26px !important;
+      display: block !important;
+      box-shadow: none !important;
+      background-color: #ffffff !important;
+    }
+
+    @media (max-width: 575.98px) {
+      #jokul_checkout_modal.jokul-modal {
+        padding: 12px 10px !important;
+      }
+      #jokul_checkout_modal .jokul-content {
+        max-width: 100% !important;
+        height: 88vh !important;
+        max-height: 92vh !important;
+        border-radius: 24px !important;
+      }
+      #jokul_checkout_modal .jokul-content iframe {
+        border-radius: 22px !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
   </style>
 </head>
 

@@ -318,6 +318,10 @@
                     this.termsModalOpen = true;
                     document.body.classList.add('overflow-hidden');
                     window.dispatchEvent(new CustomEvent('hide-chat-assistant'));
+                    this.$nextTick(() => {
+                        const modalScroll = document.getElementById('terms_modal_scroll');
+                        if (modalScroll) modalScroll.scrollTop = 0;
+                    });
                 },
                 closeTerms() {
                     this.termsModalOpen = false;
@@ -345,33 +349,34 @@
                 </div>
             </div>
             
-            <!-- S&K Modal Pop-up -->
-            <div x-show="termsModalOpen" @click.stop style="display: none;" class="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-6">
-                <div x-show="termsModalOpen" x-transition.opacity @click="closeTerms()" class="absolute inset-0 bg-aqua-navy/70 backdrop-blur-md"></div>
-                <div x-show="termsModalOpen" x-transition class="relative bg-white w-full max-w-2xl rounded-[32px] shadow-2xl p-6 md:p-8 max-h-[85vh] flex flex-col border border-aqua-gold/20 overflow-hidden">
-                    
-                    <!-- Modal Header -->
-                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 shrink-0">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-aqua-gold/30 flex items-center justify-center shrink-0">
-                                <svg class="w-6 h-6 text-aqua-gold" style="color: #F09628 !important; stroke: #F09628 !important;" fill="none" stroke="#F09628" stroke-width="2.2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
+            <!-- S&K Modal Pop-up (Teleported to body for 100% viewport centering without parent transform conflict) -->
+            <template x-teleport="body">
+                <div x-show="termsModalOpen" @click.stop style="display: none;" class="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-6">
+                    <div x-show="termsModalOpen" x-transition.opacity @click="closeTerms()" class="absolute inset-0 bg-aqua-navy/70 backdrop-blur-md"></div>
+                    <div x-show="termsModalOpen" x-transition class="relative bg-white w-full max-w-2xl rounded-[32px] shadow-2xl p-6 md:p-8 max-h-[85vh] flex flex-col border border-aqua-gold/20 overflow-hidden">
+                        
+                        <!-- Modal Header -->
+                        <div class="flex items-center justify-between pb-4 border-b border-slate-100 shrink-0">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-aqua-gold/30 flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 text-aqua-gold" style="color: #F09628 !important; stroke: #F09628 !important;" fill="none" stroke="#F09628" stroke-width="2.2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-base md:text-lg font-black text-aqua-navy uppercase tracking-tight">
+                                        {{ $locale === 'id' ? 'Syarat & Ketentuan Booking Tiket' : 'Ticket Booking Terms & Conditions' }}
+                                    </h4>
+                                    <span class="text-xs text-aqua-gold font-bold uppercase tracking-wider">Aquaboom Balikpapan</span>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="text-base md:text-lg font-black text-aqua-navy uppercase tracking-tight">
-                                    {{ $locale === 'id' ? 'Syarat & Ketentuan Booking Tiket' : 'Ticket Booking Terms & Conditions' }}
-                                </h4>
-                                <span class="text-xs text-aqua-gold font-bold uppercase tracking-wider">Aquaboom Balikpapan</span>
-                            </div>
+                            <button type="button" @click="closeTerms()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
                         </div>
-                        <button type="button" @click="closeTerms()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
-                    
-                    <!-- Scrollable Modal Body -->
-                    <div class="flex-1 overflow-y-auto py-5 pr-2 text-xs md:text-sm text-slate-600 leading-relaxed font-semibold space-y-6">
+                        
+                        <!-- Scrollable Modal Body -->
+                        <div id="terms_modal_scroll" class="flex-1 overflow-y-auto py-5 pr-2 text-xs md:text-sm text-slate-600 leading-relaxed font-semibold space-y-6">
                         <div class="bg-amber-500/5 border border-amber-500/20 rounded-2xl p-4 text-xs font-medium text-slate-700">
                             {{ $locale === 'id' 
                                 ? 'Dengan melakukan pembelian tiket Aquaboom Balikpapan, customer dianggap telah membaca, memahami, dan menyetujui seluruh Syarat & Ketentuan berikut:'
@@ -557,6 +562,7 @@
 
                 </div>
             </div>
+            </template>
         </div>
         @error('termsAccepted') <span class="text-red-500 text-xs font-bold mb-6 block">{{ $message }}</span> @enderror
 
@@ -690,13 +696,8 @@
                         return;
                     }
 
-                    // 5. Check Terms & Conditions
+                    // 5. Check Terms & Conditions (Opens centered modal directly)
                     if (!this.termsAccepted) {
-                        if (termsSection) {
-                            termsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            termsSection.classList.add('ring-4', 'ring-aqua-gold/60', 'scale-[1.01]', 'transition-all');
-                            setTimeout(() => termsSection.classList.remove('ring-4', 'ring-aqua-gold/60', 'scale-[1.01]'), 1500);
-                        }
                         window.dispatchEvent(new CustomEvent('open-terms-modal'));
                         return;
                     }
@@ -937,33 +938,44 @@
                     </div>
                 </div>
                 
-                <div class="max-w-5xl mx-auto px-4 sm:px-6 py-2 sm:py-3.5 flex items-center justify-between gap-3 sm:gap-6">
+                @php
+                    $selectedSummaryList = [];
+                    foreach($packages as $pkg) {
+                        $q = $quantities[$pkg->id] ?? 0;
+                        if ($q > 0) {
+                            $pName = ($locale === 'en' && $pkg->name_en) ? $pkg->name_en : $pkg->name;
+                            $selectedSummaryList[] = $q . 'x ' . $pName;
+                        }
+                    }
+                    if ($this->totalAddons > 0) {
+                        $selectedSummaryList[] = $this->totalAddons . ' Add-on';
+                    }
+                    $purchasedItemsText = implode(' • ', $selectedSummaryList);
+                @endphp
+                
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between gap-3 sm:gap-6">
                     <!-- Left: Price & Breakdown + Toggle Button -->
                     <div class="flex-1 min-w-0 pr-2">
-                        <div class="flex items-center gap-1.5 sm:gap-2 mb-0.5">
-                            <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-200/60 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
-                                ✨ {{ $locale === 'id' ? 'Bebas Antre di Loket' : 'Fast Track Entry' }}
-                            </span>
-                            <span class="text-[11px] sm:text-xs text-slate-500 font-semibold truncate hidden sm:inline">
-                                • {{ $locale === 'id' ? 'Termasuk pajak & asuransi wahana' : 'Includes taxes & ride insurance' }}
+                        <!-- Top Line: Item(s) Purchased Summary (Replaces 'Bebas Antre di Loket' for clean mobile responsiveness) -->
+                        <div class="flex items-center gap-1.5 mb-1 cursor-pointer overflow-hidden" @click="setExpanded(!isExpanded)">
+                            <span class="text-xs text-aqua-gold shrink-0">🎟️</span>
+                            <span class="text-[11px] sm:text-xs font-bold text-slate-600 truncate block">
+                                {{ $purchasedItemsText ?: ($this->totalTickets . ' ' . ($locale === 'id' ? 'Tiket' : 'Tickets')) }}
                             </span>
                         </div>
 
                         <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
-                            <div class="flex items-baseline gap-2 cursor-pointer" @click="setExpanded(!isExpanded)">
+                            <div class="flex items-baseline gap-1.5 cursor-pointer" @click="setExpanded(!isExpanded)">
                                 <span class="text-xl sm:text-2xl md:text-3xl font-black text-aqua-navy tracking-tight">
                                     Rp {{ number_format($this->totalPrice, 0, ',', '.') }}
-                                </span>
-                                <span class="text-[11px] sm:text-xs font-bold text-slate-500 whitespace-nowrap">
-                                    ({{ $this->totalTickets }} {{ $locale === 'id' ? 'Tiket' : 'Ticket(s)' }}@if($this->totalAddons > 0), {{ $this->totalAddons }} Add-on @endif)
                                 </span>
                             </div>
 
                             <!-- Desktop & Mobile Toggle Button -->
                             <button type="button" 
                                     @click="setExpanded(!isExpanded)"
-                                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-aqua-gold/20 text-aqua-navy text-[10px] sm:text-xs font-black uppercase tracking-wider transition-colors border border-slate-200 hover:border-aqua-gold/40 cursor-pointer">
-                                <span x-text="isExpanded ? '{{ $locale === 'id' ? 'Tutup Rincian' : 'Hide Details' }}' : '{{ $locale === 'id' ? 'Rincian' : 'Details' }}'"></span>
+                                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-aqua-gold/20 text-aqua-navy text-[10px] sm:text-xs font-black uppercase tracking-wider transition-colors border border-slate-200 hover:border-aqua-gold/40 cursor-pointer shrink-0">
+                                <span x-text="isExpanded ? '{{ $locale === 'id' ? 'Tutup' : 'Hide' }}' : '{{ $locale === 'id' ? 'Rincian' : 'Details' }}'"></span>
                                 <svg class="w-3 h-3 transition-transform duration-200 text-aqua-gold" 
                                      :class="{'rotate-180': isExpanded}" 
                                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
