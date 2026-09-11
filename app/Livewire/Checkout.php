@@ -308,7 +308,7 @@ class Checkout extends Component
     public function openConfirmationModal()
     {
         $this->validate([
-            'visit_date' => 'required|date|after_or_equal:today',
+            'visit_date' => 'required|date|after_or_equal:today|before_or_equal:+6 months',
             'customer_name' => 'required|string|max:255',
             'customer_email' => 'required|email|max:255',
             'customer_phone' => 'required|string|max:20',
@@ -318,6 +318,7 @@ class Checkout extends Component
                 ? 'You must accept the Terms & Conditions and Privacy Policy.'
                 : 'Anda harus menyetujui Syarat & Ketentuan serta Kebijakan Privasi.',
             'visit_date.required' => $this->locale === 'en' ? 'Please select a visit date.' : 'Pilih tanggal kunjungan terlebih dahulu.',
+            'visit_date.before_or_equal' => $this->locale === 'en' ? 'Visit date can be booked up to 6 months in advance.' : 'Pemesanan tiket maksimal hingga 6 bulan ke depan.',
             'customer_name.required' => $this->locale === 'en' ? 'Visitor name is required.' : 'Nama pengunjung wajib diisi.',
             'customer_email.required' => $this->locale === 'en' ? 'Email is required.' : 'Email penerima e-ticket wajib diisi.',
             'customer_phone.required' => $this->locale === 'en' ? 'Phone number is required.' : 'Nomor telepon/WhatsApp wajib diisi.',
@@ -354,13 +355,14 @@ class Checkout extends Component
     public function submit()
     {
         $this->validate([
-            'visit_date' => 'required|date|after_or_equal:today',
+            'visit_date' => 'required|date|after_or_equal:today|before_or_equal:+6 months',
             'customer_name' => 'required|string|max:255',
             'customer_email' => 'required|email|max:255',
             'customer_phone' => 'required|string|max:20',
             'termsAccepted' => 'accepted',
         ], [
             'termsAccepted.accepted' => 'Anda harus menyetujui Syarat & Ketentuan serta Kebijakan Privasi.',
+            'visit_date.before_or_equal' => 'Pemesanan tiket maksimal hingga 6 bulan ke depan.',
         ]);
 
         if ($this->totalTickets <= 0) {

@@ -40,7 +40,7 @@
                     <span>{{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? \Carbon\Carbon::parse($visit_date)->format('d M Y') : ($locale === 'id' ? 'Tanggal Lain' : 'Other Date') }}</span>
                     <input x-ref="datePicker" type="date" wire:model.live="visit_date" 
                            @change="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
-                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+30 days')) }}" />
+                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+6 months')) }}" />
                 </div>
             </div>
             @error('visit_date') <span class="text-red-500 text-xs md:text-sm mt-2 md:mt-3 block font-semibold bg-red-50 p-2.5 md:p-4 rounded-xl md:rounded-2xl border border-red-100">{{ $message }}</span> @enderror
