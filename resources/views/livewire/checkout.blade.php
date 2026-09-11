@@ -633,15 +633,23 @@
                 <div class="shrink-0 flex items-center">
                     <button type="button" 
                             onclick="
-                                const contactSection = document.getElementById('step-4-contact');
-                                if (contactSection) {
-                                    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                const step3 = document.getElementById('step-3-addons');
+                                const step4 = document.getElementById('step-4-contact');
+                                if (step3) {
+                                    const rect3 = step3.getBoundingClientRect();
+                                    if (rect3.top > 200) {
+                                        step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                        return;
+                                    }
+                                }
+                                if (step4) {
+                                    step4.scrollIntoView({ behavior: 'smooth', block: 'start' });
                                     const nameInput = document.getElementById('name');
                                     if (nameInput) setTimeout(() => nameInput.focus({ preventScroll: true }), 400);
                                 }
                             "
-                            class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-4 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-1.5 sm:gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
-                        <span>{{ $locale === 'id' ? 'Lanjut Isi Data' : 'Continue' }}</span>
+                            class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-1.5 sm:gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
+                        <span>{{ $locale === 'id' ? 'Lanjut' : 'Continue' }}</span>
                         <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </button>
                 </div>
