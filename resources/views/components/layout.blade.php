@@ -59,7 +59,7 @@
       border-radius: 2px;
     }
 
-    /* Custom Premium Modal Frame for DOKU Jokul Checkout (Desktop Centered & Mobile Fullscreen) */
+    /* Custom Premium Modal Frame for DOKU Jokul Checkout (Mobile & Desktop) */
     #jokul_checkout_modal.jokul-modal {
       position: fixed !important;
       z-index: 999999 !important;
@@ -67,14 +67,14 @@
       width: 100% !important;
       height: 100% !important;
       height: 100dvh !important;
-      background: rgba(11, 25, 44, 0.85) !important;
+      background: rgba(11, 25, 44, 0.78) !important;
       backdrop-filter: blur(8px) !important;
       -webkit-backdrop-filter: blur(8px) !important;
-      padding: 24px !important;
+      padding: 24px 16px !important;
       margin: 0 !important;
       box-sizing: border-box !important;
-      overflow: hidden !important;
-      touch-action: none !important;
+      overflow: hidden !important; /* Locks the outer container so it NEVER scrolls */
+      touch-action: none !important; /* Prevents touch drag from moving the popup position */
     }
 
     #jokul_checkout_modal.jokul-modal[style*="display: block"] {
@@ -90,18 +90,18 @@
     #jokul_checkout_modal .jokul-content {
       width: 100% !important;
       max-width: 480px !important;
-      height: 92vh !important;
+      height: 90vh !important;
       max-height: 750px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
       margin: auto !important;
       position: relative !important;
       border-radius: 24px !important;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6) !important;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7) !important;
       overflow: hidden !important;
       background: #ffffff !important;
-      border: 1.5px solid rgba(251, 171, 67, 0.35) !important;
+      border: 1.5px solid rgba(251, 171, 67, 0.4) !important;
+      display: block !important;
+      transform: translateZ(0) !important;
+      -webkit-transform: translateZ(0) !important;
     }
 
     #jokul_checkout_modal .jokul-content iframe {
@@ -113,46 +113,47 @@
       box-shadow: none !important;
       background-color: #ffffff !important;
       pointer-events: auto !important;
+      touch-action: pan-y !important;
+      -webkit-overflow-scrolling: touch !important;
     }
 
-    /* Mobile: Fullscreen native flow to ensure smooth scrolling & 100% clickability */
+    /* Mobile Popup Frame: Preserves the dark blurred website background so it is visually a POPUP */
     @media (max-width: 640px) {
       #jokul_checkout_modal.jokul-modal {
-        padding: 0 !important;
-        margin: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        height: 100dvh !important;
-        background: #ffffff !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
+        padding: 16px 12px !important;
+        background: rgba(11, 25, 44, 0.82) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
         overflow: hidden !important;
+        touch-action: none !important;
       }
       #jokul_checkout_modal.jokul-modal[style*="display: block"] {
-        display: block !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
       }
       #jokul_checkout_modal .jokul-content {
-        max-width: 100vw !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        height: 100dvh !important;
-        max-height: 100dvh !important;
-        border-radius: 0 !important;
-        border: none !important;
-        box-shadow: none !important;
-        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        height: 88vh !important;
+        max-height: 90vh !important;
+        border-radius: 24px !important;
+        border: 1.5px solid rgba(251, 171, 67, 0.4) !important;
+        box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8) !important;
+        margin: auto !important;
         padding: 0 !important;
         overflow: hidden !important;
+        background: #ffffff !important;
+        display: block !important;
       }
       #jokul_checkout_modal .jokul-content iframe {
-        border-radius: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        height: 100dvh !important;
+        border-radius: 22px !important;
+        width: 100% !important;
+        height: 100% !important;
         display: block !important;
-        -webkit-overflow-scrolling: touch !important;
-        touch-action: auto !important;
         pointer-events: auto !important;
+        touch-action: pan-y !important;
+        -webkit-overflow-scrolling: touch !important;
       }
     }
   </style>

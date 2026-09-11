@@ -1196,6 +1196,15 @@
 
             if (typeof loadJokulCheckout === 'function') {
                 loadJokulCheckout(paymentUrl);
+
+                // Enhance iframe with proper permissions policy and scroll attributes
+                setTimeout(() => {
+                    const iframe = document.querySelector('#jokul_checkout_modal iframe');
+                    if (iframe) {
+                        iframe.setAttribute('allow', 'payment');
+                        iframe.setAttribute('scrolling', 'yes');
+                    }
+                }, 50);
             } else {
                 window.location.href = paymentUrl;
             }
