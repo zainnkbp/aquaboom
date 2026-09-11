@@ -36,14 +36,14 @@
             <div class="flex items-center gap-2 md:gap-4 overflow-x-auto pb-1 md:pb-2 snap-x scrollbar-hide">
                 <button type="button" 
                      wire:click="$set('visit_date', '{{ date('Y-m-d') }}')" 
-                     @click="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
+                     @click="setTimeout(() => { window.smoothScrollTo ? window.smoothScrollTo('step-2-tickets', 85, 900) : document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth' }); }, 120)"
                      class="py-2 px-4 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
                      {{ $visit_date === date('Y-m-d') ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
                     {{ $locale === 'id' ? 'Hari Ini' : 'Today' }}
                 </button>
                 <button type="button" 
                      wire:click="$set('visit_date', '{{ date('Y-m-d', strtotime('+1 day')) }}')" 
-                     @click="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
+                     @click="setTimeout(() => { window.smoothScrollTo ? window.smoothScrollTo('step-2-tickets', 85, 900) : document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth' }); }, 120)"
                      class="py-2 px-4 md:py-3.5 md:px-8 rounded-full md:rounded-2xl cursor-pointer transition-all duration-300 whitespace-nowrap snap-start shrink-0 text-xs md:text-sm font-bold border md:border-2
                      {{ $visit_date === date('Y-m-d', strtotime('+1 day')) ? 'border-aqua-gold bg-aqua-navy text-white shadow-sm md:shadow-md' : 'bg-white border-slate-200 text-slate-600 hover:border-aqua-gold/50' }}">
                     {{ $locale === 'id' ? 'Besok' : 'Tomorrow' }}
@@ -54,7 +54,7 @@
                     <svg class="w-3.5 h-3.5 md:w-4 md:h-4 text-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span>{{ ($visit_date && $visit_date !== date('Y-m-d') && $visit_date !== date('Y-m-d', strtotime('+1 day'))) ? \Carbon\Carbon::parse($visit_date)->format('d M Y') : ($locale === 'id' ? 'Tanggal Lain' : 'Other Date') }}</span>
                     <input x-ref="datePicker" type="date" wire:model.live="visit_date" 
-                           @change="setTimeout(() => { document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150)"
+                           @change="setTimeout(() => { window.smoothScrollTo ? window.smoothScrollTo('step-2-tickets', 85, 900) : document.getElementById('step-2-tickets')?.scrollIntoView({ behavior: 'smooth' }); }, 120)"
                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+6 months')) }}" />
                 </div>
             </div>
@@ -365,14 +365,14 @@
                             <div>
                                 @if($addonQty === 0)
                                     <button type="button" wire:click="incrementAddonQuantity({{ $addon->id }})" 
-                                        class="inline-flex items-center gap-1 bg-slate-100 hover:bg-aqua-navy hover:text-white text-aqua-navy text-xs font-black uppercase px-3.5 py-2 rounded-xl border border-slate-200 transition-all cursor-pointer">
+                                        class="inline-flex items-center gap-1 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy text-xs font-black uppercase px-4 py-2 rounded-xl border border-aqua-gold-2/50 shadow-sm hover:shadow-aqua-gold/30 transition-all cursor-pointer active:scale-95">
                                         <span>+ Sewa</span>
                                     </button>
                                 @else
                                     <div class="flex items-center bg-aqua-cream rounded-xl p-1 border border-aqua-gold/50 shadow-xs">
-                                        <button type="button" wire:click="decrementAddonQuantity({{ $addon->id }})" class="w-7 h-7 rounded-lg bg-white text-aqua-navy hover:bg-slate-100 shadow-xs font-black text-sm transition-all cursor-pointer">-</button>
+                                        <button type="button" wire:click="decrementAddonQuantity({{ $addon->id }})" class="w-7 h-7 rounded-lg bg-white text-aqua-navy hover:bg-slate-100 shadow-xs font-black text-sm transition-all cursor-pointer active:scale-90">-</button>
                                         <span class="text-xs font-black text-aqua-navy w-6 text-center select-none">{{ $addonQty }}</span>
-                                        <button type="button" wire:click="incrementAddonQuantity({{ $addon->id }})" class="w-7 h-7 rounded-lg bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 shadow-xs font-black text-sm transition-all cursor-pointer">+</button>
+                                        <button type="button" wire:click="incrementAddonQuantity({{ $addon->id }})" class="w-7 h-7 rounded-lg bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 shadow-xs font-black text-sm transition-all cursor-pointer active:scale-90">+</button>
                                     </div>
                                 @endif
                             </div>
@@ -385,8 +385,8 @@
             <!-- Quick Action to Continue to Step 4 -->
             <div class="mt-6 md:mt-8 flex justify-end">
                 <button type="button" 
-                        onclick="document.getElementById('step-4-contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' })"
-                        class="inline-flex items-center gap-2 bg-white hover:bg-aqua-navy hover:text-white border border-slate-200 hover:border-aqua-navy text-slate-700 font-bold text-xs uppercase px-6 py-3.5 rounded-xl transition-all shadow-sm group">
+                        onclick="window.smoothScrollTo ? window.smoothScrollTo('step-4-contact', 90, 950) : document.getElementById('step-4-contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                        class="inline-flex items-center gap-2 bg-white hover:bg-aqua-navy hover:text-white border border-slate-200 hover:border-aqua-navy text-slate-700 font-bold text-xs uppercase px-6 py-3.5 rounded-xl transition-all shadow-sm group cursor-pointer">
                     <span>{{ $locale === 'id' ? 'Lanjut ke Data Pemesan' : 'Continue to Visitor Info' }}</span>
                     <svg class="w-4 h-4 text-aqua-gold group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
@@ -911,12 +911,16 @@
                 },
                 focusElement(el) {
                     if (!el) return;
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    if (window.smoothScrollTo) {
+                        window.smoothScrollTo(el, 140, 850);
+                    } else {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
                     setTimeout(() => {
                         el.focus({ preventScroll: true });
                         el.classList.add('ring-4', 'ring-aqua-gold/60', 'transition-all', 'duration-300');
                         setTimeout(() => el.classList.remove('ring-4', 'ring-aqua-gold/60'), 1500);
-                    }, 350);
+                    }, 400);
                 },
                 handleContinue() {
                     if (this.isExpanded) {
@@ -929,11 +933,15 @@
                     const phoneInput = document.getElementById('phone');
                     const termsSection = document.getElementById('terms_section');
 
-                    // 1. If user is above Add-ons section, scroll to Add-ons
+                    // 1. If user is above Add-ons section, scroll gently to Add-ons
                     if (step3) {
                         const rect3 = step3.getBoundingClientRect();
                         if (rect3.top > 350) {
-                            step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            if (window.smoothScrollTo) {
+                                window.smoothScrollTo(step3, 85, 950);
+                            } else {
+                                step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
                             return;
                         }
                     }
@@ -1569,6 +1577,36 @@
             }
         }
     });
+
+    // Gentle & Luxurious Cinematic Smooth Scrolling (easeInOutCubic ~850-950ms)
+    window.smoothScrollTo = function(target, offset = 80, duration = 850) {
+        const element = typeof target === 'string' ? document.getElementById(target) : target;
+        if (!element) return;
+
+        const startY = window.pageYOffset || document.documentElement.scrollTop;
+        const targetY = element.getBoundingClientRect().top + startY - offset;
+        const distance = targetY - startY;
+        let startTime = null;
+
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+        }
+
+        function step(currentTime) {
+            if (!startTime) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1);
+            const ease = easeInOutCubic(progress);
+
+            window.scrollTo(0, startY + (distance * ease));
+
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        }
+
+        window.requestAnimationFrame(step);
+    };
 
     // Listen to DOKU close message to clean up backdrop and restore UI state
     window.addEventListener('message', (event) => {
