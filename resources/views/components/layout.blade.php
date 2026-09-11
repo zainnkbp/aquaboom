@@ -59,18 +59,22 @@
       border-radius: 2px;
     }
 
-    /* Custom Premium Popup Modal Frame for DOKU Jokul Checkout (Mobile & Desktop) */
+    /* Custom Premium Modal Frame for DOKU Jokul Checkout (Desktop Centered & Mobile Fullscreen) */
     #jokul_checkout_modal.jokul-modal {
       position: fixed !important;
       z-index: 999999 !important;
       inset: 0 !important;
       width: 100% !important;
       height: 100% !important;
-      background: rgba(11, 25, 44, 0.78) !important;
+      height: 100dvh !important;
+      background: rgba(11, 25, 44, 0.85) !important;
       backdrop-filter: blur(8px) !important;
       -webkit-backdrop-filter: blur(8px) !important;
-      padding: 16px !important;
+      padding: 24px !important;
+      margin: 0 !important;
       box-sizing: border-box !important;
+      overflow: hidden !important;
+      touch-action: none !important;
     }
 
     #jokul_checkout_modal.jokul-modal[style*="display: block"] {
@@ -86,14 +90,14 @@
     #jokul_checkout_modal .jokul-content {
       width: 100% !important;
       max-width: 480px !important;
-      height: 90vh !important;
-      max-height: 740px !important;
+      height: 92vh !important;
+      max-height: 750px !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
       margin: auto !important;
       position: relative !important;
-      border-radius: 28px !important;
+      border-radius: 24px !important;
       box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6) !important;
       overflow: hidden !important;
       background: #ffffff !important;
@@ -104,26 +108,51 @@
       width: 100% !important;
       height: 100% !important;
       border: none !important;
-      border-radius: 26px !important;
+      border-radius: 22px !important;
       display: block !important;
       box-shadow: none !important;
       background-color: #ffffff !important;
+      pointer-events: auto !important;
     }
 
-    @media (max-width: 575.98px) {
+    /* Mobile: Fullscreen native flow to ensure smooth scrolling & 100% clickability */
+    @media (max-width: 640px) {
       #jokul_checkout_modal.jokul-modal {
-        padding: 12px 10px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        background: #ffffff !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        overflow: hidden !important;
+      }
+      #jokul_checkout_modal.jokul-modal[style*="display: block"] {
+        display: block !important;
       }
       #jokul_checkout_modal .jokul-content {
-        max-width: 100% !important;
-        height: 88vh !important;
-        max-height: 92vh !important;
-        border-radius: 24px !important;
+        max-width: 100vw !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
       }
       #jokul_checkout_modal .jokul-content iframe {
-        border-radius: 22px !important;
-        width: 100% !important;
-        height: 100% !important;
+        border-radius: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        display: block !important;
+        -webkit-overflow-scrolling: touch !important;
+        touch-action: auto !important;
+        pointer-events: auto !important;
       }
     }
   </style>
@@ -621,6 +650,20 @@
 
   <!-- Global Wahana & Attraction Detail Modal -->
   <x-wahana-modal />
+
+  <script>
+    // Global DOKU Jokul postMessage listener for robust state cleanup
+    window.addEventListener('message', function(event) {
+      if (event.data && (event.data.func === 'closeJokul' || event.data.status === 'close')) {
+        document.body.classList.remove('overflow-hidden');
+        window.dispatchEvent(new CustomEvent('show-chat-assistant'));
+        var modal = document.getElementById('jokul_checkout_modal');
+        if (modal) {
+          modal.remove();
+        }
+      }
+    });
+  </script>
 
   @livewireScripts
 </body>

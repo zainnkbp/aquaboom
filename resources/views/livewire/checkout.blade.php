@@ -1045,25 +1045,6 @@
 
                 <!-- Modal Scrollable Content -->
                 <div class="flex-1 overflow-y-auto py-5 pr-1 space-y-6 text-sm">
-                    
-                    <!-- Secure Payment Indicator Banner -->
-                    <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 border border-emerald-200/80 rounded-2xl p-4 flex items-center gap-3.5">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                        </div>
-                        <div class="text-xs">
-                            <div class="font-black text-emerald-950 uppercase tracking-wide flex items-center gap-2">
-                                <span>{{ $locale === 'id' ? 'Pembayaran 100% Aman & Terenkripsi' : '100% Secure & Encrypted Payment' }}</span>
-                                <span class="bg-emerald-200/70 text-emerald-900 text-[10px] px-2 py-0.5 rounded-full font-black">256-Bit SSL</span>
-                            </div>
-                            <p class="text-emerald-800/80 font-medium mt-0.5">
-                                {{ $locale === 'id' 
-                                    ? 'Diproses langsung melalui DOKU Payment Gateway resmi berlisensi Bank Indonesia.' 
-                                    : 'Processed directly via DOKU Payment Gateway licensed by Bank Indonesia.' 
-                                }}
-                            </p>
-                        </div>
-                    </div>
 
                     <!-- Customer & Visit Information -->
                     <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-2.5">
@@ -1169,31 +1150,6 @@
                         </div>
                     </div>
 
-                    <!-- Supported Payment Channels Preview -->
-                    <div>
-                        <div class="text-[11px] font-black uppercase text-slate-400 tracking-wider mb-2">
-                            {{ $locale === 'id' ? 'Metode Pembayaran Tersedia di DOKU:' : 'Available Payment Methods in DOKU:' }}
-                        </div>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center text-xs">
-                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1">
-                                <span class="font-black text-slate-800 text-[11px]">Virtual Account</span>
-                                <span class="text-[10px] text-slate-500 font-semibold leading-tight">BCA, Mandiri, BRI, BNI, Maybank, Permata</span>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1">
-                                <span class="font-black text-slate-800 text-[11px]">QRIS & E-Wallet</span>
-                                <span class="text-[10px] text-slate-500 font-semibold leading-tight">QRIS All Bank, GoPay, OVO, ShopeePay, Dana</span>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1">
-                                <span class="font-black text-slate-800 text-[11px]">Kartu Kredit/Debit</span>
-                                <span class="text-[10px] text-slate-500 font-semibold leading-tight">Visa, Mastercard, JCB</span>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1">
-                                <span class="font-black text-slate-800 text-[11px]">Gerai Retail</span>
-                                <span class="text-[10px] text-slate-500 font-semibold leading-tight">Indomaret, Alfamart</span>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
                 <!-- Modal Actions Footer -->
@@ -1230,10 +1186,30 @@
         
         if (paymentUrl) {
             window.dispatchEvent(new CustomEvent('hide-chat-assistant'));
+            document.body.classList.add('overflow-hidden');
+
+            // Remove any stale Jokul modal instance to prevent duplicate IDs and event blocking
+            const existingModal = document.getElementById('jokul_checkout_modal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+
             if (typeof loadJokulCheckout === 'function') {
                 loadJokulCheckout(paymentUrl);
             } else {
                 window.location.href = paymentUrl;
+            }
+        }
+    });
+
+    // Listen to DOKU close message to clean up backdrop and restore UI state
+    window.addEventListener('message', (event) => {
+        if (event.data && (event.data.func === 'closeJokul' || event.data.status === 'close')) {
+            document.body.classList.remove('overflow-hidden');
+            window.dispatchEvent(new CustomEvent('show-chat-assistant'));
+            const modal = document.getElementById('jokul_checkout_modal');
+            if (modal) {
+                modal.remove();
             }
         }
     });
