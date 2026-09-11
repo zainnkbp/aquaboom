@@ -116,7 +116,7 @@
                       $allMenuUrls[] = Str::startsWith($m, ['http://', 'https://']) ? $m : asset('uploads/' . $m);
                     }
                   }
-                  $menuChunks = array_chunk($allMenuUrls, 3);
+                  $menuChunks = array_chunk($allMenuUrls, 4);
                   $totalChunks = count($menuChunks);
                   $diningTitle = App::getLocale() === 'en' && $dining->name_en ? $dining->name_en : $dining->name;
                 @endphp
@@ -142,7 +142,7 @@
                   }"
                   class="mt-8 w-full"
                 >
-                  <!-- Section Header: Original title + Navigation buttons if more than 3 items -->
+                  <!-- Section Header: Original title + Navigation buttons if more than 4 items -->
                   <div class="flex items-center justify-between mb-4">
                     <span class="text-xs font-black text-aqua-gold uppercase tracking-wider block">
                       {{ App::getLocale() === 'id' ? 'Buku Menu & Daftar Harga' : 'Menu Book & Pricing' }}
@@ -175,7 +175,7 @@
                     @endif
                   </div>
 
-                  <!-- Slider Viewport: Keeps exact 3-column grid per section -->
+                  <!-- Slider Viewport: Keeps exact 2x2 grid on mobile and 4-column grid on desktop -->
                   <div 
                     x-data="{
                       touchStartX: 0,
@@ -195,10 +195,10 @@
                     >
                       @foreach($menuChunks as $chunkIndex => $chunk)
                         <div class="w-full flex-shrink-0">
-                          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                             @foreach($chunk as $itemIndex => $menuImage)
                               @php
-                                $globalIndex = ($chunkIndex * 3) + $itemIndex;
+                                $globalIndex = ($chunkIndex * 4) + $itemIndex;
                               @endphp
                               <div 
                                 @click="openLightbox({{ json_encode($allMenuUrls) }}, {{ $globalIndex }}, '{{ addslashes($diningTitle) }}')" 
@@ -206,7 +206,7 @@
                               >
                                 <img src="{{ $menuImage }}" alt="Menu" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
                                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                                  <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
                                 </div>
                               </div>
                             @endforeach
