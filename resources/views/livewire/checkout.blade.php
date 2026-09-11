@@ -99,7 +99,7 @@
 
                     <!-- Ticket Card -->
                     <div class="bg-white rounded-2xl md:rounded-[28px] overflow-hidden shadow-lg md:shadow-xl border flex flex-col group hover:-translate-y-1 transition-all duration-300
-                         {{ $isDuo ? 'border-pink-500/45 ring-2 ring-pink-500/10' : ($isFour ? 'border-emerald-500/45 ring-2 ring-emerald-500/10' : ($isWeekend ? 'border-blue-500/45 ring-2 ring-blue-500/10' : 'border-slate-200')) }}">
+                         {{ $qty > 0 ? 'ring-4 ring-aqua-gold/70 shadow-2xl border-aqua-gold' : ($isDuo ? 'border-pink-500/45 ring-2 ring-pink-500/10' : ($isFour ? 'border-emerald-500/45 ring-2 ring-emerald-500/10' : ($isWeekend ? 'border-blue-500/45 ring-2 ring-blue-500/10' : 'border-slate-200'))) }}">
                         
                         <!-- Header Card -->
                         <div class="py-6 sm:py-7 md:py-8 px-4 sm:px-6 min-h-[135px] md:min-h-[160px] flex flex-col items-center justify-center text-center relative overflow-hidden {{ $headerGradient }} shadow-inner">
@@ -140,7 +140,7 @@
                                 @if($pkg->terms_and_conditions)
                                     <!-- Accordion Terms & Conditions -->
                                     <div x-data="{ open: false }" class="mb-4">
-                                        <button type="button" @click="open = !open" class="flex items-center gap-1.5 text-xs font-black text-aqua-azure hover:text-aqua-gold uppercase tracking-wider transition-colors">
+                                        <button type="button" @click="open = !open" class="flex items-center gap-1.5 text-xs font-black text-aqua-azure hover:text-aqua-gold uppercase tracking-wider transition-colors cursor-pointer">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                             {{ $locale === 'id' ? 'Syarat & Ketentuan' : 'Terms & Conditions' }} <span x-text="open ? '▲' : '▼'"></span>
                                         </button>
@@ -156,20 +156,19 @@
                                 @if($qty === 0)
                                     <button type="button" 
                                         wire:click="incrementQuantity({{ $pkg->id }})" 
-                                        @click="setTimeout(() => { document.getElementById('step-3-addons')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 200)"
-                                        class="w-full text-center py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all border-2
+                                        class="w-full text-center py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all border-2 cursor-pointer
                                         {{ $isWeekend ? 'bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy border-aqua-gold' : ($isGroup ? 'bg-aqua-azure hover:bg-aqua-azure-2 text-white border-aqua-azure' : 'bg-aqua-navy hover:bg-aqua-navy-2 text-white border-aqua-navy') }}">
                                         {{ $locale === 'id' ? 'Pilih Tiket' : 'Select Ticket' }}
                                     </button>
                                 @else
-                                    <div class="flex items-center justify-between bg-aqua-cream rounded-xl p-2 border border-aqua-gold/20">
+                                    <div class="flex items-center justify-between bg-aqua-cream rounded-xl p-2 border border-aqua-gold/30 shadow-inner">
                                         <button type="button" wire:click="decrementQuantity({{ $pkg->id }})" 
-                                            class="w-10 h-10 rounded-lg flex items-center justify-center bg-white text-aqua-navy hover:bg-slate-100 shadow-sm font-black text-xl transition-all">
+                                            class="w-10 h-10 rounded-lg flex items-center justify-center bg-white text-aqua-navy hover:bg-slate-100 shadow-sm font-black text-xl transition-all cursor-pointer">
                                             -
                                         </button>
                                         <span class="text-base font-black text-aqua-navy w-8 text-center">{{ $qty }}</span>
                                         <button type="button" wire:click="incrementQuantity({{ $pkg->id }})" 
-                                            class="w-10 h-10 rounded-lg flex items-center justify-center bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 shadow-sm font-black text-xl transition-all">
+                                            class="w-10 h-10 rounded-lg flex items-center justify-center bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 shadow-sm font-black text-xl transition-all cursor-pointer">
                                             +
                                         </button>
                                     </div>
@@ -638,7 +637,7 @@
                                 if (contactSection) {
                                     contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                                     const nameInput = document.getElementById('name');
-                                    if (nameInput) setTimeout(() => nameInput.focus(), 300);
+                                    if (nameInput) setTimeout(() => nameInput.focus({ preventScroll: true }), 400);
                                 }
                             "
                             class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-4 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-1.5 sm:gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
