@@ -399,30 +399,42 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
         @foreach($wahanas as $wahana)
+        @php
+          $wData = [
+            'name' => App::getLocale() === 'en' && $wahana->name_en ? $wahana->name_en : $wahana->name,
+            'description' => App::getLocale() === 'en' && $wahana->description_en ? $wahana->description_en : $wahana->description,
+            'image_url' => $wahana->image_url,
+            'thrill_level' => $wahana->thrill_level ?? 'Ride',
+          ];
+        @endphp
           <div
-            class="group bg-white rounded-[32px] overflow-hidden shadow-lg border border-aqua-cream-2 hover:shadow-2xl transition-all duration-300 flex flex-col">
+            @click="$dispatch('open-wahana-modal', @js($wData))"
+            class="group bg-white rounded-[32px] overflow-hidden shadow-lg border border-aqua-cream-2 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col cursor-pointer">
             <div class="h-64 overflow-hidden relative">
               <img src="{{ $wahana->image_url }}" alt="{{ $wahana->name }}"
                 onerror="this.onerror=null; this.src='{{ asset('assets/img/default-wahana.svg') }}';"
                 class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+              <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div
-                class="absolute top-4 right-4 bg-aqua-navy text-aqua-gold px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider border border-aqua-gold/30">
+                class="absolute top-4 right-4 bg-aqua-navy text-aqua-gold px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider border border-aqua-gold/30 shadow-md">
                 {{ $wahana->thrill_level ?? 'Ride' }}
               </div>
             </div>
             <div class="p-8 flex-1 flex flex-col justify-between">
               <div>
-                <h3 class="text-2xl font-black text-aqua-navy mb-3 uppercase">
+                <h3 class="text-2xl font-black text-aqua-navy mb-3 uppercase group-hover:text-aqua-azure transition-colors">
                   {{ App::getLocale() === 'en' && $wahana->name_en ? $wahana->name_en : $wahana->name }}
                 </h3>
-                <p class="text-slate-500 text-sm font-medium leading-relaxed mb-6">
+                <p class="text-slate-500 text-sm font-medium leading-relaxed mb-6 line-clamp-3">
                   {{ App::getLocale() === 'en' && $wahana->description_en ? $wahana->description_en : $wahana->description }}
                 </p>
               </div>
-              <a href="{{ url('/explore') }}"
-                class="flex items-center text-aqua-azure text-sm font-black uppercase tracking-wider group-hover:text-aqua-gold transition-colors">
+              <button 
+                type="button"
+                @click.stop="$dispatch('open-wahana-modal', @js($wData))"
+                class="flex items-center text-aqua-azure text-sm font-black uppercase tracking-wider group-hover:text-aqua-gold transition-colors cursor-pointer text-left">
                 {{ App::getLocale() === 'en' ? 'Learn more' : 'Info Selengkapnya' }} &rarr;
-              </a>
+              </button>
             </div>
           </div>
         @endforeach

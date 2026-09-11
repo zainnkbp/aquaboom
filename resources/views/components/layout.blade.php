@@ -549,6 +549,9 @@
   <!-- Chatbot Assistant -->
   <x-chat-assistant :faqs="\App\Models\Faq::where('is_active', true)->orderBy('sort_order')->get()" />
 
+  <!-- Global Wahana & Attraction Detail Modal -->
+  <x-wahana-modal />
+
   @livewireScripts
 </body>
 
