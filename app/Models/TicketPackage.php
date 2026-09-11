@@ -72,6 +72,82 @@ class TicketPackage extends Model
     }
 
     /**
+     * Deskripsi bersih tanpa tag HTML, entitas &nbsp;, atau spasi berlebih.
+     */
+    public function getCleanDescriptionAttribute(): string
+    {
+        $desc = $this->description ?? '';
+        $clean = html_entity_decode($desc, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $clean = str_replace(["\xc2\xa0", '&nbsp;', '&amp;nbsp;'], ' ', $clean);
+        $clean = strip_tags($clean);
+        return preg_replace('/\s+/', ' ', trim($clean));
+    }
+
+    /**
+     * Deskripsi bahasa Inggris bersih tanpa tag HTML, entitas &nbsp;, atau spasi berlebih.
+     */
+    public function getCleanDescriptionEnAttribute(): string
+    {
+        $desc = $this->description_en ?: $this->description ?: '';
+        $clean = html_entity_decode($desc, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $clean = str_replace(["\xc2\xa0", '&nbsp;', '&amp;nbsp;'], ' ', $clean);
+        $clean = strip_tags($clean);
+        return preg_replace('/\s+/', ' ', trim($clean));
+    }
+
+    /**
+     * Mendapatkan daftar poin fasilitas/benefit tiket untuk dirender sebagai checklist bertanda centang (✓).
+     * Secara cerdas mem-parsing teks yang dipisahkan simbol '+', bullet list HTML (<li>), koma/titik koma,
+     * serta otomatis memisahkan teks promo seperti "Hemat hingga...".
+     */
+    public function getBenefitsList(string $locale = 'id'): array
+    {
+        $raw = ($locale === 'en' && $this->description_en) ? $this->description_en : $this->description;
+        if (empty($raw)) {
+            return [];
+        }
+
+        // 1. Decode HTML entities and replace non-breaking spaces
+        $clean = html_entity_decode($raw, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $clean = str_replace(["\xc2\xa0", '&nbsp;', '&amp;nbsp;'], ' ', $clean);
+
+        // If raw contains <li> tags
+        if (preg_match_all('/<li[^>]*>(.*?)<\/li>/is', $clean, $matches)) {
+            $items = $matches[1];
+        } else {
+            $clean = strip_tags($clean);
+            $clean = preg_replace('/\s+/', ' ', trim($clean));
+
+            if (str_contains($clean, '+')) {
+                $parts = preg_split('/\s*\+\s*/', $clean);
+                $items = [];
+                foreach ($parts as $p) {
+                    if (preg_match('/^(.*?)\.\s*(Hemat\s+hingga.*|Save\s+up\s+to.*)$/i', $p, $m)) {
+                        $items[] = trim($m[1]);
+                        $items[] = trim($m[2]);
+                    } else {
+                        $items[] = trim($p);
+                    }
+                }
+            } elseif (str_contains($clean, ';')) {
+                $items = explode(';', $clean);
+            } else {
+                $items = preg_split('/(?<=[.!?])\s+/', $clean);
+            }
+        }
+
+        $result = [];
+        foreach ($items as $item) {
+            $t = trim(strip_tags($item));
+            $t = rtrim($t, '.');
+            if (!empty($t)) {
+                $result[] = $t;
+            }
+        }
+        return array_values($result);
+    }
+
+    /**
      * Whether this package is currently discounted (has a valid discount that
      * actually lowers the price).
      */

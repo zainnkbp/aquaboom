@@ -1,4 +1,19 @@
-<form wire:submit.prevent="openConfirmationModal" x-data="{ activeTermsModal: null, activeTermsName: '', activeTermsDesc: '', activeTermsHtml: '' }" class="flex flex-col h-full bg-white font-sans relative">
+<form wire:submit.prevent="openConfirmationModal" 
+      x-data="{ 
+          activeTermsModal: null, 
+          activeTermsName: '', 
+          activeTermsDesc: '', 
+          activeTermsHtml: '', 
+          activeTermsBenefits: [],
+          openPassInfo(id, name, benefits, desc, tnc) {
+              this.activeTermsModal = id;
+              this.activeTermsName = name;
+              this.activeTermsBenefits = Array.isArray(benefits) ? benefits : [];
+              this.activeTermsDesc = desc || '';
+              this.activeTermsHtml = tnc || '';
+          }
+      }" 
+      class="flex flex-col h-full bg-white font-sans relative">
     
     <!-- Top Bar -->
     <div class="px-4 md:px-10 py-4 bg-aqua-navy text-white flex justify-between items-center border-b border-aqua-gold/20">
@@ -213,10 +228,29 @@
                                     {{ $locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
                                 </h3>
 
-                                <!-- Subtitle / Benefit Description -->
-                                <p class="text-white/90 text-[11px] md:text-xs font-semibold leading-relaxed line-clamp-2 mt-0.5 max-w-xl drop-shadow-sm">
-                                    {!! strip_tags($locale === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description) !!}
-                                </p>
+                                <!-- Subtitle / Benefit Description (Checklist Pills / Clean Text) -->
+                                @php
+                                    $pkgBenefits = $pkg->getBenefitsList($locale);
+                                @endphp
+                                @if(count($pkgBenefits) > 1)
+                                    <div class="flex flex-wrap items-center gap-1.5 mt-1 max-w-xl">
+                                        @foreach(array_slice($pkgBenefits, 0, 3) as $bItem)
+                                            <span class="inline-flex items-center gap-1 text-[10px] md:text-[11px] font-bold text-white bg-black/45 backdrop-blur-xs px-2 py-0.5 rounded-md border border-white/20 drop-shadow-xs">
+                                                <svg class="w-3 h-3 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                                <span>{{ $bItem }}</span>
+                                            </span>
+                                        @endforeach
+                                        @if(count($pkgBenefits) > 3)
+                                            <span class="text-[10px] text-white/85 font-bold drop-shadow-xs bg-black/35 px-1.5 py-0.5 rounded border border-white/10">
+                                                +{{ count($pkgBenefits) - 3 }} {{ $locale === 'en' ? 'more' : 'lainnya' }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                @else
+                                    <p class="text-white/90 text-[11px] md:text-xs font-semibold leading-relaxed line-clamp-2 mt-0.5 max-w-xl drop-shadow-sm">
+                                        {{ $locale === 'en' ? $pkg->clean_description_en : $pkg->clean_description }}
+                                    </p>
+                                @endif
                             </div>
 
                             <!-- Right: [ i ] Info Icon + Price + Aqua Gold [ SELECT v ] / Stepper -->
@@ -224,7 +258,7 @@
                                 
                                 <!-- Waterbom Bali Style [ i ] Info Button -->
                                 <button type="button" 
-                                        @click="activeTermsModal = {{ $pkg->id }}; activeTermsName = '{{ addslashes($locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name) }}'; activeTermsDesc = '{{ addslashes(strip_tags($locale === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description)) }}'; activeTermsHtml = '{{ addslashes($locale === 'en' && $pkg->terms_and_conditions_en ? $pkg->terms_and_conditions_en : ($pkg->terms_and_conditions ?: 'Tiket gelang berlaku 1 hari penuh untuk akses ke seluruh wahana air Aquaboom Balikpapan.')) }}'"
+                                        @click="openPassInfo({{ $pkg->id }}, '{{ addslashes($locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name) }}', {{ json_encode($pkgBenefits) }}, '{{ addslashes($locale === 'en' ? $pkg->clean_description_en : $pkg->clean_description) }}', '{{ addslashes($locale === 'en' && $pkg->terms_and_conditions_en ? $pkg->terms_and_conditions_en : ($pkg->terms_and_conditions ?: 'Tiket gelang berlaku 1 hari penuh untuk akses ke seluruh wahana air Aquaboom Balikpapan.')) }}')"
                                         title="{{ $locale === 'id' ? 'Klik untuk info fasilitas & S&K lengkap' : 'Click for terms & details' }}"
                                         class="w-8 h-8 md:w-9 md:h-9 bg-white text-slate-900 hover:bg-aqua-gold hover:text-aqua-navy font-black text-sm md:text-base flex items-center justify-center rounded-lg md:rounded-xl shadow-md transition-all cursor-pointer shrink-0 border border-black/10 active:scale-95">
                                     <span>i</span>
@@ -1441,9 +1475,43 @@
 
             <!-- Modal Content -->
             <div class="p-6 overflow-y-auto space-y-5 text-slate-600 text-xs md:text-sm leading-relaxed">
-                <div x-show="activeTermsDesc">
+                <!-- Fasilitas & Akses Termasuk (Checklist Centang) -->
+                <div x-show="Array.isArray($data.activeTermsBenefits) && $data.activeTermsBenefits.length > 0">
+                    <div class="flex items-center justify-between mb-3">
+                        <h5 class="font-black text-aqua-navy text-xs uppercase tracking-wider flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                            </span>
+                            <span>{{ $locale === 'en' ? 'Included Benefits & Access' : 'Fasilitas & Akses Termasuk' }}</span>
+                        </h5>
+                        <span class="text-[10px] font-black uppercase text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full tracking-wider" x-text="(Array.isArray($data.activeTermsBenefits) ? $data.activeTermsBenefits.length : 0) + ' {{ $locale === 'en' ? 'Benefits' : 'Fasilitas' }}'"></span>
+                    </div>
+
+                    <!-- Checklist Cards with Centang -->
+                    <div class="space-y-2">
+                        <template x-for="(benefit, bIdx) in (Array.isArray($data.activeTermsBenefits) ? $data.activeTermsBenefits : [])" :key="bIdx">
+                            <div class="flex items-start gap-3 p-3 rounded-2xl border transition-all"
+                                 :class="benefit.toLowerCase().includes('hemat') || benefit.toLowerCase().includes('save') 
+                                         ? 'bg-amber-50/80 border-amber-200 text-amber-950 shadow-xs' 
+                                         : 'bg-slate-50 border-slate-200/80 text-slate-800'">
+                                <div class="w-5 h-5 rounded-full flex items-center justify-center shrink-0 shadow-xs mt-0.5"
+                                     :class="benefit.toLowerCase().includes('hemat') || benefit.toLowerCase().includes('save') 
+                                             ? 'bg-amber-500 text-white' 
+                                             : 'bg-emerald-500 text-white'">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <span class="text-xs md:text-sm font-bold leading-snug flex-1" x-text="benefit"></span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Fallback jika array kosong tapi ada deskripsi teks -->
+                <div x-show="(!Array.isArray($data.activeTermsBenefits) || $data.activeTermsBenefits.length === 0) && activeTermsDesc">
                     <h5 class="font-black text-aqua-navy text-xs uppercase tracking-wider mb-2">Fasilitas & Akses Termasuk</h5>
-                    <div class="p-3.5 bg-aqua-cream rounded-2xl border border-aqua-gold/20 font-semibold text-slate-700" x-text="activeTermsDesc"></div>
+                    <div class="p-3.5 bg-aqua-cream rounded-2xl border border-aqua-gold/20 font-semibold text-slate-700 text-xs md:text-sm" x-text="activeTermsDesc"></div>
                 </div>
 
                 <div>
