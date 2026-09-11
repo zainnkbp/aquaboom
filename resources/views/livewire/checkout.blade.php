@@ -254,7 +254,7 @@
                 <label for="name" class="block text-xs font-black text-aqua-navy uppercase tracking-widest mb-3">
                     {{ $locale === 'id' ? 'Nama Lengkap' : 'Full Name' }}
                 </label>
-                <input type="text" wire:model="customer_name" id="name" class="block w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white text-aqua-navy focus:outline-none focus:border-aqua-gold focus:ring-2 focus:ring-aqua-gold/20 transition-all text-base font-semibold placeholder-slate-400" placeholder="e.g. John Doe" required />
+                <input type="text" wire:model.live.debounce.300ms="customer_name" id="name" class="block w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white text-aqua-navy focus:outline-none focus:border-aqua-gold focus:ring-2 focus:ring-aqua-gold/20 transition-all text-base font-semibold placeholder-slate-400" placeholder="e.g. John Doe" required />
                 @error('customer_name') <span class="text-red-500 text-xs font-bold mt-2 block">{{ $message }}</span> @enderror
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -262,14 +262,14 @@
                     <label for="email" class="block text-xs font-black text-aqua-navy uppercase tracking-widest mb-3">
                         {{ $locale === 'id' ? 'Alamat Email' : 'Email Address' }}
                     </label>
-                    <input type="email" wire:model="customer_email" id="email" class="block w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white text-aqua-navy focus:outline-none focus:border-aqua-gold focus:ring-2 focus:ring-aqua-gold/20 transition-all text-base font-semibold placeholder-slate-400" placeholder="e.g. john@example.com" required />
+                    <input type="email" wire:model.live.debounce.300ms="customer_email" id="email" class="block w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white text-aqua-navy focus:outline-none focus:border-aqua-gold focus:ring-2 focus:ring-aqua-gold/20 transition-all text-base font-semibold placeholder-slate-400" placeholder="e.g. john@example.com" required />
                     @error('customer_email') <span class="text-red-500 text-xs font-bold mt-2 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label for="phone" class="block text-xs font-black text-aqua-navy uppercase tracking-widest mb-3">
                         {{ $locale === 'id' ? 'Nomor WhatsApp' : 'WhatsApp Number' }}
                     </label>
-                    <input type="tel" wire:model="customer_phone" id="phone" class="block w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white text-aqua-navy focus:outline-none focus:border-aqua-gold focus:ring-2 focus:ring-aqua-gold/20 transition-all text-base font-semibold placeholder-slate-400" placeholder="e.g. 08123456789" required />
+                    <input type="tel" wire:model.live.debounce.300ms="customer_phone" id="phone" class="block w-full px-5 py-4 rounded-2xl border border-slate-200 bg-white text-aqua-navy focus:outline-none focus:border-aqua-gold focus:ring-2 focus:ring-aqua-gold/20 transition-all text-base font-semibold placeholder-slate-400" placeholder="e.g. 08123456789" required />
                     @error('customer_phone') <span class="text-red-500 text-xs font-bold mt-2 block">{{ $message }}</span> @enderror
                 </div>
             </div>
@@ -297,7 +297,7 @@
                         </button>
                     </div>
                 @else
-                    <input type="text" wire:model="promo_code" wire:keydown.enter.prevent="applyPromo" class="flex-1 w-full px-5 py-3.5 rounded-xl border border-slate-200 bg-white text-aqua-navy focus:outline-none focus:border-aqua-gold transition-all text-sm font-black uppercase placeholder-slate-400" placeholder="{{ $locale === 'id' ? 'Masukkan Kode Promo' : 'Enter Promo Code' }}">
+                    <input type="text" wire:model="promo_code" id="promo_code" wire:keydown.enter.prevent="applyPromo" class="flex-1 w-full px-5 py-3.5 rounded-xl border border-slate-200 bg-white text-aqua-navy focus:outline-none focus:border-aqua-gold transition-all text-sm font-black uppercase placeholder-slate-400" placeholder="{{ $locale === 'id' ? 'Masukkan Kode Promo' : 'Enter Promo Code' }}">
                     <button type="button" wire:click="applyPromo" wire:loading.attr="disabled" wire:target="applyPromo" class="w-full md:w-auto bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 px-8 py-3.5 rounded-xl font-black text-sm uppercase tracking-widest transition-all">
                         <span wire:loading.remove wire:target="applyPromo">{{ $locale === 'id' ? 'Gunakan' : 'Apply' }}</span>
                         <span wire:loading wire:target="applyPromo">...</span>
@@ -310,7 +310,8 @@
         </div>
 
         <!-- Terms Acceptance with Forced Popup -->
-        <div x-data="{ 
+        <div id="terms_section"
+             x-data="{ 
                 termsModalOpen: false, 
                 termsAccepted: @entangle('termsAccepted'),
                 openTerms() {
@@ -324,8 +325,9 @@
                     window.dispatchEvent(new CustomEvent('show-chat-assistant'));
                 }
              }" 
+             @open-terms-modal.window="openTerms()"
              @keydown.escape.window="closeTerms()"
-             class="mb-12">
+             class="mb-12 transition-all duration-300 rounded-[28px]">
             <div @click="openTerms()" class="flex items-start gap-4 bg-aqua-cream/50 p-6 rounded-[24px] border border-aqua-gold/20 cursor-pointer hover:bg-aqua-cream transition-colors">
                 <div class="relative flex items-start pt-1">
                     <input type="checkbox" 
@@ -620,6 +622,7 @@
         <div x-data="{ 
                 isExpanded: false,
                 startY: 0,
+                termsAccepted: @entangle('termsAccepted'),
                 handleTouchStart(e) {
                     this.startY = e.touches[0].clientY;
                 },
@@ -639,6 +642,67 @@
                         document.body.classList.remove('overflow-hidden');
                     }
                     window.dispatchEvent(new CustomEvent('cart-drawer-toggle', { detail: { open: val } }));
+                },
+                focusElement(el) {
+                    if (!el) return;
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                        el.focus({ preventScroll: true });
+                        el.classList.add('ring-4', 'ring-aqua-gold/60', 'transition-all', 'duration-300');
+                        setTimeout(() => el.classList.remove('ring-4', 'ring-aqua-gold/60'), 1500);
+                    }, 350);
+                },
+                handleContinue() {
+                    if (this.isExpanded) {
+                        this.setExpanded(false);
+                    }
+
+                    const step3 = document.getElementById('step-3-addons');
+                    const nameInput = document.getElementById('name');
+                    const emailInput = document.getElementById('email');
+                    const phoneInput = document.getElementById('phone');
+                    const termsSection = document.getElementById('terms_section');
+
+                    // 1. If user is above Add-ons section, scroll to Add-ons
+                    if (step3) {
+                        const rect3 = step3.getBoundingClientRect();
+                        if (rect3.top > 350) {
+                            step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            return;
+                        }
+                    }
+
+                    // 2. Check Name
+                    if (!nameInput || !nameInput.value.trim()) {
+                        this.focusElement(nameInput);
+                        return;
+                    }
+
+                    // 3. Check Email
+                    if (!emailInput || !emailInput.value.trim() || !emailInput.value.includes('@')) {
+                        this.focusElement(emailInput);
+                        return;
+                    }
+
+                    // 4. Check Phone
+                    if (!phoneInput || !phoneInput.value.trim()) {
+                        this.focusElement(phoneInput);
+                        return;
+                    }
+
+                    // 5. Check Terms & Conditions
+                    if (!this.termsAccepted) {
+                        if (termsSection) {
+                            termsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            termsSection.classList.add('ring-4', 'ring-aqua-gold/60', 'scale-[1.01]', 'transition-all');
+                            setTimeout(() => termsSection.classList.remove('ring-4', 'ring-aqua-gold/60', 'scale-[1.01]'), 1500);
+                        }
+                        window.dispatchEvent(new CustomEvent('open-terms-modal'));
+                        return;
+                    }
+
+                    // 6. If all filled & terms checked -> Bayar Sekarang!
+                    $wire.openConfirmationModal();
                 }
              }"
              x-init="window.dispatchEvent(new CustomEvent('sticky-price-bar-toggle', { detail: { active: true } }))"
@@ -834,26 +898,23 @@
                         </div>
                     </div>
                     <button type="button" 
-                            @click="setExpanded(false)"
-                            onclick="
-                                const step3 = document.getElementById('step-3-addons');
-                                const step4 = document.getElementById('step-4-contact');
-                                if (step3) {
-                                    const rect3 = step3.getBoundingClientRect();
-                                    if (rect3.top > 200) {
-                                        step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                        return;
-                                    }
-                                }
-                                if (step4) {
-                                    step4.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                    const nameInput = document.getElementById('name');
-                                    if (nameInput) setTimeout(() => nameInput.focus({ preventScroll: true }), 400);
-                                }
-                            "
-                            class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-6 sm:px-8 py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
-                        <span>{{ $locale === 'id' ? 'Lanjut' : 'Continue' }}</span>
-                        <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            @click="handleContinue()"
+                            :class="termsAccepted 
+                                ? 'bg-gradient-to-r from-amber-400 via-aqua-gold to-amber-500 hover:from-amber-500 hover:to-amber-500 text-aqua-navy font-black shadow-lg shadow-amber-500/30 ring-2 ring-amber-400' 
+                                : 'bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white border border-aqua-gold/30 hover:border-aqua-gold shadow-md'"
+                            class="text-xs sm:text-sm uppercase tracking-wider px-6 sm:px-8 py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-2 active:scale-95 cursor-pointer">
+                        <template x-if="!termsAccepted">
+                            <span class="flex items-center gap-1.5">
+                                <span>{{ $locale === 'id' ? 'Lanjut' : 'Continue' }}</span>
+                                <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            </span>
+                        </template>
+                        <template x-if="termsAccepted">
+                            <span class="flex items-center gap-1.5 font-black">
+                                <span>{{ $locale === 'id' ? 'Bayar Sekarang' : 'Pay Now' }}</span>
+                                <svg class="w-4 h-4 text-aqua-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            </span>
+                        </template>
                     </button>
                 </div>
             </div>
@@ -915,25 +976,23 @@
                     <!-- Right: CTA Button -->
                     <div class="shrink-0 flex items-center">
                         <button type="button" 
-                                onclick="
-                                    const step3 = document.getElementById('step-3-addons');
-                                    const step4 = document.getElementById('step-4-contact');
-                                    if (step3) {
-                                        const rect3 = step3.getBoundingClientRect();
-                                        if (rect3.top > 200) {
-                                            step3.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                            return;
-                                        }
-                                    }
-                                    if (step4) {
-                                        step4.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                        const nameInput = document.getElementById('name');
-                                        if (nameInput) setTimeout(() => nameInput.focus({ preventScroll: true }), 400);
-                                    }
-                                "
-                                class="bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white font-black text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-1.5 sm:gap-2 border border-aqua-gold/30 hover:border-aqua-gold active:scale-95 cursor-pointer">
-                            <span>{{ $locale === 'id' ? 'Lanjut' : 'Continue' }}</span>
-                            <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                @click="handleContinue()"
+                                :class="termsAccepted 
+                                    ? 'bg-gradient-to-r from-amber-400 via-aqua-gold to-amber-500 hover:from-amber-500 hover:to-amber-500 text-aqua-navy font-black shadow-lg shadow-amber-500/30 ring-2 ring-amber-400' 
+                                    : 'bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold hover:text-white border border-aqua-gold/30 hover:border-aqua-gold shadow-md'"
+                                class="text-xs sm:text-sm uppercase tracking-wider px-5 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center gap-1.5 sm:gap-2 active:scale-95 cursor-pointer">
+                            <template x-if="!termsAccepted">
+                                <span class="flex items-center gap-1.5 sm:gap-2">
+                                    <span>{{ $locale === 'id' ? 'Lanjut' : 'Continue' }}</span>
+                                    <svg class="w-4 h-4 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </span>
+                            </template>
+                            <template x-if="termsAccepted">
+                                <span class="flex items-center gap-1.5 sm:gap-2 font-black">
+                                    <span>{{ $locale === 'id' ? 'Bayar Sekarang' : 'Pay Now' }}</span>
+                                    <svg class="w-4 h-4 text-aqua-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </span>
+                            </template>
                         </button>
                     </div>
                 </div>

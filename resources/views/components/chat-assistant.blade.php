@@ -2,15 +2,15 @@
 
 <div x-data="chatbotData(@js($faqs))" 
      x-init="initAssistant()"
-     @sticky-price-bar-toggle.window="hasStickyBar = !!$event.detail.active"
+     @sticky-price-bar-toggle.window="hasStickyBar = !!$event.detail.active; checkModals();"
      @cart-drawer-toggle.window="isCartDrawerOpen = !!$event.detail.open; checkModals();"
      @hide-chat-assistant.window="forceHidden = true; checkModals();"
      @show-chat-assistant.window="forceHidden = false; checkModals();"
      @open-wahana-modal.window="isWahanaModalOpen = true; checkModals();"
      @close-wahana-modal.window="isWahanaModalOpen = false; checkModals();"
      @keydown.escape.window="isWahanaModalOpen = false; isCartDrawerOpen = false; checkModals();"
-     :style="hasStickyBar && !isAnyModalOpen() ? 'transform: translateY(-80px);' : 'transform: translateY(0);'"
-     :class="isAnyModalOpen() ? 'opacity-0 pointer-events-none scale-0 -translate-y-4 invisible' : 'opacity-100 scale-100 visible'"
+     :class="isAssistantHidden() ? 'opacity-0 pointer-events-none scale-0 invisible' : 'opacity-100 scale-100 visible'"
+     :style="isAssistantHidden() ? 'display: none !important;' : ''"
      class="fixed bottom-6 right-6 z-30 font-sans flex flex-col items-end gap-4 transition-all duration-300 ease-out">
     
     <!-- Chat Window -->
@@ -193,6 +193,11 @@
                            this.isWahanaModalOpen || 
                            this.forceHidden || 
                            this.isBodyModalActive;
+                },
+
+                isAssistantHidden() {
+                    return this.hasStickyBar || 
+                           this.isAnyModalOpen();
                 },
                 
                 askQuestion(faq) {
