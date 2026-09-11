@@ -152,6 +152,18 @@ Route::get('/privacy', function () {
     return redirect()->route('privacy');
 });
 
+Route::get('/terms-and-conditions', function () {
+    return view('terms');
+})->name('terms');
+
+Route::get('/terms', function () {
+    return redirect()->route('terms');
+});
+
+Route::get('/syarat-ketentuan', function () {
+    return redirect()->route('terms');
+});
+
 // Scanner App Routes
 Route::get('/scanner/login', ScannerLogin::class)->name('scanner.login');
 Route::get('/scanner', QrScanner::class)->name('scanner.app')->middleware('auth');
