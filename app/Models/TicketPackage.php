@@ -27,7 +27,37 @@ class TicketPackage extends Model
     public function getImageUrlAttribute($value): string
     {
         if (empty($value)) {
-            return asset('assets/img/default-package.svg');
+            return asset('assets/img/aquaboom.jpeg');
+        }
+
+        // If stored as full URL with localhost without port or stale domain
+        if (\Illuminate\Support\Str::contains($value, '/assets/img/')) {
+            $filename = \Illuminate\Support\Str::after($value, '/assets/img/');
+            if (file_exists(public_path('assets/img/' . $filename))) {
+                return asset('assets/img/' . $filename);
+            }
+            return asset('assets/img/aquaboom.jpeg');
+        }
+
+        if (\Illuminate\Support\Str::startsWith($value, ['http://', 'https://'])) {
+            return $value;
+        }
+
+        if (\Illuminate\Support\Str::startsWith($value, 'assets/')) {
+            return asset($value);
+        }
+
+        return asset('uploads/' . ltrim($value, '/'));
+    }
+
+    /**
+     * Accessor untuk mendapatkan URL banner tiket strip horizontal (Waterbom style).
+     */
+    public function getBannerImageUrlAttribute(): ?string
+    {
+        $value = $this->attributes['banner_image'] ?? null;
+        if (empty($value)) {
+            return null;
         }
 
         if (\Illuminate\Support\Str::startsWith($value, ['http://', 'https://'])) {
@@ -87,13 +117,22 @@ class TicketPackage extends Model
     public function isValidForDate(string $dateString): bool
     {
         $date = \Carbon\Carbon::parse($dateString);
+        $isHolidayOrPeak = Holiday::isHolidayOrPeakSeason($dateString);
 
         if ($this->validity_type === 'weekday') {
-            return $date->isWeekday();
+            // Weekday ticket is valid on Monday - Friday, BUT NOT on Public Holidays or Peak Seasons
+            return $date->isWeekday() && !$isHolidayOrPeak;
         }
 
         if ($this->validity_type === 'weekend') {
-            return $date->isWeekend();
+            // Weekend ticket is valid on Saturday - Sunday, AND ALSO on any Public Holiday or Peak Season
+            return $date->isWeekend() || $isHolidayOrPeak;
+        }
+
+        if ($this->validity_type === 'peak_season') {
+            // Peak season ticket is ONLY valid during registered Peak Season dates
+            $holiday = Holiday::getHolidayForDate($dateString);
+            return $holiday && $holiday->type === 'peak_season';
         }
 
         if ($this->validity_type === 'specific_dates') {

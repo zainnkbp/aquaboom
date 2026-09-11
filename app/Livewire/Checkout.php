@@ -33,6 +33,7 @@ class Checkout extends Component
     public $addon_quantities = [];
     public $addons;
     public bool $showConfirmationModal = false;
+    public ?array $holidayInfo = null;
 
     public function mount()
     {
@@ -59,6 +60,36 @@ class Checkout extends Component
 
     public function refreshPackages()
     {
+        // Resolve holiday or peak season for the selected visit date
+        $holiday = \App\Models\Holiday::getHolidayForDate($this->visit_date);
+        if ($holiday) {
+            $this->holidayInfo = [
+                'name' => $holiday->name,
+                'type' => $holiday->type,
+                'type_label' => match($holiday->type) {
+                    'peak_season' => '⭐ Periode Peak Season (Liburan)',
+                    'national_holiday' => '🔴 Hari Libur Nasional (Tanggal Merah)',
+                    'joint_leave' => '🟡 Cuti Bersama Resmi',
+                    default => '🔵 Jadwal Khusus',
+                },
+                'note' => $holiday->note ?: 'Berlaku tarif Weekend & Periode Liburan.',
+                'is_peak_season' => $holiday->type === 'peak_season',
+            ];
+        } else {
+            $carbon = \Carbon\Carbon::parse($this->visit_date);
+            if ($carbon->isWeekend()) {
+                $this->holidayInfo = [
+                    'name' => 'Akhir Pekan (' . $carbon->translatedFormat('l') . ')',
+                    'type' => 'weekend',
+                    'type_label' => '🌴 Akhir Pekan (Weekend)',
+                    'note' => 'Berlaku tarif Weekend & Rekreasi.',
+                    'is_peak_season' => false,
+                ];
+            } else {
+                $this->holidayInfo = null;
+            }
+        }
+
         $allPackages = TicketPackage::where('is_active', true)
             ->where('inquiry_type', 'none')
             ->orderBy('sort_order', 'asc')

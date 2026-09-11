@@ -149,7 +149,27 @@ class TicketPackageResource extends Resource
                     ->directory('packages')
                     ->visibility('public')
                     ->dehydrated(fn ($state) => filled($state))
-                    ->helperText('Abaikan jika tidak ingin mengubah foto. Upload foto baru untuk mengganti foto saat ini.')
+                    ->helperText('Foto thumbnail paket / promo. Diabaikan jika tidak ingin mengubah.')
+                    ->columnSpanFull(),
+                Forms\Components\Placeholder::make('current_banner_preview')
+                    ->label('Banner Tiket / Gelang Saat Ini (Strip Horizontal)')
+                    ->content(function ($record) {
+                        if (!$record || empty($record->banner_image)) {
+                            return new \Illuminate\Support\HtmlString('<span class="text-xs text-slate-400">Belum ada banner khusus (menggunakan warna tema & overlay hitam default).</span>');
+                        }
+                        $url = $record->banner_image_url;
+                        return new \Illuminate\Support\HtmlString('<div class="mt-1"><img src="' . e($url) . '" alt="Banner Preview" class="w-full max-w-xl h-20 object-cover rounded-xl border border-slate-700 shadow-md"></div>');
+                    })
+                    ->visible(fn ($record) => $record && filled($record->banner_image))
+                    ->columnSpanFull(),
+                Forms\Components\FileUpload::make('banner_image')
+                    ->label('Unggah Gambar Banner Tiket / Gelang (Format Strip Horizontal)')
+                    ->image()
+                    ->disk('public_uploads')
+                    ->directory('packages/banners')
+                    ->visibility('public')
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->helperText('Upload gambar banner strip horizontal seperti format gelang tiket Waterbom (rekomendasi rasio lanskap panjang 10:1 atau 8:1). Jika diisi, gambar ini akan menjadi latar belakang penuh gelang tiket. Jika kosong, sistem otomatis menggunakan gradasi warna bertema dengan overlay.')
                     ->columnSpanFull(),
                 Forms\Components\Select::make('inquiry_type')
                     ->label('Tindakan Tombol (Inquiry/Beli)')
@@ -186,11 +206,12 @@ class TicketPackageResource extends Resource
                             ->label('Akhir Penjualan (Batas Waktu)')
                             ->helperText('Paket akan otomatis tidak aktif/hilang setelah tanggal ini terlewati.'),
                         Forms\Components\Select::make('validity_type')
-                            ->label('Aturan Hari')
+                            ->label('Aturan Hari & Musim')
                             ->options([
-                                'all_days' => 'Berlaku Setiap Hari',
-                                'weekday' => 'Hanya Weekday (Senin - Jumat)',
-                                'weekend' => 'Hanya Weekend (Sabtu - Minggu, Libur)',
+                                'all_days' => 'Berlaku Setiap Hari (Weekday, Weekend & Peak Season)',
+                                'weekday' => 'Hanya Weekday Biasa (Senin - Jumat, Non-Libur/Non-Peak)',
+                                'weekend' => 'Weekend & Hari Libur (Sabtu - Minggu & Tanggal Merah/Peak)',
+                                'peak_season' => '⭐ Khusus Periode Peak Season (Liburan Sekolah & Nataru)',
                                 'specific_days' => 'Hanya Hari Tertentu (Misal: Tiap Rabu)',
                                 'specific_dates' => 'Hanya Tanggal Tertentu',
                             ])
@@ -277,7 +298,8 @@ class TicketPackageResource extends Resource
                     ->formatStateUsing(fn ($state) => match($state) {
                         'all_days' => 'Setiap Hari',
                         'weekday' => 'Weekday',
-                        'weekend' => 'Weekend',
+                        'weekend' => 'Weekend & Libur',
+                        'peak_season' => '⭐ Peak Season',
                         'specific_days' => 'Hari Tertentu',
                         'specific_dates' => 'Tanggal Tertentu',
                         default => $state,
@@ -287,6 +309,7 @@ class TicketPackageResource extends Resource
                         'all_days' => 'success',
                         'weekday' => 'info',
                         'weekend' => 'warning',
+                        'peak_season' => 'danger',
                         'specific_days' => 'primary',
                         'specific_dates' => 'danger',
                         default => 'gray',

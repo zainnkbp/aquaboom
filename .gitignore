@@ -1,5 +1,6 @@
 *.log
 *.bak
+/tikett.png
 .DS_Store
 .env
 .env.backup

@@ -1,4 +1,4 @@
-<form wire:submit.prevent="openConfirmationModal" class="flex flex-col h-full bg-white font-sans">
+<form wire:submit.prevent="openConfirmationModal" x-data="{ activeTermsModal: null, activeTermsName: '', activeTermsDesc: '', activeTermsHtml: '' }" class="flex flex-col h-full bg-white font-sans relative">
     
     <!-- Top Bar -->
     <div class="px-4 md:px-10 py-4 bg-aqua-navy text-white flex justify-between items-center border-b border-aqua-gold/20">
@@ -47,15 +47,69 @@
         </div>
     </div>
 
-    <!-- Step 2: Choose Tickets (Premium Cards - Redesigned to be Big and Detailed) -->
+    <!-- Step 2: Choose Tickets (Waterbom Bali Style Wristband Passes) -->
     <div id="step-2-tickets" class="px-3 md:px-10 py-5 md:py-10 max-w-5xl mx-auto w-full scroll-mt-20 md:scroll-mt-24">
-        <div class="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
-            <div class="h-px w-6 md:w-8 bg-aqua-gold"></div>
-            <span class="text-aqua-gold text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">Step 2</span>
-            <span class="text-aqua-navy text-xs md:text-sm font-black uppercase tracking-wide">
-                {{ $locale === 'id' ? 'PILIH JENIS TIKET' : 'SELECT TICKET TYPE' }}
+        <div class="flex items-center justify-between gap-3 mb-4 md:mb-6">
+            <div class="flex items-center gap-2 md:gap-3">
+                <div class="h-px w-6 md:w-8 bg-aqua-gold"></div>
+                <span class="text-aqua-gold text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">Step 2</span>
+                <span class="text-aqua-navy text-xs md:text-sm font-black uppercase tracking-wide">
+                    {{ $locale === 'id' ? 'PILIH GELANG MASUK (PASS TIKET)' : 'SELECT WRISTBAND PASS' }}
+                </span>
+            </div>
+            <span class="hidden sm:inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+                <svg class="w-3.5 h-3.5 text-aqua-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                {{ $locale === 'id' ? 'Gelang waterproof ditukar di loket tiket' : 'Wristbands collected at admission counter' }}
             </span>
         </div>
+
+        {{-- Peak Season / Holiday Notification Banner --}}
+        @if($holidayInfo)
+            @if(!empty($holidayInfo['is_peak_season']))
+                <!-- Peak Season Liburan Sekolah / Nataru Alert -->
+                <div class="mb-5 md:mb-6 rounded-2xl md:rounded-3xl p-4 md:p-5 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600 text-white shadow-lg relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border border-amber-300/30">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            ⭐
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-[10px] md:text-xs font-black uppercase tracking-wider bg-white/25 px-2.5 py-0.5 rounded-full shadow-sm">Periode Peak Season</span>
+                                <h4 class="font-extrabold text-sm md:text-base leading-tight">{{ $holidayInfo['name'] }}</h4>
+                            </div>
+                            <p class="text-xs md:text-sm text-white/95 mt-1 font-medium">{{ $holidayInfo['note'] }}</p>
+                        </div>
+                    </div>
+                    <div class="shrink-0 self-end sm:self-center">
+                        <span class="inline-flex items-center gap-1.5 text-[11px] md:text-xs font-black uppercase tracking-wider bg-white text-orange-600 px-3.5 py-1.5 rounded-full shadow-md">
+                            <span class="w-2 h-2 rounded-full bg-orange-500 animate-ping"></span>
+                            Tarif Liburan & Peak Season
+                        </span>
+                    </div>
+                </div>
+            @elseif($holidayInfo['type'] === 'national_holiday' || $holidayInfo['type'] === 'joint_leave')
+                <!-- National Holiday Alert -->
+                <div class="mb-5 md:mb-6 rounded-2xl md:rounded-3xl p-4 md:p-5 bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border border-red-300/30">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            🔴
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-[10px] md:text-xs font-black uppercase tracking-wider bg-white/25 px-2.5 py-0.5 rounded-full shadow-sm">Hari Libur Nasional</span>
+                                <h4 class="font-extrabold text-sm md:text-base leading-tight">{{ $holidayInfo['name'] }}</h4>
+                            </div>
+                            <p class="text-xs md:text-sm text-white/95 mt-1 font-medium">{{ $holidayInfo['note'] }}</p>
+                        </div>
+                    </div>
+                    <div class="shrink-0 self-end sm:self-center">
+                        <span class="inline-flex items-center gap-1.5 text-[11px] md:text-xs font-black uppercase tracking-wider bg-white text-rose-700 px-3.5 py-1.5 rounded-full shadow-md">
+                            Tarif Libur Berlaku
+                        </span>
+                    </div>
+                </div>
+            @endif
+        @endif
 
         @if($packages->isEmpty())
             <div class="bg-white rounded-2xl md:rounded-3xl p-8 md:p-16 text-center shadow-xl border border-slate-100">
@@ -64,13 +118,17 @@
                 </p>
             </div>
         @else
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
+            <!-- Waterbom Bali Style Hybrid Wristband Passes -->
+            <div class="flex flex-col gap-4 md:gap-5">
                 @foreach($packages as $pkg)
                     @php
                         $isWeekend = Str::contains(strtolower($pkg->name), 'weekend');
-                        $isGroup = Str::contains(strtolower($pkg->name), 'group');
+                        $isGroup = Str::contains(strtolower($pkg->name), 'group') || Str::contains(strtolower($pkg->name), 'rombongan');
                         $isDuo = Str::contains(strtolower($pkg->name), 'duo');
                         $isFour = Str::contains(strtolower($pkg->name), 'four');
+                        $isPeak = $pkg->validity_type === 'peak_season' || (!empty($holidayInfo['is_peak_season']));
+                        
+                        $qty = $quantities[$pkg->id] ?? 0;
                         
                         // Dynamic pricing label
                         $pricingLabel = $locale === 'id' ? 'per orang' : 'per person';
@@ -82,97 +140,135 @@
                             $pricingLabel = $locale === 'id' ? 'per orang (min. 10)' : 'per person (min. 10)';
                         }
 
-                        // Dynamic header gradient (wristband colors)
-                        $headerGradient = 'bg-gradient-to-br from-purple-600 to-indigo-700'; // Default / Weekday
-                        if ($isDuo) {
-                            $headerGradient = 'bg-gradient-to-br from-pink-500 to-rose-600'; // Duo Pass: Pink
-                        } elseif ($isFour) {
-                            $headerGradient = 'bg-gradient-to-br from-emerald-500 to-teal-600'; // Four Pack: Emerald
-                        } elseif ($isWeekend) {
-                            $headerGradient = 'bg-gradient-to-br from-cyan-500 to-blue-600'; // Weekend: Blue
-                        } elseif ($isGroup) {
-                            $headerGradient = 'bg-gradient-to-br from-orange-500 to-amber-600'; // Group: Orange
-                        }
+                        // Color theme per ticket type (Waterbom Orange, Azure Blue, Rose, Emerald)
+                        $baseGradient = 'from-amber-600 via-orange-600 to-orange-700'; // Default Warm Orange
                         
-                        $qty = $quantities[$pkg->id] ?? 0;
+                        if ($pkg->validity_type === 'weekday') {
+                            $baseGradient = 'from-sky-700 via-blue-800 to-indigo-900';
+                        } elseif ($isPeak) {
+                            $baseGradient = 'from-rose-600 via-red-600 to-amber-700';
+                        } elseif ($isDuo) {
+                            $baseGradient = 'from-pink-600 via-rose-600 to-purple-800';
+                        } elseif ($isFour) {
+                            $baseGradient = 'from-emerald-700 via-teal-800 to-cyan-900';
+                        }
                     @endphp
 
-                    <!-- Ticket Card -->
-                    <div class="bg-white rounded-2xl md:rounded-[28px] overflow-hidden shadow-lg md:shadow-xl border flex flex-col group hover:-translate-y-1 transition-all duration-300
-                         {{ $qty > 0 ? 'ring-4 ring-aqua-gold/70 shadow-2xl border-aqua-gold' : ($isDuo ? 'border-pink-500/45 ring-2 ring-pink-500/10' : ($isFour ? 'border-emerald-500/45 ring-2 ring-emerald-500/10' : ($isWeekend ? 'border-blue-500/45 ring-2 ring-blue-500/10' : 'border-slate-200'))) }}">
+                    <!-- Waterbom Bali Inspired Wristband Ribbon Pass -->
+                    <div class="relative rounded-2xl md:rounded-3xl border-2 transition-all duration-300 overflow-hidden shadow-md hover:shadow-xl group
+                         {{ $qty > 0 ? 'border-aqua-gold ring-4 ring-aqua-gold/40 shadow-2xl scale-[1.008]' : 'border-slate-300/80 hover:border-aqua-gold/70' }}"
+                         style="min-height: 115px;">
                         
-                        <!-- Header Card -->
-                        <div class="py-6 sm:py-7 md:py-8 px-4 sm:px-6 min-h-[135px] md:min-h-[160px] flex flex-col items-center justify-center text-center relative overflow-hidden {{ $headerGradient }} shadow-inner">
-                            <div class="absolute inset-0 bg-white/10 bg-gradient-to-b from-white/15 to-transparent pointer-events-none"></div>
+                        <!-- Background: 
+                             1. Full Banner Image (jika diupload admin seperti tikett.png)
+                             2. Normal Image with Dark Scrim Overlay
+                             3. Themed Gradient with Dark Overlay (jika tidak ada gambar)
+                        -->
+                        @if($pkg->banner_image_url)
+                            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.02]" 
+                                 style="background-image: url('{{ $pkg->banner_image_url }}');"></div>
+                            <!-- Soft scrim so text, info icon, price, and gold button are ultra-readable -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-black/45 via-black/15 to-black/40"></div>
+                        @elseif($pkg->image_url && !str_contains($pkg->image_url, 'default'))
+                            <div class="absolute inset-0 bg-cover bg-right md:bg-center transition-transform duration-700 group-hover:scale-105" 
+                                 style="background-image: url('{{ $pkg->image_url }}');"></div>
+                            <!-- Contrast Scrim: Solid black overlay on left, fading to photo on right -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/85 md:via-slate-950/75 to-slate-900/35"></div>
+                        @else
+                            <div class="absolute inset-0 bg-gradient-to-r {{ $baseGradient }}"></div>
+                            <div class="absolute inset-0 bg-black/40"></div>
+                        @endif
 
-                            @if($isWeekend)
-                                <div class="absolute top-2.5 right-2.5 md:top-3.5 md:right-3.5 bg-white text-aqua-navy text-[9px] md:text-[10px] font-black uppercase px-2.5 py-0.5 md:px-3 md:py-1 rounded-full tracking-wider md:tracking-widest shadow-sm">
-                                    {{ $locale === 'id' ? 'Paling Populer' : 'Most Popular' }}
-                                </div>
-                            @endif
-
-                            <span class="text-[10px] md:text-xs font-black tracking-[0.2em] uppercase mb-1 text-white/90 drop-shadow-sm">
-                                {{ $pkg->validity_type === 'weekday' ? 'Weekday' : ($pkg->validity_type === 'weekend' ? 'Weekend' : ($pkg->validity_type === 'all_days' ? ($locale === 'id' ? 'Setiap Hari' : 'Everyday') : 'Weekday')) }}
-                            </span>
-
-                            <!-- Clear Full Price text -->
-                            <div class="text-3xl sm:text-3xl md:text-4xl font-black tracking-tight text-white drop-shadow">
-                                Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}
-                            </div>
-
-                            <!-- Pricing Sub-label (e.g. per orang / per 2 orang) -->
-                            <span class="text-[11px] md:text-xs font-bold text-white/80 mt-1 uppercase tracking-wider">
-                                {{ $pricingLabel }}
-                            </span>
+                        <!-- Wristband Perforation / Clip Notch on Left Side -->
+                        <div class="absolute top-0 left-0 bottom-0 w-3 bg-aqua-gold flex flex-col justify-around items-center py-2">
+                            <span class="w-1 h-2 bg-black/30 rounded-full"></span>
+                            <span class="w-1 h-2 bg-black/30 rounded-full"></span>
+                            <span class="w-1 h-2 bg-black/30 rounded-full"></span>
                         </div>
 
-                        <!-- Card Body (Beautiful features with Gold checkmarks) -->
-                        <div class="p-5 sm:p-6 md:p-8 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="text-xl font-black text-aqua-navy mb-4 uppercase">
-                                    {{ $locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
-                                </h3>
+                        <!-- Inner Content Layout -->
+                        <div class="relative z-10 pl-5 md:pl-7 pr-3.5 md:pr-6 py-4 md:py-4.5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 md:gap-5">
+                            
+                            <!-- Left: Header, Subtitle, & Info Button -->
+                            <div class="flex-1 min-w-0 pr-0 md:pr-4">
                                 
-                                <div class="text-slate-600 text-sm font-semibold leading-relaxed mb-6 ticket-rich-description">
-                                    {!! $locale === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description !!}
+                                <!-- Category Tag & Promo Badges -->
+                                <div class="flex items-center gap-1.5 md:gap-2 flex-wrap mb-1">
+                                    <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md tracking-wider bg-black/45 text-white backdrop-blur-xs border border-white/25 shadow-xs">
+                                        {{ $pkg->validity_type === 'weekday' ? 'Weekday Pass' : ($pkg->validity_type === 'weekend' ? 'Weekend Pass' : ($pkg->validity_type === 'peak_season' ? 'Peak Season Pass' : 'All-Day Pass')) }}
+                                    </span>
+                                    @if($isWeekend && !$isPeak)
+                                        <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-aqua-gold text-aqua-navy tracking-wider shadow-xs">
+                                            Populer
+                                        </span>
+                                    @elseif($isPeak)
+                                        <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-rose-500 text-white tracking-wider shadow-xs">
+                                            Musim Liburan
+                                        </span>
+                                    @endif
                                 </div>
 
-                                @if($pkg->terms_and_conditions)
-                                    <!-- Accordion Terms & Conditions -->
-                                    <div x-data="{ open: false }" class="mb-4">
-                                        <button type="button" @click="open = !open" class="flex items-center gap-1.5 text-xs font-black text-aqua-azure hover:text-aqua-gold uppercase tracking-wider transition-colors cursor-pointer">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                            {{ $locale === 'id' ? 'Syarat & Ketentuan' : 'Terms & Conditions' }} <span x-text="open ? '▲' : '▼'"></span>
-                                        </button>
-                                        <div x-show="open" x-collapse style="display: none;" class="mt-3 p-4 bg-aqua-cream rounded-xl border border-aqua-gold/15 text-[11px] text-slate-600 font-semibold leading-relaxed">
-                                            {!! $locale === 'en' && $pkg->terms_and_conditions_en ? $pkg->terms_and_conditions_en : $pkg->terms_and_conditions !!}
-                                        </div>
-                                    </div>
-                                @endif
+                                <!-- Big Bold Title (Waterbom Style) -->
+                                <h3 class="text-base sm:text-lg md:text-xl font-black text-white tracking-tight uppercase leading-snug drop-shadow-md">
+                                    {{ $locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name }}
+                                </h3>
+
+                                <!-- Subtitle / Benefit Description -->
+                                <p class="text-white/90 text-[11px] md:text-xs font-semibold leading-relaxed line-clamp-2 mt-0.5 max-w-xl drop-shadow-sm">
+                                    {!! strip_tags($locale === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description) !!}
+                                </p>
                             </div>
 
-                            <!-- Quantity Selection -->
-                            <div class="mt-6 pt-4 border-t border-slate-100">
-                                @if($qty === 0)
-                                    <button type="button" 
-                                        wire:click="incrementQuantity({{ $pkg->id }})" 
-                                        class="w-full text-center py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all border-2 cursor-pointer
-                                        {{ $isWeekend ? 'bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy border-aqua-gold' : ($isGroup ? 'bg-aqua-azure hover:bg-aqua-azure-2 text-white border-aqua-azure' : 'bg-aqua-navy hover:bg-aqua-navy-2 text-white border-aqua-navy') }}">
-                                        {{ $locale === 'id' ? 'Pilih Tiket' : 'Select Ticket' }}
-                                    </button>
-                                @else
-                                    <div class="flex items-center justify-between bg-aqua-cream rounded-xl p-2 border border-aqua-gold/30 shadow-inner">
-                                        <button type="button" wire:click="decrementQuantity({{ $pkg->id }})" 
-                                            class="w-10 h-10 rounded-lg flex items-center justify-center bg-white text-aqua-navy hover:bg-slate-100 shadow-sm font-black text-xl transition-all cursor-pointer">
-                                            -
-                                        </button>
-                                        <span class="text-base font-black text-aqua-navy w-8 text-center">{{ $qty }}</span>
-                                        <button type="button" wire:click="incrementQuantity({{ $pkg->id }})" 
-                                            class="w-10 h-10 rounded-lg flex items-center justify-center bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 shadow-sm font-black text-xl transition-all cursor-pointer">
-                                            +
-                                        </button>
+                            <!-- Right: [ i ] Info Icon + Price + Aqua Gold [ SELECT v ] / Stepper -->
+                            <div class="flex items-center justify-between md:justify-end gap-3 md:gap-5 pt-2.5 md:pt-0 border-t md:border-t-0 border-white/20 shrink-0">
+                                
+                                <!-- Waterbom Bali Style [ i ] Info Button -->
+                                <button type="button" 
+                                        @click="activeTermsModal = {{ $pkg->id }}; activeTermsName = '{{ addslashes($locale === 'en' && $pkg->name_en ? $pkg->name_en : $pkg->name) }}'; activeTermsDesc = '{{ addslashes(strip_tags($locale === 'en' && $pkg->description_en ? $pkg->description_en : $pkg->description)) }}'; activeTermsHtml = '{{ addslashes($locale === 'en' && $pkg->terms_and_conditions_en ? $pkg->terms_and_conditions_en : ($pkg->terms_and_conditions ?: 'Tiket gelang berlaku 1 hari penuh untuk akses ke seluruh wahana air Aquaboom Balikpapan.')) }}'"
+                                        title="{{ $locale === 'id' ? 'Klik untuk info fasilitas & S&K lengkap' : 'Click for terms & details' }}"
+                                        class="w-8 h-8 md:w-9 md:h-9 bg-white text-slate-900 hover:bg-aqua-gold hover:text-aqua-navy font-black text-sm md:text-base flex items-center justify-center rounded-lg md:rounded-xl shadow-md transition-all cursor-pointer shrink-0 border border-black/10 active:scale-95">
+                                    <span>i</span>
+                                </button>
+
+                                <!-- Price Block -->
+                                <div class="text-left md:text-right">
+                                    <span class="block text-[10px] md:text-[11px] font-bold text-white/85 uppercase tracking-wider drop-shadow-xs">
+                                        {{ $locale === 'id' ? 'Mulai dari' : 'Start from' }} {{ $pricingLabel }}
+                                    </span>
+                                    <div class="text-lg sm:text-xl md:text-2xl font-black text-white tracking-tight leading-none mt-0.5 drop-shadow-md">
+                                        Rp {{ number_format($pkg->effective_price, 0, ',', '.') }}
                                     </div>
-                                @endif
+                                    @if($pkg->price && $pkg->price > $pkg->effective_price)
+                                        <span class="text-[11px] text-white/70 line-through font-semibold">
+                                            Rp {{ number_format($pkg->price, 0, ',', '.') }}
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <!-- Action: Aqua Gold [ SELECT v ] or Touch-Friendly Stepper -->
+                                <div class="shrink-0">
+                                    @if($qty === 0)
+                                        <button type="button" 
+                                            wire:click="incrementQuantity({{ $pkg->id }})" 
+                                            class="inline-flex items-center justify-center gap-1.5 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl font-black text-xs md:text-sm uppercase tracking-wider transition-all duration-200 shadow-lg hover:shadow-aqua-gold/40 cursor-pointer active:scale-95 border border-aqua-gold-2/50">
+                                            <span>{{ $locale === 'id' ? 'SELECT' : 'SELECT' }}</span>
+                                            <svg class="w-3.5 h-3.5 text-aqua-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                                        </button>
+                                    @else
+                                        <div class="flex items-center bg-white/95 backdrop-blur-md rounded-xl md:rounded-2xl p-1 md:p-1.5 border-2 border-aqua-gold shadow-xl">
+                                            <button type="button" wire:click="decrementQuantity({{ $pkg->id }})" 
+                                                class="w-8 h-8 md:w-9 md:h-9 rounded-lg flex items-center justify-center bg-slate-100 text-aqua-navy hover:bg-slate-200 shadow-xs font-black text-lg transition-all cursor-pointer active:scale-90">
+                                                -
+                                            </button>
+                                            <span class="text-sm md:text-base font-black text-aqua-navy w-8 md:w-9 text-center select-none">{{ $qty }}</span>
+                                            <button type="button" wire:click="incrementQuantity({{ $pkg->id }})" 
+                                                class="w-8 h-8 md:w-9 md:h-9 rounded-lg flex items-center justify-center bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 shadow-xs font-black text-lg transition-all cursor-pointer active:scale-90">
+                                                +
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+
                             </div>
 
                         </div>
@@ -183,51 +279,77 @@
         @endif
     </div>
 
-    <!-- Step 3: Add-Ons (Optional Facilities like Gazebos, Tubes, Lockers) -->
-    <div id="step-3-addons" class="px-4 md:px-10 py-12 bg-aqua-cream border-t border-b border-slate-100 scroll-mt-24">
+    <!-- Step 3: Add-Ons (Compact Visual Facility Cards) -->
+    <div id="step-3-addons" class="px-3 md:px-10 py-8 md:py-12 bg-aqua-cream border-t border-b border-slate-100 scroll-mt-20 md:scroll-mt-24">
         <div class="max-w-5xl mx-auto">
-            <div class="flex items-center gap-3 mb-8">
-                <div class="h-px w-8 bg-aqua-gold"></div>
-                <span class="text-aqua-gold text-xs font-black uppercase tracking-[0.2em]">Step 3</span>
-                <span class="text-aqua-navy text-sm font-black uppercase tracking-wide">
-                    {{ $locale === 'id' ? 'FASILITAS TAMBAHAN (OPSIONAL)' : 'ADDITIONAL FACILITIES (OPTIONAL)' }}
+            <div class="flex items-center justify-between gap-3 mb-6 md:mb-8">
+                <div class="flex items-center gap-2 md:gap-3">
+                    <div class="h-px w-6 md:w-8 bg-aqua-gold"></div>
+                    <span class="text-aqua-gold text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">Step 3</span>
+                    <span class="text-aqua-navy text-xs md:text-sm font-black uppercase tracking-wide">
+                        {{ $locale === 'id' ? 'FASILITAS SEWA & ADD-ON (OPSIONAL)' : 'RENTAL FACILITIES & ADD-ONS (OPTIONAL)' }}
+                    </span>
+                </div>
+                <span class="text-[11px] font-bold text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200/80 shadow-xs hidden sm:inline-block">
+                    {{ $locale === 'id' ? 'Bisa disewa saat ini atau di lokasi' : 'Available online or on-site' }}
                 </span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Compact 3-Column Add-On Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 @foreach($addons as $addon)
                     @php
                         $addonQty = $addon_quantities[$addon->id] ?? 0;
                     @endphp
-                    <!-- Add-On Row -->
-                    <div class="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-                        <img src="{{ $addon->image_url }}" alt="{{ $addon->name }}" onerror="this.onerror=null; this.src='{{ asset('assets/img/default-addon.svg') }}';" class="w-full sm:w-24 h-48 sm:h-24 rounded-2xl object-cover ring-1 ring-aqua-gold/20 shrink-0" />
-                        <div class="flex-1 flex flex-col justify-between w-full min-h-[96px]">
-                            <div>
-                                <h4 class="font-black text-aqua-navy text-base uppercase leading-tight">
-                                    {{ $locale === 'en' && $addon->name_en ? $addon->name_en : $addon->name }}
-                                </h4>
-                                <p class="text-slate-500 text-[11px] font-semibold leading-relaxed line-clamp-2 mt-1">
-                                    {!! strip_tags($locale === 'en' && $addon->description_en ? $addon->description_en : $addon->description) !!}
-                                </p>
+                    <div class="bg-white p-4 md:p-5 rounded-2xl md:rounded-3xl border-2 transition-all duration-200 flex flex-col justify-between
+                         {{ $addonQty > 0 ? 'border-aqua-gold ring-2 ring-aqua-gold/20 shadow-md bg-amber-50/15' : 'border-slate-200/80 hover:border-slate-300 shadow-xs hover:shadow-sm' }}">
+                        
+                        <div>
+                            <div class="relative w-full h-36 md:h-40 rounded-xl md:rounded-2xl overflow-hidden bg-slate-100 mb-3 border border-slate-100">
+                                <img src="{{ $addon->image_url }}" alt="{{ $addon->name }}" onerror="this.onerror=null; this.src='{{ asset('assets/img/default-addon.svg') }}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                <span class="absolute top-2 right-2 bg-aqua-navy/85 backdrop-blur-xs text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md shadow-xs">
+                                    Fasilitas Sewa
+                                </span>
                             </div>
-                            
-                            <div class="flex items-center justify-between mt-3 pt-3 border-t border-slate-50">
-                                <span class="text-sm font-black text-aqua-gold">Rp {{ number_format($addon->price, 0, ',', '.') }}</span>
-                                
-                                <div class="flex items-center bg-slate-50 rounded-lg p-1 border border-slate-200/60 scale-90 origin-right">
-                                    <button type="button" wire:click="decrementAddonQuantity({{ $addon->id }})" class="w-8 h-8 rounded bg-white text-aqua-navy hover:bg-slate-100 shadow-sm font-bold text-sm">-</button>
-                                    <span class="text-xs font-black text-aqua-navy w-6 text-center">{{ $addonQty }}</span>
-                                    <button type="button" wire:click="incrementAddonQuantity({{ $addon->id }})" class="w-8 h-8 rounded bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 shadow-sm font-bold text-sm">+</button>
-                                </div>
+
+                            <h4 class="font-black text-aqua-navy text-sm md:text-base leading-snug line-clamp-1">
+                                {{ $locale === 'en' && $addon->name_en ? $addon->name_en : $addon->name }}
+                            </h4>
+                            <p class="text-slate-500 text-[11px] font-medium leading-relaxed line-clamp-2 mt-1">
+                                {!! strip_tags($locale === 'en' && $addon->description_en ? $addon->description_en : $addon->description) !!}
+                            </p>
+                        </div>
+
+                        <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
+                            <div>
+                                <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tarif Sewa</span>
+                                <span class="text-sm md:text-base font-black text-aqua-gold">
+                                    Rp {{ number_format($addon->price, 0, ',', '.') }}
+                                </span>
+                            </div>
+
+                            <div>
+                                @if($addonQty === 0)
+                                    <button type="button" wire:click="incrementAddonQuantity({{ $addon->id }})" 
+                                        class="inline-flex items-center gap-1 bg-slate-100 hover:bg-aqua-navy hover:text-white text-aqua-navy text-xs font-black uppercase px-3.5 py-2 rounded-xl border border-slate-200 transition-all cursor-pointer">
+                                        <span>+ Sewa</span>
+                                    </button>
+                                @else
+                                    <div class="flex items-center bg-aqua-cream rounded-xl p-1 border border-aqua-gold/50 shadow-xs">
+                                        <button type="button" wire:click="decrementAddonQuantity({{ $addon->id }})" class="w-7 h-7 rounded-lg bg-white text-aqua-navy hover:bg-slate-100 shadow-xs font-black text-sm transition-all cursor-pointer">-</button>
+                                        <span class="text-xs font-black text-aqua-navy w-6 text-center select-none">{{ $addonQty }}</span>
+                                        <button type="button" wire:click="incrementAddonQuantity({{ $addon->id }})" class="w-7 h-7 rounded-lg bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 shadow-xs font-black text-sm transition-all cursor-pointer">+</button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
+
                     </div>
                 @endforeach
             </div>
 
             <!-- Quick Action to Continue to Step 4 -->
-            <div class="mt-8 flex justify-end">
+            <div class="mt-6 md:mt-8 flex justify-end">
                 <button type="button" 
                         onclick="document.getElementById('step-4-contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' })"
                         class="inline-flex items-center gap-2 bg-white hover:bg-aqua-navy hover:text-white border border-slate-200 hover:border-aqua-navy text-slate-700 font-bold text-xs uppercase px-6 py-3.5 rounded-xl transition-all shadow-sm group">
@@ -1279,7 +1401,72 @@
 
             </div>
         </div>
+    </div>
     @endif
+
+    <!-- Modal: Info Fasilitas & Syarat Ketentuan Gelang Tiket (Waterbom Bali Style) -->
+    <div x-show="activeTermsModal !== null" 
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         style="display: none;"
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-aqua-navy/70 backdrop-blur-sm">
+        
+        <div @click.away="activeTermsModal = null" 
+             x-show="activeTermsModal !== null"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95"
+             class="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl border border-aqua-gold/30 overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-aqua-navy text-white flex items-center justify-between border-b border-aqua-gold/20">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-8 h-8 rounded-xl bg-aqua-gold/20 text-aqua-gold flex items-center justify-center font-black text-sm">i</span>
+                    <div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-aqua-gold">Informasi Gelang Pass</span>
+                        <h4 class="font-black text-base leading-tight" x-text="activeTermsName"></h4>
+                    </div>
+                </div>
+                <button type="button" @click="activeTermsModal = null" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-lg transition-colors cursor-pointer">
+                    &times;
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-6 overflow-y-auto space-y-5 text-slate-600 text-xs md:text-sm leading-relaxed">
+                <div x-show="activeTermsDesc">
+                    <h5 class="font-black text-aqua-navy text-xs uppercase tracking-wider mb-2">Fasilitas & Akses Termasuk</h5>
+                    <div class="p-3.5 bg-aqua-cream rounded-2xl border border-aqua-gold/20 font-semibold text-slate-700" x-text="activeTermsDesc"></div>
+                </div>
+
+                <div>
+                    <h5 class="font-black text-aqua-navy text-xs uppercase tracking-wider mb-2">Syarat & Ketentuan Tiket</h5>
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-slate-600 space-y-2 prose prose-sm max-w-none text-xs leading-relaxed" x-html="activeTermsHtml"></div>
+                </div>
+
+                <div class="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 flex items-start gap-3">
+                    <span class="text-blue-600 text-base shrink-0">🎫</span>
+                    <p class="text-[11px] text-blue-900 leading-relaxed font-semibold">
+                        <strong>Info Pengambilan Gelang:</strong> E-tiket ber-barcode yang dikirim ke email Anda dapat langsung ditukarkan dengan gelang fisik di loket tiket saat kedatangan di Aquaboom.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button type="button" @click="activeTermsModal = null" class="px-6 py-2.5 rounded-xl bg-aqua-navy hover:bg-aqua-navy-2 text-white font-black text-xs uppercase tracking-wider transition-colors shadow-sm cursor-pointer">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
 </form>
 
 @script
