@@ -608,49 +608,63 @@
                 handleTouchStart(e) {
                     this.startY = e.touches[0].clientY;
                 },
+                handleTouchMove(e) {
+                    if (e.cancelable) e.preventDefault();
+                },
                 handleTouchEnd(e) {
                     const diff = this.startY - e.changedTouches[0].clientY;
-                    if (diff > 35) this.isExpanded = true;
-                    if (diff < -35) this.isExpanded = false;
+                    if (diff > 35) this.setExpanded(true);
+                    if (diff < -35) this.setExpanded(false);
+                },
+                setExpanded(val) {
+                    this.isExpanded = val;
+                    if (val) {
+                        document.body.classList.add('overflow-hidden');
+                    } else {
+                        document.body.classList.remove('overflow-hidden');
+                    }
+                    window.dispatchEvent(new CustomEvent('cart-drawer-toggle', { detail: { open: val } }));
                 }
              }"
              x-init="window.dispatchEvent(new CustomEvent('sticky-price-bar-toggle', { detail: { active: true } }))"
-             @keydown.escape.window="isExpanded = false"
+             @keydown.escape.window="setExpanded(false)"
              class="relative">
 
             <!-- Backdrop (when expanded) -->
             <div x-show="isExpanded" 
                  x-cloak
-                 style="display: none; z-index: 45;"
+                 style="display: none; z-index: 140 !important;"
                  x-transition:enter="ease-out duration-300"
                  x-transition:enter-start="opacity-0"
                  x-transition:enter-end="opacity-100"
                  x-transition:leave="ease-in duration-200"
                  x-transition:leave-start="opacity-100"
                  x-transition:leave-end="opacity-0"
-                 @click="isExpanded = false"
+                 @click="setExpanded(false)"
                  class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm cursor-pointer">
             </div>
 
             <!-- Drawer Bottom Sheet (Slides up from bottom) -->
             <div x-show="isExpanded"
                  x-cloak
-                 style="display: none; z-index: 46;"
+                 style="display: none; z-index: 150 !important;"
                  x-transition:enter="transform transition ease-out duration-300"
                  x-transition:enter-start="translate-y-full opacity-0"
                  x-transition:enter-end="translate-y-0 opacity-100"
                  x-transition:leave="transform transition ease-in duration-200"
                  x-transition:leave-start="translate-y-0 opacity-100"
                  x-transition:leave-end="translate-y-full opacity-0"
-                 class="fixed inset-x-0 bottom-0 max-h-[85vh] sm:max-h-[75vh] bg-white rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-15px_40px_-10px_rgba(0,0,0,0.3)] border-t border-aqua-gold/30 flex flex-col overflow-hidden">
+                 class="fixed inset-x-0 bottom-0 max-h-[85vh] sm:max-h-[75vh] bg-white rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-15px_40px_-10px_rgba(0,0,0,0.3)] border-t border-aqua-gold/30 flex flex-col overflow-hidden overscroll-contain">
                 
                 <!-- Drawer Top Drag Handle & Header -->
                 <div @touchstart="handleTouchStart($event)" 
+                     @touchmove="handleTouchMove($event)"
                      @touchend="handleTouchEnd($event)" 
+                     style="touch-action: none;"
                      class="pt-3 pb-4 px-5 sm:px-8 border-b border-slate-100 shrink-0 bg-slate-50/70 select-none">
                     <!-- Mobile drag pill indicator -->
                     <div class="w-12 h-1.5 bg-slate-300 hover:bg-aqua-gold rounded-full mx-auto mb-3 cursor-pointer transition-colors"
-                         @click="isExpanded = false"></div>
+                         @click="setExpanded(false)"></div>
 
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2.5">
@@ -668,7 +682,7 @@
                         </div>
 
                         <button type="button" 
-                                @click="isExpanded = false"
+                                @click="setExpanded(false)"
                                 class="text-slate-400 hover:text-aqua-navy p-2 rounded-xl hover:bg-slate-200/60 transition-colors cursor-pointer flex items-center gap-1 text-xs font-bold uppercase tracking-wider"
                                 aria-label="Tutup Rincian">
                             <span>{{ $locale === 'id' ? 'Tutup' : 'Close' }}</span>
@@ -805,7 +819,7 @@
                         </div>
                     </div>
                     <button type="button" 
-                            @click="isExpanded = false"
+                            @click="setExpanded(false)"
                             onclick="
                                 const step3 = document.getElementById('step-3-addons');
                                 const step4 = document.getElementById('step-4-contact');
@@ -830,17 +844,20 @@
             </div>
 
             <!-- Sticky Bottom Bar (Always visible at bottom when items > 0) -->
-            <div @touchstart="handleTouchStart($event)" 
-                 @touchend="handleTouchEnd($event)"
-                 class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-10px_30px_-5px_rgba(0,0,0,0.15)] transition-all duration-300 animate-in slide-in-from-bottom-5">
+            <div class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-10px_30px_-5px_rgba(0,0,0,0.15)] transition-all duration-300 animate-in slide-in-from-bottom-5">
                 
-                <!-- Mobile Drag Handle Bar & Gold Strip -->
-                <div class="relative cursor-pointer" @click="isExpanded = !isExpanded">
+                <!-- Mobile Drag Handle Bar & Gold Strip (Touch Action None for Mobile Swipe) -->
+                <div class="relative cursor-pointer select-none" 
+                     @touchstart="handleTouchStart($event)" 
+                     @touchmove="handleTouchMove($event)"
+                     @touchend="handleTouchEnd($event)"
+                     style="touch-action: none;"
+                     @click="setExpanded(!isExpanded)">
                     <!-- Top Gold/Accent Highlight Strip -->
                     <div class="bg-gradient-to-r from-aqua-gold via-amber-400 to-aqua-gold h-1 w-full"></div>
                     <!-- Mobile drag handle pill -->
-                    <div class="py-1 flex justify-center lg:hidden">
-                        <div class="w-10 h-1 bg-slate-300 hover:bg-aqua-gold rounded-full transition-colors"></div>
+                    <div class="py-2 flex justify-center lg:hidden">
+                        <div class="w-12 h-1.5 bg-slate-300 hover:bg-aqua-gold rounded-full transition-colors"></div>
                     </div>
                 </div>
                 
@@ -857,7 +874,7 @@
                         </div>
 
                         <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
-                            <div class="flex items-baseline gap-2 cursor-pointer" @click="isExpanded = !isExpanded">
+                            <div class="flex items-baseline gap-2 cursor-pointer" @click="setExpanded(!isExpanded)">
                                 <span class="text-xl sm:text-2xl md:text-3xl font-black text-aqua-navy tracking-tight">
                                     Rp {{ number_format($this->totalPrice, 0, ',', '.') }}
                                 </span>
@@ -868,7 +885,7 @@
 
                             <!-- Desktop & Mobile Toggle Button -->
                             <button type="button" 
-                                    @click="isExpanded = !isExpanded"
+                                    @click="setExpanded(!isExpanded)"
                                     class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-aqua-gold/20 text-aqua-navy text-[10px] sm:text-xs font-black uppercase tracking-wider transition-colors border border-slate-200 hover:border-aqua-gold/40 cursor-pointer">
                                 <span x-text="isExpanded ? '{{ $locale === 'id' ? 'Tutup Rincian' : 'Hide Details' }}' : '{{ $locale === 'id' ? 'Rincian' : 'Details' }}'"></span>
                                 <svg class="w-3 h-3 transition-transform duration-200 text-aqua-gold" 

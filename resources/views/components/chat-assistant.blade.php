@@ -2,8 +2,10 @@
 
 <div x-data="chatbotData(@js($faqs))" 
      @sticky-price-bar-toggle.window="hasStickyBar = !!$event.detail.active"
+     @cart-drawer-toggle.window="isCartDrawerOpen = !!$event.detail.open"
      :style="hasStickyBar ? 'transform: translateY(-80px);' : 'transform: translateY(0);'"
-     class="fixed bottom-6 right-6 z-[100] font-sans flex flex-col items-end gap-4 transition-transform duration-300 ease-out">
+     :class="isCartDrawerOpen ? 'opacity-0 pointer-events-none scale-90' : 'opacity-100 scale-100'"
+     class="fixed bottom-6 right-6 z-30 font-sans flex flex-col items-end gap-4 transition-all duration-300 ease-out">
     
     <!-- Chat Window -->
     <div 
@@ -105,6 +107,7 @@
                 isOpen: false,
                 isTyping: false,
                 hasStickyBar: false,
+                isCartDrawerOpen: false,
                 isEn: {{ App::getLocale() === 'en' ? 'true' : 'false' }},
                 faqs: faqData || [],
                 messages: [
