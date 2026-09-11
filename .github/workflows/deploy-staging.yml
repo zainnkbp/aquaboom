@@ -30,6 +30,9 @@ jobs:
             # 2. Update dependensi PHP (Composer)
             composer install --no-interaction --prefer-dist --optimize-autoloader
             
+            # 2.1 Jalankan Migrasi Database Otomatis
+            php artisan migrate --force
+            
             # 3. Build asset Frontend (Vite / Tailwind / Alpine.js)
             npm install
             npm run build
