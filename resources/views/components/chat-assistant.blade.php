@@ -24,7 +24,7 @@
      @keydown.escape.window="isWahanaModalOpen = false; isCartDrawerOpen = false; checkModals();"
      :class="isAssistantHidden() ? 'opacity-0 pointer-events-none scale-0 invisible' : 'opacity-100 scale-100 visible'"
      :style="isAssistantHidden() ? 'display: none !important;' : ''"
-     class="fixed bottom-6 right-6 z-30 font-sans flex flex-col items-end gap-3 transition-all duration-300 ease-out">
+     class="fixed bottom-6 right-6 z-[60] font-sans flex flex-col items-end gap-3 transition-all duration-300 ease-out">
     
     <!-- Chat Window -->
     <div 
@@ -36,7 +36,7 @@
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-90"
         style="display: none; width: 360px; max-width: calc(100vw - 3rem);"
-        class="bg-white rounded-[24px] shadow-2xl border border-slate-100 flex flex-col overflow-hidden max-h-[calc(100vh-6rem)]"
+        class="bg-white rounded-[24px] shadow-2xl border border-slate-100 flex flex-col overflow-hidden max-h-[min(540px,calc(100vh-6.5rem))]"
     >
         <!-- Header -->
         <div class="bg-aqua-navy text-white p-4.5 flex items-center justify-between shrink-0">
@@ -173,12 +173,12 @@
 
             <button 
                 @click="isOpen = !isOpen" 
-                class="w-14 h-14 sm:w-16 sm:h-16 bg-aqua-navy rounded-full shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-300 ring-4 ring-aqua-navy/30 border-2 border-aqua-gold/50 cursor-pointer"
+                class="w-14 h-14 bg-aqua-navy rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 ring-4 ring-aqua-navy/30 border-2 border-aqua-gold/50 cursor-pointer"
                 :class="{'rotate-12': isOpen}"
                 aria-label="Chat Assistant"
             >
                 <!-- Closed state: Vibrant Yellow Chat Bubble Icon -->
-                <svg x-show="!isOpen" class="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                <svg x-show="!isOpen" class="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
                     <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z" fill="#F09628" stroke="#FBAB43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="8" cy="12" r="1.3" fill="#160F30"/>
                     <circle cx="12" cy="12" r="1.3" fill="#160F30"/>
@@ -186,7 +186,7 @@
                 </svg>
 
                 <!-- Open state: Vibrant Yellow Close (X) Icon -->
-                <svg x-show="isOpen" style="display: none;" class="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg x-show="isOpen" style="display: none;" class="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6 18L18 6M6 6l12 12" stroke="#F09628" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
