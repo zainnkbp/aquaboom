@@ -485,7 +485,19 @@
                 <source src="{{ asset('uploads/' . $settings['philosophy_video_file']) }}" type="video/mp4">
               </video>
             @else
-              <iframe class="w-full h-full" src="{!! $settings['philosophy_video_url'] ?? 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE' !!}"
+              @php
+                  $philVideoUrl = $settings['philosophy_video_url'] ?? 'https://www.youtube.com/embed/2ugEGMhBPNE?rel=0';
+                  $philVideoUrl = preg_replace('/[&?]loop=[0-9]/', '', $philVideoUrl);
+                  $philVideoUrl = preg_replace('/[&?]playlist=[^&]+/', '', $philVideoUrl);
+                  $philVideoUrl = preg_replace('/[&?]autoplay=[0-9]/', '', $philVideoUrl);
+                  $philVideoUrl = preg_replace('/[&?]mute=[0-9]/', '', $philVideoUrl);
+                  if (!str_contains($philVideoUrl, '?')) {
+                      $philVideoUrl .= '?rel=0';
+                  } elseif (!str_contains($philVideoUrl, 'rel=')) {
+                      $philVideoUrl .= '&rel=0';
+                  }
+              @endphp
+              <iframe class="w-full h-full" src="{!! $philVideoUrl !!}"
                 title="Aquaboom Waterpark Company Video" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen></iframe>
