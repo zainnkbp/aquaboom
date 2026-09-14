@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ App::getLocale() === 'en' ? 'Official E-Ticket - Aquaboom Waterpark' : 'E-Ticket Resmi - Aquaboom Waterpark' }}</title>
+    
+    <!-- Tailwind CSS & Custom Themes -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -18,18 +20,15 @@
         }
       }
     </script>
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"
-    ></script>
+    
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <!-- dom-to-image for Flawless SVG & Canvas Download -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
-    <!-- QRCode.js for reliable Canvas-based QR -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <!-- Self-hosted html2canvas for 100% Reliable Client Export -->
+    <script src="{{ asset('assets/js/html2canvas.min.js') }}"></script>
+    
     <link rel="stylesheet" href="{{ asset('assets/css/ticket.css') }}" />
     <style>
       body {
@@ -38,13 +37,40 @@
       h1, h3 {
         font-family: 'Outfit', sans-serif;
       }
+      @media print {
+        body {
+          background-color: #ffffff !important;
+          padding: 0 !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+        #ticket-card {
+          box-shadow: none !important;
+          border: 1px solid #e2e8f0 !important;
+          max-width: 100% !important;
+          margin: 0 auto !important;
+          border-radius: 1rem !important;
+        }
+      }
     </style>
   </head>
   <body
     class="bg-[#f5f8f7] text-[#0f2726] min-h-screen flex flex-col py-10 px-4"
   >
+    @php
+      // Server-Side QR Code Generation for 100% Reliability & Zero-CDN Dependency
+      $qrSvg = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(240)
+          ->color(15, 39, 38)
+          ->backgroundColor(255, 255, 255)
+          ->margin(1)
+          ->generate($transaction->order_id);
+      $cleanQrSvg = preg_replace('/<\?xml.*?\?>/s', '', (string) $qrSvg);
+      $qrBase64 = 'data:image/svg+xml;base64,' . base64_encode($cleanQrSvg);
+    @endphp
+
     <!-- Header Navigation back to home -->
-    <div class="max-w-md mx-auto w-full mb-8">
+    <div class="max-w-md mx-auto w-full mb-6 no-print">
       <a
         href="{{ url('/') }}"
         class="inline-flex items-center text-sm font-bold text-slate-500 hover:text-waterbom-orange transition"
@@ -68,11 +94,11 @@
 
     <div class="w-full max-w-md mx-auto flex-1">
       <!-- Notification Banner -->
-      <div class="bg-teal-50 border border-teal-200 text-teal-800 px-4 py-4 rounded-2xl mb-6 flex items-start gap-3 shadow-sm">
+      <div class="bg-teal-50 border border-teal-200 text-teal-800 px-4 py-4 rounded-2xl mb-6 flex items-start gap-3 shadow-sm no-print">
         <svg class="w-6 h-6 mt-0.5 shrink-0 text-waterbom-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         <div class="text-sm">
           <strong class="block font-bold mb-1 text-base uppercase text-waterbom-dark">Penting!</strong>
-          Harap <span class="font-bold underline">Screenshot</span> halaman ini atau klik tombol <span class="font-bold">Simpan E-Ticket</span> di bawah agar tidak hilang. Salinan tiket juga telah dikirim ke Email Anda.
+          Harap <span class="font-bold underline">Screenshot</span> atau klik tombol <span class="font-bold">Simpan Gambar / PDF</span> di bawah agar tiket mudah ditunjukkan di loket masuk. Salinan tiket juga telah dikirim ke Email Anda.
         </div>
       </div>
 
@@ -100,20 +126,24 @@
         <!-- Ticket Body -->
         <div class="p-8 relative bg-white">
           <div class="text-center mb-8">
-            <!-- High Contrast Large QR Code -->
+            <!-- High Contrast Large Server-Side QR Code -->
             <div
               class="bg-white p-3 inline-block rounded-2xl shadow-md border-2 border-slate-100 mb-4"
             >
-              <!-- Client-side Canvas QR Code for 100% html2canvas compatibility -->
-              <div id="qrcode-container" class="w-48 h-48 flex items-center justify-center p-2">
-                <!-- QRCode will be injected here as a <canvas> -->
+              <div class="w-48 h-48 flex items-center justify-center p-1 bg-white">
+                <img 
+                  src="{{ $qrBase64 }}" 
+                  alt="QR Code {{ $transaction->order_id }}" 
+                  class="w-full h-full object-contain pointer-events-none select-none" 
+                  crossorigin="anonymous"
+                />
               </div>
             </div>
-            <p
-              class="font-mono text-sm font-bold text-[#0f2726] bg-slate-100 inline-block px-4 py-2 rounded-xl break-all"
-            >
-              {{ $transaction->order_id }}
-            </p>
+            <div>
+              <p class="font-mono text-sm font-bold text-[#0f2726] bg-slate-100 inline-block px-4 py-2 rounded-xl break-all">
+                {{ $transaction->order_id }}
+              </p>
+            </div>
           </div>
 
           <div class="space-y-5 text-sm">
@@ -152,10 +182,13 @@
               <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-2.5">Rincian Pembelian:</span>
               <div class="space-y-2.5 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 @foreach($transaction->items as $item)
+                  @php
+                    $unitPrice = $item->price_per_ticket > 0 ? $item->price_per_ticket : ($item->quantity > 0 ? ($item->subtotal / $item->quantity) : 0);
+                  @endphp
                   <div class="flex justify-between items-center text-xs">
                     <div>
                       <span class="font-bold text-slate-800 block">{{ $item->ticketPackage->name ?? 'Tiket Masuk' }}</span>
-                      <span class="text-slate-400 text-[11px]">{{ $item->quantity }} Tiket @ Rp {{ number_format($item->price_per_ticket, 0, ',', '.') }}</span>
+                      <span class="text-slate-400 text-[11px]">{{ $item->quantity }} Tiket @ Rp {{ number_format($unitPrice, 0, ',', '.') }}</span>
                     </div>
                     <span class="font-black text-slate-900">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</span>
                   </div>
@@ -163,10 +196,13 @@
 
                 @if($transaction->addOns && $transaction->addOns->count() > 0)
                   @foreach($transaction->addOns as $addon)
+                    @php
+                      $addonUnitPrice = $addon->price_per_unit > 0 ? $addon->price_per_unit : ($addon->quantity > 0 ? ($addon->subtotal / $addon->quantity) : 0);
+                    @endphp
                     <div class="flex justify-between items-center text-xs pt-2 border-t border-slate-200/70">
                       <div>
                         <span class="font-bold text-slate-800 block">{{ $addon->addOn->name ?? 'Fasilitas Tambahan' }}</span>
-                        <span class="text-slate-400 text-[11px]">{{ $addon->quantity }}x Sewa @ Rp {{ number_format($addon->price_per_unit, 0, ',', '.') }}</span>
+                        <span class="text-slate-400 text-[11px]">{{ $addon->quantity }}x Sewa @ Rp {{ number_format($addonUnitPrice, 0, ',', '.') }}</span>
                       </div>
                       <span class="font-black text-slate-900">Rp {{ number_format($addon->subtotal, 0, ',', '.') }}</span>
                     </div>
@@ -199,60 +235,75 @@
         </div>
       </div>
 
-      <!-- Download/Print Button -->
-      <div class="mb-4">
+      <!-- Action Buttons (Download & Print) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 no-print">
         <button
           id="download-btn"
           onclick="downloadTicket()"
-          class="w-full bg-waterbom-dark hover:bg-black text-white font-black text-lg py-4 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 uppercase tracking-wider"
+          class="w-full bg-waterbom-dark hover:bg-black text-white font-black text-sm py-4 px-4 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer active:scale-95"
         >
-          <svg class="w-6 h-6 text-waterbom-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-          Simpan ke Galeri (Gambar)
+          <svg class="w-5 h-5 text-waterbom-orange shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span id="btn-text">Simpan Gambar</span>
+        </button>
+
+        <button
+          onclick="window.print()"
+          class="w-full bg-white hover:bg-slate-50 text-waterbom-dark border-2 border-slate-200 font-black text-sm py-4 px-4 rounded-2xl shadow-sm transition flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer active:scale-95"
+        >
+          <svg class="w-5 h-5 text-waterbom-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          <span>Cetak / PDF</span>
         </button>
       </div>
     </div>
 
     <!-- Scripts -->
     <script>
-      // Initialize QR Code as a native canvas element
-      document.addEventListener("DOMContentLoaded", function() {
-        new QRCode(document.getElementById("qrcode-container"), {
-          text: "{{ $transaction->order_id }}",
-          width: 170,
-          height: 170,
-          colorDark : "#0f2726", // waterbom-dark
-          colorLight : "#ffffff",
-          correctLevel : QRCode.CorrectLevel.M
-        });
-      });
-
-      function downloadTicket() {
+      async function downloadTicket() {
         const btn = document.getElementById('download-btn');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = 'Mempersiapkan Gambar...';
+        const btnText = document.getElementById('btn-text');
+        const originalText = btnText.innerHTML;
+        
+        btnText.innerHTML = 'Memproses Gambar...';
         btn.disabled = true;
 
         const ticketCard = document.getElementById('ticket-card');
-        
-        // Use domtoimage to capture the element (much better than html2canvas for Flexbox and Canvas)
-        domtoimage.toPng(ticketCard, { bgcolor: 'transparent' })
-            .then(function (dataUrl) {
-                // Create download link
-                const link = document.createElement('a');
-                link.download = 'Aquaboom-Ticket-{{ $transaction->order_id }}.png';
-                link.href = dataUrl;
-                link.click();
 
-                // Restore button
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            })
-            .catch(function (error) {
-                console.error('Error rendering ticket: ', error);
-                alert('Gagal mendownload tiket. Silakan screenshot manual.');
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            });
+        try {
+          if (typeof html2canvas === 'undefined') {
+            throw new Error('html2canvas library is not ready.');
+          }
+
+          const canvas = await html2canvas(ticketCard, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#ffffff',
+            logging: false
+          });
+
+          const dataUrl = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.download = 'Aquaboom-Ticket-{{ $transaction->order_id }}.png';
+          link.href = dataUrl;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          btnText.innerHTML = '✓ Tersimpan!';
+          setTimeout(() => {
+            btnText.innerHTML = originalText;
+            btn.disabled = false;
+          }, 2500);
+        } catch (error) {
+          console.error('Error generating image: ', error);
+          btnText.innerHTML = originalText;
+          btn.disabled = false;
+          
+          // Fallback seamlessly to native browser print/save PDF
+          if (confirm('Unduhan otomatis gambar dibatasi oleh browser perangkat. Apakah Anda ingin membuka menu Cetak / Simpan sebagai PDF?')) {
+            window.print();
+          }
+        }
       }
     </script>
   </body>
