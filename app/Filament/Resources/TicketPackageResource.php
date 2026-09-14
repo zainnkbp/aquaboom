@@ -208,21 +208,43 @@ class TicketPackageResource extends Resource
                         Forms\Components\Select::make('validity_type')
                             ->label('Aturan Hari & Musim')
                             ->options([
-                                'all_days' => 'Berlaku Setiap Hari (Weekday, Weekend & Peak Season)',
-                                'weekday' => 'Hanya Weekday Biasa (Senin - Jumat, Non-Libur/Non-Peak)',
-                                'weekend' => 'Weekend & Hari Libur (Sabtu - Minggu & Tanggal Merah/Peak)',
+                                'all_days' => 'Berlaku Setiap Hari (All-Day Pass)',
+                                'weekday' => 'Hanya Weekday (Senin - Jumat)',
+                                'weekend' => 'Hanya Weekend (Sabtu - Minggu)',
                                 'peak_season' => '⭐ Khusus Periode Peak Season (Liburan Sekolah & Nataru)',
-                                'specific_holidays' => '🎖️ Khusus Event / Hari Libur Tertentu (Pilih Hari Libur)',
+                                'specific_holidays' => '🎖️ Khusus Event / Hari Libur Tertentu (Multi-Pilih Hari Libur)',
                                 'specific_days' => 'Hanya Hari Tertentu (Misal: Tiap Rabu)',
                                 'specific_dates' => 'Hanya Tanggal Tertentu (Input Manual)',
                             ])
                             ->default('all_days')
                             ->required()
                             ->live()
-                            ->helperText('Pilih kapan tiket ini akan muncul di form pemesanan.')
+                            ->afterStateUpdated(function (?string $state, Set $set) {
+                                if ($state === 'weekend') {
+                                    $set('include_national_holidays', true);
+                                    $set('include_peak_season', false);
+                                } elseif ($state === 'weekday') {
+                                    $set('include_national_holidays', false);
+                                    $set('include_peak_season', false);
+                                }
+                            })
+                            ->helperText('Pilih aturan dasar kapan tiket ini berlaku.')
+                            ->columnSpanFull(),
+                        Forms\Components\Grid::make(2)
+                            ->visible(fn (Get $get) => in_array($get('validity_type'), ['weekday', 'weekend']))
+                            ->schema([
+                                Forms\Components\Toggle::make('include_national_holidays')
+                                    ->label('Berlaku di Tanggal Merah & Cuti Bersama')
+                                    ->helperText('Jika aktif, tiket ini juga bisa digunakan pengunjung saat tanggal merah resmi / cuti bersama.')
+                                    ->default(fn (Get $get) => $get('validity_type') === 'weekend'),
+                                Forms\Components\Toggle::make('include_peak_season')
+                                    ->label('Berlaku di Periode Peak Season')
+                                    ->helperText('Jika aktif, tiket ini tetap berlaku pada masa liburan panjang (Libur Sekolah / Nataru).')
+                                    ->default(false),
+                            ])
                             ->columnSpanFull(),
                         Forms\Components\Select::make('holiday_ids')
-                            ->label('Pilih Hari Libur / Event Spesifik')
+                            ->label('Pilih Hari Libur / Event Spesifik (Bisa Pilih Lebih Dari 1)')
                             ->multiple()
                             ->searchable()
                             ->preload()
@@ -245,7 +267,7 @@ class TicketPackageResource extends Resource
                                         return [$holiday->id => "{$icon} {$holiday->name} ({$dateLabel})"];
                                     });
                             })
-                            ->helperText('Pilih hari libur/event. Tiket ini HANYA akan muncul saat pengunjung memilih tanggal libur tersebut (contoh: Hari Lahir Pancasila, HUT RI 17 Agustus, dll).')
+                            ->helperText('Pilih 1 atau beberapa hari libur/event. Tiket ini HANYA akan muncul saat pengunjung memilih salah satu dari tanggal merah yang dipilih di atas.')
                             ->visible(fn (Get $get) => $get('validity_type') === 'specific_holidays')
                             ->required(fn (Get $get) => $get('validity_type') === 'specific_holidays')
                             ->columnSpanFull(),
@@ -327,15 +349,17 @@ class TicketPackageResource extends Resource
                     ->boolean(),
                 Tables\Columns\TextColumn::make('validity_type')
                     ->label('Berlaku')
-                    ->formatStateUsing(fn ($state) => match($state) {
-                        'all_days' => 'Setiap Hari',
-                        'weekday' => 'Weekday',
-                        'weekend' => 'Weekend & Libur',
-                        'peak_season' => '⭐ Peak Season',
-                        'specific_holidays' => '🎖️ Hari Libur Spesifik',
-                        'specific_days' => 'Hari Tertentu',
-                        'specific_dates' => 'Tanggal Tertentu',
-                        default => $state,
+                    ->formatStateUsing(function ($state, TicketPackage $record) {
+                        return match($state) {
+                            'all_days' => 'Setiap Hari',
+                            'weekday' => $record->include_national_holidays ? 'Weekday + Libur' : 'Weekday Saja',
+                            'weekend' => $record->include_national_holidays ? 'Weekend & Libur' : 'Weekend Saja',
+                            'peak_season' => '⭐ Peak Season',
+                            'specific_holidays' => '🎖️ Hari Libur Spesifik',
+                            'specific_days' => 'Hari Tertentu',
+                            'specific_dates' => 'Tanggal Tertentu',
+                            default => $state,
+                        };
                     })
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {

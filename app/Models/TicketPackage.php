@@ -20,6 +20,8 @@ class TicketPackage extends Model
         'valid_dates' => 'array',
         'valid_days' => 'array',
         'holiday_ids' => 'array',
+        'include_national_holidays' => 'boolean',
+        'include_peak_season' => 'boolean',
     ];
 
     /**
@@ -194,16 +196,37 @@ class TicketPackage extends Model
     public function isValidForDate(string $dateString): bool
     {
         $date = \Carbon\Carbon::parse($dateString);
-        $isHolidayOrPeak = Holiday::isHolidayOrPeakSeason($dateString);
+        $holiday = Holiday::getHolidayForDate($dateString);
+        $isHoliday = $holiday && in_array($holiday->type, ['national_holiday', 'joint_leave']);
+        $isPeak = $holiday && $holiday->type === 'peak_season';
 
         if ($this->validity_type === 'weekday') {
-            // Weekday ticket is valid on Monday - Friday, BUT NOT on Public Holidays or Peak Seasons
-            return $date->isWeekday() && !$isHolidayOrPeak;
+            if (!$date->isWeekday()) {
+                return false;
+            }
+            // If date is a national holiday / cuti bersama and package does NOT allow holidays:
+            if ($isHoliday && !$this->include_national_holidays) {
+                return false;
+            }
+            // If date is peak season and package does NOT allow peak season:
+            if ($isPeak && !$this->include_peak_season) {
+                return false;
+            }
+            return true;
         }
 
         if ($this->validity_type === 'weekend') {
-            // Weekend ticket is valid on Saturday - Sunday, AND ALSO on any Public Holiday or Peak Season
-            return $date->isWeekend() || $isHolidayOrPeak;
+            $isWeekendDay = $date->isWeekend();
+            // Can be used on Saturday/Sunday, OR on National Holiday/Cuti Bersama if enabled
+            $dayAllowed = $isWeekendDay || ($isHoliday && $this->include_national_holidays);
+            if (!$dayAllowed) {
+                return false;
+            }
+            // If date is peak season and package does NOT allow peak season:
+            if ($isPeak && !$this->include_peak_season) {
+                return false;
+            }
+            return true;
         }
 
         if ($this->validity_type === 'peak_season') {
