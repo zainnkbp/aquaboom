@@ -131,6 +131,10 @@
                         * Berlaku Weekday (Senin - Jumat)
                       @elseif($package->validity_type === 'weekend')
                         * Berlaku Weekend (Sabtu - Minggu, Libur)
+                      @elseif($package->validity_type === 'peak_season')
+                        * Berlaku High / Peak Season
+                      @elseif($package->validity_type === 'specific_holidays')
+                        * Berlaku Khusus Event / Hari Libur Tertentu
                       @else
                         * Berlaku setiap hari
                       @endif

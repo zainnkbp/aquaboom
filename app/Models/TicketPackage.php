@@ -19,6 +19,7 @@ class TicketPackage extends Model
         'is_featured_home' => 'boolean',
         'valid_dates' => 'array',
         'valid_days' => 'array',
+        'holiday_ids' => 'array',
     ];
 
     /**
@@ -209,6 +210,15 @@ class TicketPackage extends Model
             // Peak season ticket is ONLY valid during registered Peak Season dates
             $holiday = Holiday::getHolidayForDate($dateString);
             return $holiday && $holiday->type === 'peak_season';
+        }
+
+        if ($this->validity_type === 'specific_holidays') {
+            // Valid ONLY on selected specific holidays/events (e.g. Hari Lahir Pancasila, 17 Agustus, etc.)
+            if (empty($this->holiday_ids) || !is_array($this->holiday_ids)) {
+                return false;
+            }
+            $holiday = Holiday::getHolidayForDate($dateString);
+            return $holiday && in_array($holiday->id, $this->holiday_ids);
         }
 
         if ($this->validity_type === 'specific_dates') {

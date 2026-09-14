@@ -212,13 +212,43 @@ class TicketPackageResource extends Resource
                                 'weekday' => 'Hanya Weekday Biasa (Senin - Jumat, Non-Libur/Non-Peak)',
                                 'weekend' => 'Weekend & Hari Libur (Sabtu - Minggu & Tanggal Merah/Peak)',
                                 'peak_season' => '⭐ Khusus Periode Peak Season (Liburan Sekolah & Nataru)',
+                                'specific_holidays' => '🎖️ Khusus Event / Hari Libur Tertentu (Pilih Hari Libur)',
                                 'specific_days' => 'Hanya Hari Tertentu (Misal: Tiap Rabu)',
-                                'specific_dates' => 'Hanya Tanggal Tertentu',
+                                'specific_dates' => 'Hanya Tanggal Tertentu (Input Manual)',
                             ])
                             ->default('all_days')
                             ->required()
                             ->live()
-                            ->helperText('Pilih kapan tiket ini akan muncul di form pemesanan.'),
+                            ->helperText('Pilih kapan tiket ini akan muncul di form pemesanan.')
+                            ->columnSpanFull(),
+                        Forms\Components\Select::make('holiday_ids')
+                            ->label('Pilih Hari Libur / Event Spesifik')
+                            ->multiple()
+                            ->searchable()
+                            ->preload()
+                            ->options(function () {
+                                return \App\Models\Holiday::query()
+                                    ->active()
+                                    ->orderByRaw('COALESCE(date, start_date) ASC')
+                                    ->get()
+                                    ->mapWithKeys(function ($holiday) {
+                                        $icon = match($holiday->type) {
+                                            'peak_season' => '⭐',
+                                            'joint_leave' => '🟡',
+                                            default => '🔴',
+                                        };
+                                        $dateLabel = $holiday->date 
+                                            ? $holiday->date->translatedFormat('d M Y') 
+                                            : ($holiday->start_date && $holiday->end_date 
+                                                ? $holiday->start_date->translatedFormat('d M') . ' — ' . $holiday->end_date->translatedFormat('d M Y') 
+                                                : '');
+                                        return [$holiday->id => "{$icon} {$holiday->name} ({$dateLabel})"];
+                                    });
+                            })
+                            ->helperText('Pilih hari libur/event. Tiket ini HANYA akan muncul saat pengunjung memilih tanggal libur tersebut (contoh: Hari Lahir Pancasila, HUT RI 17 Agustus, dll).')
+                            ->visible(fn (Get $get) => $get('validity_type') === 'specific_holidays')
+                            ->required(fn (Get $get) => $get('validity_type') === 'specific_holidays')
+                            ->columnSpanFull(),
                         Forms\Components\Select::make('valid_days')
                             ->label('Pilih Hari')
                             ->multiple()
@@ -233,13 +263,15 @@ class TicketPackageResource extends Resource
                             ])
                             ->visible(fn (Get $get) => $get('validity_type') === 'specific_days')
                             ->required(fn (Get $get) => $get('validity_type') === 'specific_days')
-                            ->helperText('Pilih hari-hari apa saja tiket ini berlaku.'),
+                            ->helperText('Pilih hari-hari apa saja tiket ini berlaku.')
+                            ->columnSpanFull(),
                         Forms\Components\TagsInput::make('valid_dates')
                             ->label('Tanggal Khusus')
                             ->placeholder('Contoh: 2026-12-31')
                             ->helperText('Ketik tanggal dengan format YYYY-MM-DD lalu tekan Enter. Hanya diisi jika memilih "Hanya Tanggal Tertentu".')
                             ->visible(fn (Get $get) => $get('validity_type') === 'specific_dates')
-                            ->required(fn (Get $get) => $get('validity_type') === 'specific_dates'),
+                            ->required(fn (Get $get) => $get('validity_type') === 'specific_dates')
+                            ->columnSpanFull(),
                     ])->columns(2),
             ]);
     }
@@ -300,6 +332,7 @@ class TicketPackageResource extends Resource
                         'weekday' => 'Weekday',
                         'weekend' => 'Weekend & Libur',
                         'peak_season' => '⭐ Peak Season',
+                        'specific_holidays' => '🎖️ Hari Libur Spesifik',
                         'specific_days' => 'Hari Tertentu',
                         'specific_dates' => 'Tanggal Tertentu',
                         default => $state,
@@ -310,6 +343,7 @@ class TicketPackageResource extends Resource
                         'weekday' => 'info',
                         'weekend' => 'warning',
                         'peak_season' => 'danger',
+                        'specific_holidays' => 'danger',
                         'specific_days' => 'primary',
                         'specific_dates' => 'danger',
                         default => 'gray',

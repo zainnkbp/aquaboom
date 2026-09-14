@@ -61,29 +61,49 @@ class Holiday extends Model
     }
 
     /**
-     * Sync Indonesian national holidays from official public API.
+     * Sync Indonesian national holidays from official Google Calendar Indonesian Holiday feed.
+     * Contains all ~28 national holidays, religious observances, and official Cuti Bersama.
      */
     public static function syncFromNationalApi(int $year): array
     {
         $imported = 0;
-        $url = "https://date.nager.at/api/v3/PublicHolidays/{$year}/ID";
+        $url = 'https://calendar.google.com/calendar/ical/id.indonesian%23holiday%40group.v.calendar.google.com/public/basic.ics';
 
         try {
-            $response = Http::timeout(10)->get($url);
+            $response = Http::timeout(12)->get($url);
             if ($response->successful()) {
-                $holidays = $response->json();
-                foreach ($holidays as $item) {
-                    $holidayDate = $item['date'] ?? null;
-                    $name = $item['localName'] ?? $item['name'] ?? 'Hari Libur Nasional';
+                $body = $response->body();
+                preg_match_all('/BEGIN:VEVENT(.*?)END:VEVENT/s', $body, $matches);
 
-                    if ($holidayDate) {
+                foreach ($matches[1] as $eventBlock) {
+                    if (preg_match('/DTSTART(?:;VALUE=DATE)?:(\d{4})(\d{2})(\d{2})/', $eventBlock, $dateMatch) &&
+                        preg_match('/SUMMARY:(.*?)(?:\r?\n|$)/', $eventBlock, $summaryMatch)) {
+                        
+                        $eventYear = (int) $dateMatch[1];
+                        if ($eventYear !== $year) {
+                            continue;
+                        }
+
+                        $holidayDate = "{$dateMatch[1]}-{$dateMatch[2]}-{$dateMatch[3]}";
+                        $name = trim($summaryMatch[1]);
+                        
+                        // Clean any escaped characters (like \, or \;)
+                        $name = str_replace(['\,', '\;'], [',', ';'], $name);
+
+                        // Determine category: Cuti Bersama vs Hari Libur Nasional
+                        $isCutiBersama = stripos($name, 'cuti bersama') !== false;
+                        $type = $isCutiBersama ? 'joint_leave' : 'national_holiday';
+                        $note = $isCutiBersama 
+                            ? "Cuti Bersama Resmi {$year}. Berlaku tarif Weekend & Rekreasi."
+                            : "Hari Libur Nasional Indonesia {$year}. Berlaku tarif Weekend & Liburan.";
+
                         static::updateOrCreate(
                             ['date' => $holidayDate],
                             [
                                 'name' => $name,
-                                'type' => 'national_holiday',
+                                'type' => $type,
                                 'is_active' => true,
-                                'note' => 'Otomatis diimpor dari Kalender Libur Nasional Indonesia ' . $year,
+                                'note' => $note,
                             ]
                         );
                         $imported++;
@@ -91,7 +111,35 @@ class Holiday extends Model
                 }
             }
         } catch (\Throwable $e) {
-            Log::warning("Failed syncing holidays from Nager API for year {$year}: " . $e->getMessage());
+            Log::warning("Failed syncing holidays from Google feed for year {$year}: " . $e->getMessage());
+        }
+
+        // Fallback to Nager.date if Google Calendar was somehow unreachable
+        if ($imported === 0) {
+            try {
+                $nagerUrl = "https://date.nager.at/api/v3/PublicHolidays/{$year}/ID";
+                $nagerRes = Http::timeout(8)->get($nagerUrl);
+                if ($nagerRes->successful()) {
+                    foreach ($nagerRes->json() as $item) {
+                        $holidayDate = $item['date'] ?? null;
+                        $name = $item['localName'] ?? $item['name'] ?? 'Hari Libur Nasional';
+                        if ($holidayDate) {
+                            static::updateOrCreate(
+                                ['date' => $holidayDate],
+                                [
+                                    'name' => $name,
+                                    'type' => 'national_holiday',
+                                    'is_active' => true,
+                                    'note' => 'Kalender Libur Nasional Indonesia ' . $year,
+                                ]
+                            );
+                            $imported++;
+                        }
+                    }
+                }
+            } catch (\Throwable $e) {
+                Log::warning("Fallback Nager API failed: " . $e->getMessage());
+            }
         }
 
         return [

@@ -210,7 +210,7 @@
                                 <!-- Category Tag & Promo Badges -->
                                 <div class="flex items-center gap-1.5 md:gap-2 flex-wrap mb-1">
                                     <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md tracking-wider bg-black/45 text-white backdrop-blur-xs border border-white/25 shadow-xs">
-                                        {{ $pkg->validity_type === 'weekday' ? 'Weekday Pass' : ($pkg->validity_type === 'weekend' ? 'Weekend Pass' : ($pkg->validity_type === 'peak_season' ? 'Peak Season Pass' : 'All-Day Pass')) }}
+                                        {{ $pkg->validity_type === 'weekday' ? 'Weekday Pass' : ($pkg->validity_type === 'weekend' ? 'Weekend Pass' : ($pkg->validity_type === 'peak_season' ? 'Peak Season Pass' : ($pkg->validity_type === 'specific_holidays' ? 'Event / Libur Khusus' : 'All-Day Pass'))) }}
                                     </span>
                                     @if($isWeekend && !$isPeak)
                                         <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-aqua-gold text-aqua-navy tracking-wider shadow-xs">
