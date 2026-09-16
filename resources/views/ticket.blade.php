@@ -26,9 +26,6 @@
       rel="stylesheet"
     />
     
-    <!-- Self-hosted html2canvas for 100% Reliable Client Export -->
-    <script src="{{ asset('assets/js/html2canvas.min.js') }}"></script>
-    
     <link rel="stylesheet" href="{{ asset('assets/css/ticket.css') }}" />
     <style>
       body {
@@ -235,76 +232,16 @@
         </div>
       </div>
 
-      <!-- Action Buttons (Download & Print) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 no-print">
-        <button
-          id="download-btn"
-          onclick="downloadTicket()"
-          class="w-full bg-waterbom-dark hover:bg-black text-white font-black text-sm py-4 px-4 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer active:scale-95"
-        >
-          <svg class="w-5 h-5 text-waterbom-orange shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-          <span id="btn-text">Simpan Gambar</span>
-        </button>
-
+      <!-- Action Button (Cetak / Simpan PDF) -->
+      <div class="mb-6 no-print">
         <button
           onclick="window.print()"
-          class="w-full bg-white hover:bg-slate-50 text-waterbom-dark border-2 border-slate-200 font-black text-sm py-4 px-4 rounded-2xl shadow-sm transition flex items-center justify-center gap-2 uppercase tracking-wider cursor-pointer active:scale-95"
+          class="w-full bg-waterbom-dark hover:bg-black text-white font-black text-base py-4 px-6 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-3 uppercase tracking-wider cursor-pointer active:scale-95 border-2 border-slate-700/50 hover:shadow-2xl"
         >
-          <svg class="w-5 h-5 text-waterbom-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-          <span>Cetak / PDF</span>
+          <svg class="w-6 h-6 text-waterbom-orange shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          <span>Cetak / Simpan E-Ticket (PDF)</span>
         </button>
       </div>
     </div>
-
-    <!-- Scripts -->
-    <script>
-      async function downloadTicket() {
-        const btn = document.getElementById('download-btn');
-        const btnText = document.getElementById('btn-text');
-        const originalText = btnText.innerHTML;
-        
-        btnText.innerHTML = 'Memproses Gambar...';
-        btn.disabled = true;
-
-        const ticketCard = document.getElementById('ticket-card');
-
-        try {
-          if (typeof html2canvas === 'undefined') {
-            throw new Error('html2canvas library is not ready.');
-          }
-
-          const canvas = await html2canvas(ticketCard, {
-            scale: 2,
-            useCORS: true,
-            allowTaint: true,
-            backgroundColor: '#ffffff',
-            logging: false
-          });
-
-          const dataUrl = canvas.toDataURL('image/png');
-          const link = document.createElement('a');
-          link.download = 'Aquaboom-Ticket-{{ $transaction->order_id }}.png';
-          link.href = dataUrl;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-
-          btnText.innerHTML = '✓ Tersimpan!';
-          setTimeout(() => {
-            btnText.innerHTML = originalText;
-            btn.disabled = false;
-          }, 2500);
-        } catch (error) {
-          console.error('Error generating image: ', error);
-          btnText.innerHTML = originalText;
-          btn.disabled = false;
-          
-          // Fallback seamlessly to native browser print/save PDF
-          if (confirm('Unduhan otomatis gambar dibatasi oleh browser perangkat. Apakah Anda ingin membuka menu Cetak / Simpan sebagai PDF?')) {
-            window.print();
-          }
-        }
-      }
-    </script>
   </body>
 </html>
