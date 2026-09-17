@@ -78,6 +78,18 @@
     <!-- Career Section -->
     <section id="career" class="py-24 bg-aqua-cream border-t border-slate-200">
         <div class="max-w-4xl mx-auto px-6 text-center">
+            @php
+                $rawWa = \App\Models\Setting::where('key', 'contact_whatsapp')->value('value') ?? '628115472233';
+                $waClean = preg_replace('/[^0-9]/', '', $rawWa);
+                if (str_starts_with($waClean, '0')) {
+                    $waClean = '62' . substr($waClean, 1);
+                }
+                $locale = App::getLocale();
+                $careerWaText = $locale === 'en'
+                    ? urlencode('Hello Aquaboom HR / Career Team, I am interested in career opportunities and would like to ask about available job vacancies.')
+                    : urlencode('Halo Tim HRD / Karir Aquaboom, saya tertarik untuk bergabung dan ingin menanyakan informasi lowongan kerja yang tersedia di Aquaboom Waterpark.');
+                $careerWaUrl = "https://wa.me/{$waClean}?text={$careerWaText}";
+            @endphp
             <span class="text-aqua-azure text-sm font-black tracking-widest uppercase mb-4 block">{{ App::getLocale() === 'en' ? 'Join Our Team' : 'Karir & Peluang' }}</span>
             <h2 class="text-4xl md:text-5xl font-black text-aqua-navy uppercase mb-6">{{ App::getLocale() === 'en' ? 'WE ARE HIRING!' : 'KAMI MEMBUKA LOWONGAN!' }}</h2>
             <p class="text-slate-600 text-base font-semibold leading-relaxed max-w-2xl mx-auto mb-10">
@@ -85,9 +97,14 @@
                     ? 'Do you love challenges, warm hospitality, and working in an energetic, cheerful atmosphere? Join the Aquaboom family to create wonderful moments.'
                     : 'Apakah Anda menyukai tantangan, keramahan, dan bekerja dalam suasana ceria? Bergabunglah bersama keluarga besar Aquaboom untuk menciptakan momen luar biasa.' }}
             </p>
-            <a href="mailto:career@aquaboombsb.com"
-                class="inline-block bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-10 py-5 rounded-xl shadow-lg shadow-orange-500/20 uppercase tracking-wider text-sm transition-all">
-                {{ App::getLocale() === 'en' ? 'Contact Career Center' : 'Hubungi Tim Karir' }}
+            <a href="{{ $careerWaUrl }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-3 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy font-black px-10 py-5 rounded-2xl shadow-xl shadow-orange-500/20 uppercase tracking-wider text-sm transition-all hover:scale-105 active:scale-95 cursor-pointer">
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.978-.276-.1-.476-.15-.677.15-.2.301-.777.978-.953 1.178-.175.2-.351.226-.652.075-.3-.15-1.268-.468-2.416-1.492-.894-.798-1.498-1.784-1.674-2.085-.175-.301-.019-.464.132-.614.136-.135.301-.351.452-.527.15-.175.2-.301.3-.501.1-.2.05-.376-.025-.527-.075-.15-.677-1.632-.928-2.235-.245-.588-.494-.508-.677-.517-.175-.01-.376-.01-.577-.01-.201 0-.527.075-.802.376-.276.301-1.053 1.028-1.053 2.508 0 1.48 1.078 2.909 1.229 3.11.15.201 2.122 3.24 5.141 4.544.718.31 1.279.496 1.716.635.721.229 1.377.197 1.896.12.578-.087 1.78-.728 2.031-1.431.251-.703.251-1.306.175-1.431-.075-.125-.276-.201-.577-.351zM12.04 2C6.52 2 2.04 6.48 2.04 12c0 1.98.58 3.82 1.58 5.37L2 22l4.78-1.55C8.28 21.36 10.1 22 12.04 22c5.52 0 10-4.48 10-10S17.56 2 12.04 2zm0 18.27c-1.75 0-3.38-.56-4.73-1.51l-.34-.24-2.84.92.94-2.76-.26-.37A8.22 8.22 0 013.77 12c0-4.56 3.71-8.27 8.27-8.27 4.56 0 8.27 3.71 8.27 8.27 0 4.56-3.71 8.27-8.27 8.27z"/>
+                </svg>
+                <span>{{ App::getLocale() === 'en' ? 'Contact Career Center (WhatsApp)' : 'Hubungi Tim Karir via WhatsApp' }}</span>
             </a>
         </div>
     </section>
