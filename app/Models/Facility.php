@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Concerns\HasAuditLog;
 use App\Models\Concerns\AutoFixPostgresSequence;
+use App\Models\Concerns\AutoPruneMediaOnUpdate;
 
 class Facility extends Model
 {
-    use HasFactory, HasAuditLog, AutoFixPostgresSequence;
+    use HasFactory, HasAuditLog, AutoFixPostgresSequence, AutoPruneMediaOnUpdate;
 
     protected $fillable = [
         'name',

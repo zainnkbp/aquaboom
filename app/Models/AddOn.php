@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Concerns\HasAuditLog;
+use App\Models\Concerns\AutoPruneMediaOnUpdate;
 use Illuminate\Support\Str;
 
 class AddOn extends Model
 {
-    use HasAuditLog, \App\Models\Concerns\AutoFixPostgresSequence;
+    use HasAuditLog, \App\Models\Concerns\AutoFixPostgresSequence, AutoPruneMediaOnUpdate;
 
     protected $guarded = [];
 

@@ -1,6 +1,8 @@
 *.log
 *.bak
 /tikett.png
+/aquaboom_backup.sql
+/aquaboom_photos.zip
 .DS_Store
 .env
 .env.backup
