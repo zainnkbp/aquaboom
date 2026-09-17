@@ -7,30 +7,18 @@
   <section id="hero" class="relative bg-aqua-navy overflow-hidden min-h-screen lg:h-screen lg:max-h-[900px] flex flex-col justify-center py-16 lg:py-0"
     x-data="{ videoLoaded: false }">
 
-    {{-- Video Background --}}
+    {{-- Photo / Video Background --}}
     <div class="absolute inset-0 w-full h-full z-0">
-      {{-- Mobile Static Background (Visible on mobile, hidden on desktop) --}}
-      <div class="absolute inset-0 bg-cover bg-center lg:hidden"
-        style="background-image: url('{{ asset('assets/img/default.jpeg') }}');"></div>
-
-      {{-- Desktop Video Background (Hidden on mobile, visible on desktop) --}}
-      <div class="relative w-full h-full pointer-events-none overflow-hidden hidden lg:block">
-        @if(!empty($settings['hero_video_file']))
-          <video autoplay loop muted playsinline class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full object-cover" x-on:play="videoLoaded = true">
-            <source src="{{ asset('uploads/' . $settings['hero_video_file']) }}" type="video/mp4">
-          </video>
-        @else
-          <iframe
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-[56.25vw] h-auto"
-            src="{!! $settings['hero_video_url'] ?? 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1' !!}"
-            title="Aquaboom Waterpark" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
-            x-on:load="videoLoaded = true"></iframe>
-        @endif
-
-        {{-- Fallback image shown until video loads --}}
+      @if(!empty($settings['hero_video_file']))
+        {{-- Custom Uploaded Video Background (if provided via Admin Settings) --}}
+        <video autoplay loop muted playsinline class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full object-cover">
+          <source src="{{ asset('uploads/' . $settings['hero_video_file']) }}" type="video/mp4">
+        </video>
+      @else
+        {{-- Luxury Default Photo Hero Background --}}
         <div class="absolute inset-0 bg-cover bg-center"
-          style="background-image: url('{{ asset('assets/img/default.jpeg') }}');" x-show="!videoLoaded"></div>
-      </div>
+          style="background-image: url('{{ asset('assets/img/default.jpeg') }}');"></div>
+      @endif
 
       {{-- Deep Navy Overlay: left darker for text readability, right lighter for cinematic feel --}}
       <div class="absolute inset-0 video-hero-overlay z-10"></div>
@@ -476,35 +464,32 @@
           </div>
         </div>
 
-        {{-- Video Box --}}
+        {{-- Media Showcase Box (Video or Luxury Photo) --}}
         <div class="lg:col-span-8">
           <div
-            class="rounded-3xl overflow-hidden shadow-2xl relative aspect-video border border-white/10 ring-1 ring-aqua-gold/30">
+            class="rounded-3xl overflow-hidden shadow-2xl relative aspect-video border border-white/10 ring-1 ring-aqua-gold/30 bg-aqua-navy group">
             @if(!empty($settings['philosophy_video_file']))
               <video class="w-full h-full object-cover" controls>
                 <source src="{{ asset('uploads/' . $settings['philosophy_video_file']) }}" type="video/mp4">
               </video>
             @else
-              @php
-                  $philVideoUrl = $settings['philosophy_video_url'] ?? 'https://www.youtube.com/embed/2ugEGMhBPNE?rel=0';
-                  $philVideoUrl = preg_replace('/[&?]loop=[0-9]/', '', $philVideoUrl);
-                  $philVideoUrl = preg_replace('/[&?]playlist=[^&]+/', '', $philVideoUrl);
-                  $philVideoUrl = preg_replace('/[&?]autoplay=[0-9]/', '', $philVideoUrl);
-                  $philVideoUrl = preg_replace('/[&?]mute=[0-9]/', '', $philVideoUrl);
-                  if (!str_contains($philVideoUrl, '?')) {
-                      $philVideoUrl .= '?rel=0';
-                  } elseif (!str_contains($philVideoUrl, 'rel=')) {
-                      $philVideoUrl .= '&rel=0';
-                  }
-              @endphp
-              <iframe class="w-full h-full" src="{!! $philVideoUrl !!}"
-                title="Aquaboom Waterpark Company Video" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
+              {{-- High Resolution Photo Showcase --}}
+              <div class="relative w-full h-full overflow-hidden">
+                <img src="{{ asset('assets/img/aquaboom_about.jpeg') }}" alt="Aquaboom Waterpark Balikpapan" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-aqua-navy/90 via-aqua-navy/30 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                  <div class="space-y-1">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-aqua-gold/20 text-aqua-gold border border-aqua-gold/30 text-[11px] font-black uppercase tracking-wider">
+                      ★ Rooftop Water Adventure
+                    </span>
+                    <h4 class="text-white text-lg md:text-xl font-black uppercase tracking-tight">Aquaboom Waterpark Balikpapan</h4>
+                    <p class="text-white/70 text-xs font-semibold">Lantai 7 Balikpapan Superblock (Shared Area Astara & Pentacity Hotel)</p>
+                  </div>
+                </div>
+              </div>
             @endif
           </div>
-          <p class="text-white/30 text-xs font-semibold mt-4 text-right">© Aquaboom Balikpapan — Company Profile Video
-          </p>
+          <p class="text-white/30 text-xs font-semibold mt-4 text-right">© Aquaboom Balikpapan — Premier Rooftop Waterpark</p>
         </div>
       </div>
     </div>
