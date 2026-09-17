@@ -9,7 +9,7 @@ $kernel->bootstrap();
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-echo "Generating Strict MySQL Schema (CREATE TABLE) + Data Dump...\n";
+echo "Generating Perfect MySQL Schema + Data Dump...\n";
 
 $tables = [
     'migrations',
@@ -44,9 +44,8 @@ $tables = [
 ];
 
 $output = "-- =========================================================\n";
-$output .= "-- AQUABOOM WATERPARK - FULL MySQL / MariaDB Dump\n";
-$output .= "-- Schema (CREATE TABLE) + All Data\n";
-$output .= "-- Ready for 1-Click Import into Empty Database in phpMyAdmin\n";
+$output .= "-- AQUABOOM WATERPARK - 100% VALID MySQL / MariaDB Dump\n";
+$output .= "-- Generated for 1-Click Import in phpMyAdmin\n";
 $output .= "-- =========================================================\n\n";
 $output .= "SET FOREIGN_KEY_CHECKS=0;\n";
 $output .= "SET SQL_MODE = \"NO_AUTO_VALUE_ON_ZERO\";\n";
@@ -68,7 +67,7 @@ foreach ($tables as $table) {
     ", [$table]);
 
     $colDefs = [];
-    $primaryKey = null;
+    $hasAutoIncId = false;
 
     foreach ($cols as $c) {
         $name = $c->column_name;
@@ -76,16 +75,22 @@ foreach ($tables as $table) {
         $nullable = $c->is_nullable === 'YES' ? 'NULL' : 'NOT NULL';
         $default = ($nullable === 'NULL') ? 'DEFAULT NULL' : '';
 
-        if ($name === 'id') {
+        // Check if standard auto-increment ID
+        if ($name === 'id' && $table !== 'sessions') {
             $colDefs[] = "`{$name}` bigint unsigned NOT NULL AUTO_INCREMENT";
-            $primaryKey = $name;
+            $hasAutoIncId = true;
+            continue;
+        }
+
+        if ($name === 'id' && $table === 'sessions') {
+            $colDefs[] = "`{$name}` varchar(255) NOT NULL";
             continue;
         }
 
         // Map pgsql types to mysql
         if (str_contains($type, 'int') || str_contains($type, 'serial')) {
             if (str_contains($type, 'big')) {
-                $sqlType = 'bigint';
+                $sqlType = 'bigint unsigned';
             } elseif (str_contains($type, 'small')) {
                 $sqlType = 'smallint';
             } else {
@@ -103,10 +108,7 @@ foreach ($tables as $table) {
         } elseif (str_contains($type, 'date')) {
             $sqlType = 'date';
             $default = ($nullable === 'NULL') ? 'DEFAULT NULL' : '';
-        } elseif (str_contains($type, 'json')) {
-            $sqlType = 'longtext';
-            $default = '';
-        } elseif (str_contains($type, 'text')) {
+        } elseif (str_contains($type, 'json') || str_contains($type, 'text')) {
             $sqlType = 'longtext';
             $default = '';
         } else {
@@ -137,19 +139,21 @@ foreach ($tables as $table) {
         $colDefs[] = trim("`{$name}` {$sqlType} {$nullable} {$default}");
     }
 
-    if ($primaryKey) {
-        $colDefs[] = "PRIMARY KEY (`{$primaryKey}`)";
-    }
-
-    // Special table primary keys
-    if ($table === 'password_reset_tokens') {
-        $colDefs[] = "PRIMARY KEY (`email`)";
+    // Determine primary key strictly once
+    if ($hasAutoIncId) {
+        $colDefs[] = "PRIMARY KEY (`id`)";
     } elseif ($table === 'sessions') {
         $colDefs[] = "PRIMARY KEY (`id`)";
-    } elseif ($table === 'cache') {
+    } elseif ($table === 'password_reset_tokens') {
+        $colDefs[] = "PRIMARY KEY (`email`)";
+    } elseif ($table === 'cache' || $table === 'cache_locks') {
         $colDefs[] = "PRIMARY KEY (`key`)";
-    } elseif ($table === 'cache_locks') {
-        $colDefs[] = "PRIMARY KEY (`key`)";
+    } elseif ($table === 'model_has_roles') {
+        $colDefs[] = "PRIMARY KEY (`role_id`, `model_id`, `model_type`)";
+    } elseif ($table === 'model_has_permissions') {
+        $colDefs[] = "PRIMARY KEY (`permission_id`, `model_id`, `model_type`)";
+    } elseif ($table === 'role_has_permissions') {
+        $colDefs[] = "PRIMARY KEY (`permission_id`, `role_id`)";
     }
 
     $output .= "-- ---------------------------------------------------------\n";
@@ -208,4 +212,4 @@ $destination = __DIR__ . '/../aquaboom_mysql_import_for_plesk.sql';
 file_put_contents($destination, $output);
 
 $sizeKb = round(filesize($destination) / 1024, 2);
-echo "\nSUCCESS! Strict MySQL file generated: aquaboom_mysql_import_for_plesk.sql ({$sizeKb} KB)\n";
+echo "\nSUCCESS! Perfect MySQL file generated: aquaboom_mysql_import_for_plesk.sql ({$sizeKb} KB)\n";

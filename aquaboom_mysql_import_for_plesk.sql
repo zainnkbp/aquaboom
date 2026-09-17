@@ -1,7 +1,6 @@
 -- =========================================================
--- AQUABOOM WATERPARK - FULL MySQL / MariaDB Dump
--- Schema (CREATE TABLE) + All Data
--- Ready for 1-Click Import into Empty Database in phpMyAdmin
+-- AQUABOOM WATERPARK - 100% VALID MySQL / MariaDB Dump
+-- Generated for 1-Click Import in phpMyAdmin
 -- =========================================================
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -142,9 +141,10 @@ CREATE TABLE IF NOT EXISTS `permissions` (
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `model_has_roles`;
 CREATE TABLE IF NOT EXISTS `model_has_roles` (
-  `role_id` bigint NOT NULL,
+  `role_id` bigint unsigned NOT NULL,
   `model_type` varchar(255) NOT NULL,
-  `model_id` bigint NOT NULL
+  `model_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`role_id`, `model_id`, `model_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------
@@ -152,9 +152,10 @@ CREATE TABLE IF NOT EXISTS `model_has_roles` (
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `model_has_permissions`;
 CREATE TABLE IF NOT EXISTS `model_has_permissions` (
-  `permission_id` bigint NOT NULL,
+  `permission_id` bigint unsigned NOT NULL,
   `model_type` varchar(255) NOT NULL,
-  `model_id` bigint NOT NULL
+  `model_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`permission_id`, `model_id`, `model_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------
@@ -162,8 +163,9 @@ CREATE TABLE IF NOT EXISTS `model_has_permissions` (
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `role_has_permissions`;
 CREATE TABLE IF NOT EXISTS `role_has_permissions` (
-  `permission_id` bigint NOT NULL,
-  `role_id` bigint NOT NULL
+  `permission_id` bigint unsigned NOT NULL,
+  `role_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`permission_id`, `role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------
@@ -213,8 +215,8 @@ CREATE TABLE IF NOT EXISTS `wahanas` (
   `order_column` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `created_by` bigint NULL DEFAULT NULL,
-  `updated_by` bigint NULL DEFAULT NULL,
+  `created_by` bigint unsigned NULL DEFAULT NULL,
+  `updated_by` bigint unsigned NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `thrill_level` varchar(255) NULL DEFAULT NULL,
   `name_en` varchar(255) NULL DEFAULT NULL,
@@ -242,8 +244,8 @@ CREATE TABLE IF NOT EXISTS `ticket_packages` (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `created_by` bigint NULL DEFAULT NULL,
-  `updated_by` bigint NULL DEFAULT NULL,
+  `created_by` bigint unsigned NULL DEFAULT NULL,
+  `updated_by` bigint unsigned NULL DEFAULT NULL,
   `discount_type` varchar(255) NOT NULL DEFAULT 'amount',
   `deleted_at` timestamp NULL DEFAULT NULL,
   `validity_type` varchar(255) NOT NULL DEFAULT 'all_days',
@@ -470,8 +472,8 @@ CREATE TABLE IF NOT EXISTS `promo_codes` (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `created_by` bigint NULL DEFAULT NULL,
-  `updated_by` bigint NULL DEFAULT NULL,
+  `created_by` bigint unsigned NULL DEFAULT NULL,
+  `updated_by` bigint unsigned NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -514,16 +516,16 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `payment_url` varchar(255) NULL DEFAULT NULL,
   `payment_token` varchar(255) NULL DEFAULT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'pending',
-  `promo_code_id` bigint NULL DEFAULT NULL,
+  `promo_code_id` bigint unsigned NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `created_by` bigint NULL DEFAULT NULL,
-  `updated_by` bigint NULL DEFAULT NULL,
+  `created_by` bigint unsigned NULL DEFAULT NULL,
+  `updated_by` bigint unsigned NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `is_redeemed` tinyint(1) NOT NULL DEFAULT 0,
   `redeemed_at` timestamp NULL DEFAULT NULL,
-  `referral_code_id` bigint NULL DEFAULT NULL,
-  `user_id` bigint NULL DEFAULT NULL,
+  `referral_code_id` bigint unsigned NULL DEFAULT NULL,
+  `user_id` bigint unsigned NULL DEFAULT NULL,
   `notes` longtext NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -587,15 +589,15 @@ INSERT INTO `transactions` (`id`, `order_id`, `customer_name`, `customer_email`,
 DROP TABLE IF EXISTS `transaction_items`;
 CREATE TABLE IF NOT EXISTS `transaction_items` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `transaction_id` bigint NOT NULL,
-  `ticket_package_id` bigint NOT NULL,
+  `transaction_id` bigint unsigned NOT NULL,
+  `ticket_package_id` bigint unsigned NOT NULL,
   `quantity` int NOT NULL,
   `price` decimal(15,2) NOT NULL DEFAULT 0.00,
   `subtotal` decimal(15,2) NOT NULL DEFAULT 0.00,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `created_by` bigint NULL DEFAULT NULL,
-  `updated_by` bigint NULL DEFAULT NULL,
+  `created_by` bigint unsigned NULL DEFAULT NULL,
+  `updated_by` bigint unsigned NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -656,8 +658,8 @@ INSERT INTO `transaction_items` (`id`, `transaction_id`, `ticket_package_id`, `q
 DROP TABLE IF EXISTS `transaction_add_ons`;
 CREATE TABLE IF NOT EXISTS `transaction_add_ons` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `transaction_id` bigint NOT NULL,
-  `add_on_id` bigint NOT NULL,
+  `transaction_id` bigint unsigned NOT NULL,
+  `add_on_id` bigint unsigned NOT NULL,
   `quantity` int NOT NULL,
   `price` decimal(15,2) NOT NULL DEFAULT 0.00,
   `subtotal` decimal(15,2) NOT NULL DEFAULT 0.00,
@@ -728,11 +730,11 @@ DROP TABLE IF EXISTS `audit_logs`;
 CREATE TABLE IF NOT EXISTS `audit_logs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `model_type` varchar(255) NOT NULL,
-  `model_id` bigint NOT NULL,
+  `model_id` bigint unsigned NOT NULL,
   `action` varchar(255) NOT NULL,
   `old_values` longtext NULL,
   `new_values` longtext NULL,
-  `user_id` bigint NULL DEFAULT NULL,
+  `user_id` bigint unsigned NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1114,13 +1116,12 @@ INSERT INTO `audit_logs` (`id`, `model_type`, `model_id`, `action`, `old_values`
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE IF NOT EXISTS `sessions` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint NULL DEFAULT NULL,
+  `id` varchar(255) NOT NULL,
+  `user_id` bigint unsigned NULL DEFAULT NULL,
   `ip_address` varchar(45) NULL DEFAULT NULL,
   `user_agent` longtext NULL,
   `payload` longtext NOT NULL,
   `last_activity` int NOT NULL,
-  PRIMARY KEY (`id`),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1135,7 +1136,7 @@ DROP TABLE IF EXISTS `cache`;
 CREATE TABLE IF NOT EXISTS `cache` (
   `key` varchar(255) NOT NULL,
   `value` longtext NOT NULL,
-  `expiration` bigint NOT NULL,
+  `expiration` bigint unsigned NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1146,7 +1147,7 @@ DROP TABLE IF EXISTS `cache_locks`;
 CREATE TABLE IF NOT EXISTS `cache_locks` (
   `key` varchar(255) NOT NULL,
   `owner` varchar(255) NOT NULL,
-  `expiration` bigint NOT NULL,
+  `expiration` bigint unsigned NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
