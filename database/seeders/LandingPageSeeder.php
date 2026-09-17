@@ -96,24 +96,24 @@ class LandingPageSeeder extends Seeder
         // FAQs
         Faq::insert([
             [
-                'question' => 'Jam berapa jam operasional Aquaboom Waterpark?', 
-                'question_en' => 'What are the operational hours of Aquaboom Waterpark?',
+                'question' => 'Jam berapa jam operasional Aquaboom?', 
+                'question_en' => 'What are the operational hours of Aquaboom?',
                 'answer' => 'Kami buka setiap hari (Senin — Minggu & Libur Nasional) mulai pukul 09:00 WITA - 18:00 WITA (Batas masuk terakhir pukul 17:00 WITA).', 
                 'answer_en' => 'We are open daily (Monday — Sunday & Public Holidays) from 09:00 WITA - 18:00 WITA (Last admission at 17:00 WITA).',
                 'sort_order' => 1, 
                 'is_active' => true
             ],
             [
-                'question' => 'Bagaimana ketentuan pakaian renang di Aquaboom?', 
-                'question_en' => 'What is the swimming attire policy at Aquaboom?',
+                'question' => 'Bagaimana ketentuan pakaian renang?', 
+                'question_en' => 'What is the swimming attire policy?',
                 'answer' => 'Demi kenyamanan dan keselamatan, pengunjung disarankan menggunakan pakaian renang yang nyaman. Pakaian dengan kancing besi menonjol atau ritsleting tajam dilarang di seluncuran besar.', 
                 'answer_en' => 'For comfort and safety, guests are advised to wear proper swimwear. Attire with protruding metal buttons or sharp zippers is prohibited on large slides.',
                 'sort_order' => 2, 
                 'is_active' => true
             ],
             [
-                'question' => 'Apakah boleh membawa makanan dan minuman dari luar ke Aquaboom?', 
-                'question_en' => 'Can we bring outside food and drinks into Aquaboom?',
+                'question' => 'Apakah boleh membawa makanan dan minuman dari luar?', 
+                'question_en' => 'Can we bring outside food and drinks?',
                 'answer' => 'Makanan dan minuman dari luar tidak diperkenankan dibawa masuk ke area waterpark untuk menjaga kebersihan dan higienitas area kolam.', 
                 'answer_en' => 'Outside food and beverages are not allowed inside the waterpark area to maintain the hygiene and cleanliness of the pool area.',
                 'sort_order' => 3, 
@@ -125,142 +125,6 @@ class LandingPageSeeder extends Seeder
                 'answer' => 'Ya, kami menyediakan fasilitas penyewaan loker penyimpanan barang berharga serta penyewaan handuk bersih untuk kenyamanan kunjungan Anda.', 
                 'answer_en' => 'Yes, we provide locker rentals for securing valuables as well as clean towel rentals for your convenience.',
                 'sort_order' => 4, 
-                'is_active' => true
-            ],
-            [
-                'question' => '[Astara Hotel] Jam berapa waktu check-in dan check-out di Astara Hotel Balikpapan?',
-                'question_en' => '[Astara Hotel] What time is check-in and check-out at Astara Hotel Balikpapan?',
-                'answer' => 'Check-in dimulai pukul 14:00 WITA, dan check-out hingga pukul 12:00 WITA. Resepsionis kami melayani 24 jam.',
-                'answer_en' => 'Check-in is from 2:00 PM, and check-out is until 12:00 PM. Our reception is available 24 hours.',
-                'sort_order' => 5,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Astara Hotel] Di mana lokasi Astara Hotel Balikpapan dan atraksi apa saja di sekitarnya?',
-                'question_en' => '[Astara Hotel] Where is Astara Hotel located and what attractions are nearby?',
-                'answer' => 'Astara Hotel berlokasi di Balikpapan Superblock, tepat di atas Pentacity Shopping Venue. Lokasinya terhubung langsung dengan Pentacity Mall, e-Walk Mall, AQUAboom Waterpark, Marquee On 7 Pool Club, Pantai BSB, Score Sport Lounge, dan Embassy Club.',
-                'answer_en' => 'The hotel is located in Balikpapan Superblock, above Pentacity Shopping Venue. Nearby attractions include Pentacity Shopping Venue, e-Walk Mall, AQUAboom Waterpark, Marquee On 7 Pool Club, Pantai BSB, Score Sport Lounge, and Embassy Club.',
-                'sort_order' => 6,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Astara Hotel] Fasilitas rekreasi dan kebugaran apa saja yang tersedia di Astara Hotel?',
-                'question_en' => '[Astara Hotel] What recreational and fitness facilities are available at Astara Hotel?',
-                'answer' => 'Tamu dapat menikmati kolam renang hotel, akses ke CNC Fitness Center, Aqva Restaurant, serta akses mudah ke AQUAboom Waterpark dan berbagai tempat hiburan di kawasan BSB.',
-                'answer_en' => 'Guests can enjoy the hotel swimming pool, access to the CNC Fitness Center, Aqva Restaurant, and direct access to AQUAboom Waterpark and BSB entertainment venues.',
-                'sort_order' => 7,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Grand Jatra Hotel Balikpapan] Jam berapa check-in & check-out dan apa saja fasilitas unggulan di Grand Jatra Hotel Balikpapan?',
-                'question_en' => '[Grand Jatra Hotel Balikpapan] What are the check-in times and featured facilities at Grand Jatra Hotel Balikpapan?',
-                'answer' => 'Check-in dari pukul 14:00 dan check-out hingga pukul 12:00. Fasilitas meliputi Sky Pool dengan panorama kota, Japonica Fitness Centre, Japonica Spa, The Bellagio Restaurant, dan J Cuvee Lounge.',
-                'answer_en' => 'Check-in is from 2:00 PM and check-out is until 12:00 PM. Facilities include the rooftop Sky Pool with city views, Japonica Fitness Centre, Japonica Spa, The Bellagio Restaurant, and J Cuvee Lounge.',
-                'sort_order' => 8,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Grand Jatra Hotel Balikpapan] Tipe kamar apa saja yang tersedia di Grand Jatra Hotel Balikpapan?',
-                'question_en' => '[Grand Jatra Hotel Balikpapan] What room types are available at Grand Jatra Hotel Balikpapan?',
-                'answer' => 'Kami menyediakan berbagai pilihan kamar mulai dari Superior, Executive, Deluxe, Business Suite, hingga Junior Suite untuk kebutuhan bisnis maupun liburan keluarga.',
-                'answer_en' => 'We offer Superior, Executive, Deluxe, Business Suite, Junior Suite, and other room categories designed for both business travelers and families.',
-                'sort_order' => 9,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Pentacity Hotel Balikpapan] Di mana lokasi Pentacity Hotel dan bagaimana akses ke AQUAboom Waterpark?',
-                'question_en' => '[Pentacity Hotel Balikpapan] Where is Pentacity Hotel located and how is the access to AQUAboom Waterpark?',
-                'answer' => 'Pentacity Hotel terletak di Balikpapan Superblock tepat di atas Pentacity Shopping Venue, berjarak hanya sekitar 50 meter dari AQUAboom Waterpark, 2 menit dari e-Walk Mall, dan 200 meter dari Pantai BSB.',
-                'answer_en' => 'Pentacity Hotel is located above Pentacity Shopping Venue in Balikpapan Superblock, approximately 50 meters from AQUAboom Waterpark, 2 minutes from e-Walk Mall, and 200 meters from Pantai BSB.',
-                'sort_order' => 10,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Pentacity Hotel Balikpapan] Fasilitas kuliner dan kebugaran apa saja yang tersedia di Pentacity Hotel?',
-                'question_en' => '[Pentacity Hotel Balikpapan] What dining and fitness facilities are available at Pentacity Hotel?',
-                'answer' => 'Tamu dapat menikmati hidangan di Lagoon Grill Restaurant, bersantai di Marquee On 7, serta menggunakan fasilitas kolam renang dan CNC Fitness Center.',
-                'answer_en' => 'Guests can enjoy dining at Lagoon Grill Restaurant, relaxing at Marquee On 7, and using the swimming pool and CNC Fitness Center.',
-                'sort_order' => 11,
-                'is_active' => true
-            ],
-            [
-                'question' => '[J Icon Hip Hotel] Apa keunggulan dan tipe kamar yang ditawarkan di J Icon Hip Hotel Balikpapan?',
-                'question_en' => '[J Icon Hip Hotel] What features and room types are offered at J Icon Hip Hotel Balikpapan?',
-                'answer' => 'J Icon menawarkan kamar urban modern yang kompak dan stylish seperti Square Room, Square Twin Room, dan Square Plus Room (kapasitas 2 orang), berlokasi menempel dengan e-Walk Mall dengan H.O.B Café & Bar tepat di atas hotel.',
-                'answer_en' => 'J Icon offers compact, stylish urban rooms including Square Room, Square Twin Room, and Square Plus Room (up to 2 guests), located directly adjacent to e-Walk Mall with H.O.B Café & Bar directly above the hotel.',
-                'sort_order' => 12,
-                'is_active' => true
-            ],
-            [
-                'question' => '[J Icon Hip Hotel] Apakah tamu J Icon dapat mengakses kolam renang dan fasilitas kebugaran?',
-                'question_en' => '[J Icon Hip Hotel] Can J Icon guests access swimming pool and fitness facilities?',
-                'answer' => 'Ya, tamu J Icon dapat mengakses fasilitas Japonica Fitness Centre & Spa di Grand Jatra Hotel terdekat serta fasilitas kompleks Jatra Hotels & Resorts sesuai ketentuan akses yang berlaku.',
-                'answer_en' => 'Yes, guests can access selected facilities including Japonica Fitness Centre and Japonica Spa at the nearby Grand Jatra Hotel, subject to applicable access conditions.',
-                'sort_order' => 13,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Stark Boutique Hotel Bali] Jam berapa check-in & check-out dan di mana alamat Stark Boutique Hotel & Spa?',
-                'question_en' => '[Stark Boutique Hotel Bali] What time is check-in and check-out and where is Stark Boutique Hotel & Spa located?',
-                'answer' => 'Check-in dari pukul 14:00 dan check-out hingga pukul 12:00 (resepsionis 24 jam). Beralamat di Jl. Kartika Plaza No. 20, Kuta, Bali 80361, Indonesia (+62 361 761888 / WhatsApp: +62 811 376 1888).',
-                'answer_en' => 'Check-in is from 2:00 PM and check-out is until 12:00 PM (24-hour reception). Located at Jl. Kartika Plaza No. 20, Kuta, Bali 80361, Indonesia (+62 361 761888 / WhatsApp: +62 811 376 1888).',
-                'sort_order' => 14,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Stark Boutique Hotel Bali] Apakah Stark Boutique Hotel memiliki kolam renang dan restoran?',
-                'question_en' => '[Stark Boutique Hotel Bali] Does Stark Boutique Hotel have a swimming pool and dining facilities?',
-                'answer' => 'Ya, tersedia rooftop SkyPool dengan pemandangan panorama sekitar, Sky Pool Bar, Warung Koffie Batavia, serta Stark Craft Beer Garden dengan pertunjukan live music di malam hari.',
-                'answer_en' => 'Yes. Guests can enjoy our rooftop SkyPool with panoramic views, Sky Pool Bar, Warung Koffie Batavia, and Stark Craft Beer Garden with live music in the evening.',
-                'sort_order' => 15,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Stark Boutique Hotel Bali] Berapa jarak Stark Boutique Hotel dari Bandara Ngurah Rai dan pantai terdekat?',
-                'question_en' => '[Stark Boutique Hotel Bali] How far is Stark Boutique Hotel from Ngurah Rai Airport and nearby beaches?',
-                'answer' => 'Bandara Internasional Ngurah Rai hanya sekitar 10 menit dengan mobil. Pantai Segara (Pantai Jerman) sekitar 5 menit jalan kaki, Discovery Mall 7 menit, dan Pantai Kuta / Waterbom Bali sekitar 10 menit jalan kaki.',
-                'answer_en' => 'Ngurah Rai International Airport is approximately 10 minutes by car. Segara Beach (Pantai Jerman) is a 5-minute walk, Discovery Shopping Mall is 7 minutes, and Kuta Beach / Waterbom Bali is around a 10-minute walk.',
-                'sort_order' => 16,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Stark Boutique Hotel Bali] Tipe kamar apa saja yang ada di Stark Boutique Hotel dan apakah ada kamar berjendela / jacuzzi?',
-                'question_en' => '[Stark Boutique Hotel Bali] What room types are available at Stark Boutique Hotel and are there rooms with views or jacuzzi?',
-                'answer' => 'Tersedia tipe Superior (tanpa jendela), Executive, Deluxe (pilihan city view), dan Grand Deluxe dengan fasilitas private jacuzzi. Seluruh area dalam kamar adalah non-smoking (merokok hanya diperbolehkan di area terbuka).',
-                'answer_en' => 'We offer Superior (no-window), Executive, Deluxe (city view option), and Grand Deluxe with a private jacuzzi. All guest rooms are non-smoking (smoking is only permitted in designated open-space areas).',
-                'sort_order' => 17,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Grand Jatra Hotel Pekanbaru] Di mana lokasi Grand Jatra Hotel Pekanbaru dan apa fasilitas utamanya?',
-                'question_en' => '[Grand Jatra Hotel Pekanbaru] Where is Grand Jatra Hotel Pekanbaru located and what are its main facilities?',
-                'answer' => 'Terletak di pusat kota Pekanbaru di Jl. Tengku Zainal Abidin (terkoneksi langsung dengan Mall Pekanbaru). Dilengkapi Sky Pool, Japonica Gym, restoran, ruang meeting/event, dan layanan room service 24 jam.',
-                'answer_en' => 'Located in the heart of Pekanbaru on Jl. Tengku Zainal Abidin (direct access to Mall Pekanbaru). Features Sky Pool, Japonica Gym, dining venues, meeting/event facilities, and 24-hour room service.',
-                'sort_order' => 18,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Jatra Hotels & Resorts] Apakah saya bisa memesan tiket waterpark atau kamar hotel langsung melalui website resmi?',
-                'question_en' => '[Jatra Hotels & Resorts] Can I book waterpark tickets or hotel rooms directly through the official website?',
-                'answer' => 'Ya, Anda dapat melakukan pemesanan tiket online langsung dengan konfirmasi instan melalui website resmi kami atau menghubungi layanan pelanggan via WhatsApp.',
-                'answer_en' => 'Yes. You can book directly through our official website with instant confirmation or contact our customer support team for assistance.',
-                'sort_order' => 19,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Jatra Hotels & Resorts] Bagaimana kebijakan pembatalan (cancellation) dan perubahan (reschedule/modification) reservasi?',
-                'question_en' => '[Jatra Hotels & Resorts] What is the cancellation and modification policy for bookings?',
-                'answer' => 'Kebijakan pembatalan dan perubahan bergantung pada paket/rate plan yang dipilih saat pemesanan. Untuk tiket promosi dan tarif tertentu bersifat non-refundable sesuai ketentuan pemesanan yang tertera pada konfirmasi reservasi.',
-                'answer_en' => 'Cancellation and modification policies depend on the rate plan and booking channel selected. Non-refundable and special promotional rates apply as stated in your booking confirmation.',
-                'sort_order' => 20,
-                'is_active' => true
-            ],
-            [
-                'question' => '[Jatra Hotels & Resorts] Metode pembayaran apa saja yang didukung untuk transaksi online?',
-                'question_en' => '[Jatra Hotels & Resorts] What payment methods are supported for online booking transactions?',
-                'answer' => 'Kami menerima berbagai metode pembayaran online yang aman dan terenkripsi seperti QRIS, Virtual Account bank terkemuka, E-Wallet, dan Kartu Kredit melalui payment gateway resmi berizin.',
-                'answer_en' => 'We support secure online payment methods including QRIS, Bank Virtual Accounts, E-Wallets, and Credit Cards processed via licensed payment gateway partners.',
-                'sort_order' => 21,
                 'is_active' => true
             ],
         ]);
