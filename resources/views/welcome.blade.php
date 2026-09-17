@@ -9,11 +9,35 @@
 
     {{-- Photo / Video Background --}}
     <div class="absolute inset-0 w-full h-full z-0">
-      @if(!empty($settings['hero_video_file']))
-        {{-- Custom Uploaded Video Background (if provided via Admin Settings) --}}
+      @php
+        $heroVideoFile = !empty($settings['hero_video_file']) ? $settings['hero_video_file'] : null;
+        $heroVideoUrl = !empty($settings['hero_video_url']) ? trim($settings['hero_video_url']) : null;
+        $heroEmbedUrl = null;
+        if ($heroVideoUrl) {
+            if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $heroVideoUrl, $matches)) {
+                $ytId = $matches[1];
+                $heroEmbedUrl = "https://www.youtube.com/embed/{$ytId}?autoplay=1&mute=1&loop=1&playlist={$ytId}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1";
+            } else {
+                $heroEmbedUrl = $heroVideoUrl;
+            }
+        }
+      @endphp
+
+      @if($heroVideoFile)
+        {{-- Custom Uploaded Video File --}}
         <video autoplay loop muted playsinline class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full object-cover">
-          <source src="{{ asset('uploads/' . $settings['hero_video_file']) }}" type="video/mp4">
+          <source src="{{ asset('uploads/' . $heroVideoFile) }}" type="video/mp4">
         </video>
+      @elseif($heroEmbedUrl)
+        {{-- Custom Video URL (Fullscreen Autoplay Background) --}}
+        <div class="absolute inset-0 bg-cover bg-center lg:hidden"
+          style="background-image: url('{{ asset('assets/img/default.jpeg') }}');"></div>
+        <div class="relative w-full h-full pointer-events-none overflow-hidden hidden lg:block">
+          <iframe
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-[56.25vw] h-auto"
+            src="{!! $heroEmbedUrl !!}"
+            title="Aquaboom Waterpark" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
       @else
         {{-- Luxury Default Photo Hero Background --}}
         <div class="absolute inset-0 bg-cover bg-center"
@@ -468,10 +492,29 @@
         <div class="lg:col-span-8">
           <div
             class="rounded-3xl overflow-hidden shadow-2xl relative aspect-video border border-white/10 ring-1 ring-aqua-gold/30 bg-aqua-navy group">
-            @if(!empty($settings['philosophy_video_file']))
+            @php
+              $philVideoFile = !empty($settings['philosophy_video_file']) ? $settings['philosophy_video_file'] : null;
+              $philVideoUrl = !empty($settings['philosophy_video_url']) ? trim($settings['philosophy_video_url']) : null;
+              $philEmbedUrl = null;
+              if ($philVideoUrl) {
+                  if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $philVideoUrl, $matches)) {
+                      $ytId = $matches[1];
+                      $philEmbedUrl = "https://www.youtube.com/embed/{$ytId}?rel=0";
+                  } else {
+                      $philEmbedUrl = $philVideoUrl;
+                  }
+              }
+            @endphp
+
+            @if($philVideoFile)
               <video class="w-full h-full object-cover" controls>
-                <source src="{{ asset('uploads/' . $settings['philosophy_video_file']) }}" type="video/mp4">
+                <source src="{{ asset('uploads/' . $philVideoFile) }}" type="video/mp4">
               </video>
+            @elseif($philEmbedUrl)
+              <iframe class="w-full h-full" src="{!! $philEmbedUrl !!}"
+                title="Aquaboom Waterpark Company Video" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
             @else
               {{-- High Resolution Photo Showcase --}}
               <div class="relative w-full h-full overflow-hidden">
