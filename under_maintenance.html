@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sedang Dalam Pemeliharaan Sistem — Aquaboom Waterpark</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #091918;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background glow */
+        .ambient-glow-1 {
+            position: absolute;
+            top: -15%;
+            left: 20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(68, 179, 176, 0.25) 0%, rgba(9, 25, 24, 0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .ambient-glow-2 {
+            position: absolute;
+            bottom: -15%;
+            right: 15%;
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.18) 0%, rgba(9, 25, 24, 0) 70%);
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+        }
+
+        .card {
+            background: rgba(15, 39, 38, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(201, 168, 76, 0.35);
+            border-radius: 32px;
+            max-width: 640px;
+            width: 100%;
+            padding: 48px 36px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(68, 179, 176, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .badge-maintenance {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(201, 168, 76, 0.15);
+            border: 1px solid rgba(201, 168, 76, 0.4);
+            color: #c9a84c;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 8px 18px;
+            border-radius: 50px;
+            margin-bottom: 24px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #c9a84c;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(201, 168, 76, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(201, 168, 76, 0); }
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 30%, #44b3b0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.lead {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 32px;
+            font-weight: 500;
+        }
+
+        /* Info box */
+        .info-grid {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            text-align: left;
+        }
+
+        @media (max-width: 520px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .card {
+                padding: 36px 20px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        .info-item span.label {
+            display: block;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #44b3b0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .info-item span.val {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* WhatsApp Button */
+        .btn-wa {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            background: #25D366;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 18px 24px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.35);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-wa:hover {
+            background: #20bd5a;
+            transform: translateY(-2px);
+            box-shadow: 0 16px 35px rgba(37, 211, 102, 0.45);
+        }
+
+        .btn-wa:active {
+            transform: scale(0.98);
+        }
+
+        .btn-wa svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            shrink-0;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            font-size: 11.5px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <div class="card">
+        <!-- Maintenance Badge -->
+        <div class="badge-maintenance">
+            <div class="pulse-dot"></div>
+            <span>Pembaruan Sistem Web</span>
+        </div>
+
+        <!-- Title -->
+        <h1>AQUABOOM WATERPARK</h1>
+        <p class="lead">
+            Website kami sedang dalam proses peningkatan sistem & pemeliharaan server untuk menghadirkan pengalaman pemesanan tiket online yang lebih cepat, aman, dan nyaman.
+        </p>
+
+        <!-- Fast Info Grid -->
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="label">📍 Lokasi Wahana:</span>
+                <span class="val">Lantai 7 - Balikpapan Superblock (Astara Hotel & Pentacity Hotel)</span>
+            </div>
+            <div class="info-item">
+                <span class="label">⏰ Jam Operasional:</span>
+                <span class="val">Buka Setiap Hari<br>09.00 - 18.00 WITA</span>
+            </div>
+        </div>
+
+        <!-- Direct WhatsApp CS Action -->
+        <a href="https://wa.me/628115472233?text=Halo%20Customer%20Service%20Aquaboom%20Waterpark,%20saya%20ingin%20bertanya%20informasi%20tiket%20dan%20kunjungan." 
+           class="btn-wa" 
+           target="_blank" 
+           rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.472 14.382c-.301-.15-1.78-.878-2.056-.978-.276-.1-.476-.15-.677.15-.2.301-.777.978-.953 1.178-.175.2-.351.226-.652.075-.3-.15-1.268-.468-2.416-1.492-.894-.798-1.498-1.784-1.674-2.085-.175-.301-.019-.464.132-.614.136-.135.301-.351.452-.527.15-.175.2-.301.3-.501.1-.2.05-.376-.025-.527-.075-.15-.677-1.632-.928-2.235-.245-.588-.494-.508-.677-.517-.175-.01-.376-.01-.577-.01-.201 0-.527.075-.802.376-.276.301-1.053 1.028-1.053 2.508 0 1.48 1.078 2.909 1.229 3.11.15.201 2.122 3.24 5.141 4.544.718.31 1.279.496 1.716.635.721.229 1.377.197 1.896.12.578-.087 1.78-.728 2.031-1.431.251-.703.251-1.306.175-1.431-.075-.125-.276-.201-.577-.351zM12.04 2C6.52 2 2.04 6.48 2.04 12c0 1.98.58 3.82 1.58 5.37L2 22l4.78-1.55C8.28 21.36 10.1 22 12.04 22c5.52 0 10-4.48 10-10S17.56 2 12.04 2zm0 18.27c-1.75 0-3.38-.56-4.73-1.51l-.34-.24-2.84.92.94-2.76-.26-.37A8.22 8.22 0 013.77 12c0-4.56 3.71-8.27 8.27-8.27 4.56 0 8.27 3.71 8.27 8.27 0 4.56-3.71 8.27-8.27 8.27z"/>
+            </svg>
+            <span>Pesan Tiket / Info via WhatsApp</span>
+        </a>
+
+        <div class="footer-note">
+            Butuh bantuan cepat? Tim CS kami tetap melayani pembelian tiket & info kunjungan via WhatsApp.
+        </div>
+    </div>
+
+</body>
+</html>
