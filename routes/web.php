@@ -177,9 +177,13 @@ Route::get('/lang/{locale}', function ($locale) {
 })->name('lang.switch');
 
 // Account Activation Routes
+// Account Activation Routes (Protected: strictly for customer role with rate limiting)
 Route::get('/activate-account', function (Illuminate\Http\Request $request) {
     $email = $request->get('email');
-    $user = \App\Models\User::where('email', $email)->firstOrFail();
+    if (!$email) {
+        return redirect()->route('login');
+    }
+    $user = \App\Models\User::where('email', $email)->where('role', \App\Models\User::ROLE_CUSTOMER)->firstOrFail();
     return view('activate-account', compact('user'));
 })->name('activate.account');
 
@@ -189,7 +193,15 @@ Route::post('/activate-account', function (Illuminate\Http\Request $request) {
         'password' => 'required|string|min:8|confirmed',
     ]);
 
-    $user = \App\Models\User::where('email', $request->email)->first();
+    // Strict security check: only customer accounts can be activated via this public endpoint
+    $user = \App\Models\User::where('email', $request->email)
+        ->where('role', \App\Models\User::ROLE_CUSTOMER)
+        ->first();
+
+    if (!$user) {
+        abort(403, 'Akses tidak diizinkan. Akun staf atau admin tidak dapat diubah melalui tautan ini.');
+    }
+
     $user->update([
         'password' => Illuminate\Support\Facades\Hash::make($request->password),
     ]);
@@ -197,9 +209,9 @@ Route::post('/activate-account', function (Illuminate\Http\Request $request) {
     auth()->login($user);
 
     return redirect()->route('ticket.buy')->with('success', 'Akun Anda berhasil diaktifkan!');
-})->name('activate.account.submit');
+})->name('activate.account.submit')->middleware('throttle:6,1');
 
-// Customer Authentication Routes
+// Customer Authentication Routes (With Brute-force Throttling)
 Route::middleware('guest')->group(function () {
     Route::get('/login', function () {
         return view('auth.login');
@@ -219,7 +231,7 @@ Route::middleware('guest')->group(function () {
         return back()->withErrors([
             'email' => 'Email atau password salah / Email or password incorrect.',
         ])->onlyInput('email');
-    })->name('login.submit');
+    })->name('login.submit')->middleware('throttle:6,1');
 
     Route::get('/register', function () {
         return view('auth.register');
@@ -236,13 +248,13 @@ Route::middleware('guest')->group(function () {
             'name' => $request->name,
             'email' => $request->email,
             'password' => Illuminate\Support\Facades\Hash::make($request->password),
-            'role' => 'customer',
+            'role' => \App\Models\User::ROLE_CUSTOMER,
         ]);
 
         Illuminate\Support\Facades\Auth::login($user);
 
         return redirect()->route('ticket.buy')->with('success', 'Pendaftaran berhasil!');
-    })->name('register.submit');
+    })->name('register.submit')->middleware('throttle:6,1');
 });
 
 Route::any('/logout', function (Illuminate\Http\Request $request) {

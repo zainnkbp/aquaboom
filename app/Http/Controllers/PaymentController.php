@@ -79,8 +79,10 @@ class PaymentController extends Controller
             return response()->json(['message' => 'Invoice number missing'], 400);
         }
 
-        // Cari transaksi dengan mencocokkan invoice yang dihilangkan tanda hubungnya
-        $transaction = Transaction::whereRaw("replace(order_id::text, '-', '') = ?", [$invoiceNumber])->first();
+        // Cari transaksi dengan mencocokkan order_id langsung atau invoice yang dihilangkan tanda hubungnya
+        $transaction = Transaction::where('order_id', $invoiceNumber)
+            ->orWhereRaw("REPLACE(order_id, '-', '') = ?", [$invoiceNumber])
+            ->first();
 
         if (!$transaction) {
             Log::error('DOKU Notification: Transaction not found for invoice: ' . $invoiceNumber);
@@ -128,7 +130,9 @@ class PaymentController extends Controller
         }
 
         if (!$transaction && $invoiceNumber) {
-            $transaction = Transaction::whereRaw("replace(order_id::text, '-', '') = ?", [$invoiceNumber])->first();
+            $transaction = Transaction::where('order_id', $invoiceNumber)
+                ->orWhereRaw("REPLACE(order_id, '-', '') = ?", [$invoiceNumber])
+                ->first();
         }
 
         if ($transaction) {

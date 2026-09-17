@@ -1,0 +1,44 @@
+# ==============================================================================
+# AQUABOOM SECURE UPLOADS DIRECTORY CONFIGURATION
+# Disable direct execution of PHP scripts and other executable files
+# ==============================================================================
+
+# Disable PHP Engine
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+# Remove script handlers
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .phps .cgi .pl .py .jsp .asp .sh .bash .exe .bat
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .phps .cgi .pl .py .jsp .asp .sh .bash .exe .bat
+
+# Deny access to dangerous extensions
+<FilesMatch "(?i)\.(php|phtml|php3|php4|php5|php7|phps|cgi|pl|py|jsp|asp|sh|bash|exe|bat|cmd|dll|htaccess|htpasswd)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Allow legitimate static media assets only
+<FilesMatch "(?i)\.(jpg|jpeg|png|gif|webp|svg|ico|pdf|mp4|mov)$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Allow,Deny
+        Allow from all
+    </IfModule>
+</FilesMatch>
+
+# Disable Directory Indexing and CGI
+Options -Indexes -ExecCGI
