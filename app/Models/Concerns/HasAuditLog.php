@@ -83,11 +83,47 @@ trait HasAuditLog
         return $values;
     }
 
+    /**
+     * Map of known tables that contain created_by / updated_by columns to prevent
+     * hitting information_schema on every request.
+     *
+     * @var array<string, list<string>>
+     */
+    protected static array $tablesWithAuditColumns = [
+        'wahanas' => ['created_by', 'updated_by'],
+        'ticket_packages' => ['created_by', 'updated_by'],
+        'add_ons' => ['created_by', 'updated_by'],
+        'promo_codes' => ['created_by', 'updated_by'],
+        'referral_codes' => ['created_by', 'updated_by'],
+        'transactions' => ['created_by', 'updated_by'],
+        'transaction_items' => ['created_by', 'updated_by'],
+    ];
+
     protected function auditTableHasColumn(string $column): bool
     {
-        $key = $this->getTable().'.'.$column;
+        $table = $this->getTable();
 
-        return static::$auditColumnCache[$key]
-            ??= Schema::hasColumn($this->getTable(), $column);
+        // 1. Check statically mapped tables (Zero SQL queries, 100% fast & safe)
+        if (isset(static::$tablesWithAuditColumns[$table])) {
+            return in_array($column, static::$tablesWithAuditColumns[$table], true);
+        }
+
+        // 2. Check model attributes / fillable
+        if ($this->isFillable($column) || array_key_exists($column, $this->attributes)) {
+            return true;
+        }
+
+        // 3. Check memory cache
+        $key = $table . '.' . $column;
+        if (isset(static::$auditColumnCache[$key])) {
+            return static::$auditColumnCache[$key];
+        }
+
+        // 4. Safe Schema check with catch for MariaDB/MySQL information_schema compatibility
+        try {
+            return static::$auditColumnCache[$key] = Schema::hasColumn($table, $column);
+        } catch (\Throwable) {
+            return static::$auditColumnCache[$key] = false;
+        }
     }
 }

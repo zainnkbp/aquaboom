@@ -107,77 +107,65 @@ class PruneUploadsCommand extends Command
         $files = [];
 
         // 1. Wahanas
-        if (Schema::hasTable('wahanas') && Schema::hasColumn('wahanas', 'image_url')) {
+        try {
             $wahanas = \App\Models\Wahana::withTrashed()->pluck('image_url')->filter();
             foreach ($wahanas as $val) {
                 $files[] = $this->sanitizePath($val);
             }
-        }
+        } catch (\Throwable) {}
 
         // 2. Ticket Packages
-        if (Schema::hasTable('ticket_packages')) {
-            if (Schema::hasColumn('ticket_packages', 'image_url')) {
-                foreach (\App\Models\TicketPackage::withTrashed()->pluck('image_url')->filter() as $val) {
-                    $files[] = $this->sanitizePath($val);
-                }
+        try {
+            foreach (\App\Models\TicketPackage::withTrashed()->pluck('image_url')->filter() as $val) {
+                $files[] = $this->sanitizePath($val);
             }
-            if (Schema::hasColumn('ticket_packages', 'banner_image')) {
-                foreach (\App\Models\TicketPackage::withTrashed()->pluck('banner_image')->filter() as $val) {
-                    $files[] = $this->sanitizePath($val);
-                }
+            foreach (\App\Models\TicketPackage::withTrashed()->pluck('banner_image')->filter() as $val) {
+                $files[] = $this->sanitizePath($val);
             }
-        }
+        } catch (\Throwable) {}
 
         // 3. Add-Ons
-        if (Schema::hasTable('add_ons')) {
-            if (Schema::hasColumn('add_ons', 'image')) {
-                foreach (\App\Models\AddOn::pluck('image')->filter() as $val) {
-                    $files[] = $this->sanitizePath($val);
-                }
+        try {
+            foreach (\App\Models\AddOn::pluck('image')->filter() as $val) {
+                $files[] = $this->sanitizePath($val);
             }
-            if (Schema::hasColumn('add_ons', 'image_url')) {
-                foreach (\App\Models\AddOn::pluck('image_url')->filter() as $val) {
-                    $files[] = $this->sanitizePath($val);
-                }
+            foreach (\App\Models\AddOn::pluck('image_url')->filter() as $val) {
+                $files[] = $this->sanitizePath($val);
             }
-        }
+        } catch (\Throwable) {}
 
         // 4. Facilities (including menu_items array)
-        if (Schema::hasTable('facilities')) {
-            if (Schema::hasColumn('facilities', 'image_url')) {
-                foreach (\App\Models\Facility::pluck('image_url')->filter() as $val) {
-                    $files[] = $this->sanitizePath($val);
-                }
+        try {
+            foreach (\App\Models\Facility::pluck('image_url')->filter() as $val) {
+                $files[] = $this->sanitizePath($val);
             }
-            if (Schema::hasColumn('facilities', 'menu_items')) {
-                foreach (\App\Models\Facility::pluck('menu_items')->filter() as $menuItems) {
-                    if (is_array($menuItems)) {
-                        foreach ($menuItems as $item) {
-                            if (is_string($item)) {
-                                $files[] = $this->sanitizePath($item);
-                            }
+            foreach (\App\Models\Facility::pluck('menu_items')->filter() as $menuItems) {
+                if (is_array($menuItems)) {
+                    foreach ($menuItems as $item) {
+                        if (is_string($item)) {
+                            $files[] = $this->sanitizePath($item);
                         }
                     }
                 }
             }
-        }
+        } catch (\Throwable) {}
 
         // 5. Settings
-        if (Schema::hasTable('settings')) {
+        try {
             $settings = \App\Models\Setting::pluck('value')->filter();
             foreach ($settings as $val) {
                 if (is_string($val) && (Str::contains($val, ['uploads/', 'wahanas/', 'packages/', 'facilities/', 'addons/', '.jpg', '.jpeg', '.png', '.webp']))) {
                     $files[] = $this->sanitizePath($val);
                 }
             }
-        }
+        } catch (\Throwable) {}
 
         // 6. Users Avatar
-        if (Schema::hasTable('users') && Schema::hasColumn('users', 'avatar_url')) {
+        try {
             foreach (\App\Models\User::pluck('avatar_url')->filter() as $val) {
                 $files[] = $this->sanitizePath($val);
             }
-        }
+        } catch (\Throwable) {}
 
         return array_unique(array_filter($files));
     }
