@@ -1,6 +1,7 @@
 -- =========================================================
--- AQUABOOM WATERPARK - MySQL & MariaDB Database Dump
--- Generated for phpMyAdmin / Plesk MariaDB
+-- AQUABOOM WATERPARK - FULL MySQL / MariaDB Dump
+-- Schema (CREATE TABLE) + All Data
+-- Ready for 1-Click Import into Empty Database in phpMyAdmin
 -- =========================================================
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -8,9 +9,17 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 -- ---------------------------------------------------------
--- Data for table `migrations` (53 rows)
+-- Table structure for `migrations`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `migrations`;
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE IF NOT EXISTS `migrations` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) NOT NULL ,
+  `batch` int NOT NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `migrations` (53 rows)
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '0001_01_01_000000_create_users_table', 1),
 (2, '0001_01_01_000001_create_cache_table', 1),
@@ -68,9 +77,27 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (116, '2026_09_14_173500_update_philosophy_video_url_remove_loop', 30);
 
 -- ---------------------------------------------------------
--- Data for table `users` (11 rows)
+-- Table structure for `users`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `users`;
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL ,
+  `email` varchar(255) NOT NULL ,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) NOT NULL ,
+  `remember_token` varchar(100) NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `role` varchar(255) NOT NULL ,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `pin` varchar(6) NULL ,
+  `avatar_url` varchar(255) NULL ,
+  `permissions` longtext NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `users` (11 rows)
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`, `deleted_at`, `pin`, `avatar_url`, `permissions`) VALUES
 (7, 'fadli zainul ihsani', 'zainulnakbp@gmail.com', NULL, '$2y$12$sV6d6LBU5KMyM.9HM1NoceJKjwcg6qQnSr1LNzQDkkcLdujgLl0pW', NULL, '2026-08-04 07:48:31', '2026-08-04 07:48:31', 'customer', NULL, NULL, NULL, NULL),
 (8, 'rekan bos', 'rekanbos4@gmail.com', NULL, '$2y$12$gcibuh2daiNvW2LnalexnOkSiwh2JsnSfigwvNHNXUsMzr269DQbu', NULL, '2026-09-01 03:29:26', '2026-09-01 03:29:26', 'customer', NULL, NULL, NULL, NULL),
@@ -85,9 +112,76 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 (13, 'Made Darsika', 'darsika.baliexcursion@gmail.com', NULL, '$2y$12$HxcUTldxU0ISmKUyDMb2Xe4mZ/54wo1jJkEYGZ3ZQoB3tF8a0MxaG', NULL, '2026-09-14 17:03:05', '2026-09-14 17:03:05', 'customer', NULL, NULL, NULL, NULL);
 
 -- ---------------------------------------------------------
--- Data for table `settings` (17 rows)
+-- Table structure for `roles`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `settings`;
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL ,
+  `guard_name` varchar(255) NOT NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `permissions`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `permissions`;
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL ,
+  `guard_name` varchar(255) NOT NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `model_has_roles`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `model_has_roles`;
+CREATE TABLE IF NOT EXISTS `model_has_roles` (
+  `role_id` bigint NOT NULL ,
+  `model_type` varchar(255) NOT NULL ,
+  `model_id` bigint NOT NULL 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `model_has_permissions`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `model_has_permissions`;
+CREATE TABLE IF NOT EXISTS `model_has_permissions` (
+  `permission_id` bigint NOT NULL ,
+  `model_type` varchar(255) NOT NULL ,
+  `model_id` bigint NOT NULL 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `role_has_permissions`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `role_has_permissions`;
+CREATE TABLE IF NOT EXISTS `role_has_permissions` (
+  `permission_id` bigint NOT NULL ,
+  `role_id` bigint NOT NULL 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `settings`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `settings`;
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) NOT NULL ,
+  `value` longtext NULL ,
+  `group` varchar(255) NULL ,
+  `type` varchar(255) NOT NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `settings` (17 rows)
 INSERT INTO `settings` (`id`, `key`, `value`, `group`, `type`, `created_at`, `updated_at`) VALUES
 (15, 'hero_video_url', 'https://www.youtube.com/embed/2ugEGMhBPNE?autoplay=1&mute=1&loop=1&playlist=2ugEGMhBPNE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1', 'homepage', 'url', NULL, NULL),
 (16, 'hero_video_file', NULL, 'homepage', 'file', NULL, NULL),
@@ -108,18 +202,72 @@ INSERT INTO `settings` (`id`, `key`, `value`, `group`, `type`, `created_at`, `up
 (25, 'philosophy_video_url', 'https://www.youtube.com/embed/2ugEGMhBPNE?rel=0', 'about', 'url', NULL, '2026-09-14 16:33:02');
 
 -- ---------------------------------------------------------
--- Data for table `wahanas` (3 rows)
+-- Table structure for `wahanas`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `wahanas`;
+DROP TABLE IF EXISTS `wahanas`;
+CREATE TABLE IF NOT EXISTS `wahanas` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL ,
+  `description` longtext NULL ,
+  `image_url` varchar(255) NULL ,
+  `order_column` int NOT NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_by` bigint NULL ,
+  `updated_by` bigint NULL ,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `thrill_level` varchar(255) NULL ,
+  `name_en` varchar(255) NULL ,
+  `description_en` longtext NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `wahanas` (3 rows)
 INSERT INTO `wahanas` (`id`, `name`, `description`, `image_url`, `order_column`, `created_at`, `updated_at`, `created_by`, `updated_by`, `deleted_at`, `thrill_level`, `name_en`, `description_en`) VALUES
 (4, 'Area Bermain Air Keluarga', 'Wahana permainan air keluarga yang aman dan menyenangkan untuk anak-anak hingga dewasa.', 'https://aquaboombsb.com/wp-content/uploads/2023/12/V1.jpg', 1, NULL, '2026-09-14 09:13:04', NULL, 3, NULL, 'Family', 'Family Water Playground', 'Safe and fun family water play ride for children to adults.'),
 (6, 'Pusaran Tornado', 'Pacu adrenalin meluncur vertikal menuju corong tornado raksasa dan rasakan sensasi terombang-ambing melawan gravitasi sebelum terjun ke kolam.', 'https://aquaboombsb.com/wp-content/uploads/2023/12/V3.jpg', 3, NULL, '2026-09-14 09:13:36', NULL, 3, NULL, 'Thrill', 'Tornado Slide', 'Feel the ultimate adrenaline rush as you plunge into a massive tornado funnel, oscillating against gravity before splashing into the landing pool.'),
 (5, 'Seluncuran Spiral', 'Rasakan sensasi meluncur cepat melintasi liukan spiral bertingkat penuh warna sebelum mendarat segar di kolam utama.', 'https://aquaboombsb.com/wp-content/uploads/2023/12/V2.jpg', 2, NULL, '2026-09-14 09:15:01', NULL, 3, NULL, 'Fun', 'Twister Spiral Slides', 'Experience the rush of sliding down colorful, winding multi-level spiral chutes before making a refreshing splash into the main pool.');
 
 -- ---------------------------------------------------------
--- Data for table `ticket_packages` (11 rows)
+-- Table structure for `ticket_packages`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `ticket_packages`;
+DROP TABLE IF EXISTS `ticket_packages`;
+CREATE TABLE IF NOT EXISTS `ticket_packages` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL ,
+  `description` longtext NULL ,
+  `price` decimal(15,2) NULL ,
+  `discount_price` decimal(15,2) NULL ,
+  `type` varchar(50) NOT NULL ,
+  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_by` bigint NULL ,
+  `updated_by` bigint NULL ,
+  `discount_type` varchar(255) NOT NULL ,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `validity_type` varchar(255) NOT NULL ,
+  `valid_dates` longtext NULL ,
+  `valid_days` longtext NULL ,
+  `terms_and_conditions` longtext NULL ,
+  `name_en` varchar(255) NULL ,
+  `description_en` longtext NULL ,
+  `terms_and_conditions_en` longtext NULL ,
+  `image_url` varchar(255) NULL ,
+  `inquiry_type` varchar(255) NOT NULL ,
+  `inquiry_custom_link` varchar(255) NULL ,
+  `sales_start` timestamp NULL DEFAULT NULL,
+  `sales_end` timestamp NULL DEFAULT NULL,
+  `is_featured_home` tinyint(1) NULL DEFAULT false,
+  `sort_order` int NOT NULL ,
+  `banner_image` varchar(255) NULL ,
+  `holiday_ids` longtext NULL ,
+  `include_national_holidays` tinyint(1) NOT NULL DEFAULT true,
+  `include_peak_season` tinyint(1) NOT NULL DEFAULT false,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `ticket_packages` (11 rows)
 INSERT INTO `ticket_packages` (`id`, `name`, `description`, `price`, `discount_price`, `type`, `is_active`, `created_at`, `updated_at`, `created_by`, `updated_by`, `discount_type`, `deleted_at`, `validity_type`, `valid_dates`, `valid_days`, `terms_and_conditions`, `name_en`, `description_en`, `terms_and_conditions_en`, `image_url`, `inquiry_type`, `inquiry_custom_link`, `sales_start`, `sales_end`, `is_featured_home`, `sort_order`, `banner_image`, `holiday_ids`, `include_national_holidays`, `include_peak_season`) VALUES
 (17, 'Paket Gathering Perusahaan & Outing', 'Tingkatkan kekompakan dan sinergi tim kerja dengan program ice breaking water games seru, pemandu games profesional, panggung sambutan, sound system nirkabel, dan sajian buffet lezat di venue rooftop prestisius.', NULL, NULL, 'gathering', 1, '2026-09-02 06:53:08', '2026-09-14 10:45:17', NULL, 3, 'amount', NULL, 'all_days', NULL, NULL, '• Minimum pemesanan 10 orang/pax.\n• Sudah termasuk tiket all-access seluruh wahana.\n• Fasilitas sound system nirkabel & mikrofon.\n• Area gazebo privat rombongan.\n• Paket konsumsi buffet / lunch box dapat disesuaikan.', 'Corporate Gathering & Outing Package', 'Boost team synergy with fun team building ice breaking water games, professional MC, private gazebo, sound system, and lunch buffet at our rooftop venue.', '• Minimum 10 pax.\n• Includes all-access waterpark admission.\n• Wireless sound system & mic.\n• Private group gazebo.\n• Customizable buffet/lunch box menu.', 'packages/01M1JWK029WXVSBCP45TKNDZRG.jpeg', 'whatsapp', NULL, NULL, NULL, 1, 17, NULL, NULL, 1, 0),
 (9, 'Tiket Reguler Hari Kerja', '<ul><li>Tiket masuk untuk 1 orang +&nbsp;</li><li>1 handuk + 1 locker standar gratis +&nbsp;</li><li>30 menit foot massage masing-masing. Hemat hingga 15%!</li></ul><p><br></p>', '95000.00', NULL, 'regular', 1, NULL, '2026-09-11 15:14:23', NULL, 3, 'amount', NULL, 'weekday', NULL, NULL, NULL, 'Regular Weekday Ticket', '<ul><li>Entry Ticket for 1 person +&nbsp;</li><li>1 towel + 1 free standard locker +&nbsp;</li><li>30 minutes foot massage each. Save up to 15%!</li></ul><p><br></p>', NULL, 'packages/01M1JKRNPDKD88GDAQWE1ATYK8.jpeg', 'none', NULL, NULL, NULL, 0, 9, NULL, NULL, 0, 0),
@@ -134,9 +282,26 @@ INSERT INTO `ticket_packages` (`id`, `name`, `description`, `price`, `discount_p
 (19, 'Paket Eduwisata Sekolah & Kunjungan Belajar', 'Paket rekreasi edukatif untuk siswa PAUD, TK, SD, SMP, SMA, dan universitas. Mengedepankan keselamatan maksimal dengan edukasi renang aman dan pengawasan intensif tim lifeguard bersertifikat.', NULL, NULL, 'gathering', 1, '2026-09-02 06:53:08', '2026-09-14 10:46:02', NULL, 3, 'amount', NULL, 'all_days', NULL, NULL, '• Minimum pemesanan 15 siswa.\n• Gratis tiket masuk untuk guru / pembina pendamping.\n• Sesi edukasi keselamatan air (water safety briefing).\n• Pengawasan penuh oleh tim lifeguard bersertifikat.', 'School Field Trip & Edu-Tour Package', 'Educational fun water trip for preschool, elementary, junior/senior high, and university students. Focuses on water safety and certified lifeguard supervision.', '• Minimum 15 students.\n• Free admission for accompanying teachers.\n• Water safety briefing session.\n• Certified lifeguard supervision.', 'packages/01M1JNH6VT0SJFREYNPZQYWD9W.jpeg', 'whatsapp', NULL, NULL, NULL, 0, 19, NULL, NULL, 1, 0);
 
 -- ---------------------------------------------------------
--- Data for table `add_ons` (4 rows)
+-- Table structure for `add_ons`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `add_ons`;
+DROP TABLE IF EXISTS `add_ons`;
+CREATE TABLE IF NOT EXISTS `add_ons` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL ,
+  `description` longtext NULL ,
+  `price` decimal(15,2) NOT NULL ,
+  `image` varchar(255) NULL ,
+  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `name_en` varchar(255) NULL ,
+  `description_en` longtext NULL ,
+  `sort_order` int NOT NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `add_ons` (4 rows)
 INSERT INTO `add_ons` (`id`, `name`, `description`, `price`, `image`, `is_active`, `created_at`, `updated_at`, `deleted_at`, `name_en`, `description_en`, `sort_order`) VALUES
 (5, 'Sewa Gazebo Standard', 'Gazebo nyaman kapasitas 4-6 orang untuk bersantai bersama keluarga, include stopkontak dan matras empuk.', '150000.00', 'addons/01M2545SRFCYWBSJVH3A36S6SM.jpeg', 1, NULL, '2026-09-11 15:07:56', NULL, 'Standard Gazebo Rental', '<p>Comfortable gazebo with a capacity of 4-6 people to relax with family, including outlet and soft mattress.</p>', 5),
 (8, 'Loker Premium', '<p>Sewa loker ukuran besar dengan pengamanan kunci barang bawaan Anda.</p>', '25000.00', 'addons/01M1JX0621NE7DFGYT1E4MWK5J.jpg', 1, NULL, '2026-09-11 15:08:32', NULL, 'Premium Locker', '<p>rent a large locker with a lock to secure your belongings.</p>', 8),
@@ -144,9 +309,28 @@ INSERT INTO `add_ons` (`id`, `name`, `description`, `price`, `image`, `is_active
 (7, 'Ban Double', 'Sewa ban renang double untuk meluncur berpasangan bersama teman atau keluarga.', '50000.00', 'addons/01M1DDA8CE8NMG80CGWV55AC6B.jpg', 1, NULL, '2026-09-14 13:50:54', NULL, 'Double Tube', '<p>Rent double swim tires for paired surfing with friends or family.</p>', 7);
 
 -- ---------------------------------------------------------
--- Data for table `facilities` (6 rows)
+-- Table structure for `facilities`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `facilities`;
+DROP TABLE IF EXISTS `facilities`;
+CREATE TABLE IF NOT EXISTS `facilities` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL ,
+  `type` varchar(255) NOT NULL ,
+  `description` longtext NULL ,
+  `features` longtext NULL ,
+  `image_url` varchar(255) NULL ,
+  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `name_en` varchar(255) NULL ,
+  `description_en` longtext NULL ,
+  `features_en` longtext NULL ,
+  `menu_items` longtext NULL ,
+  `sort_order` int NOT NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `facilities` (6 rows)
 INSERT INTO `facilities` (`id`, `name`, `type`, `description`, `features`, `image_url`, `is_active`, `created_at`, `updated_at`, `name_en`, `description_en`, `features_en`, `menu_items`, `sort_order`) VALUES
 (7, 'Aquaboom Kafe', 'dining', 'Tempat ideal untuk bersantai dan mengisi kembali energi setelah berenang. Menyajikan aneka camilan lezat, makanan favorit keluarga, serta pilihan minuman dingin yang menyegarkan.', '["Menu variatif","Minuman dingin segar","Area bersih nyaman"]', 'dining/01M2EVDAFR43XHY9DYC3P0W2XH.jpeg', 1, NULL, '2026-09-14 09:19:49', 'Aquaboom Cafe & Bites', 'The perfect spot to unwind and recharge after swimming. Serving a variety of tasty snacks, family-favorite meals, and a refreshing selection of cold beverages.', '["Varied menu","Fresh cold drinks","Clean & comfortable area"]', '["dining-menus\\/01M1NSQ7T11HT594830GSDYWD5.jpeg","dining-menus\\/01M1NSQ7T2ND5Z9BEGPK7FRS7A.jpeg","dining-menus\\/01M1NTP96HBDAC66XX48VQ1G33.jpeg","dining-menus\\/01M2730CV67QY1FF642F5SZX1V.jpg"]', 7),
 (10, 'RUANG BILAS & RUANG GANTI', 'general', 'Ruang bilas dan ruang ganti premium kami dirancang dengan mengutamakan kebersihan dan kenyamanan. Dilengkapi dengan pancuran air hangat, bilik ganti pribadi yang luas, serta pengering rambut.', '["Bilik shower pribadi dengan air hangat","Peralatan mandi lengkap (sabun & sampo cair)","Wastafel dan cermin rias berukuran besar"]', 'facilities/01M253XB6V7Q8HM17JEY3A44QG.jpeg', 1, NULL, '2026-09-10 14:35:58', 'SHOWER & CHANGING ROOMS', 'Our premium shower and changing rooms are designed with hygiene and comfort in mind. Equipped with hot showers, spacious private changing stalls, and hair dryers.', '["Private shower stalls with hot water","Complete toiletries (liquid soap & shampoo)","Large washbasin and vanity mirrors"]', NULL, 3),
@@ -156,9 +340,23 @@ INSERT INTO `facilities` (`id`, `name`, `type`, `description`, `features`, `imag
 (9, 'PENYEWAAN LOKER & HANDUK', 'general', 'Nikmati petualangan air tanpa rasa cemas. Kami menyediakan fasilitas loker otomatis dengan keamanan terintegrasi, serta penyewaan handuk bersih yang selalu disterilkan secara berkala.', '["Handuk premium bersih & higienis","Lokasi loker strategis dekat ruang bilas","sistem kunci loker"]', 'facilities/01M24Y0ED83TVHV0P5RB5ZQMAM.jpeg', 1, NULL, '2026-09-10 12:52:48', 'LOCKER & TOWEL RENTAL', 'Enjoy water adventures without worries. We provide automated locker facilities with integrated security, and clean towels sterilized regularly.', '["Premium, clean & hygienic towels","Strategic locker locations near the shower rooms","Locker Locking System"]', NULL, 1);
 
 -- ---------------------------------------------------------
--- Data for table `faqs` (4 rows)
+-- Table structure for `faqs`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `faqs`;
+DROP TABLE IF EXISTS `faqs`;
+CREATE TABLE IF NOT EXISTS `faqs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `question` longtext NOT NULL ,
+  `answer` longtext NOT NULL ,
+  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `sort_order` int NOT NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `question_en` longtext NULL ,
+  `answer_en` longtext NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `faqs` (4 rows)
 INSERT INTO `faqs` (`id`, `question`, `answer`, `is_active`, `sort_order`, `created_at`, `updated_at`, `question_en`, `answer_en`) VALUES
 (6, 'Bagaimana ketentuan pakaian renang?', 'Demi kenyamanan dan keselamatan, pengunjung disarankan menggunakan pakaian renang yang nyaman. Pakaian dengan kancing besi menonjol atau ritsleting tajam dilarang di seluncuran besar.', 1, 2, NULL, NULL, 'What is the swimming attire policy?', 'For comfort and safety, guests are advised to wear proper swimwear. Attire with protruding metal buttons or sharp zippers is prohibited on large slides.'),
 (7, 'Apakah boleh membawa makanan dan minuman dari luar?', 'Makanan dan minuman dari luar tidak diperkenankan dibawa masuk ke area waterpark untuk menjaga kebersihan dan higienitas area kolam.', 1, 3, NULL, NULL, 'Can we bring outside food and drinks?', 'Outside food and beverages are not allowed inside the waterpark area to maintain the hygiene and cleanliness of the pool area.'),
@@ -166,9 +364,40 @@ INSERT INTO `faqs` (`id`, `question`, `answer`, `is_active`, `sort_order`, `crea
 (5, 'Jam berapa jam operasional Aquaboom?', 'Kami buka setiap hari (Senin — Minggu & Libur Nasional) mulai pukul 09:00 WITA - 18:00 WITA (Batas masuk terakhir pukul 17:00 WITA).', 1, 1, NULL, '2026-09-11 09:31:52', 'What are the operational hours of Aquaboom?', 'We are open daily (Monday — Sunday & Public Holidays) from 09:00 WITA - 18:00 WITA (Last admission at 17:00 WITA).');
 
 -- ---------------------------------------------------------
--- Data for table `home_page_cards` (5 rows)
+-- Table structure for `awards`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `home_page_cards`;
+DROP TABLE IF EXISTS `awards`;
+CREATE TABLE IF NOT EXISTS `awards` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL ,
+  `description` longtext NULL ,
+  `icon` varchar(255) NULL ,
+  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `sort_order` int NOT NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `home_page_cards`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `home_page_cards`;
+CREATE TABLE IF NOT EXISTS `home_page_cards` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL ,
+  `description` longtext NULL ,
+  `image_url` varchar(255) NULL ,
+  `link` varchar(255) NULL ,
+  `link_text` varchar(255) NULL ,
+  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `sort_order` int NOT NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `home_page_cards` (5 rows)
 INSERT INTO `home_page_cards` (`id`, `title`, `description`, `image_url`, `link`, `link_text`, `is_active`, `sort_order`, `created_at`, `updated_at`) VALUES
 (1, 'Pilih Tiket Masuk', 'Beli tiket masuk lebih mudah secara online melalui website kami untuk menikmati keseruan tak terbatas.', 'https://aquaboombsb.com/wp-content/uploads/2023/12/Tiket.png', '/ticket', 'Pesan Tiket', 1, 1, NULL, NULL),
 (3, 'Petunjuk Arah & Lokasi', 'Berlokasi strategis di Lantai 7 Astara Hotel, kawasan Balikpapan Super Block (BSB), Jl. Jenderal Sudirman No. 47.', 'https://aquaboombsb.com/wp-content/uploads/2023/12/V2.jpg', '/about#lokasi', 'Lihat Lokasi', 1, 3, NULL, NULL),
@@ -177,9 +406,24 @@ INSERT INTO `home_page_cards` (`id`, `title`, `description`, `image_url`, `link`
 (2, 'Tentang Kami', 'Aquaboom Waterpark Balikpapan — Waterpark ikonik di Balikpapan yang menghadirkan keseruan rekreasi air premium di 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan.', 'https://aquaboombsb.com/wp-content/uploads/2023/12/V1.jpg', '/about', 'Baca Selengkapnya', 1, 2, NULL, NULL);
 
 -- ---------------------------------------------------------
--- Data for table `holidays` (28 rows)
+-- Table structure for `holidays`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `holidays`;
+DROP TABLE IF EXISTS `holidays`;
+CREATE TABLE IF NOT EXISTS `holidays` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL ,
+  `date` date NULL DEFAULT NULL,
+  `start_date` date NULL DEFAULT NULL,
+  `end_date` date NULL DEFAULT NULL,
+  `type` varchar(255) NOT NULL ,
+  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `note` longtext NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `holidays` (28 rows)
 INSERT INTO `holidays` (`id`, `name`, `date`, `start_date`, `end_date`, `type`, `is_active`, `note`, `created_at`, `updated_at`) VALUES
 (1, 'Hari Tahun Baru', '2026-01-01', NULL, NULL, 'national_holiday', 1, 'Hari Libur Nasional Indonesia 2026. Berlaku tarif Weekend & Liburan.', '2026-09-14 09:41:16', '2026-09-14 13:32:55'),
 (9, 'Tahun Baru Imlek', '2026-02-17', NULL, NULL, 'national_holiday', 1, 'Hari Libur Nasional Indonesia 2026. Berlaku tarif Weekend & Liburan.', '2026-09-14 13:32:55', '2026-09-14 13:32:55'),
@@ -211,16 +455,80 @@ INSERT INTO `holidays` (`id`, `name`, `date`, `start_date`, `end_date`, `type`, 
 (28, 'Maulid Nabi Muhammad', '2026-08-25', NULL, NULL, 'national_holiday', 1, 'Hari Libur Nasional Indonesia 2026. Berlaku tarif Weekend & Liburan.', '2026-09-14 13:32:55', '2026-09-14 13:32:55');
 
 -- ---------------------------------------------------------
--- Data for table `promo_codes` (1 rows)
+-- Table structure for `promo_codes`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `promo_codes`;
+DROP TABLE IF EXISTS `promo_codes`;
+CREATE TABLE IF NOT EXISTS `promo_codes` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) NOT NULL ,
+  `discount_percentage` decimal(15,2) NULL ,
+  `discount_amount` decimal(15,2) NULL ,
+  `max_uses` int NULL ,
+  `used_count` int NOT NULL ,
+  `valid_from` timestamp NULL DEFAULT NULL,
+  `valid_until` timestamp NULL DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_by` bigint NULL ,
+  `updated_by` bigint NULL ,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `promo_codes` (1 rows)
 INSERT INTO `promo_codes` (`id`, `code`, `discount_percentage`, `discount_amount`, `max_uses`, `used_count`, `valid_from`, `valid_until`, `is_active`, `created_at`, `updated_at`, `created_by`, `updated_by`, `deleted_at`) VALUES
 (2, 'JHR001', '10.00', NULL, NULL, 14, '2026-09-10 02:14:31', '2026-09-30 11:14:34', 1, '2026-09-10 03:14:37', '2026-09-16 13:32:08', 3, 3, NULL);
 
 -- ---------------------------------------------------------
--- Data for table `transactions` (50 rows)
+-- Table structure for `referral_codes`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `transactions`;
+DROP TABLE IF EXISTS `referral_codes`;
+CREATE TABLE IF NOT EXISTS `referral_codes` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) NOT NULL ,
+  `customer_name` varchar(255) NOT NULL ,
+  `customer_phone` varchar(255) NOT NULL ,
+  `points_earned` int NOT NULL ,
+  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `transactions`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `transactions`;
+CREATE TABLE IF NOT EXISTS `transactions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `order_id` varchar(100) NOT NULL ,
+  `customer_name` varchar(255) NOT NULL ,
+  `customer_email` varchar(255) NOT NULL ,
+  `customer_phone` varchar(255) NOT NULL ,
+  `visit_date` date NOT NULL DEFAULT NULL,
+  `subtotal` decimal(15,2) NOT NULL ,
+  `discount_amount` decimal(15,2) NOT NULL ,
+  `total_price` decimal(15,2) NOT NULL ,
+  `payment_url` varchar(255) NULL ,
+  `payment_token` varchar(255) NULL ,
+  `status` varchar(255) NOT NULL ,
+  `promo_code_id` bigint NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_by` bigint NULL ,
+  `updated_by` bigint NULL ,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `is_redeemed` tinyint(1) NOT NULL DEFAULT false,
+  `redeemed_at` timestamp NULL DEFAULT NULL,
+  `referral_code_id` bigint NULL ,
+  `user_id` bigint NULL ,
+  `notes` longtext NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `transactions` (50 rows)
 INSERT INTO `transactions` (`id`, `order_id`, `customer_name`, `customer_email`, `customer_phone`, `visit_date`, `subtotal`, `discount_amount`, `total_price`, `payment_url`, `payment_token`, `status`, `promo_code_id`, `created_at`, `updated_at`, `created_by`, `updated_by`, `deleted_at`, `is_redeemed`, `redeemed_at`, `referral_code_id`, `user_id`, `notes`) VALUES
 (1, '512905db-2191-4523-8886-16ed22f46c12', 'ASDASD', 'ASDA@ASDA.COM', '08123123', '2026-07-21', '20000.00', '0.00', '20000.00', NULL, NULL, 'paid', NULL, '2026-07-21 07:18:58', '2026-07-21 07:18:58', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL),
 (2, 'b4cb0441-a706-48f2-9ee9-2108a6fc86eb', 'fadli zainul ihsani', 'zainulnakbp@gmail.com', '0895705013398', '2026-08-04', '225000.00', '0.00', '225000.00', NULL, NULL, 'paid', NULL, '2026-08-04 07:41:42', '2026-08-04 07:41:42', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL),
@@ -274,9 +582,25 @@ INSERT INTO `transactions` (`id`, `order_id`, `customer_name`, `customer_email`,
 (49, 'AQB-ZYYP-DX4G-JHQJ', 'Made Darsika', 'darsika.baliexcursion@gmail.com', '081236854221', '2026-09-16', '245000.00', '0.00', '245000.00', 'https://staging.doku.com/checkout-link-v2/3d5f2e8c57434ba6965b9d714736f77e20265216105216116', '2.2252609161052E+39', 'pending', NULL, '2026-09-16 10:52:15', '2026-09-16 10:52:16', NULL, NULL, NULL, 0, NULL, NULL, 13, NULL);
 
 -- ---------------------------------------------------------
--- Data for table `transaction_items` (47 rows)
+-- Table structure for `transaction_items`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `transaction_items`;
+DROP TABLE IF EXISTS `transaction_items`;
+CREATE TABLE IF NOT EXISTS `transaction_items` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `transaction_id` bigint NOT NULL ,
+  `ticket_package_id` bigint NOT NULL ,
+  `quantity` int NOT NULL ,
+  `price` decimal(15,2) NOT NULL ,
+  `subtotal` decimal(15,2) NOT NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_by` bigint NULL ,
+  `updated_by` bigint NULL ,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `transaction_items` (47 rows)
 INSERT INTO `transaction_items` (`id`, `transaction_id`, `ticket_package_id`, `quantity`, `price`, `subtotal`, `created_at`, `updated_at`, `created_by`, `updated_by`, `deleted_at`) VALUES
 (1, 4, 9, 1, '95000.00', '95000.00', '2026-09-01 03:29:26', '2026-09-01 03:29:26', NULL, NULL, NULL),
 (2, 5, 15, 1, '63000.00', '63000.00', '2026-09-01 03:31:55', '2026-09-01 03:31:55', NULL, NULL, NULL),
@@ -327,9 +651,22 @@ INSERT INTO `transaction_items` (`id`, `transaction_id`, `ticket_package_id`, `q
 (47, 50, 11, 1, '190000.00', '190000.00', '2026-09-16 13:32:08', '2026-09-16 13:32:08', NULL, NULL, NULL);
 
 -- ---------------------------------------------------------
--- Data for table `transaction_add_ons` (51 rows)
+-- Table structure for `transaction_add_ons`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `transaction_add_ons`;
+DROP TABLE IF EXISTS `transaction_add_ons`;
+CREATE TABLE IF NOT EXISTS `transaction_add_ons` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `transaction_id` bigint NOT NULL ,
+  `add_on_id` bigint NOT NULL ,
+  `quantity` int NOT NULL ,
+  `price` decimal(15,2) NOT NULL ,
+  `subtotal` decimal(15,2) NOT NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `transaction_add_ons` (51 rows)
 INSERT INTO `transaction_add_ons` (`id`, `transaction_id`, `add_on_id`, `quantity`, `price`, `subtotal`, `created_at`, `updated_at`) VALUES
 (1, 4, 5, 1, '150000.00', '150000.00', '2026-09-01 03:29:26', '2026-09-01 03:29:26'),
 (2, 5, 5, 1, '150000.00', '150000.00', '2026-09-01 03:31:55', '2026-09-01 03:31:55'),
@@ -385,9 +722,23 @@ INSERT INTO `transaction_add_ons` (`id`, `transaction_id`, `add_on_id`, `quantit
 (51, 50, 6, 1, '30000.00', '30000.00', '2026-09-16 13:32:09', '2026-09-16 13:32:09');
 
 -- ---------------------------------------------------------
--- Data for table `audit_logs` (361 rows)
+-- Table structure for `audit_logs`
 -- ---------------------------------------------------------
-TRUNCATE TABLE `audit_logs`;
+DROP TABLE IF EXISTS `audit_logs`;
+CREATE TABLE IF NOT EXISTS `audit_logs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `model_type` varchar(255) NOT NULL ,
+  `model_id` bigint NOT NULL ,
+  `action` varchar(255) NOT NULL ,
+  `old_values` longtext NULL ,
+  `new_values` longtext NULL ,
+  `user_id` bigint NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `audit_logs` (361 rows)
 INSERT INTO `audit_logs` (`id`, `model_type`, `model_id`, `action`, `old_values`, `new_values`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 'App\\Models\\TicketPackage', 3, 'created', NULL, '{"name":"paket Weekend","description":"tes","price":"150000","discount_type":"amount","discount_price":"100000","type":"flash_sale","is_active":true,"created_by":2,"updated_by":2,"id":3}', 2, '2026-07-22 07:11:56', '2026-07-22 07:11:56'),
 (2, 'App\\Models\\TicketPackage', 2, 'updated', '{"id":2,"name":"test paket","description":"adasdasd","price":"120000.00","discount_price":"20000.00","type":"weekend","is_active":true,"created_by":null,"updated_by":null,"discount_type":"amount","deleted_at":null,"validity_type":"all_days","valid_dates":null,"valid_days":null}', '{"name":"Regular ","type":"regular","updated_by":2}', 2, '2026-07-22 07:48:07', '2026-07-22 07:48:07'),
@@ -757,6 +1108,106 @@ INSERT INTO `audit_logs` (`id`, `model_type`, `model_id`, `action`, `old_values`
 (359, 'App\\Models\\Transaction', 50, 'created', NULL, '{"id":50,"user_id":8,"order_id":"AQB-66TD-VRLX-XMJB","customer_name":"rekan bos","customer_email":"rekanbos4@gmail.com","customer_phone":"0895705013398","visit_date":"2026-09-16 00:00:00","subtotal":220000,"discount_amount":19000,"total_price":201000,"status":"pending","promo_code_id":2}', NULL, '2026-09-16 13:32:08', '2026-09-16 13:32:08'),
 (360, 'App\\Models\\TransactionItem', 47, 'created', NULL, '{"id":47,"transaction_id":50,"ticket_package_id":11,"quantity":1,"price":190000,"subtotal":190000}', NULL, '2026-09-16 13:32:09', '2026-09-16 13:32:09'),
 (361, 'App\\Models\\Transaction', 50, 'updated', '{"id":50,"user_id":8,"order_id":"AQB-66TD-VRLX-XMJB","customer_name":"rekan bos","customer_email":"rekanbos4@gmail.com","customer_phone":"0895705013398","visit_date":"2026-09-15T17:00:00.000000Z","subtotal":"220000.00","discount_amount":"19000.00","total_price":"201000.00","status":"pending","promo_code_id":2}', '{"payment_url":"https:\\/\\/checkout.doku.com\\/checkout-link-v2\\/b6adcd93d9b44fa2a1b78923b728d62a20263216133209146","payment_token":2.2252609161332092e+39}', NULL, '2026-09-16 13:32:09', '2026-09-16 13:32:09');
+
+-- ---------------------------------------------------------
+-- Table structure for `sessions`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NULL ,
+  `ip_address` varchar(45) NULL ,
+  `user_agent` longtext NULL ,
+  `payload` longtext NOT NULL ,
+  `last_activity` int NOT NULL ,
+  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table `sessions` (1 rows)
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('XcO0iwy0GfkfV6TyAeXCq50mIZnzQw2cXlbXta7r', NULL, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36', 'eyJfdG9rZW4iOiJQeURrbU52TkIxV2cwVzRIV1RJak1ldkNYZ3ZGODlrTTFLM2E2ZGM5IiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAxXC9nYXRoZXJpbmdzIiwicm91dGUiOiJnYXRoZXJpbmdzIn0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfSwibG9jYWxlIjoiaWQifQ==', 1789612892);
+
+-- ---------------------------------------------------------
+-- Table structure for `cache`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `cache`;
+CREATE TABLE IF NOT EXISTS `cache` (
+  `key` varchar(255) NOT NULL ,
+  `value` longtext NOT NULL ,
+  `expiration` bigint NOT NULL ,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `cache_locks`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `cache_locks`;
+CREATE TABLE IF NOT EXISTS `cache_locks` (
+  `key` varchar(255) NOT NULL ,
+  `owner` varchar(255) NOT NULL ,
+  `expiration` bigint NOT NULL ,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `jobs`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `jobs`;
+CREATE TABLE IF NOT EXISTS `jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `queue` varchar(255) NOT NULL ,
+  `payload` longtext NOT NULL ,
+  `attempts` smallint NOT NULL ,
+  `reserved_at` int NULL ,
+  `available_at` int NOT NULL ,
+  `created_at` int NOT NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `job_batches`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `job_batches`;
+CREATE TABLE IF NOT EXISTS `job_batches` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL ,
+  `total_jobs` int NOT NULL ,
+  `pending_jobs` int NOT NULL ,
+  `failed_jobs` int NOT NULL ,
+  `failed_job_ids` longtext NOT NULL ,
+  `options` longtext NULL ,
+  `cancelled_at` int NULL ,
+  `created_at` int NOT NULL ,
+  `finished_at` int NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `failed_jobs`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `failed_jobs`;
+CREATE TABLE IF NOT EXISTS `failed_jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) NOT NULL ,
+  `connection` varchar(255) NOT NULL ,
+  `queue` varchar(255) NOT NULL ,
+  `payload` longtext NOT NULL ,
+  `exception` longtext NOT NULL ,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------
+-- Table structure for `password_reset_tokens`
+-- ---------------------------------------------------------
+DROP TABLE IF EXISTS `password_reset_tokens`;
+CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
+  `email` varchar(255) NOT NULL ,
+  `token` varchar(255) NOT NULL ,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SET FOREIGN_KEY_CHECKS=1;
 -- Dump completed successfully.
