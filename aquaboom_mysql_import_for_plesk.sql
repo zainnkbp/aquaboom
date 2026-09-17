@@ -14,8 +14,8 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) NOT NULL ,
-  `batch` int NOT NULL ,
+  `migration` varchar(255) NOT NULL,
+  `batch` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -82,18 +82,18 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL ,
-  `email` varchar(255) NOT NULL ,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) NOT NULL ,
-  `remember_token` varchar(100) NULL ,
+  `password` varchar(255) NOT NULL,
+  `remember_token` varchar(100) NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `role` varchar(255) NOT NULL ,
+  `role` varchar(255) NOT NULL DEFAULT 'operator',
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `pin` varchar(6) NULL ,
-  `avatar_url` varchar(255) NULL ,
-  `permissions` longtext NULL ,
+  `pin` varchar(6) NULL DEFAULT NULL,
+  `avatar_url` varchar(255) NULL DEFAULT NULL,
+  `permissions` longtext NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -117,8 +117,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL ,
-  `guard_name` varchar(255) NOT NULL ,
+  `name` varchar(255) NOT NULL,
+  `guard_name` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -130,8 +130,8 @@ CREATE TABLE IF NOT EXISTS `roles` (
 DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE IF NOT EXISTS `permissions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL ,
-  `guard_name` varchar(255) NOT NULL ,
+  `name` varchar(255) NOT NULL,
+  `guard_name` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -142,9 +142,9 @@ CREATE TABLE IF NOT EXISTS `permissions` (
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `model_has_roles`;
 CREATE TABLE IF NOT EXISTS `model_has_roles` (
-  `role_id` bigint NOT NULL ,
-  `model_type` varchar(255) NOT NULL ,
-  `model_id` bigint NOT NULL 
+  `role_id` bigint NOT NULL,
+  `model_type` varchar(255) NOT NULL,
+  `model_id` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------
@@ -152,9 +152,9 @@ CREATE TABLE IF NOT EXISTS `model_has_roles` (
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `model_has_permissions`;
 CREATE TABLE IF NOT EXISTS `model_has_permissions` (
-  `permission_id` bigint NOT NULL ,
-  `model_type` varchar(255) NOT NULL ,
-  `model_id` bigint NOT NULL 
+  `permission_id` bigint NOT NULL,
+  `model_type` varchar(255) NOT NULL,
+  `model_id` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------
@@ -162,8 +162,8 @@ CREATE TABLE IF NOT EXISTS `model_has_permissions` (
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `role_has_permissions`;
 CREATE TABLE IF NOT EXISTS `role_has_permissions` (
-  `permission_id` bigint NOT NULL ,
-  `role_id` bigint NOT NULL 
+  `permission_id` bigint NOT NULL,
+  `role_id` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------
@@ -172,10 +172,10 @@ CREATE TABLE IF NOT EXISTS `role_has_permissions` (
 DROP TABLE IF EXISTS `settings`;
 CREATE TABLE IF NOT EXISTS `settings` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `key` varchar(255) NOT NULL ,
-  `value` longtext NULL ,
-  `group` varchar(255) NULL ,
-  `type` varchar(255) NOT NULL ,
+  `key` varchar(255) NOT NULL,
+  `value` longtext NULL,
+  `group` varchar(255) NULL DEFAULT 'general',
+  `type` varchar(255) NOT NULL DEFAULT 'text',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -207,18 +207,18 @@ INSERT INTO `settings` (`id`, `key`, `value`, `group`, `type`, `created_at`, `up
 DROP TABLE IF EXISTS `wahanas`;
 CREATE TABLE IF NOT EXISTS `wahanas` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL ,
-  `description` longtext NULL ,
-  `image_url` varchar(255) NULL ,
-  `order_column` int NOT NULL ,
+  `name` varchar(255) NOT NULL,
+  `description` longtext NULL,
+  `image_url` varchar(255) NULL DEFAULT NULL,
+  `order_column` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `created_by` bigint NULL ,
-  `updated_by` bigint NULL ,
+  `created_by` bigint NULL DEFAULT NULL,
+  `updated_by` bigint NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `thrill_level` varchar(255) NULL ,
-  `name_en` varchar(255) NULL ,
-  `description_en` longtext NULL ,
+  `thrill_level` varchar(255) NULL DEFAULT NULL,
+  `name_en` varchar(255) NULL DEFAULT NULL,
+  `description_en` longtext NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -234,36 +234,36 @@ INSERT INTO `wahanas` (`id`, `name`, `description`, `image_url`, `order_column`,
 DROP TABLE IF EXISTS `ticket_packages`;
 CREATE TABLE IF NOT EXISTS `ticket_packages` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL ,
-  `description` longtext NULL ,
-  `price` decimal(15,2) NULL ,
-  `discount_price` decimal(15,2) NULL ,
-  `type` varchar(50) NOT NULL ,
-  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `name` varchar(255) NOT NULL,
+  `description` longtext NULL,
+  `price` decimal(15,2) NULL DEFAULT NULL,
+  `discount_price` decimal(15,2) NULL DEFAULT NULL,
+  `type` varchar(50) NOT NULL DEFAULT 'regular',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `created_by` bigint NULL ,
-  `updated_by` bigint NULL ,
-  `discount_type` varchar(255) NOT NULL ,
+  `created_by` bigint NULL DEFAULT NULL,
+  `updated_by` bigint NULL DEFAULT NULL,
+  `discount_type` varchar(255) NOT NULL DEFAULT 'amount',
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `validity_type` varchar(255) NOT NULL ,
-  `valid_dates` longtext NULL ,
-  `valid_days` longtext NULL ,
-  `terms_and_conditions` longtext NULL ,
-  `name_en` varchar(255) NULL ,
-  `description_en` longtext NULL ,
-  `terms_and_conditions_en` longtext NULL ,
-  `image_url` varchar(255) NULL ,
-  `inquiry_type` varchar(255) NOT NULL ,
-  `inquiry_custom_link` varchar(255) NULL ,
+  `validity_type` varchar(255) NOT NULL DEFAULT 'all_days',
+  `valid_dates` longtext NULL,
+  `valid_days` longtext NULL,
+  `terms_and_conditions` longtext NULL,
+  `name_en` varchar(255) NULL DEFAULT NULL,
+  `description_en` longtext NULL,
+  `terms_and_conditions_en` longtext NULL,
+  `image_url` varchar(255) NULL DEFAULT NULL,
+  `inquiry_type` varchar(255) NOT NULL DEFAULT 'none',
+  `inquiry_custom_link` varchar(255) NULL DEFAULT NULL,
   `sales_start` timestamp NULL DEFAULT NULL,
   `sales_end` timestamp NULL DEFAULT NULL,
-  `is_featured_home` tinyint(1) NULL DEFAULT false,
-  `sort_order` int NOT NULL ,
-  `banner_image` varchar(255) NULL ,
-  `holiday_ids` longtext NULL ,
-  `include_national_holidays` tinyint(1) NOT NULL DEFAULT true,
-  `include_peak_season` tinyint(1) NOT NULL DEFAULT false,
+  `is_featured_home` tinyint(1) NULL DEFAULT 0,
+  `sort_order` int NOT NULL,
+  `banner_image` varchar(255) NULL DEFAULT NULL,
+  `holiday_ids` longtext NULL,
+  `include_national_holidays` tinyint(1) NOT NULL DEFAULT 1,
+  `include_peak_season` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -287,17 +287,17 @@ INSERT INTO `ticket_packages` (`id`, `name`, `description`, `price`, `discount_p
 DROP TABLE IF EXISTS `add_ons`;
 CREATE TABLE IF NOT EXISTS `add_ons` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL ,
-  `description` longtext NULL ,
-  `price` decimal(15,2) NOT NULL ,
-  `image` varchar(255) NULL ,
-  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `name` varchar(255) NOT NULL,
+  `description` longtext NULL,
+  `price` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `image` varchar(255) NULL DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `name_en` varchar(255) NULL ,
-  `description_en` longtext NULL ,
-  `sort_order` int NOT NULL ,
+  `name_en` varchar(255) NULL DEFAULT NULL,
+  `description_en` longtext NULL,
+  `sort_order` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -314,19 +314,19 @@ INSERT INTO `add_ons` (`id`, `name`, `description`, `price`, `image`, `is_active
 DROP TABLE IF EXISTS `facilities`;
 CREATE TABLE IF NOT EXISTS `facilities` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL ,
-  `type` varchar(255) NOT NULL ,
-  `description` longtext NULL ,
-  `features` longtext NULL ,
-  `image_url` varchar(255) NULL ,
-  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `name` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL DEFAULT 'general',
+  `description` longtext NULL,
+  `features` longtext NULL,
+  `image_url` varchar(255) NULL DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `name_en` varchar(255) NULL ,
-  `description_en` longtext NULL ,
-  `features_en` longtext NULL ,
-  `menu_items` longtext NULL ,
-  `sort_order` int NOT NULL ,
+  `name_en` varchar(255) NULL DEFAULT NULL,
+  `description_en` longtext NULL,
+  `features_en` longtext NULL,
+  `menu_items` longtext NULL,
+  `sort_order` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -345,14 +345,14 @@ INSERT INTO `facilities` (`id`, `name`, `type`, `description`, `features`, `imag
 DROP TABLE IF EXISTS `faqs`;
 CREATE TABLE IF NOT EXISTS `faqs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `question` longtext NOT NULL ,
-  `answer` longtext NOT NULL ,
-  `is_active` tinyint(1) NOT NULL DEFAULT true,
-  `sort_order` int NOT NULL ,
+  `question` longtext NOT NULL,
+  `answer` longtext NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `sort_order` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `question_en` longtext NULL ,
-  `answer_en` longtext NULL ,
+  `question_en` longtext NULL,
+  `answer_en` longtext NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -369,11 +369,11 @@ INSERT INTO `faqs` (`id`, `question`, `answer`, `is_active`, `sort_order`, `crea
 DROP TABLE IF EXISTS `awards`;
 CREATE TABLE IF NOT EXISTS `awards` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL ,
-  `description` longtext NULL ,
-  `icon` varchar(255) NULL ,
-  `is_active` tinyint(1) NOT NULL DEFAULT true,
-  `sort_order` int NOT NULL ,
+  `title` varchar(255) NOT NULL,
+  `description` longtext NULL,
+  `icon` varchar(255) NULL DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `sort_order` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -385,13 +385,13 @@ CREATE TABLE IF NOT EXISTS `awards` (
 DROP TABLE IF EXISTS `home_page_cards`;
 CREATE TABLE IF NOT EXISTS `home_page_cards` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL ,
-  `description` longtext NULL ,
-  `image_url` varchar(255) NULL ,
-  `link` varchar(255) NULL ,
-  `link_text` varchar(255) NULL ,
-  `is_active` tinyint(1) NOT NULL DEFAULT true,
-  `sort_order` int NOT NULL ,
+  `title` varchar(255) NOT NULL,
+  `description` longtext NULL,
+  `image_url` varchar(255) NULL DEFAULT NULL,
+  `link` varchar(255) NULL DEFAULT NULL,
+  `link_text` varchar(255) NULL DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `sort_order` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -411,13 +411,13 @@ INSERT INTO `home_page_cards` (`id`, `title`, `description`, `image_url`, `link`
 DROP TABLE IF EXISTS `holidays`;
 CREATE TABLE IF NOT EXISTS `holidays` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL ,
+  `name` varchar(255) NOT NULL,
   `date` date NULL DEFAULT NULL,
   `start_date` date NULL DEFAULT NULL,
   `end_date` date NULL DEFAULT NULL,
-  `type` varchar(255) NOT NULL ,
-  `is_active` tinyint(1) NOT NULL DEFAULT true,
-  `note` longtext NULL ,
+  `type` varchar(255) NOT NULL DEFAULT 'national_holiday',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `note` longtext NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -460,18 +460,18 @@ INSERT INTO `holidays` (`id`, `name`, `date`, `start_date`, `end_date`, `type`, 
 DROP TABLE IF EXISTS `promo_codes`;
 CREATE TABLE IF NOT EXISTS `promo_codes` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL ,
-  `discount_percentage` decimal(15,2) NULL ,
-  `discount_amount` decimal(15,2) NULL ,
-  `max_uses` int NULL ,
-  `used_count` int NOT NULL ,
+  `code` varchar(255) NOT NULL,
+  `discount_percentage` decimal(15,2) NULL DEFAULT NULL,
+  `discount_amount` decimal(15,2) NULL DEFAULT NULL,
+  `max_uses` int NULL DEFAULT NULL,
+  `used_count` int NOT NULL,
   `valid_from` timestamp NULL DEFAULT NULL,
   `valid_until` timestamp NULL DEFAULT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `created_by` bigint NULL ,
-  `updated_by` bigint NULL ,
+  `created_by` bigint NULL DEFAULT NULL,
+  `updated_by` bigint NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -486,11 +486,11 @@ INSERT INTO `promo_codes` (`id`, `code`, `discount_percentage`, `discount_amount
 DROP TABLE IF EXISTS `referral_codes`;
 CREATE TABLE IF NOT EXISTS `referral_codes` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL ,
-  `customer_name` varchar(255) NOT NULL ,
-  `customer_phone` varchar(255) NOT NULL ,
-  `points_earned` int NOT NULL ,
-  `is_active` tinyint(1) NOT NULL DEFAULT true,
+  `code` varchar(255) NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `customer_phone` varchar(255) NOT NULL,
+  `points_earned` int NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -503,28 +503,28 @@ CREATE TABLE IF NOT EXISTS `referral_codes` (
 DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE IF NOT EXISTS `transactions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `order_id` varchar(100) NOT NULL ,
-  `customer_name` varchar(255) NOT NULL ,
-  `customer_email` varchar(255) NOT NULL ,
-  `customer_phone` varchar(255) NOT NULL ,
-  `visit_date` date NOT NULL DEFAULT NULL,
-  `subtotal` decimal(15,2) NOT NULL ,
-  `discount_amount` decimal(15,2) NOT NULL ,
-  `total_price` decimal(15,2) NOT NULL ,
-  `payment_url` varchar(255) NULL ,
-  `payment_token` varchar(255) NULL ,
-  `status` varchar(255) NOT NULL ,
-  `promo_code_id` bigint NULL ,
+  `order_id` varchar(100) NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `customer_email` varchar(255) NOT NULL,
+  `customer_phone` varchar(255) NOT NULL,
+  `visit_date` date NOT NULL,
+  `subtotal` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `discount_amount` decimal(15,2) NOT NULL DEFAULT 0,
+  `total_price` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `payment_url` varchar(255) NULL DEFAULT NULL,
+  `payment_token` varchar(255) NULL DEFAULT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'pending',
+  `promo_code_id` bigint NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `created_by` bigint NULL ,
-  `updated_by` bigint NULL ,
+  `created_by` bigint NULL DEFAULT NULL,
+  `updated_by` bigint NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `is_redeemed` tinyint(1) NOT NULL DEFAULT false,
+  `is_redeemed` tinyint(1) NOT NULL DEFAULT 0,
   `redeemed_at` timestamp NULL DEFAULT NULL,
-  `referral_code_id` bigint NULL ,
-  `user_id` bigint NULL ,
-  `notes` longtext NULL ,
+  `referral_code_id` bigint NULL DEFAULT NULL,
+  `user_id` bigint NULL DEFAULT NULL,
+  `notes` longtext NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -587,15 +587,15 @@ INSERT INTO `transactions` (`id`, `order_id`, `customer_name`, `customer_email`,
 DROP TABLE IF EXISTS `transaction_items`;
 CREATE TABLE IF NOT EXISTS `transaction_items` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `transaction_id` bigint NOT NULL ,
-  `ticket_package_id` bigint NOT NULL ,
-  `quantity` int NOT NULL ,
-  `price` decimal(15,2) NOT NULL ,
-  `subtotal` decimal(15,2) NOT NULL ,
+  `transaction_id` bigint NOT NULL,
+  `ticket_package_id` bigint NOT NULL,
+  `quantity` int NOT NULL,
+  `price` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `subtotal` decimal(15,2) NOT NULL DEFAULT 0.00,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `created_by` bigint NULL ,
-  `updated_by` bigint NULL ,
+  `created_by` bigint NULL DEFAULT NULL,
+  `updated_by` bigint NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -656,11 +656,11 @@ INSERT INTO `transaction_items` (`id`, `transaction_id`, `ticket_package_id`, `q
 DROP TABLE IF EXISTS `transaction_add_ons`;
 CREATE TABLE IF NOT EXISTS `transaction_add_ons` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `transaction_id` bigint NOT NULL ,
-  `add_on_id` bigint NOT NULL ,
-  `quantity` int NOT NULL ,
-  `price` decimal(15,2) NOT NULL ,
-  `subtotal` decimal(15,2) NOT NULL ,
+  `transaction_id` bigint NOT NULL,
+  `add_on_id` bigint NOT NULL,
+  `quantity` int NOT NULL,
+  `price` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `subtotal` decimal(15,2) NOT NULL DEFAULT 0.00,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -727,12 +727,12 @@ INSERT INTO `transaction_add_ons` (`id`, `transaction_id`, `add_on_id`, `quantit
 DROP TABLE IF EXISTS `audit_logs`;
 CREATE TABLE IF NOT EXISTS `audit_logs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `model_type` varchar(255) NOT NULL ,
-  `model_id` bigint NOT NULL ,
-  `action` varchar(255) NOT NULL ,
-  `old_values` longtext NULL ,
-  `new_values` longtext NULL ,
-  `user_id` bigint NULL ,
+  `model_type` varchar(255) NOT NULL,
+  `model_id` bigint NOT NULL,
+  `action` varchar(255) NOT NULL,
+  `old_values` longtext NULL,
+  `new_values` longtext NULL,
+  `user_id` bigint NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -1115,11 +1115,11 @@ INSERT INTO `audit_logs` (`id`, `model_type`, `model_id`, `action`, `old_values`
 DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE IF NOT EXISTS `sessions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint NULL ,
-  `ip_address` varchar(45) NULL ,
-  `user_agent` longtext NULL ,
-  `payload` longtext NOT NULL ,
-  `last_activity` int NOT NULL ,
+  `user_id` bigint NULL DEFAULT NULL,
+  `ip_address` varchar(45) NULL DEFAULT NULL,
+  `user_agent` longtext NULL,
+  `payload` longtext NOT NULL,
+  `last_activity` int NOT NULL,
   PRIMARY KEY (`id`),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1133,9 +1133,9 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `cache`;
 CREATE TABLE IF NOT EXISTS `cache` (
-  `key` varchar(255) NOT NULL ,
-  `value` longtext NOT NULL ,
-  `expiration` bigint NOT NULL ,
+  `key` varchar(255) NOT NULL,
+  `value` longtext NOT NULL,
+  `expiration` bigint NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1144,9 +1144,9 @@ CREATE TABLE IF NOT EXISTS `cache` (
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `cache_locks`;
 CREATE TABLE IF NOT EXISTS `cache_locks` (
-  `key` varchar(255) NOT NULL ,
-  `owner` varchar(255) NOT NULL ,
-  `expiration` bigint NOT NULL ,
+  `key` varchar(255) NOT NULL,
+  `owner` varchar(255) NOT NULL,
+  `expiration` bigint NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1156,12 +1156,12 @@ CREATE TABLE IF NOT EXISTS `cache_locks` (
 DROP TABLE IF EXISTS `jobs`;
 CREATE TABLE IF NOT EXISTS `jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `queue` varchar(255) NOT NULL ,
-  `payload` longtext NOT NULL ,
-  `attempts` smallint NOT NULL ,
-  `reserved_at` int NULL ,
-  `available_at` int NOT NULL ,
-  `created_at` int NOT NULL ,
+  `queue` varchar(255) NOT NULL,
+  `payload` longtext NOT NULL,
+  `attempts` smallint NOT NULL,
+  `reserved_at` int NULL DEFAULT NULL,
+  `available_at` int NOT NULL,
+  `created_at` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1171,15 +1171,15 @@ CREATE TABLE IF NOT EXISTS `jobs` (
 DROP TABLE IF EXISTS `job_batches`;
 CREATE TABLE IF NOT EXISTS `job_batches` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL ,
-  `total_jobs` int NOT NULL ,
-  `pending_jobs` int NOT NULL ,
-  `failed_jobs` int NOT NULL ,
-  `failed_job_ids` longtext NOT NULL ,
-  `options` longtext NULL ,
-  `cancelled_at` int NULL ,
-  `created_at` int NOT NULL ,
-  `finished_at` int NULL ,
+  `name` varchar(255) NOT NULL,
+  `total_jobs` int NOT NULL,
+  `pending_jobs` int NOT NULL,
+  `failed_jobs` int NOT NULL,
+  `failed_job_ids` longtext NOT NULL,
+  `options` longtext NULL,
+  `cancelled_at` int NULL DEFAULT NULL,
+  `created_at` int NOT NULL,
+  `finished_at` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1189,12 +1189,12 @@ CREATE TABLE IF NOT EXISTS `job_batches` (
 DROP TABLE IF EXISTS `failed_jobs`;
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) NOT NULL ,
-  `connection` varchar(255) NOT NULL ,
-  `queue` varchar(255) NOT NULL ,
-  `payload` longtext NOT NULL ,
-  `exception` longtext NOT NULL ,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `uuid` varchar(255) NOT NULL,
+  `connection` varchar(255) NOT NULL,
+  `queue` varchar(255) NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT 'CURRENT_TIMESTAMP',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1203,8 +1203,8 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `password_reset_tokens`;
 CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
-  `email` varchar(255) NOT NULL ,
-  `token` varchar(255) NOT NULL ,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

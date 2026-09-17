@@ -9,7 +9,7 @@ $kernel->bootstrap();
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-echo "Generating Full MySQL Schema (CREATE TABLE) + Data Dump...\n";
+echo "Generating Strict MySQL Schema (CREATE TABLE) + Data Dump...\n";
 
 $tables = [
     'migrations',
@@ -74,7 +74,7 @@ foreach ($tables as $table) {
         $name = $c->column_name;
         $type = strtolower($c->data_type);
         $nullable = $c->is_nullable === 'YES' ? 'NULL' : 'NOT NULL';
-        $default = '';
+        $default = ($nullable === 'NULL') ? 'DEFAULT NULL' : '';
 
         if ($name === 'id') {
             $colDefs[] = "`{$name}` bigint unsigned NOT NULL AUTO_INCREMENT";
@@ -96,28 +96,45 @@ foreach ($tables as $table) {
             $default = 'DEFAULT 0';
         } elseif (str_contains($type, 'numeric') || str_contains($type, 'decimal')) {
             $sqlType = 'decimal(15,2)';
+            if ($nullable === 'NOT NULL') $default = 'DEFAULT 0.00';
         } elseif (str_contains($type, 'timestamp')) {
             $sqlType = 'timestamp';
-            $default = 'DEFAULT NULL';
+            $default = ($nullable === 'NULL') ? 'DEFAULT NULL' : '';
         } elseif (str_contains($type, 'date')) {
             $sqlType = 'date';
-            $default = 'DEFAULT NULL';
+            $default = ($nullable === 'NULL') ? 'DEFAULT NULL' : '';
         } elseif (str_contains($type, 'json')) {
             $sqlType = 'longtext';
+            $default = '';
         } elseif (str_contains($type, 'text')) {
             $sqlType = 'longtext';
+            $default = '';
         } else {
             $len = $c->character_maximum_length ?? 255;
             $sqlType = "varchar({$len})";
         }
 
         if ($c->column_default && !str_contains($c->column_default, 'nextval')) {
-            if (!str_contains($c->column_default, '::')) {
-                $default = "DEFAULT {$c->column_default}";
+            $defVal = $c->column_default;
+            if (str_contains($defVal, '::')) {
+                $defVal = explode('::', $defVal)[0];
+            }
+            $defVal = trim($defVal, "'");
+            if ($defVal === 'false') $defVal = '0';
+            if ($defVal === 'true') $defVal = '1';
+            
+            if (is_numeric($defVal) || $defVal === '0' || $defVal === '1') {
+                $default = "DEFAULT {$defVal}";
+            } else {
+                $default = "DEFAULT '{$defVal}'";
             }
         }
 
-        $colDefs[] = "`{$name}` {$sqlType} {$nullable} {$default}";
+        if ($nullable === 'NOT NULL' && $default === 'DEFAULT NULL') {
+            $default = '';
+        }
+
+        $colDefs[] = trim("`{$name}` {$sqlType} {$nullable} {$default}");
     }
 
     if ($primaryKey) {
@@ -191,4 +208,4 @@ $destination = __DIR__ . '/../aquaboom_mysql_import_for_plesk.sql';
 file_put_contents($destination, $output);
 
 $sizeKb = round(filesize($destination) / 1024, 2);
-echo "\nSUCCESS! Full MySQL file with Schema + Data generated: aquaboom_mysql_import_for_plesk.sql ({$sizeKb} KB)\n";
+echo "\nSUCCESS! Strict MySQL file generated: aquaboom_mysql_import_for_plesk.sql ({$sizeKb} KB)\n";
