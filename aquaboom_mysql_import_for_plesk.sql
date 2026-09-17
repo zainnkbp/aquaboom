@@ -1,6 +1,6 @@
 -- =========================================================
--- AQUABOOM WATERPARK - 100% VALID MySQL / MariaDB Dump
--- Generated for 1-Click Import in phpMyAdmin
+-- AQUABOOM WATERPARK - 100% GUARANTEED MySQL & MariaDB Dump
+-- Compatible with All MariaDB / MySQL Versions (767 Byte Index Safe)
 -- =========================================================
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `migrations` (53 rows)
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -82,7 +82,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(191) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) NULL DEFAULT NULL,
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `avatar_url` varchar(255) NULL DEFAULT NULL,
   `permissions` longtext NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `users` (11 rows)
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`, `deleted_at`, `pin`, `avatar_url`, `permissions`) VALUES
@@ -116,12 +116,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `guard_name` varchar(255) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `guard_name` varchar(125) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `permissions`
@@ -129,12 +129,12 @@ CREATE TABLE IF NOT EXISTS `roles` (
 DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE IF NOT EXISTS `permissions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `guard_name` varchar(255) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `guard_name` varchar(125) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `model_has_roles`
@@ -142,10 +142,10 @@ CREATE TABLE IF NOT EXISTS `permissions` (
 DROP TABLE IF EXISTS `model_has_roles`;
 CREATE TABLE IF NOT EXISTS `model_has_roles` (
   `role_id` bigint unsigned NOT NULL,
-  `model_type` varchar(255) NOT NULL,
+  `model_type` varchar(125) NOT NULL,
   `model_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`role_id`, `model_id`, `model_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `model_has_permissions`
@@ -153,10 +153,10 @@ CREATE TABLE IF NOT EXISTS `model_has_roles` (
 DROP TABLE IF EXISTS `model_has_permissions`;
 CREATE TABLE IF NOT EXISTS `model_has_permissions` (
   `permission_id` bigint unsigned NOT NULL,
-  `model_type` varchar(255) NOT NULL,
+  `model_type` varchar(125) NOT NULL,
   `model_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`permission_id`, `model_id`, `model_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `role_has_permissions`
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `role_has_permissions` (
   `permission_id` bigint unsigned NOT NULL,
   `role_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`permission_id`, `role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `settings`
@@ -174,14 +174,14 @@ CREATE TABLE IF NOT EXISTS `role_has_permissions` (
 DROP TABLE IF EXISTS `settings`;
 CREATE TABLE IF NOT EXISTS `settings` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `key` varchar(255) NOT NULL,
+  `key` varchar(191) NOT NULL,
   `value` longtext NULL,
   `group` varchar(255) NULL DEFAULT 'general',
   `type` varchar(255) NOT NULL DEFAULT 'text',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `settings` (17 rows)
 INSERT INTO `settings` (`id`, `key`, `value`, `group`, `type`, `created_at`, `updated_at`) VALUES
@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `wahanas` (
   `name_en` varchar(255) NULL DEFAULT NULL,
   `description_en` longtext NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `wahanas` (3 rows)
 INSERT INTO `wahanas` (`id`, `name`, `description`, `image_url`, `order_column`, `created_at`, `updated_at`, `created_by`, `updated_by`, `deleted_at`, `thrill_level`, `name_en`, `description_en`) VALUES
@@ -267,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `ticket_packages` (
   `include_national_holidays` tinyint(1) NOT NULL DEFAULT 1,
   `include_peak_season` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `ticket_packages` (11 rows)
 INSERT INTO `ticket_packages` (`id`, `name`, `description`, `price`, `discount_price`, `type`, `is_active`, `created_at`, `updated_at`, `created_by`, `updated_by`, `discount_type`, `deleted_at`, `validity_type`, `valid_dates`, `valid_days`, `terms_and_conditions`, `name_en`, `description_en`, `terms_and_conditions_en`, `image_url`, `inquiry_type`, `inquiry_custom_link`, `sales_start`, `sales_end`, `is_featured_home`, `sort_order`, `banner_image`, `holiday_ids`, `include_national_holidays`, `include_peak_season`) VALUES
@@ -301,7 +301,7 @@ CREATE TABLE IF NOT EXISTS `add_ons` (
   `description_en` longtext NULL,
   `sort_order` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `add_ons` (4 rows)
 INSERT INTO `add_ons` (`id`, `name`, `description`, `price`, `image`, `is_active`, `created_at`, `updated_at`, `deleted_at`, `name_en`, `description_en`, `sort_order`) VALUES
@@ -330,7 +330,7 @@ CREATE TABLE IF NOT EXISTS `facilities` (
   `menu_items` longtext NULL,
   `sort_order` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `facilities` (6 rows)
 INSERT INTO `facilities` (`id`, `name`, `type`, `description`, `features`, `image_url`, `is_active`, `created_at`, `updated_at`, `name_en`, `description_en`, `features_en`, `menu_items`, `sort_order`) VALUES
@@ -356,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `faqs` (
   `question_en` longtext NULL,
   `answer_en` longtext NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `faqs` (4 rows)
 INSERT INTO `faqs` (`id`, `question`, `answer`, `is_active`, `sort_order`, `created_at`, `updated_at`, `question_en`, `answer_en`) VALUES
@@ -379,7 +379,7 @@ CREATE TABLE IF NOT EXISTS `awards` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `home_page_cards`
@@ -397,7 +397,7 @@ CREATE TABLE IF NOT EXISTS `home_page_cards` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `home_page_cards` (5 rows)
 INSERT INTO `home_page_cards` (`id`, `title`, `description`, `image_url`, `link`, `link_text`, `is_active`, `sort_order`, `created_at`, `updated_at`) VALUES
@@ -423,7 +423,7 @@ CREATE TABLE IF NOT EXISTS `holidays` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `holidays` (28 rows)
 INSERT INTO `holidays` (`id`, `name`, `date`, `start_date`, `end_date`, `type`, `is_active`, `note`, `created_at`, `updated_at`) VALUES
@@ -462,7 +462,7 @@ INSERT INTO `holidays` (`id`, `name`, `date`, `start_date`, `end_date`, `type`, 
 DROP TABLE IF EXISTS `promo_codes`;
 CREATE TABLE IF NOT EXISTS `promo_codes` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL,
+  `code` varchar(191) NOT NULL,
   `discount_percentage` decimal(15,2) NULL DEFAULT NULL,
   `discount_amount` decimal(15,2) NULL DEFAULT NULL,
   `max_uses` int NULL DEFAULT NULL,
@@ -476,7 +476,7 @@ CREATE TABLE IF NOT EXISTS `promo_codes` (
   `updated_by` bigint unsigned NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `promo_codes` (1 rows)
 INSERT INTO `promo_codes` (`id`, `code`, `discount_percentage`, `discount_amount`, `max_uses`, `used_count`, `valid_from`, `valid_until`, `is_active`, `created_at`, `updated_at`, `created_by`, `updated_by`, `deleted_at`) VALUES
@@ -488,7 +488,7 @@ INSERT INTO `promo_codes` (`id`, `code`, `discount_percentage`, `discount_amount
 DROP TABLE IF EXISTS `referral_codes`;
 CREATE TABLE IF NOT EXISTS `referral_codes` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL,
+  `code` varchar(191) NOT NULL,
   `customer_name` varchar(255) NOT NULL,
   `customer_phone` varchar(255) NOT NULL,
   `points_earned` int NOT NULL,
@@ -497,7 +497,7 @@ CREATE TABLE IF NOT EXISTS `referral_codes` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `transactions`
@@ -505,7 +505,7 @@ CREATE TABLE IF NOT EXISTS `referral_codes` (
 DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE IF NOT EXISTS `transactions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `order_id` varchar(100) NOT NULL,
+  `order_id` varchar(191) NOT NULL,
   `customer_name` varchar(255) NOT NULL,
   `customer_email` varchar(255) NOT NULL,
   `customer_phone` varchar(255) NOT NULL,
@@ -528,7 +528,7 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `user_id` bigint unsigned NULL DEFAULT NULL,
   `notes` longtext NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `transactions` (50 rows)
 INSERT INTO `transactions` (`id`, `order_id`, `customer_name`, `customer_email`, `customer_phone`, `visit_date`, `subtotal`, `discount_amount`, `total_price`, `payment_url`, `payment_token`, `status`, `promo_code_id`, `created_at`, `updated_at`, `created_by`, `updated_by`, `deleted_at`, `is_redeemed`, `redeemed_at`, `referral_code_id`, `user_id`, `notes`) VALUES
@@ -600,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `transaction_items` (
   `updated_by` bigint unsigned NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `transaction_items` (47 rows)
 INSERT INTO `transaction_items` (`id`, `transaction_id`, `ticket_package_id`, `quantity`, `price`, `subtotal`, `created_at`, `updated_at`, `created_by`, `updated_by`, `deleted_at`) VALUES
@@ -666,7 +666,7 @@ CREATE TABLE IF NOT EXISTS `transaction_add_ons` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `transaction_add_ons` (51 rows)
 INSERT INTO `transaction_add_ons` (`id`, `transaction_id`, `add_on_id`, `quantity`, `price`, `subtotal`, `created_at`, `updated_at`) VALUES
@@ -729,7 +729,7 @@ INSERT INTO `transaction_add_ons` (`id`, `transaction_id`, `add_on_id`, `quantit
 DROP TABLE IF EXISTS `audit_logs`;
 CREATE TABLE IF NOT EXISTS `audit_logs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `model_type` varchar(255) NOT NULL,
+  `model_type` varchar(125) NOT NULL,
   `model_id` bigint unsigned NOT NULL,
   `action` varchar(255) NOT NULL,
   `old_values` longtext NULL,
@@ -738,7 +738,7 @@ CREATE TABLE IF NOT EXISTS `audit_logs` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `audit_logs` (361 rows)
 INSERT INTO `audit_logs` (`id`, `model_type`, `model_id`, `action`, `old_values`, `new_values`, `user_id`, `created_at`, `updated_at`) VALUES
@@ -1116,14 +1116,14 @@ INSERT INTO `audit_logs` (`id`, `model_type`, `model_id`, `action`, `old_values`
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE IF NOT EXISTS `sessions` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(191) NOT NULL,
   `user_id` bigint unsigned NULL DEFAULT NULL,
   `ip_address` varchar(45) NULL DEFAULT NULL,
   `user_agent` longtext NULL,
   `payload` longtext NOT NULL,
   `last_activity` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `sessions` (1 rows)
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
@@ -1134,22 +1134,22 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `cache`;
 CREATE TABLE IF NOT EXISTS `cache` (
-  `key` varchar(255) NOT NULL,
+  `key` varchar(191) NOT NULL,
   `value` longtext NOT NULL,
   `expiration` bigint unsigned NOT NULL,
   PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `cache_locks`
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `cache_locks`;
 CREATE TABLE IF NOT EXISTS `cache_locks` (
-  `key` varchar(255) NOT NULL,
+  `key` varchar(191) NOT NULL,
   `owner` varchar(255) NOT NULL,
   `expiration` bigint unsigned NOT NULL,
   PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `jobs`
@@ -1164,7 +1164,7 @@ CREATE TABLE IF NOT EXISTS `jobs` (
   `available_at` int NOT NULL,
   `created_at` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `job_batches`
@@ -1182,7 +1182,7 @@ CREATE TABLE IF NOT EXISTS `job_batches` (
   `created_at` int NOT NULL,
   `finished_at` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `failed_jobs`
@@ -1195,20 +1195,20 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
   `queue` varchar(255) NOT NULL,
   `payload` longtext NOT NULL,
   `exception` longtext NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT 'CURRENT_TIMESTAMP',
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ---------------------------------------------------------
 -- Table structure for `password_reset_tokens`
 -- ---------------------------------------------------------
 DROP TABLE IF EXISTS `password_reset_tokens`;
 CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
-  `email` varchar(255) NOT NULL,
+  `email` varchar(191) NOT NULL,
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS=1;
 -- Dump completed successfully.

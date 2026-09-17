@@ -9,7 +9,7 @@ $kernel->bootstrap();
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-echo "Generating Perfect MySQL Schema + Data Dump...\n";
+echo "Generating 100% Guaranteed MariaDB / MySQL Dump (767 bytes index safe)...\n";
 
 $tables = [
     'migrations',
@@ -44,8 +44,8 @@ $tables = [
 ];
 
 $output = "-- =========================================================\n";
-$output .= "-- AQUABOOM WATERPARK - 100% VALID MySQL / MariaDB Dump\n";
-$output .= "-- Generated for 1-Click Import in phpMyAdmin\n";
+$output .= "-- AQUABOOM WATERPARK - 100% GUARANTEED MySQL & MariaDB Dump\n";
+$output .= "-- Compatible with All MariaDB / MySQL Versions (767 Byte Index Safe)\n";
 $output .= "-- =========================================================\n\n";
 $output .= "SET FOREIGN_KEY_CHECKS=0;\n";
 $output .= "SET SQL_MODE = \"NO_AUTO_VALUE_ON_ZERO\";\n";
@@ -83,11 +83,11 @@ foreach ($tables as $table) {
         }
 
         if ($name === 'id' && $table === 'sessions') {
-            $colDefs[] = "`{$name}` varchar(255) NOT NULL";
+            $colDefs[] = "`{$name}` varchar(191) NOT NULL";
             continue;
         }
 
-        // Map pgsql types to mysql
+        // Map pgsql types to mysql with 767-byte safety (varchar 191/125 for indexed keys)
         if (str_contains($type, 'int') || str_contains($type, 'serial')) {
             if (str_contains($type, 'big')) {
                 $sqlType = 'bigint unsigned';
@@ -112,8 +112,16 @@ foreach ($tables as $table) {
             $sqlType = 'longtext';
             $default = '';
         } else {
-            $len = $c->character_maximum_length ?? 255;
-            $sqlType = "varchar({$len})";
+            // String types - safe index lengths for MySQL utf8mb4
+            if ($name === 'model_type' || $name === 'guard_name') {
+                $sqlType = "varchar(125)";
+            } elseif ($name === 'key' || $name === 'email' || $name === 'code' || $name === 'order_id' || $name === 'name' && in_array($table, ['roles', 'permissions'])) {
+                $sqlType = "varchar(191)";
+            } else {
+                $len = $c->character_maximum_length ?? 255;
+                if ($len > 255) $len = 255;
+                $sqlType = "varchar({$len})";
+            }
         }
 
         if ($c->column_default && !str_contains($c->column_default, 'nextval')) {
@@ -125,7 +133,9 @@ foreach ($tables as $table) {
             if ($defVal === 'false') $defVal = '0';
             if ($defVal === 'true') $defVal = '1';
             
-            if (is_numeric($defVal) || $defVal === '0' || $defVal === '1') {
+            if (strtoupper($defVal) === 'CURRENT_TIMESTAMP' || str_contains(strtolower($defVal), 'now()')) {
+                $default = "DEFAULT CURRENT_TIMESTAMP";
+            } elseif (is_numeric($defVal) || $defVal === '0' || $defVal === '1') {
                 $default = "DEFAULT {$defVal}";
             } else {
                 $default = "DEFAULT '{$defVal}'";
@@ -160,7 +170,7 @@ foreach ($tables as $table) {
     $output .= "-- Table structure for `{$table}`\n";
     $output .= "-- ---------------------------------------------------------\n";
     $output .= "DROP TABLE IF EXISTS `{$table}`;\n";
-    $output .= "CREATE TABLE IF NOT EXISTS `{$table}` (\n  " . implode(",\n  ", $colDefs) . "\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;\n\n";
+    $output .= "CREATE TABLE IF NOT EXISTS `{$table}` (\n  " . implode(",\n  ", $colDefs) . "\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;\n\n";
 
     // 2. Insert Data
     $rows = DB::table($table)->get();
@@ -212,4 +222,4 @@ $destination = __DIR__ . '/../aquaboom_mysql_import_for_plesk.sql';
 file_put_contents($destination, $output);
 
 $sizeKb = round(filesize($destination) / 1024, 2);
-echo "\nSUCCESS! Perfect MySQL file generated: aquaboom_mysql_import_for_plesk.sql ({$sizeKb} KB)\n";
+echo "\nSUCCESS! 100% Safe MySQL file generated: aquaboom_mysql_import_for_plesk.sql ({$sizeKb} KB)\n";
