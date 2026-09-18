@@ -22,6 +22,12 @@ class Holiday extends Model
         'note',
     ];
 
+    protected $attributes = [
+        'sort_order' => 1,
+        'is_active' => true,
+        'type' => 'national_holiday',
+    ];
+
     protected $casts = [
         'date' => 'date:Y-m-d',
         'start_date' => 'date:Y-m-d',

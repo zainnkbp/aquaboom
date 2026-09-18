@@ -17,4 +17,9 @@ class Award extends Model
         'is_active',
         'sort_order',
     ];
+
+    protected $attributes = [
+        'sort_order' => 0,
+        'is_active' => true,
+    ];
 }

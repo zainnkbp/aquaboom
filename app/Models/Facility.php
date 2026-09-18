@@ -26,6 +26,12 @@ class Facility extends Model
         'sort_order',
     ];
 
+    protected $attributes = [
+        'sort_order' => 0,
+        'is_active' => true,
+        'type' => 'general',
+    ];
+
     protected $casts = [
         'features' => 'array',
         'features_en' => 'array',

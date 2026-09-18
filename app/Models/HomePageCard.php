@@ -20,6 +20,11 @@ class HomePageCard extends Model
         'sort_order',
     ];
 
+    protected $attributes = [
+        'sort_order' => 0,
+        'is_active' => true,
+    ];
+
     /**
      * Accessor untuk mendapatkan URL lengkap gambar card beranda.
      */

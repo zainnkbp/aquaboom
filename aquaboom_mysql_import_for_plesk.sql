@@ -209,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `wahanas` (
   `name` varchar(255) NOT NULL,
   `description` longtext NULL,
   `image_url` varchar(255) NULL DEFAULT NULL,
-  `order_column` int NOT NULL,
+  `order_column` int NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_by` bigint unsigned NULL DEFAULT NULL,
@@ -258,7 +258,7 @@ CREATE TABLE IF NOT EXISTS `ticket_packages` (
   `sales_start` timestamp NULL DEFAULT NULL,
   `sales_end` timestamp NULL DEFAULT NULL,
   `is_featured_home` tinyint(1) NULL DEFAULT 0,
-  `sort_order` int NOT NULL,
+  `sort_order` int NOT NULL DEFAULT 0,
   `banner_image` varchar(255) NULL DEFAULT NULL,
   `holiday_ids` longtext NULL,
   `include_national_holidays` tinyint(1) NOT NULL DEFAULT 1,
@@ -293,7 +293,7 @@ CREATE TABLE IF NOT EXISTS `add_ons` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `name_en` varchar(255) NULL DEFAULT NULL,
   `description_en` longtext NULL,
-  `sort_order` int NOT NULL,
+  `sort_order` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -322,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `facilities` (
   `description_en` longtext NULL,
   `features_en` longtext NULL,
   `menu_items` longtext NULL,
-  `sort_order` int NOT NULL,
+  `sort_order` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -344,7 +344,7 @@ CREATE TABLE IF NOT EXISTS `faqs` (
   `question` longtext NOT NULL,
   `answer` longtext NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `sort_order` int NOT NULL,
+  `sort_order` int NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `question_en` longtext NULL,
@@ -369,7 +369,7 @@ CREATE TABLE IF NOT EXISTS `awards` (
   `description` longtext NULL,
   `icon` varchar(255) NULL DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `sort_order` int NOT NULL,
+  `sort_order` int NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -387,7 +387,7 @@ CREATE TABLE IF NOT EXISTS `home_page_cards` (
   `link` varchar(255) NULL DEFAULT NULL,
   `link_text` varchar(255) NULL DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `sort_order` int NOT NULL,
+  `sort_order` int NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)

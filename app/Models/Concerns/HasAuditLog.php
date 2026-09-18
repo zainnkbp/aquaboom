@@ -90,6 +90,7 @@ trait HasAuditLog
      * @var array<string, list<string>>
      */
     protected static array $tablesWithAuditColumns = [
+        'users' => [],
         'wahanas' => ['created_by', 'updated_by'],
         'ticket_packages' => ['created_by', 'updated_by'],
         'add_ons' => ['created_by', 'updated_by'],
@@ -97,6 +98,14 @@ trait HasAuditLog
         'referral_codes' => ['created_by', 'updated_by'],
         'transactions' => ['created_by', 'updated_by'],
         'transaction_items' => ['created_by', 'updated_by'],
+        'transaction_add_ons' => [],
+        'facilities' => [],
+        'faqs' => [],
+        'awards' => [],
+        'home_page_cards' => [],
+        'holidays' => [],
+        'settings' => [],
+        'audit_logs' => [],
     ];
 
     protected function auditTableHasColumn(string $column): bool

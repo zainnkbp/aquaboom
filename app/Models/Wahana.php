@@ -14,6 +14,10 @@ class Wahana extends Model
 
     protected $guarded = [];
 
+    protected $attributes = [
+        'order_column' => 0,
+    ];
+
     /**
      * Accessor untuk mendapatkan URL lengkap gambar wahana.
      */

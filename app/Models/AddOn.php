@@ -14,6 +14,12 @@ class AddOn extends Model
 
     protected $guarded = [];
 
+    protected $attributes = [
+        'sort_order' => 0,
+        'is_active' => true,
+        'price' => 0,
+    ];
+
     /**
      * Accessor untuk mendapatkan URL lengkap gambar produk Add-On.
      */

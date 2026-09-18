@@ -13,6 +13,17 @@ class TicketPackage extends Model
 
     protected $guarded = [];
 
+    protected $attributes = [
+        'sort_order' => 0,
+        'is_active' => true,
+        'type' => 'regular',
+        'discount_type' => 'amount',
+        'validity_type' => 'all_days',
+        'inquiry_type' => 'none',
+        'include_national_holidays' => true,
+        'include_peak_season' => false,
+    ];
+
     protected $casts = [
         'price' => 'decimal:2',
         'discount_price' => 'decimal:2',
