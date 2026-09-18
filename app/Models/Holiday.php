@@ -23,7 +23,6 @@ class Holiday extends Model
     ];
 
     protected $attributes = [
-        'sort_order' => 1,
         'is_active' => true,
         'type' => 'national_holiday',
     ];
