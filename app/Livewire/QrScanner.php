@@ -116,9 +116,9 @@ class QrScanner extends Component
 
         $transaction = Transaction::with(['items.ticketPackage', 'addOns.addOn'])
             ->where('order_id', $this->orderId)
-            ->orWhereRaw("UPPER(order_id::text) = ?", [strtoupper($this->orderId)])
-            ->orWhereRaw("UPPER(replace(order_id::text, '-', '')) = ?", [$normalized])
-            ->orWhereRaw("UPPER(replace(replace(order_id::text, '-', ''), 'AQB', '')) = ?", [$normalizedWithoutPrefix])
+            ->orWhereRaw("UPPER(order_id) = ?", [strtoupper($this->orderId)])
+            ->orWhereRaw("UPPER(REPLACE(order_id, '-', '')) = ?", [$normalized])
+            ->orWhereRaw("UPPER(REPLACE(REPLACE(order_id, '-', ''), 'AQB', '')) = ?", [$normalizedWithoutPrefix])
             ->first();
 
         if (!$transaction) {
