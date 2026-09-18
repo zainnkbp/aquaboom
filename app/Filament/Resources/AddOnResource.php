@@ -46,10 +46,18 @@ class AddOnResource extends Resource
                         ->maxLength(255),
                     
                     Forms\Components\TextInput::make('price')
-                        ->label('Harga')
+                        ->label('Harga Weekday (Hari Kerja)')
                         ->required()
                         ->numeric()
-                        ->prefix('Rp'),
+                        ->prefix('Rp')
+                        ->helperText('Tarif yang berlaku pada hari Senin s/d Jumat non-libur.'),
+                        
+                    Forms\Components\TextInput::make('weekend_price')
+                        ->label('Harga Weekend & Libur Nasional')
+                        ->nullable()
+                        ->numeric()
+                        ->prefix('Rp')
+                        ->helperText('Tarif khusus Sabtu, Minggu, atau Libur Nasional. Kosongkan jika sama dengan harga weekday.'),
                         
                     Forms\Components\Placeholder::make('current_image_preview')
                         ->label('Foto Produk Saat Ini')
@@ -110,8 +118,13 @@ class AddOnResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->label('Harga')
+                    ->label('Harga Weekday')
                     ->money('IDR', locale: 'id')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('weekend_price')
+                    ->label('Harga Weekend/Libur')
+                    ->money('IDR', locale: 'id')
+                    ->placeholder('Sama dg Weekday')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Status')

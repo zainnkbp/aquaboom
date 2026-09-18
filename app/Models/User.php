@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -15,12 +15,17 @@ use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['name', 'email', 'password', 'role', 'pin', 'avatar_url', 'permissions'])]
+#[Fillable(['name', 'email', 'password', 'role', 'pin', 'avatar_url', 'permissions', 'phone', 'google_id', 'email_verified_at'])]
 #[Hidden(['password', 'remember_token', 'pin'])]
-class User extends Authenticatable implements FilamentUser, HasAvatar
+class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, SoftDeletes, \App\Models\Concerns\HasAuditLog, \App\Models\Concerns\AutoFixPostgresSequence;
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new \App\Notifications\AquaboomVerifyEmail());
+    }
 
     public const ROLE_SUPER_ADMIN = 'super_admin';
     public const ROLE_ADMIN = 'admin';

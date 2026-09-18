@@ -83,9 +83,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `email` varchar(191) NOT NULL,
+  `phone` varchar(255) NULL DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) NULL DEFAULT NULL,
+  `google_id` varchar(255) NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `role` varchar(255) NOT NULL DEFAULT 'operator',
@@ -93,7 +95,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `pin` varchar(6) NULL DEFAULT NULL,
   `avatar_url` varchar(255) NULL DEFAULT NULL,
   `permissions` longtext NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `users_google_id_index` (`google_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table `users` (11 rows)
@@ -286,6 +289,7 @@ CREATE TABLE IF NOT EXISTS `add_ons` (
   `name` varchar(255) NOT NULL,
   `description` longtext NULL,
   `price` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `weekend_price` decimal(15,2) NULL DEFAULT NULL,
   `image` varchar(255) NULL DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,

@@ -241,20 +241,49 @@ Route::middleware('guest')->group(function () {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['nullable', 'string', 'max:25'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
         $user = \App\Models\User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Illuminate\Support\Facades\Hash::make($request->password),
             'role' => \App\Models\User::ROLE_CUSTOMER,
         ]);
 
+        try {
+            $user->sendEmailVerificationNotification();
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Verification email failed to send on registration: ' . $e->getMessage());
+        }
+
         Illuminate\Support\Facades\Auth::login($user);
 
-        return redirect()->route('ticket.buy')->with('success', 'Pendaftaran berhasil!');
+        return redirect()->route('ticket.buy')->with('success', 'Pendaftaran berhasil! Kami telah mengirimkan email verifikasi untuk mengonfirmasi akun Anda.');
     })->name('register.submit')->middleware('throttle:6,1');
+
+    // Google OAuth Routes
+    Route::get('/auth/google', [\App\Http\Controllers\SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::get('/auth/google/callback', [\App\Http\Controllers\SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+});
+
+// Email Verification Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (Illuminate\Foundation\Auth\EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect()->route('ticket.buy')->with('success', 'Alamat email Anda berhasil diverifikasi!');
+    })->middleware(['signed'])->name('verification.verify');
+
+    Route::post('/email/verification-notification', function (Illuminate\Http\Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('status', 'verification-link-sent');
+    })->middleware(['throttle:6,1'])->name('verification.send');
 });
 
 Route::any('/logout', function (Illuminate\Http\Request $request) {

@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ App::getLocale() === 'en' ? 'Official E-Ticket - Aquaboom Waterpark' : 'E-Ticket Resmi - Aquaboom Waterpark' }}</title>
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N1FGBG39DB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-N1FGBG39DB');
+    </script>
+
     <!-- Tailwind CSS & Custom Themes -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>

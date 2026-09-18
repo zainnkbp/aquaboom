@@ -12,6 +12,16 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/logo/apple-touch-icon.png" />
   <link rel="manifest" href="/logo/site.webmanifest" />
   
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N1FGBG39DB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-N1FGBG39DB');
+  </script>
+  
   <!-- DOKU Jokul Checkout JS Library for Seamless In-Page Popup Modal -->
   <script src="{{ config('services.doku.env') === 'production' ? 'https://jokul.doku.com/jokul-checkout-js/v1/jokul-checkout-1.0.0.js' : 'https://sandbox.doku.com/jokul-checkout-js/v1/jokul-checkout-1.0.0.js' }}"></script>
   

@@ -33,6 +33,8 @@ class Checkout extends Component
     public $addon_quantities = [];
     public $addons;
     public bool $showConfirmationModal = false;
+    public bool $showAddonModal = false;
+    public ?int $selectedAddonDetailId = null;
     public ?array $holidayInfo = null;
 
     public function mount()
@@ -47,10 +49,30 @@ class Checkout extends Component
 
         if (auth()->check()) {
             $user = auth()->user();
-            $this->customer_name = $user->name;
-            $this->customer_email = $user->email;
-            $this->customer_phone = $user->phone_number ?? $user->phone ?? '';
+            $this->customer_name = $this->customer_name ?: $user->name;
+            $this->customer_email = $this->customer_email ?: $user->email;
+            $this->customer_phone = $this->customer_phone ?: ($user->phone ?? $user->phone_number ?? $user->transactions()->latest()->value('customer_phone') ?? '');
         }
+    }
+
+    public function openAddonDetail($addonId)
+    {
+        $this->selectedAddonDetailId = (int) $addonId;
+        $this->showAddonModal = true;
+    }
+
+    public function closeAddonDetail()
+    {
+        $this->showAddonModal = false;
+        $this->selectedAddonDetailId = null;
+    }
+
+    public function getSelectedAddonDetailProperty()
+    {
+        if (!$this->selectedAddonDetailId) {
+            return null;
+        }
+        return \App\Models\AddOn::find($this->selectedAddonDetailId);
     }
 
     public function updatedVisitDate($value)
@@ -229,7 +251,8 @@ class Checkout extends Component
         if ($this->addons) {
             foreach ($this->addons as $addon) {
                 $qty = $this->addon_quantities[$addon->id] ?? 0;
-                $subtotal += $addon->price * $qty;
+                $price = $addon->getEffectivePriceForDate($this->visit_date);
+                $subtotal += $price * $qty;
             }
         }
         return $subtotal;
@@ -434,6 +457,11 @@ class Checkout extends Component
             $userId = null;
             if (auth()->check()) {
                 $userId = auth()->id();
+                $authUser = auth()->user();
+                if (!empty($this->customer_phone) && $authUser->phone !== $this->customer_phone) {
+                    $authUser->phone = $this->customer_phone;
+                    $authUser->save();
+                }
             } else {
                 $user = \App\Models\User::where('email', $this->customer_email)->first();
                 if (!$user) {
@@ -442,9 +470,15 @@ class Checkout extends Component
                     $user->id = $nextUserId;
                     $user->name = $this->customer_name;
                     $user->email = $this->customer_email;
+                    $user->phone = $this->customer_phone;
                     $user->password = \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(16));
                     $user->role = 'customer';
                     $user->save();
+                } else {
+                    if (!empty($this->customer_phone) && empty($user->phone)) {
+                        $user->phone = $this->customer_phone;
+                        $user->save();
+                    }
                 }
                 $userId = $user->id;
             }
@@ -480,14 +514,15 @@ class Checkout extends Component
             }
 
             foreach ($selectedAddOns as $item) {
-                $itemSubtotal = $item['addon']->price * $item['quantity'];
+                $effectiveAddonPrice = $item['addon']->getEffectivePriceForDate($this->visit_date);
+                $itemSubtotal = $effectiveAddonPrice * $item['quantity'];
                 $nextAddonId = ((int) \App\Models\TransactionAddOn::max('id')) + 1;
                 $trxAddon = new \App\Models\TransactionAddOn();
                 $trxAddon->id = $nextAddonId;
                 $trxAddon->transaction_id = $transaction->id;
                 $trxAddon->add_on_id = $item['addon']->id;
                 $trxAddon->quantity = $item['quantity'];
-                $trxAddon->price = $item['addon']->price;
+                $trxAddon->price = $effectiveAddonPrice;
                 $trxAddon->subtotal = $itemSubtotal;
                 $trxAddon->save();
             }
