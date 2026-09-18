@@ -243,6 +243,11 @@ class TransactionResource extends Resource
                     ->label('Nama Pelanggan')
                     ->searchable()
                     ->weight('bold'),
+                Tables\Columns\TextColumn::make('customer_phone')
+                    ->label('WhatsApp / HP')
+                    ->searchable()
+                    ->icon('heroicon-m-phone')
+                    ->copyable(),
                 Tables\Columns\TextColumn::make('items_summary')
                     ->label('Rincian Pembelian')
                     ->state(function (Transaction $record): string {

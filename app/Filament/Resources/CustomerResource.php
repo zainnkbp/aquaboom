@@ -71,6 +71,11 @@ class CustomerResource extends Resource
                             ->label('Email')
                             ->icon('heroicon-m-envelope')
                             ->copyable(),
+                        TextEntry::make('customer_phone')
+                            ->label('No. WhatsApp / HP')
+                            ->icon('heroicon-m-phone')
+                            ->copyable()
+                            ->state(fn (User $record): string => $record->transactions()->latest('id')->value('customer_phone') ?? '-'),
                         TextEntry::make('created_at')
                             ->label('Terdaftar Sejak')
                             ->dateTime('d F Y, H:i'),
@@ -137,6 +142,11 @@ class CustomerResource extends Resource
                     ->label('Email')
                     ->searchable()
                     ->copyable(),
+                Tables\Columns\TextColumn::make('customer_phone')
+                    ->label('No. WhatsApp / HP')
+                    ->icon('heroicon-m-phone')
+                    ->copyable()
+                    ->state(fn (User $record): string => $record->transactions()->latest('id')->value('customer_phone') ?? '-'),
                 Tables\Columns\TextColumn::make('transactions_count')
                     ->label('Total Transaksi')
                     ->counts('transactions')
