@@ -462,7 +462,7 @@ class Checkout extends Component
             $transaction->subtotal = $subtotal;
             $transaction->discount_amount = $discountAmount;
             $transaction->total_price = $totalPrice;
-            $transaction->status = 'pending';
+            $transaction->status = ($totalPrice <= 0) ? 'paid' : 'pending';
             $transaction->promo_code_id = $promoId;
             $transaction->save();
 
@@ -494,6 +494,24 @@ class Checkout extends Component
 
             return $transaction;
         });
+
+        // If total price is 0 (100% Discount / Complimentary), instantly issue e-ticket and skip DOKU
+        if ($transaction->total_price <= 0 || $transaction->status === 'paid') {
+            try {
+                Mail::to($transaction->customer_email)->send(new TicketSent($transaction));
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('Email delivery failed for free 100% promo ticket: ' . $e->getMessage());
+            }
+
+            $this->showConfirmationModal = false;
+            $this->dispatch('hide-chat-assistant');
+
+            session()->flash('success', $this->locale === 'en'
+                ? '100% Promo Code applied! Your E-Ticket has been issued successfully.'
+                : 'Kode promo 100% berhasil digunakan! E-Ticket Anda telah berhasil diterbitkan.');
+
+            return redirect()->route('ticket.show', ['order_id' => $transaction->order_id]);
+        }
 
         // Request DOKU Checkout Session directly for seamless In-Page Popup Modal
         $dokuService = app(\App\Services\DokuService::class);

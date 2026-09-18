@@ -25,8 +25,16 @@ class PaymentController extends Controller
     {
         $transaction = Transaction::where('order_id', $order_id)->firstOrFail();
 
-        // Jika transaksi sudah dibayar, langsung alihkan ke halaman tiket
-        if ($transaction->status === 'paid') {
+        // Jika transaksi sudah dibayar atau bernilai Rp 0 (promo 100%), langsung alihkan ke halaman tiket
+        if ($transaction->status === 'paid' || $transaction->total_price <= 0) {
+            if ($transaction->status !== 'paid') {
+                $transaction->update(['status' => 'paid']);
+                try {
+                    Mail::to($transaction->customer_email)->send(new TicketSent($transaction));
+                } catch (\Throwable $e) {
+                    Log::warning('Free transaction ticket email error: ' . $e->getMessage());
+                }
+            }
             return redirect()->route('ticket.show', ['order_id' => $transaction->order_id]);
         }
 

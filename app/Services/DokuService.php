@@ -27,6 +27,11 @@ class DokuService
      */
     public function createCheckoutSession(Transaction $transaction): ?array
     {
+        if ($transaction->total_price <= 0) {
+            Log::info('DOKU: Transaction total is 0 (100% discount / free). Skipping gateway checkout session.');
+            return null;
+        }
+
         if (empty($this->clientId) || empty($this->secretKey)) {
             Log::error('DOKU Integration Error: Credentials not configured in .env');
             return null;
