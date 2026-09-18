@@ -21,11 +21,22 @@ class PromoCode extends Model
         'is_active' => 'boolean',
     ];
 
+    protected $attributes = [
+        'used_count' => 0,
+        'is_active' => true,
+    ];
+
     protected static function booted(): void
     {
         static::creating(function ($model) {
             if (!empty($model->code)) {
                 $model->code = strtoupper(trim($model->code));
+            }
+            if ($model->used_count === null) {
+                $model->used_count = 0;
+            }
+            if ($model->is_active === null) {
+                $model->is_active = true;
             }
         });
 
