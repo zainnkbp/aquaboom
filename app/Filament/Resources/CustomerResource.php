@@ -47,6 +47,10 @@ class CustomerResource extends Resource
                             ->email()
                             ->unique(ignoreRecord: true)
                             ->required(),
+                        Forms\Components\TextInput::make('phone')
+                            ->label('No. WhatsApp / HP')
+                            ->tel()
+                            ->maxLength(25),
                         Forms\Components\TextInput::make('password')
                             ->label('Password Baru (Abaikan jika tidak diubah)')
                             ->password()
@@ -75,7 +79,7 @@ class CustomerResource extends Resource
                             ->label('No. WhatsApp / HP')
                             ->icon('heroicon-m-phone')
                             ->copyable()
-                            ->state(fn (User $record): string => $record->transactions()->latest('id')->value('customer_phone') ?? '-'),
+                            ->state(fn (User $record): string => $record->phone ?: ($record->transactions()->latest('id')->value('customer_phone') ?? '-')),
                         TextEntry::make('created_at')
                             ->label('Terdaftar Sejak')
                             ->dateTime('d F Y, H:i'),
@@ -146,7 +150,7 @@ class CustomerResource extends Resource
                     ->label('No. WhatsApp / HP')
                     ->icon('heroicon-m-phone')
                     ->copyable()
-                    ->state(fn (User $record): string => $record->transactions()->latest('id')->value('customer_phone') ?? '-'),
+                    ->state(fn (User $record): string => $record->phone ?: ($record->transactions()->latest('id')->value('customer_phone') ?? '-')),
                 Tables\Columns\TextColumn::make('transactions_count')
                     ->label('Total Transaksi')
                     ->counts('transactions')
