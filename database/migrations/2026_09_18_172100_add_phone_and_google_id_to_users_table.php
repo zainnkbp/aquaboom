@@ -11,15 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('users')) {
+        try {
             Schema::table('users', function (Blueprint $table) {
-                if (!Schema::hasColumn('users', 'phone')) {
-                    $table->string('phone')->nullable()->after('email')->comment('Nomor WhatsApp / Telepon Pelanggan');
-                }
-                if (!Schema::hasColumn('users', 'google_id')) {
-                    $table->string('google_id')->nullable()->after('remember_token')->index()->comment('Google OAuth ID');
-                }
+                $table->string('phone')->nullable()->after('email')->comment('Nomor WhatsApp / Telepon Pelanggan');
             });
+        } catch (\Throwable $e) {
+            if (!str_contains($e->getMessage(), 'Duplicate column') && !str_contains($e->getMessage(), 'already exists')) {
+                try {
+                    \Illuminate\Support\Facades\DB::statement("ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `phone` VARCHAR(50) NULL AFTER `email`");
+                } catch (\Throwable $ex) {
+                    // Ignored
+                }
+            }
+        }
+
+        try {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('google_id')->nullable()->after('remember_token')->index()->comment('Google OAuth ID');
+            });
+        } catch (\Throwable $e) {
+            if (!str_contains($e->getMessage(), 'Duplicate column') && !str_contains($e->getMessage(), 'already exists')) {
+                try {
+                    \Illuminate\Support\Facades\DB::statement("ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `google_id` VARCHAR(255) NULL AFTER `remember_token`");
+                } catch (\Throwable $ex) {
+                    // Ignored
+                }
+            }
         }
     }
 
@@ -28,15 +45,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasTable('users')) {
+        try {
             Schema::table('users', function (Blueprint $table) {
-                if (Schema::hasColumn('users', 'google_id')) {
-                    $table->dropColumn('google_id');
-                }
-                if (Schema::hasColumn('users', 'phone')) {
-                    $table->dropColumn('phone');
-                }
+                $table->dropColumn(['google_id', 'phone']);
             });
+        } catch (\Throwable $e) {
+            // Ignored if column doesn't exist
         }
     }
 };

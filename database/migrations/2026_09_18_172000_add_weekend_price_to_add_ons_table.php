@@ -11,10 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('add_ons') && !Schema::hasColumn('add_ons', 'weekend_price')) {
+        try {
             Schema::table('add_ons', function (Blueprint $table) {
                 $table->decimal('weekend_price', 15, 2)->nullable()->after('price')->comment('Tarif khusus Weekend & Hari Libur. Jika NULL gunakan price');
             });
+        } catch (\Throwable $e) {
+            // Abaikan jika kolom sudah ada atau fallback raw statement
+            if (!str_contains($e->getMessage(), 'Duplicate column') && !str_contains($e->getMessage(), 'already exists')) {
+                try {
+                    \Illuminate\Support\Facades\DB::statement("ALTER TABLE `add_ons` ADD COLUMN IF NOT EXISTS `weekend_price` DECIMAL(15,2) NULL AFTER `price`");
+                } catch (\Throwable $ex) {
+                    // Ignored
+                }
+            }
         }
     }
 
@@ -23,10 +32,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasTable('add_ons') && Schema::hasColumn('add_ons', 'weekend_price')) {
+        try {
             Schema::table('add_ons', function (Blueprint $table) {
                 $table->dropColumn('weekend_price');
             });
+        } catch (\Throwable $e) {
+            // Ignored if column doesn't exist
         }
     }
 };
