@@ -210,18 +210,18 @@
                                 <!-- Category Tag & Promo Badges -->
                                 <div class="flex items-center gap-1.5 md:gap-2 flex-wrap mb-1">
                                     <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md tracking-wider bg-black/45 text-white backdrop-blur-xs border border-white/25 shadow-xs">
-                                        {{ $pkg->validity_type === 'weekday' ? 'Weekday Pass' : ($pkg->validity_type === 'weekend' ? 'Weekend Pass' : ($pkg->validity_type === 'peak_season' ? 'Peak Season Pass' : ($pkg->validity_type === 'specific_holidays' ? 'Event / Libur Khusus' : 'All-Day Pass'))) }}
+                                        {{ $pkg->validity_type === 'weekday' ? 'Weekday Pass' : ($pkg->validity_type === 'weekend' ? 'Weekend Pass' : ($pkg->validity_type === 'peak_season' ? 'Peak Season Pass' : ($pkg->validity_type === 'specific_holidays' ? ($locale === 'en' ? 'Special Event / Holiday' : 'Event / Libur Khusus') : 'All-Day Pass'))) }}
                                     </span>
                                     <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-white/20 text-white backdrop-blur-xs border border-white/25 shadow-xs">
-                                        Non-Refundable
+                                        {{ $locale === 'en' ? 'Non-Refundable' : 'Tidak Dapat Dibatalkan' }}
                                     </span>
                                     @if($isWeekend && !$isPeak)
                                         <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-aqua-gold text-aqua-navy tracking-wider shadow-xs">
-                                            Populer
+                                            {{ $locale === 'en' ? 'Popular' : 'Populer' }}
                                         </span>
                                     @elseif($isPeak)
                                         <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-rose-500 text-white tracking-wider shadow-xs">
-                                            Musim Liburan
+                                            {{ $locale === 'en' ? 'Peak Season' : 'Musim Liburan' }}
                                         </span>
                                     @endif
                                 </div>
@@ -1665,14 +1665,14 @@
                 </div>
 
                 <div>
-                    <h5 class="font-black text-aqua-navy text-xs uppercase tracking-wider mb-2">Syarat & Ketentuan Tiket</h5>
+                    <h5 class="font-black text-aqua-navy text-xs uppercase tracking-wider mb-2">{{ $locale === 'en' ? 'Ticket Terms & Conditions' : 'Syarat & Ketentuan Tiket' }}</h5>
                     <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-slate-600 space-y-2 prose prose-sm max-w-none text-xs leading-relaxed" x-html="activeTermsHtml"></div>
                 </div>
 
                 <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3">
                     <span class="text-amber-600 text-base shrink-0">🛡️</span>
                     <p class="text-[11px] text-amber-950 leading-relaxed font-semibold">
-                        <strong>{{ $locale === 'en' ? 'Non-Refundable Policy:' : 'Ketentuan Non-Refundable:' }}</strong> 
+                        <strong>{{ $locale === 'en' ? 'Non-Refundable Policy:' : 'Ketentuan Tidak Dapat Dibatalkan (Non-Refundable):' }}</strong> 
                         {{ $locale === 'en' 
                             ? 'Tickets purchased are strictly non-refundable and cannot be cancelled or exchanged for cash. Date change requests can be made by contacting Aquaboom WhatsApp Customer Service.' 
                             : 'Seluruh tiket yang telah dibeli bersifat non-refundable dan tidak dapat dibatalkan atau diuangkan kembali. Perubahan tanggal kunjungan dapat diajukan dengan menghubungi Customer Service WhatsApp Aquaboom.' }}
