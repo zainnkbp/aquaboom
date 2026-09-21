@@ -38,7 +38,7 @@
         </div>
       @endif
 
-      <form action="{{ route('password.email') }}" method="POST" class="space-y-6">
+      <form action="{{ Route::has('password.email') ? route('password.email') : url('/forgot-password') }}" method="POST" class="space-y-6">
         @csrf
 
         <div>
@@ -58,7 +58,7 @@
       <div class="mt-8 pt-6 border-t border-slate-100 text-center">
         <p class="text-xs text-slate-500 font-semibold">
           {{ App::getLocale() === 'en' ? 'Remembered your password?' : 'Sudah ingat kata sandi Anda?' }} 
-          <a href="{{ route('login') }}" class="text-aqua-azure font-black hover:text-aqua-gold transition-all">
+          <a href="{{ Route::has('login') ? route('login') : url('/login') }}" class="text-aqua-azure font-black hover:text-aqua-gold transition-all">
             {{ App::getLocale() === 'en' ? 'Back to Login' : 'Kembali ke Halaman Masuk' }}
           </a>
         </p>

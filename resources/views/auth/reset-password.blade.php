@@ -31,7 +31,7 @@
         </div>
       @endif
 
-      <form action="{{ route('password.update') }}" method="POST" class="space-y-6">
+      <form action="{{ Route::has('password.update') ? route('password.update') : url('/reset-password') }}" method="POST" class="space-y-6">
         @csrf
         <input type="hidden" name="token" value="{{ $token }}">
 
@@ -69,7 +69,7 @@
 
       <div class="mt-8 pt-6 border-t border-slate-100 text-center">
         <p class="text-xs text-slate-500 font-semibold">
-          <a href="{{ route('login') }}" class="text-aqua-azure font-black hover:text-aqua-gold transition-all">
+          <a href="{{ Route::has('login') ? route('login') : url('/login') }}" class="text-aqua-azure font-black hover:text-aqua-gold transition-all">
             {{ App::getLocale() === 'en' ? 'Back to Login' : 'Kembali ke Halaman Masuk' }}
           </a>
         </p>

@@ -36,7 +36,7 @@
 
       <!-- Google OAuth 1-Click Login Button -->
       <div class="mb-6">
-        <a href="{{ route('auth.google') }}" class="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-50 text-slate-700 font-bold py-3.5 px-4 rounded-xl border border-slate-300 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer group">
+        <a href="{{ Route::has('auth.google') ? route('auth.google') : url('/auth/google') }}" class="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-50 text-slate-700 font-bold py-3.5 px-4 rounded-xl border border-slate-300 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer group">
           <svg class="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -56,7 +56,7 @@
         </span>
       </div>
 
-      <form action="{{ route('login.submit') }}" method="POST" class="space-y-6">
+      <form action="{{ Route::has('login.submit') ? route('login.submit') : url('/login') }}" method="POST" class="space-y-6">
         @csrf
 
         <div>
@@ -74,7 +74,7 @@
             <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-aqua-navy focus:ring-aqua-gold">
             {{ App::getLocale() === 'en' ? 'Remember me' : 'Ingat saya' }}
           </label>
-          <a href="{{ route('password.request') }}" class="text-xs text-aqua-azure hover:text-aqua-gold font-bold transition-colors">
+          <a href="{{ Route::has('password.request') ? route('password.request') : url('/forgot-password') }}" class="text-xs text-aqua-azure hover:text-aqua-gold font-bold transition-colors">
             {{ App::getLocale() === 'en' ? 'Forgot password?' : 'Lupa kata sandi?' }}
           </a>
         </div>
@@ -87,7 +87,7 @@
       <div class="mt-8 pt-6 border-t border-slate-100 text-center">
         <p class="text-xs text-slate-500 font-semibold">
           {{ App::getLocale() === 'en' ? "Don't have an account?" : 'Belum punya akun?' }} 
-          <a href="{{ route('register') }}" class="text-aqua-azure font-black hover:text-aqua-gold transition-all">
+          <a href="{{ Route::has('register') ? route('register') : url('/register') }}" class="text-aqua-azure font-black hover:text-aqua-gold transition-all">
             {{ App::getLocale() === 'en' ? 'Register Now' : 'Daftar Sekarang' }}
           </a>
         </p>
