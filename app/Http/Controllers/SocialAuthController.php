@@ -29,9 +29,17 @@ class SocialAuthController extends Controller
         try {
             return Socialite::driver('google')->redirect();
         } catch (\Throwable $e) {
-            Log::error('Google OAuth Redirect Error: ' . $e->getMessage());
+            Log::error('Google OAuth Redirect Error: ' . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            $errorMessage = config('app.debug')
+                ? 'Google OAuth Error: ' . $e->getMessage()
+                : 'Gagal menghubungkan ke layanan Google. Silakan coba lagi nanti.';
+
             return redirect()->route('login')->withErrors([
-                'email' => 'Gagal menghubungkan ke layanan Google. Silakan coba lagi nanti.',
+                'email' => $errorMessage,
             ]);
         }
     }
@@ -48,9 +56,17 @@ class SocialAuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
         } catch (\Throwable $e) {
-            Log::error('Google OAuth Callback Error: ' . $e->getMessage());
+            Log::error('Google OAuth Callback Error: ' . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            $errorMessage = config('app.debug')
+                ? 'Google Auth Callback Error: ' . $e->getMessage()
+                : 'Autentikasi Google gagal atau kedaluwarsa. Silakan coba kembali.';
+
             return redirect()->route('login')->withErrors([
-                'email' => 'Autentikasi Google gagal atau kedaluwarsa. Silakan coba kembali.',
+                'email' => $errorMessage,
             ]);
         }
 
