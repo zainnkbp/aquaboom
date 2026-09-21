@@ -17,6 +17,13 @@
         </p>
       </div>
 
+      @if(session('status') || session('success'))
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold p-4 rounded-2xl mb-6 flex items-center gap-2">
+          <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          <span>{{ session('status') ?? session('success') }}</span>
+        </div>
+      @endif
+
       @if($errors->any())
         <div class="bg-red-50 border border-red-200 text-red-600 text-xs font-bold p-4 rounded-2xl mb-6">
           <ul class="list-disc list-inside space-y-1">
@@ -67,6 +74,9 @@
             <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-aqua-navy focus:ring-aqua-gold">
             {{ App::getLocale() === 'en' ? 'Remember me' : 'Ingat saya' }}
           </label>
+          <a href="{{ route('password.request') }}" class="text-xs text-aqua-azure hover:text-aqua-gold font-bold transition-colors">
+            {{ App::getLocale() === 'en' ? 'Forgot password?' : 'Lupa kata sandi?' }}
+          </a>
         </div>
 
         <button type="submit" class="w-full bg-aqua-navy hover:bg-aqua-navy-2 text-aqua-gold font-black py-4 rounded-xl text-sm uppercase tracking-widest transition-all shadow-lg shadow-blue-950/20">

@@ -3,15 +3,24 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-
 use App\Models\Transaction;
+use App\Models\User;
+use Carbon\Carbon;
 
 class QrScanner extends Component
 {
     public $orderId = '';
-    public $scanResult = null; // 'success', 'not_found', 'unpaid', 'already_redeemed'
+    public $scanResult = null; // 'success', 'not_found', 'unpaid', 'already_redeemed', 'expired'
     public $ticketDetails = [];
     public $errorMessage = '';
+
+    // Override Expired Ticket
+    public ?int $expiredTransactionId = null;
+    public string $supervisorPin = '';
+    public string $overrideReason = '🌧️ Kompensasi Cuaca / Hujan';
+    public string $customReason = '';
+    public string $overrideErrorMessage = '';
+    public bool $showOverrideModal = false;
 
     // Self-service PIN / Password Modal
     public bool $showProfileModal = false;
@@ -90,12 +99,35 @@ class QrScanner extends Component
         $this->newPassword_confirmation = '';
     }
 
+    public function openOverrideModal()
+    {
+        $this->showOverrideModal = true;
+        $this->supervisorPin = '';
+        $this->overrideReason = '🌧️ Kompensasi Cuaca / Hujan';
+        $this->customReason = '';
+        $this->overrideErrorMessage = '';
+    }
+
+    public function closeOverrideModal()
+    {
+        $this->showOverrideModal = false;
+        $this->overrideErrorMessage = '';
+    }
+
+    public function selectReason(string $reason)
+    {
+        $this->overrideReason = $reason;
+        $this->overrideErrorMessage = '';
+    }
+
     public function processScan($code)
     {
         $rawCode = strtoupper(trim($code));
         $this->scanResult = null;
         $this->errorMessage = '';
         $this->ticketDetails = [];
+        $this->expiredTransactionId = null;
+        $this->showOverrideModal = false;
 
         if (empty($rawCode)) {
             return;
@@ -139,12 +171,7 @@ class QrScanner extends Component
             return;
         }
 
-        // Valid -> Redeem
-        $transaction->is_redeemed = true;
-        $transaction->redeemed_at = now();
-        $transaction->status = 'scanned';
-        $transaction->save();
-
+        // Rincian tiket & addons
         $totalTickets = 0;
         $ticketList = [];
         foreach ($transaction->items as $item) {
@@ -166,18 +193,101 @@ class QrScanner extends Component
         }
 
         $this->ticketDetails = [
+            'id' => $transaction->id,
             'order_id' => $transaction->order_id,
             'customer' => $transaction->customer_name,
             'email' => $transaction->customer_email,
             'phone' => $transaction->customer_phone,
-            'visit_date' => \Carbon\Carbon::parse($transaction->visit_date)->translatedFormat('d F Y'),
+            'visit_date' => Carbon::parse($transaction->visit_date)->translatedFormat('d F Y'),
+            'raw_visit_date' => $transaction->visit_date,
             'total' => $totalTickets,
             'tickets' => $ticketList,
             'addons' => $addonList,
-            'redeemed_at' => $transaction->redeemed_at->format('d M Y H:i'),
+            'redeemed_at' => null,
         ];
 
+        // Guard Cek Kedaluwarsa (Visit Date < Hari Ini)
+        $visitDate = Carbon::parse($transaction->visit_date)->startOfDay();
+        $today = Carbon::today();
+        if ($visitDate->lt($today)) {
+            $this->scanResult = 'expired';
+            $this->expiredTransactionId = $transaction->id;
+            $this->errorMessage = "Tiket kedaluwarsa! Tanggal kunjungan tertera: " . $visitDate->translatedFormat('d F Y') . " (Sudah lewat).";
+            return;
+        }
+
+        // Valid -> Redeem
+        $transaction->is_redeemed = true;
+        $transaction->redeemed_at = now();
+        $transaction->status = 'scanned';
+        $transaction->save();
+
+        $this->ticketDetails['redeemed_at'] = $transaction->redeemed_at->format('d M Y H:i');
         $this->scanResult = 'success';
+    }
+
+    public function overrideExpiredTicket()
+    {
+        if (!$this->expiredTransactionId) {
+            $this->overrideErrorMessage = 'Data transaksi tidak ditemukan.';
+            return;
+        }
+
+        $transaction = Transaction::find($this->expiredTransactionId);
+        if (!$transaction) {
+            $this->overrideErrorMessage = 'Transaksi tidak ditemukan di database.';
+            return;
+        }
+
+        if ($transaction->is_redeemed) {
+            $this->overrideErrorMessage = 'Tiket ini sudah di-redeem sebelumnya.';
+            return;
+        }
+
+        $user = auth()->user();
+        $authorizerName = $user->name;
+
+        // Validasi Otorisasi: Admin / Superadmin langsung, Petugas biasa via PIN Supervisor
+        $isAdmin = $user->isSuperAdmin() || $user->hasRole(User::ROLE_ADMIN);
+
+        if (!$isAdmin) {
+            if (empty($this->supervisorPin)) {
+                $this->overrideErrorMessage = 'Masukkan 6 digit PIN Supervisor / Admin!';
+                return;
+            }
+
+            $supervisor = User::whereIn('role', [User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN])
+                ->where('pin', $this->supervisorPin)
+                ->first();
+
+            if (!$supervisor) {
+                $this->overrideErrorMessage = 'PIN Supervisor / Admin tidak valid atau tidak cocok!';
+                return;
+            }
+
+            $authorizerName = "{$supervisor->name} (diinput oleh {$user->name})";
+        }
+
+        // Validasi Alasan
+        $reason = $this->overrideReason === '✏️ Lainnya' ? trim($this->customReason) : $this->overrideReason;
+        if (empty($reason)) {
+            $this->overrideErrorMessage = 'Wajib memilih atau menulis alasan dispensasi/kompensasi!';
+            return;
+        }
+
+        // Catat Audit Trail pada Notes Transaksi
+        $auditLogEntry = "[OVERRIDE EXPIRED] Diizinkan masuk oleh: {$authorizerName} | Alasan: {$reason} | Waktu: " . now()->format('d M Y H:i:s');
+        $transaction->notes = trim(($transaction->notes ? $transaction->notes . "\n" : '') . $auditLogEntry);
+        $transaction->is_redeemed = true;
+        $transaction->redeemed_at = now();
+        $transaction->status = 'scanned';
+        $transaction->save();
+
+        $this->ticketDetails['redeemed_at'] = $transaction->redeemed_at->format('d M Y H:i');
+        $this->scanResult = 'success';
+        $this->showOverrideModal = false;
+        $this->errorMessage = '';
+        $this->overrideErrorMessage = '';
     }
 
     public function resetScan()
@@ -186,6 +296,9 @@ class QrScanner extends Component
         $this->orderId = '';
         $this->errorMessage = '';
         $this->ticketDetails = [];
+        $this->expiredTransactionId = null;
+        $this->showOverrideModal = false;
+        $this->overrideErrorMessage = '';
         $this->dispatch('restart-scanner');
     }
 

@@ -239,8 +239,83 @@
             </div>
         @endif
 
-        {{-- Error / Denied State Modal Overlay (Appears on top without unmounting video) --}}
-        @if($scanResult && $scanResult !== 'success')
+        {{-- Expired State Modal Overlay (With Admin / Supervisor Override Action) --}}
+        @if($scanResult === 'expired')
+            <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-2xl border-2 border-rose-500/60 text-center text-white flex flex-col justify-between animate-scale-up z-30 overflow-y-auto">
+                <div class="w-full">
+                    <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-rose-500 text-white shadow-lg shadow-rose-500/40 mb-2 animate-bounce">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    
+                    <h2 class="text-2xl font-black tracking-tight text-rose-400">TIKET KEDALUWARSA!</h2>
+                    <div class="inline-flex items-center gap-1.5 bg-rose-500/20 border border-rose-500/40 px-3 py-1 rounded-full mt-1 mb-3">
+                        <svg class="w-3.5 h-3.5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <span class="text-rose-200 font-bold text-xs">Jadwal: {{ $ticketDetails['visit_date'] }} (Sudah Lewat)</span>
+                    </div>
+                    
+                    {{-- Detail Card --}}
+                    <div class="w-full bg-slate-900/95 rounded-2xl p-4 text-left border border-slate-800 space-y-3 shadow-inner">
+                        
+                        {{-- Order ID & Visitor Header --}}
+                        <div class="flex justify-between items-start border-b border-slate-800 pb-2.5">
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Nama Pengunjung</span>
+                                <span class="font-black text-base text-white">{{ $ticketDetails['customer'] }}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Kode Tiket</span>
+                                <span class="font-mono font-black text-xs text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-lg">{{ $ticketDetails['order_id'] }}</span>
+                            </div>
+                        </div>
+
+                        {{-- Total Pax --}}
+                        <div class="flex justify-between items-center bg-slate-950/80 px-3 py-2 rounded-xl border border-slate-800/80">
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase block">Jumlah Pengunjung</span>
+                                <span class="text-xs font-bold text-rose-300">Kedaluwarsa</span>
+                            </div>
+                            <div class="text-right flex items-baseline gap-1">
+                                <span class="text-2xl font-black text-rose-400">{{ $ticketDetails['total'] }}</span>
+                                <span class="text-xs font-extrabold text-slate-300">PAX</span>
+                            </div>
+                        </div>
+
+                        {{-- Rincian Paket Tiket --}}
+                        <div>
+                            <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block mb-1.5">Rincian Tiket:</span>
+                            <div class="space-y-1.5">
+                                @foreach($ticketDetails['tickets'] as $ticket)
+                                    <div class="flex justify-between items-center bg-slate-950/60 px-3 py-1.5 rounded-xl text-xs border border-slate-800/50">
+                                        <span class="font-medium text-slate-200">{{ $ticket['name'] }}</span>
+                                        <span class="font-black text-slate-300 bg-slate-800 px-2 py-0.5 rounded-lg">{{ $ticket['qty'] }}x</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Action Buttons --}}
+                <div class="w-full mt-3 space-y-2">
+                    <button wire:click="openOverrideModal" 
+                            type="button"
+                            class="w-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm py-3 rounded-xl shadow-xl shadow-amber-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
+                        <span>🔓 IZINKAN MASUK (OTORISASI ADMIN)</span>
+                    </button>
+                    <button wire:click="resetScan" 
+                            @click="restart()"
+                            type="button"
+                            class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        TOLAK / BATALKAN
+                    </button>
+                </div>
+            </div>
+        @endif
+
+        {{-- Error / Denied State Modal Overlay (For unpaid, already redeemed, or not found) --}}
+        @if($scanResult && !in_array($scanResult, ['success', 'expired']))
             <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-red-500/40 text-center text-white flex flex-col items-center justify-center animate-scale-up z-30">
                 <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-500 text-white shadow-lg shadow-red-500/40 mb-4 animate-pulse">
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -495,6 +570,113 @@
                             Simpan Password Baru
                         </button>
                     </form>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- Modal Otorisasi Override Tiket Kedaluwarsa --}}
+    @if($showOverrideModal)
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+            <div class="bg-slate-900 border-2 border-amber-500/40 rounded-3xl w-full max-w-md p-6 shadow-2xl relative max-h-[92vh] overflow-y-auto">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-black text-white uppercase tracking-wide">Otorisasi Tiket Kedaluwarsa</h3>
+                            <p class="text-[11px] text-slate-400">{{ $ticketDetails['customer'] ?? '-' }} • {{ $ticketDetails['order_id'] ?? '-' }}</p>
+                        </div>
+                    </div>
+                    <button wire:click="closeOverrideModal" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+                        ✕
+                    </button>
+                </div>
+
+                @if($overrideErrorMessage)
+                    <div class="mt-4 p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-center gap-2">
+                        <svg class="w-4 h-4 shrink-0 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>{{ $overrideErrorMessage }}</span>
+                    </div>
+                @endif
+
+                <div class="mt-4 space-y-4">
+                    {{-- PIN Supervisor (Hanya muncul jika yang login bukan Admin/SuperAdmin) --}}
+                    @if(!auth()->user()->isSuperAdmin() && !auth()->user()->hasRole(\App\Models\User::ROLE_ADMIN))
+                        <div class="bg-slate-800/80 p-4 rounded-2xl border border-amber-500/30">
+                            <label class="block text-xs font-black text-amber-400 uppercase tracking-wider mb-1">
+                                PIN Supervisor / Admin (6-Digit)
+                            </label>
+                            <p class="text-[11px] text-slate-400 mb-2">Minta Supervisor/Admin memasukkan 6 digit PIN untuk menyetujui izin masuk:</p>
+                            <input type="password" 
+                                   inputmode="numeric" 
+                                   maxlength="6" 
+                                   wire:model="supervisorPin" 
+                                   placeholder="••••••" 
+                                   class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-base text-white tracking-[0.4em] text-center font-mono focus:border-amber-400 focus:outline-none font-black">
+                        </div>
+                    @else
+                        <div class="bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/20 text-xs text-emerald-400 flex items-center gap-2">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            <span>Login sebagai <strong>{{ auth()->user()->name }}</strong> (Admin/Super Admin). Otorisasi langsung aktif.</span>
+                        </div>
+                    @endif
+
+                    {{-- Alasan Dispensasi / Kompensasi --}}
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-2">
+                            Alasan Otorisasi / Kompensasi:
+                        </label>
+                        <div class="grid grid-cols-1 gap-2">
+                            @foreach([
+                                '🌧️ Kompensasi Cuaca / Hujan',
+                                '🏢 Dispensasi Manajemen / GM',
+                                '💬 Reschedule via CS WhatsApp',
+                                '✏️ Lainnya'
+                            ] as $reasonOption)
+                                <button type="button" 
+                                        wire:click="selectReason('{{ $reasonOption }}')"
+                                        class="text-left px-3.5 py-2.5 rounded-xl text-xs font-bold border transition-all flex items-center justify-between {{ $overrideReason === $reasonOption ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md' : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-600' }}">
+                                    <span>{{ $reasonOption }}</span>
+                                    @if($overrideReason === $reasonOption)
+                                        <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    @endif
+                                </button>
+                            @endforeach
+                        </div>
+
+                        {{-- Input Alasan Kustom jika "Lainnya" dipilih --}}
+                        @if($overrideReason === '✏️ Lainnya')
+                            <div class="mt-2.5">
+                                <textarea wire:model="customReason" 
+                                          rows="2" 
+                                          placeholder="Tuliskan rincian alasan pemberian izin masuk..." 
+                                          class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-white focus:border-amber-400 focus:outline-none placeholder:text-slate-600"></textarea>
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Notice Audit Log --}}
+                    <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-[11px] text-slate-400 leading-relaxed flex items-start gap-2">
+                        <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Tindakan otorisasi, nama admin pengotorisasi, dan alasan akan tercatat permanen pada sistem audit log.</span>
+                    </div>
+
+                    {{-- Tombol Konfirmasi --}}
+                    <div class="pt-2 flex gap-2">
+                        <button type="button" 
+                                wire:click="closeOverrideModal" 
+                                class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-3 rounded-xl transition-all">
+                            Batal
+                        </button>
+                        <button type="button" 
+                                wire:click="overrideExpiredTicket" 
+                                class="flex-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs py-3 rounded-xl transition-all shadow-lg shadow-amber-500/20 active:scale-95 flex items-center justify-center gap-1.5">
+                            <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                            Izinkan Masuk
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

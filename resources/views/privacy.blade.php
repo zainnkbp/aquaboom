@@ -44,238 +44,197 @@
           </div>
           <div>
             <h3 class="font-black text-emerald-950 uppercase text-sm tracking-wider mb-1">
-              {{ App::getLocale() === 'en' ? 'Commitment to Data Protection' : 'Komitmen Perlindungan Data Pribadi' }}
+              {{ App::getLocale() === 'en' ? 'Customer Personal Data Protection Policy' : 'Kebijakan Perlindungan Data Pribadi Customer' }}
             </h3>
             <p class="text-xs text-emerald-900/80 font-medium">
               {{ App::getLocale() === 'en'
-                  ? 'This Privacy Policy explains how we collect, use, store, and protect the personal data you provide when making a booking or using our services.'
-                  : 'Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, menyimpan, dan melindungi data pribadi yang diberikan oleh customer saat melakukan booking atau menggunakan layanan kami.' }}
+                  ? 'This Privacy Policy explains the collection, use, third-party processing, and legal rights of personal data for reservations and services at Aquaboom Balikpapan.'
+                  : 'Kebijakan Privasi ini menjelaskan pengumpulan, penggunaan, pemrosesan pihak ketiga, serta hak hukum atas data pribadi untuk reservasi dan layanan di Aquaboom Balikpapan.' }}
             </p>
           </div>
         </div>
 
-        <!-- Section 1 -->
-        <div class="space-y-4">
-          <div class="flex items-center gap-3">
-            <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">1</span>
-            <h2 class="text-xl md:text-2xl font-black text-aqua-navy uppercase tracking-tight">
-              {{ App::getLocale() === 'en' ? 'Data We Collect' : 'Data yang Kami Kumpulkan' }}
-            </h2>
-          </div>
-          <p class="text-sm text-slate-600">
-            {{ App::getLocale() === 'en'
-                ? 'Personal data we may collect from customers includes:'
-                : 'Data pribadi yang dapat kami kumpulkan meliputi:' }}
-          </p>
-          <ul class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs font-semibold text-slate-700 pt-1">
-            <li class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-aqua-gold"></span>
-              {{ App::getLocale() === 'en' ? 'Customer full name' : 'Nama customer' }}
-            </li>
-            <li class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-aqua-gold"></span>
-              {{ App::getLocale() === 'en' ? 'Phone or WhatsApp number' : 'Nomor telepon atau WhatsApp' }}
-            </li>
-            <li class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-aqua-gold"></span>
-              {{ App::getLocale() === 'en' ? 'Email address for e-ticket delivery' : 'Alamat email untuk pengiriman e-ticket' }}
-            </li>
-            <li class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-aqua-gold"></span>
-              {{ App::getLocale() === 'en' ? 'Number of visitors (pax) & visit date' : 'Jumlah pengunjung & tanggal kunjungan' }}
-            </li>
-            <li class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-aqua-gold"></span>
-              {{ App::getLocale() === 'en' ? 'Booking & transaction details' : 'Informasi booking dan riwayat transaksi' }}
-            </li>
-            <li class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-aqua-gold"></span>
-              {{ App::getLocale() === 'en' ? 'Payment status processed via payment gateway' : 'Informasi status pembayaran via payment gateway' }}
-            </li>
-          </ul>
-        </div>
-
-        <!-- Section 2 -->
-        <div class="space-y-4 pt-6 border-t border-slate-100">
-          <div class="flex items-center gap-3">
-            <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">2</span>
-            <h2 class="text-xl md:text-2xl font-black text-aqua-navy uppercase tracking-tight">
-              {{ App::getLocale() === 'en' ? 'Purposes of Data Use' : 'Tujuan Penggunaan Data' }}
-            </h2>
-          </div>
-          <p class="text-sm text-slate-600">
-            {{ App::getLocale() === 'en'
-                ? 'Your personal data is used solely for the following legitimate purposes:'
-                : 'Data pribadi Anda digunakan semata-mata untuk tujuan berikut:' }}
-          </p>
-          <div class="space-y-2 text-xs font-semibold text-slate-700">
-            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-              <span>{{ App::getLocale() === 'en' ? 'Processing and managing ticket bookings and wristband issuance.' : 'Memproses dan mengelola pemesanan tiket masuk dan wahana.' }}</span>
-            </div>
-            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-              <span>{{ App::getLocale() === 'en' ? 'Delivering booking confirmations and official E-Tickets directly to your email.' : 'Mengirimkan konfirmasi booking dan E-Ticket resmi langsung ke email Anda.' }}</span>
-            </div>
-            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-              <span>{{ App::getLocale() === 'en' ? 'Processing secure transactions and payment gateway verification.' : 'Memproses verifikasi transaksi pembayaran secara aman.' }}</span>
-            </div>
-            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-              <span>{{ App::getLocale() === 'en' ? 'Customer service, inquiry resolution, and visitor support.' : 'Memberikan layanan pelanggan, menangani pertanyaan, dan keluhan pengunjung.' }}</span>
-            </div>
-            <div class="p-3 bg-slate-50 rounded-xl flex items-start gap-2.5">
-              <svg class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-              <span>{{ App::getLocale() === 'en' ? 'Maintaining security, preventing fraudulent activity, and fulfilling legal obligations.' : 'Menjaga keamanan taman rekreasi, mencegah penyalahgunaan tiket, serta mematuhi peraturan hukum.' }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section 3 -->
-        <div class="space-y-4 pt-6 border-t border-slate-100">
-          <div class="flex items-center gap-3">
-            <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">3</span>
-            <h2 class="text-xl md:text-2xl font-black text-aqua-navy uppercase tracking-tight">
-              {{ App::getLocale() === 'en' ? 'Third-Party Data Sharing' : 'Pembagian Data kepada Pihak Ketiga' }}
-            </h2>
-          </div>
-          <p class="text-sm text-slate-600">
-            {{ App::getLocale() === 'en'
-                ? 'In certain conditions, customer data may be shared with or processed by authorized third-party partners supporting our park operations:'
-                : 'Dalam kondisi tertentu, data customer dapat diproses atau dibagikan kepada pihak ketiga tepercaya yang mendukung operasional layanan:' }}
-          </p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-              <strong class="font-bold text-aqua-navy block mb-1">💳 Payment Gateway (DOKU)</strong>
-              <p class="text-slate-500">Memproses transaksi keuangan secara terenkripsi sesuai izin Bank Indonesia.</p>
-            </div>
-            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-              <strong class="font-bold text-aqua-navy block mb-1">🎫 Ticketing & QR Scanner</strong>
-              <p class="text-slate-500">Memverifikasi keabsahan tiket saat check-in di loket pintu masuk.</p>
-            </div>
-            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-              <strong class="font-bold text-aqua-navy block mb-1">☁️ Cloud & Server Infrastructure</strong>
-              <p class="text-slate-500">Penyedia komputasi awan dan database untuk memastikan uptime dan stabilitas sistem.</p>
-            </div>
-            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-              <strong class="font-bold text-aqua-navy block mb-1">📧 Email & Notification Service</strong>
-              <p class="text-slate-500">Mengirimkan file e-ticket dan informasi operasional ke email pembeli.</p>
-            </div>
-          </div>
-          <p class="text-xs text-slate-400 italic">
-            * {{ App::getLocale() === 'en' ? 'Third parties may only use your data strictly in accordance with contractual service requirements.' : 'Pihak ketiga tersebut hanya dapat menggunakan data sesuai dengan kebutuhan layanan atau kewajiban yang berlaku.' }}
-          </p>
-        </div>
-
-        <!-- Section 4 & 5 (Security & Storage) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-100">
-          <div class="space-y-3 bg-slate-50 p-6 rounded-3xl border border-slate-100">
-            <div class="flex items-center gap-2.5">
-              <span class="w-7 h-7 rounded-lg bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">4</span>
-              <h3 class="text-lg font-black text-aqua-navy uppercase">
-                {{ App::getLocale() === 'en' ? 'Data Security' : 'Keamanan Data' }}
-              </h3>
-            </div>
-            <p class="text-xs text-slate-600 leading-relaxed">
-              {{ App::getLocale() === 'en'
-                  ? 'Aquaboom Balikpapan takes reasonable technical and organizational measures (including 256-bit SSL encryption) to protect customer data from unauthorized access, alteration, or disclosure.'
-                  : 'Aquaboom Balikpapan mengambil langkah yang wajar untuk menjaga keamanan data pribadi customer dan mencegah akses, penggunaan, perubahan, pengungkapan, atau kehilangan data secara tidak sah (termasuk enkripsi 256-bit SSL).' }}
-            </p>
-          </div>
-
-          <div class="space-y-3 bg-slate-50 p-6 rounded-3xl border border-slate-100">
-            <div class="flex items-center gap-2.5">
-              <span class="w-7 h-7 rounded-lg bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">5</span>
-              <h3 class="text-lg font-black text-aqua-navy uppercase">
-                {{ App::getLocale() === 'en' ? 'Data Retention' : 'Penyimpanan Data' }}
-              </h3>
-            </div>
-            <p class="text-xs text-slate-600 leading-relaxed">
-              {{ App::getLocale() === 'en'
-                  ? 'Personal data will be stored as long as necessary to fulfill operational, administrative, transaction verification, and legal obligations, after which it will be safely purged or anonymized.'
-                  : 'Data pribadi akan disimpan selama diperlukan untuk memenuhi tujuan pengumpulan data, kebutuhan operasional, administrasi, penyelesaian transaksi, serta kewajiban hukum yang berlaku.' }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Section 6: Customer Rights -->
-        <div class="space-y-4 pt-6 border-t border-slate-100">
-          <div class="flex items-center gap-3">
-            <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">6</span>
-            <h2 class="text-xl md:text-2xl font-black text-aqua-navy uppercase tracking-tight">
-              {{ App::getLocale() === 'en' ? 'Customer Rights' : 'Hak Customer' }}
-            </h2>
-          </div>
-          <p class="text-sm text-slate-600">
-            {{ App::getLocale() === 'en'
-                ? 'Under applicable personal data protection laws, customers hold rights to:'
-                : 'Sesuai dengan ketentuan perlindungan data pribadi yang berlaku, customer memiliki hak untuk:' }}
-          </p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold text-slate-700">
-            <div class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              {{ App::getLocale() === 'en' ? 'Obtain information on data processing' : 'Memperoleh informasi pemrosesan data' }}
-            </div>
-            <div class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              {{ App::getLocale() === 'en' ? 'Request access to personal data' : 'Meminta akses terhadap data pribadi' }}
-            </div>
-            <div class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              {{ App::getLocale() === 'en' ? 'Request correction of inaccurate data' : 'Meminta perbaikan data yang tidak akurat' }}
-            </div>
-            <div class="flex items-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              {{ App::getLocale() === 'en' ? 'Request deletion of data under certain terms' : 'Meminta penghapusan data dalam kondisi tertentu' }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Section 7 & 8 (Cookies & Policy Changes) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-100">
+        @if(App::getLocale() === 'en')
+        <!-- ENGLISH VERSION -->
+        <div class="space-y-8">
+          <!-- Bab 1 -->
           <div class="space-y-3">
-            <div class="flex items-center gap-2.5">
-              <span class="w-7 h-7 rounded-lg bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">7</span>
-              <h3 class="text-base font-black text-aqua-navy uppercase">
-                {{ App::getLocale() === 'en' ? 'Cookies & Digital Tech' : 'Cookies & Teknologi Digital' }}
-              </h3>
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">1</span>
+              <h2 class="text-xl font-black text-aqua-navy uppercase tracking-tight">Customer Data Processing</h2>
             </div>
-            <p class="text-xs text-slate-600 leading-relaxed">
-              {{ App::getLocale() === 'en'
-                  ? 'Our website may use cookies to facilitate smooth navigation, understand traffic patterns, and improve your user experience.'
-                  : 'Website kami dapat menggunakan cookies atau teknologi serupa untuk membantu menjalankan website, memahami analitik trafik, dan meningkatkan pengalaman pengguna.' }}
-            </p>
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-2 text-xs font-semibold text-slate-700">
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-aqua-gold mt-1.5 shrink-0"></span>
+                <span>By making a booking, the customer consents to the collection and processing of personal data required for reservation and services at Aquaboom Balikpapan.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-aqua-gold mt-1.5 shrink-0"></span>
+                <span>Customer data may include name, phone number, email address, number of visitors (pax), transaction details, and other information necessary for the booking process.</span>
+              </p>
+            </div>
           </div>
 
-          <div class="space-y-3">
-            <div class="flex items-center gap-2.5">
-              <span class="w-7 h-7 rounded-lg bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">8</span>
-              <h3 class="text-base font-black text-aqua-navy uppercase">
-                {{ App::getLocale() === 'en' ? 'Policy Updates' : 'Perubahan Kebijakan' }}
-              </h3>
+          <!-- Bab 2 -->
+          <div class="space-y-3 pt-6 border-t border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">2</span>
+              <h2 class="text-xl font-black text-aqua-navy uppercase tracking-tight">Purpose & Limitations of Data Use</h2>
             </div>
-            <p class="text-xs text-slate-600 leading-relaxed">
-              {{ App::getLocale() === 'en'
-                  ? 'We may update this Privacy Policy from time to time to reflect operational or regulatory updates. The latest version will always be available here.'
-                  : 'Aquaboom Balikpapan dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Versi terbaru akan selalu dipublikasikan melalui media resmi kami.' }}
-            </p>
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-2 text-xs font-semibold text-slate-700">
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+                <span>Data is strictly used for booking processing, payment verification, ticket confirmation & delivery, customer service, security, administration, and service quality improvement.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+                <span>Customer data will NOT be used for any other purposes beyond service requirements without a valid legal basis or explicit prior consent.</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Bab 3 -->
+          <div class="space-y-3 pt-6 border-t border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">3</span>
+              <h2 class="text-xl font-black text-aqua-navy uppercase tracking-tight">Third-Party Sharing & Customer Rights</h2>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-2 text-xs font-semibold text-slate-700">
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></span>
+                <span>Customer data may be shared with authorized third parties involved in the booking or payment process (such as the DOKU payment gateway) while upholding strict personal data protection standards.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></span>
+                <span>Customers maintain legal rights over their personal data in compliance with applicable laws and regulations.</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Bab 4 -->
+          <div class="space-y-3 pt-6 border-t border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">4</span>
+              <h2 class="text-xl font-black text-aqua-navy uppercase tracking-tight">Consent & Responsibility</h2>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-2 text-xs font-semibold text-slate-700">
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                <span>By completing the booking process, the customer declares that the provided information is true, accurate, and valid.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                <span>The customer agrees to the Terms & Conditions and Privacy Policy applicable at Aquaboom Balikpapan.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                <span>This consent is effective from the booking initiation and throughout the period required for service fulfillment.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                <span>The customer holds full responsibility for the accuracy of all data submitted during reservation.</span>
+              </p>
+            </div>
           </div>
         </div>
+        @else
+        <!-- INDONESIAN VERSION -->
+        <div class="space-y-8">
+          <!-- Bab 1 -->
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">1</span>
+              <h2 class="text-xl font-black text-aqua-navy uppercase tracking-tight">Pemrosesan Data Customer</h2>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-2 text-xs font-semibold text-slate-700">
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-aqua-gold mt-1.5 shrink-0"></span>
+                <span>Dengan melakukan booking, customer menyetujui pengumpulan dan pemrosesan data pribadi yang diperlukan untuk keperluan reservasi dan layanan Aquaboom Balikpapan.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-aqua-gold mt-1.5 shrink-0"></span>
+                <span>Data customer dapat meliputi nama, nomor telepon, alamat email, jumlah pengunjung, informasi transaksi, serta data lain yang diperlukan untuk proses booking.</span>
+              </p>
+            </div>
+          </div>
 
-        <!-- Section 9: Contact Us Official Card -->
+          <!-- Bab 2 -->
+          <div class="space-y-3 pt-6 border-t border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">2</span>
+              <h2 class="text-xl font-black text-aqua-navy uppercase tracking-tight">Tujuan & Batasan Penggunaan Data</h2>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-2 text-xs font-semibold text-slate-700">
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+                <span>Data digunakan untuk keperluan pemrosesan booking, pembayaran, konfirmasi tiket, pelayanan customer, keamanan, administrasi, dan peningkatan kualitas layanan.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+                <span>Data customer tidak akan digunakan untuk tujuan lain di luar kebutuhan layanan tanpa dasar yang sah atau persetujuan yang diperlukan.</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Bab 3 -->
+          <div class="space-y-3 pt-6 border-t border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">3</span>
+              <h2 class="text-xl font-black text-aqua-navy uppercase tracking-tight">Pembagian Data kepada Pihak Ketiga & Hak Customer</h2>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-2 text-xs font-semibold text-slate-700">
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></span>
+                <span>Data customer dapat dibagikan kepada pihak ketiga yang terkait dengan proses booking atau pembayaran (seperti payment gateway DOKU) dengan tetap memperhatikan perlindungan data pribadi.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></span>
+                <span>Customer memiliki hak atas data pribadinya sesuai dengan ketentuan peraturan perundang-undangan yang berlaku.</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Bab 4 -->
+          <div class="space-y-3 pt-6 border-t border-slate-100">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-aqua-navy text-aqua-gold font-black text-xs flex items-center justify-center shrink-0">4</span>
+              <h2 class="text-xl font-black text-aqua-navy uppercase tracking-tight">Persetujuan & Tanggung Jawab Customer</h2>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 space-y-2 text-xs font-semibold text-slate-700">
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                <span>Dengan menyelesaikan proses booking, customer menyatakan bahwa data yang diberikan adalah benar dan sah.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                <span>Customer menyetujui syarat & ketentuan serta kebijakan privasi yang berlaku di Aquaboom Balikpapan.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                <span>Persetujuan ini berlaku sejak proses booking dilakukan dan selama data diperlukan untuk penyediaan layanan.</span>
+              </p>
+              <p class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                <span>Customer bertanggung jawab atas keakuratan data yang diberikan pada saat pemesanan.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        @endif
+
+        <!-- Contact Us Official Card -->
         <div class="pt-6 border-t border-slate-100">
           <div class="bg-aqua-navy text-white rounded-3xl p-8 md:p-10 border border-aqua-gold/20 shadow-xl space-y-6">
             <div class="flex items-center gap-3">
-              <span class="w-8 h-8 rounded-xl bg-aqua-gold text-aqua-navy font-black text-xs flex items-center justify-center shrink-0">9</span>
+              <span class="w-8 h-8 rounded-xl bg-aqua-gold text-aqua-navy font-black text-xs flex items-center justify-center shrink-0">📞</span>
               <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-tight">
-                {{ App::getLocale() === 'en' ? 'Contact Us' : 'Hubungi Kami' }}
+                {{ App::getLocale() === 'en' ? 'Official Inquiries' : 'Layanan Informasi Resmi' }}
               </h2>
             </div>
             <p class="text-xs text-white/70 font-semibold leading-relaxed">
               {{ App::getLocale() === 'en'
-                  ? 'For inquiries, requests, or complaints regarding personal data, please reach out to our official team:'
-                  : 'Untuk pertanyaan, permintaan, atau keluhan terkait data pribadi, customer dapat menghubungi:' }}
+                  ? 'For questions, requests, or confirmations regarding tickets and personal data, please contact our official desk:'
+                  : 'Untuk pertanyaan, permintaan, atau konfirmasi terkait tiket dan data pribadi, customer dapat menghubungi:' }}
             </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 text-xs">
               <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
@@ -283,7 +242,7 @@
                 <a href="mailto:info@aquaboom.co.id" class="text-white font-bold hover:text-aqua-gold transition-colors">info@aquaboom.co.id</a>
               </div>
               <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
-                <span class="text-aqua-gold text-[10px] font-black uppercase tracking-widest block mb-1">WhatsApp / Phone</span>
+                <span class="text-aqua-gold text-[10px] font-black uppercase tracking-widest block mb-1">WhatsApp CS</span>
                 <a href="https://wa.me/628115900123" target="_blank" class="text-white font-bold hover:text-aqua-gold transition-colors">+62 811 5900 123</a>
               </div>
               <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
@@ -291,11 +250,6 @@
                 <span class="text-white/80 font-semibold block leading-snug">7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan (BSB)</span>
               </div>
             </div>
-            <p class="text-[11px] text-white/40 italic pt-2 border-t border-white/10">
-              {{ App::getLocale() === 'en'
-                  ? '* By making a booking through the Aquaboom Balikpapan system, you acknowledge that you have read, understood, and agreed to this Privacy Policy.'
-                  : '* Dengan melakukan booking melalui sistem Aquaboom Balikpapan, customer mengakui bahwa telah membaca, memahami, dan menyetujui Kebijakan Privasi ini.' }}
-            </p>
           </div>
         </div>
 
