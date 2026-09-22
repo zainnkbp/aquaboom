@@ -20,6 +20,9 @@ class AwardResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-star';
     protected static ?string $navigationGroup = 'CMS & Konten Web';
     protected static ?int $navigationSort = 4;
+    protected static ?string $navigationLabel = 'Penghargaan';
+    protected static ?string $modelLabel = 'Penghargaan';
+    protected static ?string $pluralModelLabel = 'Penghargaan';
 
     public static function form(Form $form): Form
     {

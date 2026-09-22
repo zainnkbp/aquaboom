@@ -20,6 +20,9 @@ class FacilityResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-swatch';
     protected static ?string $navigationGroup = 'CMS & Konten Web';
     protected static ?int $navigationSort = 3;
+    protected static ?string $navigationLabel = 'Fasilitas';
+    protected static ?string $modelLabel = 'Fasilitas';
+    protected static ?string $pluralModelLabel = 'Fasilitas';
 
     public static function form(Form $form): Form
     {

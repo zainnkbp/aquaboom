@@ -24,6 +24,8 @@ class TransactionResource extends Resource
 
     protected static ?string $modelLabel = 'Transaksi';
 
+    protected static ?string $pluralModelLabel = 'Transaksi';
+
     protected static ?string $navigationGroup = 'Transaksi & Penjualan';
 
     protected static ?int $navigationSort = 1;

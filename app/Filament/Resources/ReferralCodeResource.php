@@ -22,6 +22,7 @@ class ReferralCodeResource extends Resource
     protected static ?int $navigationSort = 5;
     protected static ?string $navigationLabel = 'Kode Referral';
     protected static ?string $modelLabel = 'Kode Referral';
+    protected static ?string $pluralModelLabel = 'Kode Referral';
 
     public static function form(Form $form): Form
     {

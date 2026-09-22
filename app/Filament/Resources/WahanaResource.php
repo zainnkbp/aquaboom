@@ -22,6 +22,8 @@ class WahanaResource extends Resource
 
     protected static ?string $modelLabel = 'Wahana';
 
+    protected static ?string $pluralModelLabel = 'Wahana';
+
     protected static ?string $navigationGroup = 'CMS & Konten Web';
 
     protected static ?int $navigationSort = 1;

@@ -24,6 +24,8 @@ class TicketPackageResource extends Resource
 
     protected static ?string $modelLabel = 'Paket Tiket';
 
+    protected static ?string $pluralModelLabel = 'Paket Tiket';
+
     protected static ?string $navigationGroup = 'Transaksi & Penjualan';
 
     protected static ?int $navigationSort = 2;

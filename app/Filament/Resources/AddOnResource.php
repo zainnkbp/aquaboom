@@ -22,6 +22,7 @@ class AddOnResource extends Resource
     protected static ?int $navigationSort = 3;
     protected static ?string $navigationLabel = 'Produk Add-On';
     protected static ?string $modelLabel = 'Produk Add-On';
+    protected static ?string $pluralModelLabel = 'Produk Add-On';
 
     public static function form(Form $form): Form
     {
