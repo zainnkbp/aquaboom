@@ -178,15 +178,10 @@
             </div>
             <div class="flex justify-between items-center pt-2 border-b border-slate-100 pb-3">
               <span class="text-slate-400 font-medium">{{ App::getLocale() === 'en' ? 'Payment Status' : 'Status Pembayaran' }}</span>
-              <div class="flex items-center gap-1.5 flex-wrap justify-end">
-                <span
-                  class="{{ $transaction->status === 'paid' ? 'bg-teal-100 text-teal-800' : ($transaction->status === 'pending' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800') }} font-black px-3 py-1 rounded-full text-xs shadow-sm uppercase tracking-wider"
-                  >{{ $transaction->status === 'paid' ? (App::getLocale() === 'en' ? 'PAID' : 'LUNAS') : ($transaction->status === 'pending' ? (App::getLocale() === 'en' ? 'PENDING' : 'MENUNGGU PEMBAYARAN') : (App::getLocale() === 'en' ? 'FAILED' : 'BATAL / GAGAL')) }}</span
-                >
-                <span class="bg-rose-50 text-rose-700 border border-rose-200 font-black px-2.5 py-1 rounded-full text-[10px] uppercase tracking-wider shadow-xs">
-                  {{ App::getLocale() === 'en' ? 'Non-Refundable' : 'Tidak Dapat Dibatalkan' }}
-                </span>
-              </div>
+              <span
+                class="{{ $transaction->status === 'paid' ? 'bg-teal-100 text-teal-800' : ($transaction->status === 'pending' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800') }} font-black px-4 py-1.5 rounded-full text-xs shadow-sm uppercase tracking-wider"
+                >{{ $transaction->status === 'paid' ? (App::getLocale() === 'en' ? 'PAID' : 'LUNAS') : ($transaction->status === 'pending' ? (App::getLocale() === 'en' ? 'PENDING' : 'MENUNGGU PEMBAYARAN') : (App::getLocale() === 'en' ? 'FAILED' : 'BATAL / GAGAL')) }}</span
+              >
             </div>
 
             <!-- Rincian Pembelian Tiket & Fasilitas -->

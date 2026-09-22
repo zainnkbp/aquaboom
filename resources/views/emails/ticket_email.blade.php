@@ -35,10 +35,7 @@
                     </tr>
                     <tr>
                         <td style="padding: 12px 16px; font-size: 13px; color: #64748b;">Status Pembayaran:</td>
-                        <td style="padding: 12px 16px; font-size: 12px; font-weight: 800; color: #059669; text-align: right; text-transform: uppercase;">
-                            LUNAS (PAID)
-                            <span style="display: inline-block; margin-left: 6px; background-color: #fee2e2; color: #b91c1c; padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 800;">NON-REFUNDABLE</span>
-                        </td>
+                        <td style="padding: 12px 16px; font-size: 12px; font-weight: 800; color: #059669; text-align: right; text-transform: uppercase;">LUNAS (PAID)</td>
                     </tr>
                 </table>
 
