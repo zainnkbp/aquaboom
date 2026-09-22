@@ -35,13 +35,16 @@
                     </tr>
                     <tr>
                         <td style="padding: 12px 16px; font-size: 13px; color: #64748b;">Status Pembayaran:</td>
-                        <td style="padding: 12px 16px; font-size: 12px; font-weight: 800; color: #059669; text-align: right; text-transform: uppercase;">LUNAS (PAID)</td>
+                        <td style="padding: 12px 16px; font-size: 12px; font-weight: 800; color: #059669; text-align: right; text-transform: uppercase;">
+                            LUNAS (PAID)
+                            <span style="display: inline-block; margin-left: 6px; background-color: #fee2e2; color: #b91c1c; padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 800;">NON-REFUNDABLE</span>
+                        </td>
                     </tr>
                 </table>
 
                 <!-- Itemized Invoice Table -->
                 <h3 style="color: #0f172a; font-size: 15px; font-weight: 800; margin: 20px 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px;">Rincian Pembelian:</h3>
-                <table width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 20px;">
+                <table width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse; margin-bottom: 12px;">
                     <thead>
                         <tr style="background-color: #f1f5f9; border-bottom: 2px solid #cbd5e1;">
                             <th style="padding: 10px 12px; text-align: left; font-size: 12px; color: #475569; font-weight: 700; text-transform: uppercase;">Item / Paket</th>
@@ -87,6 +90,10 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <p style="font-size: 11px; color: #64748b; margin-top: 8px; margin-bottom: 24px;">
+                    🛡️ <em>Tiket/Voucher yang telah dibeli bersifat <strong>Non-Refundable</strong> (tidak dapat dibatalkan atau diuangkan kembali).</em>
+                </p>
 
                 <!-- Call to Action Button -->
                 <div style="text-align: center; margin: 30px 0;">

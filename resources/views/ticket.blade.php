@@ -177,16 +177,21 @@
               <span class="font-bold text-[#0f2726] text-base">{{ App\Models\TransactionItem::where('transaction_id', $transaction->id)->sum('quantity') }} Pax</span>
             </div>
             <div class="flex justify-between items-center pt-2 border-b border-slate-100 pb-3">
-              <span class="text-slate-400 font-medium">Status Pembayaran</span>
-              <span
-                class="{{ $transaction->status === 'paid' ? 'bg-teal-100 text-teal-800' : ($transaction->status === 'pending' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800') }} font-black px-4 py-1.5 rounded-full text-xs shadow-sm uppercase tracking-wider"
-                >{{ $transaction->status === 'paid' ? 'LUNAS (PAID)' : ($transaction->status === 'pending' ? 'MENUNGGU PEMBAYARAN' : 'BATAL / GAGAL') }}</span
-              >
+              <span class="text-slate-400 font-medium">{{ App::getLocale() === 'en' ? 'Payment Status' : 'Status Pembayaran' }}</span>
+              <div class="flex items-center gap-1.5 flex-wrap justify-end">
+                <span
+                  class="{{ $transaction->status === 'paid' ? 'bg-teal-100 text-teal-800' : ($transaction->status === 'pending' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800') }} font-black px-3 py-1 rounded-full text-xs shadow-sm uppercase tracking-wider"
+                  >{{ $transaction->status === 'paid' ? (App::getLocale() === 'en' ? 'PAID' : 'LUNAS') : ($transaction->status === 'pending' ? (App::getLocale() === 'en' ? 'PENDING' : 'MENUNGGU PEMBAYARAN') : (App::getLocale() === 'en' ? 'FAILED' : 'BATAL / GAGAL')) }}</span
+                >
+                <span class="bg-rose-50 text-rose-700 border border-rose-200 font-black px-2.5 py-1 rounded-full text-[10px] uppercase tracking-wider shadow-xs">
+                  {{ App::getLocale() === 'en' ? 'Non-Refundable' : 'Tidak Dapat Dibatalkan' }}
+                </span>
+              </div>
             </div>
 
             <!-- Rincian Pembelian Tiket & Fasilitas -->
             <div class="pt-2">
-              <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-2.5">Rincian Pembelian:</span>
+              <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-2.5">{{ App::getLocale() === 'en' ? 'Order Summary:' : 'Rincian Pembelian:' }}</span>
               <div class="space-y-2.5 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 @foreach($transaction->items as $item)
                   @php
@@ -218,13 +223,13 @@
 
                 @if($transaction->discount_amount > 0)
                   <div class="flex justify-between items-center text-xs pt-2 border-t border-slate-200/70 text-emerald-600">
-                    <span class="font-bold">Potongan Diskon Promo</span>
+                    <span class="font-bold">{{ App::getLocale() === 'en' ? 'Promo Discount' : 'Potongan Diskon Promo' }}</span>
                     <span class="font-black">- Rp {{ number_format($transaction->discount_amount, 0, ',', '.') }}</span>
                   </div>
                 @endif
 
                 <div class="flex justify-between items-center text-sm pt-2.5 border-t-2 border-slate-200">
-                  <span class="font-black text-slate-900">Total Dibayar</span>
+                  <span class="font-black text-slate-900">{{ App::getLocale() === 'en' ? 'Total Paid' : 'Total Dibayar' }}</span>
                   <span class="font-black text-waterbom-orange text-base">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</span>
                 </div>
               </div>
@@ -233,11 +238,14 @@
         </div>
 
         <!-- Ticket Footer -->
-        <div class="p-6 bg-slate-50 text-center border-t border-slate-100">
+        <div class="p-6 bg-slate-50 text-center border-t border-slate-100 space-y-1.5">
+          <p class="text-[11px] font-black text-slate-700 uppercase tracking-wide">
+            🛡️ {{ App::getLocale() === 'en' ? 'Non-Refundable (Tickets purchased cannot be cancelled or exchanged for cash).' : 'Non-Refundable (Tiket yang telah dibeli tidak dapat dibatalkan atau diuangkan kembali).' }}
+          </p>
           <p class="text-xs text-slate-400 font-semibold leading-relaxed">
-            Tunjukkan QR Code ini langsung di loket masuk. Harap tidak
-            membagikan kode e-ticket ini kepada orang lain untuk mencegah
-            penyalahgunaan.
+            {{ App::getLocale() === 'en'
+                ? 'Present this QR Code directly at the admission counter upon arrival. Please do not share this ticket code with others.'
+                : 'Tunjukkan QR Code ini langsung di loket masuk. Harap tidak membagikan kode e-ticket ini kepada orang lain untuk mencegah penyalahgunaan.' }}
           </p>
         </div>
       </div>
