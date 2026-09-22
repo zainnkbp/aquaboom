@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <!-- Homepage -->
+    <url>
+        <loc>https://aquaboombsb.com/</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/" />
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/" />
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Ticket Purchase -->
+    <url>
+        <loc>https://aquaboombsb.com/ticket</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/ticket" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/ticket" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/ticket" />
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en/ticket</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/ticket" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/ticket" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/ticket" />
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Explore Rides & Attractions -->
+    <url>
+        <loc>https://aquaboombsb.com/explore</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/explore" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/explore" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/explore" />
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en/explore</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/explore" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/explore" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/explore" />
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Facilities & Amenities -->
+    <url>
+        <loc>https://aquaboombsb.com/facilities</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/facilities" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/facilities" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/facilities" />
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en/facilities</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/facilities" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/facilities" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/facilities" />
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Dining & Resto -->
+    <url>
+        <loc>https://aquaboombsb.com/dining</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/dining" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/dining" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/dining" />
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en/dining</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/dining" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/dining" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/dining" />
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Corporate & Group Gatherings -->
+    <url>
+        <loc>https://aquaboombsb.com/gatherings</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/gatherings" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/gatherings" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/gatherings" />
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en/gatherings</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/gatherings" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/gatherings" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/gatherings" />
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Special Promo Packages -->
+    <url>
+        <loc>https://aquaboombsb.com/packages</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/packages" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/packages" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/packages" />
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en/packages</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/packages" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/packages" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/packages" />
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- About Us -->
+    <url>
+        <loc>https://aquaboombsb.com/about</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/about" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/about" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/about" />
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en/about</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/about" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/about" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/about" />
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- FAQ -->
+    <url>
+        <loc>https://aquaboombsb.com/faq</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/faq" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/faq" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/faq" />
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en/faq</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/faq" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/faq" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/faq" />
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Privacy Policy -->
+    <url>
+        <loc>https://aquaboombsb.com/privacy-policy</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/privacy-policy" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/privacy-policy" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/privacy-policy" />
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en/privacy-policy</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/privacy-policy" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/privacy-policy" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/privacy-policy" />
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+    <!-- Terms & Conditions -->
+    <url>
+        <loc>https://aquaboombsb.com/terms-and-conditions</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/terms-and-conditions" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/terms-and-conditions" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/terms-and-conditions" />
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://aquaboombsb.com/en/terms-and-conditions</loc>
+        <xhtml:link rel="alternate" hreflang="id" href="https://aquaboombsb.com/terms-and-conditions" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://aquaboombsb.com/en/terms-and-conditions" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://aquaboombsb.com/terms-and-conditions" />
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+</urlset>

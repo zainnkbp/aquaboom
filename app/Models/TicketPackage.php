@@ -34,6 +34,8 @@ class TicketPackage extends Model
         'holiday_ids' => 'array',
         'include_national_holidays' => 'boolean',
         'include_peak_season' => 'boolean',
+        'daily_quota' => 'integer',
+        'total_quota' => 'integer',
     ];
 
     /**
@@ -273,5 +275,55 @@ class TicketPackage extends Model
 
         // 'all_days' or anything else
         return true;
+    }
+
+    /**
+     * Relasi ke TransactionItem
+     */
+    public function transactionItems(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TransactionItem::class, 'ticket_package_id');
+    }
+
+    /**
+     * Hitung sisa kuota tiket yang tersedia untuk tanggal kunjungan tertentu.
+     * Mengembalikan integer sisa kuota, atau null jika tidak ada batas kuota (unlimited).
+     */
+    public function getAvailableQuotaForDate(?string $dateString = null): ?int
+    {
+        $hasDailyLimit = $this->daily_quota !== null && $this->daily_quota > 0;
+        $hasTotalLimit = $this->total_quota !== null && $this->total_quota > 0;
+
+        if (!$hasDailyLimit && !$hasTotalLimit) {
+            return null; // Unlimited
+        }
+
+        $limits = [];
+
+        // 1. Cek Kuota Harian pada tanggal kunjungan spesifik
+        if ($hasDailyLimit && !empty($dateString)) {
+            $parsedDate = \Carbon\Carbon::parse($dateString)->format('Y-m-d');
+            $bookedDaily = (int) TransactionItem::where('ticket_package_id', $this->id)
+                ->whereHas('transaction', function ($q) use ($parsedDate) {
+                    $q->whereDate('visit_date', $parsedDate)
+                      ->whereIn('status', ['paid', 'pending', 'scanned']);
+                })
+                ->sum('quantity');
+
+            $limits[] = max(0, $this->daily_quota - $bookedDaily);
+        }
+
+        // 2. Cek Total Kuota Event / Promo keseluruhan
+        if ($hasTotalLimit) {
+            $bookedTotal = (int) TransactionItem::where('ticket_package_id', $this->id)
+                ->whereHas('transaction', function ($q) {
+                    $q->whereIn('status', ['paid', 'pending', 'scanned']);
+                })
+                ->sum('quantity');
+
+            $limits[] = max(0, $this->total_quota - $bookedTotal);
+        }
+
+        return !empty($limits) ? min($limits) : null;
     }
 }

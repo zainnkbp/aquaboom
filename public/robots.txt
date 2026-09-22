@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /scanner/
+Disallow: /payment/
+Disallow: /v0/
+Disallow: /api/
+Disallow: /activate-account
+
+Sitemap: https://aquaboombsb.com/sitemap.xml

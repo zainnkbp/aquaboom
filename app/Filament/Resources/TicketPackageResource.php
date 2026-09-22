@@ -295,6 +295,25 @@ class TicketPackageResource extends Resource
                             ->required(fn (Get $get) => $get('validity_type') === 'specific_dates')
                             ->columnSpanFull(),
                     ])->columns(2),
+
+                Forms\Components\Section::make('Batas Kuota & Stok Tiket (Inventory Control)')
+                    ->description('Atur batasan maksimal tiket yang dapat dibeli oleh pengunjung per hari atau per event.')
+                    ->schema([
+                        Forms\Components\TextInput::make('daily_quota')
+                            ->label('Batas Kuota Harian (Daily Quota)')
+                            ->numeric()
+                            ->minValue(1)
+                            ->nullable()
+                            ->placeholder('Contoh: 300 (Kosongkan jika Unlimited)')
+                            ->helperText('Maksimal jumlah tiket yang dapat dipesan untuk setiap 1 tanggal kunjungan. Saat mencapai batas ini, tiket otomatis berstatus HABIS / SOLD OUT pada tanggal tersebut.'),
+                        Forms\Components\TextInput::make('total_quota')
+                            ->label('Total Kuota Event / Promo (Total Quota)')
+                            ->numeric()
+                            ->minValue(1)
+                            ->nullable()
+                            ->placeholder('Contoh: 500 (Kosongkan jika Unlimited)')
+                            ->helperText('Batas stok total keseluruhan untuk tiket promo/event khusus (akumulasi semua tanggal). Jika total tiket yang terjual mencapai angka ini, penjualan otomatis ditutup.'),
+                    ])->columns(2),
             ]);
     }
 
@@ -343,6 +362,12 @@ class TicketPackageResource extends Resource
                 Tables\Columns\IconColumn::make('is_featured_home')
                     ->label('Di Beranda')
                     ->boolean()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('daily_quota')
+                    ->label('Kuota/Hari')
+                    ->formatStateUsing(fn ($state) => $state ? number_format($state, 0, ',', '.') . ' /hari' : 'Unlimited')
+                    ->badge()
+                    ->color(fn ($state) => $state ? 'warning' : 'gray')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')

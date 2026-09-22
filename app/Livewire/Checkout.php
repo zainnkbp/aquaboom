@@ -132,8 +132,22 @@ class Checkout extends Component
 
     public function incrementQuantity($packageId)
     {
-        if (isset($this->quantities[$packageId]) && $this->quantities[$packageId] < 20) {
-            $this->quantities[$packageId]++;
+        $pkg = TicketPackage::find($packageId);
+        if (!$pkg) return;
+
+        $currentQty = $this->quantities[$packageId] ?? 0;
+        $available = $pkg->getAvailableQuotaForDate($this->visit_date);
+
+        if ($available !== null && $currentQty >= $available) {
+            $this->addError('quantities', $this->locale === 'en'
+                ? "Quota limit reached for {$pkg->name}. Only {$available} tickets available on this date."
+                : "Batas kuota tercapai untuk {$pkg->name}. Sisa tiket hanya {$available} pada tanggal ini.");
+            return;
+        }
+
+        if ($currentQty < 20) {
+            $this->resetErrorBag('quantities');
+            $this->quantities[$packageId] = $currentQty + 1;
             $this->dispatch('sticky-price-bar-toggle', active: $this->totalTickets > 0);
         }
     }
@@ -352,7 +366,7 @@ class Checkout extends Component
             return;
         }
 
-        // Validate all selected packages against the date
+        // Validate all selected packages against the date & quota
         foreach ($this->quantities as $pkgId => $qty) {
             if ($qty > 0) {
                 $pkg = TicketPackage::find($pkgId);
@@ -361,6 +375,15 @@ class Checkout extends Component
                         ? "Ticket package {$pkg->name} is not valid for this date."
                         : "Paket tiket {$pkg->name} tidak berlaku untuk tanggal ini.");
                     return;
+                }
+                if ($pkg) {
+                    $available = $pkg->getAvailableQuotaForDate($this->visit_date);
+                    if ($available !== null && $qty > $available) {
+                        $this->addError('quantities', $this->locale === 'en'
+                            ? "Requested quantity for {$pkg->name} ({$qty}) exceeds remaining quota ({$available})."
+                            : "Jumlah tiket {$pkg->name} ({$qty}) melebihi sisa kuota yang tersedia ({$available}).");
+                        return;
+                    }
                 }
             }
         }
@@ -393,13 +416,22 @@ class Checkout extends Component
             return;
         }
 
-        // Validate all selected packages against the date
+        // Validate all selected packages against the date & quota
         $selectedPackages = [];
         foreach ($this->quantities as $pkgId => $qty) {
             if ($qty > 0) {
                 $pkg = TicketPackage::findOrFail($pkgId);
                 if (!$pkg->isValidForDate($this->visit_date)) {
                     $this->addError('visit_date', "Paket tiket {$pkg->name} tidak berlaku untuk tanggal ini.");
+                    return;
+                }
+                $available = $pkg->getAvailableQuotaForDate($this->visit_date);
+                if ($available !== null && $qty > $available) {
+                    $msg = $this->locale === 'en'
+                        ? "Quota exceeded for {$pkg->name}. Only {$available} tickets remaining for {$this->visit_date}."
+                        : "Kuota tiket {$pkg->name} tidak mencukupi. Sisa tiket pada tanggal tersebut hanya {$available}.";
+                    $this->addError('quantities', $msg);
+                    $this->showConfirmationModal = false;
                     return;
                 }
                 $selectedPackages[] = [

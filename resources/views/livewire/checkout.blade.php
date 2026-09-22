@@ -138,12 +138,14 @@
                 @foreach($packages as $pkg)
                     @php
                         $isWeekend = Str::contains(strtolower($pkg->name), 'weekend');
-                        $isGroup = Str::contains(strtolower($pkg->name), 'group') || Str::contains(strtolower($pkg->name), 'rombongan');
+                        $isGroup = Str::contains(strtolower($pkg->name), 'rombongan') || Str::contains(strtolower($pkg->name), 'rombongan');
                         $isDuo = Str::contains(strtolower($pkg->name), 'duo');
                         $isFour = Str::contains(strtolower($pkg->name), 'four');
                         $isPeak = $pkg->validity_type === 'peak_season' || (!empty($holidayInfo['is_peak_season']));
                         
                         $qty = $quantities[$pkg->id] ?? 0;
+                        $availableQuota = $pkg->getAvailableQuotaForDate($visit_date);
+                        $isSoldOut = ($availableQuota !== null && $availableQuota <= 0);
                         
                         // Dynamic pricing label
                         $pricingLabel = $locale === 'id' ? 'per orang' : 'per person';
@@ -171,7 +173,7 @@
 
                     <!-- Waterbom Bali Inspired Wristband Ribbon Pass -->
                     <div class="relative rounded-2xl md:rounded-3xl border-2 transition-all duration-300 overflow-hidden shadow-md hover:shadow-xl group
-                         {{ $qty > 0 ? 'border-aqua-gold ring-4 ring-aqua-gold/40 shadow-2xl scale-[1.008]' : 'border-slate-300/80 hover:border-aqua-gold/70' }}"
+                         {{ $isSoldOut ? 'opacity-75 grayscale-[30%] border-slate-400/50' : ($qty > 0 ? 'border-aqua-gold ring-4 ring-aqua-gold/40 shadow-2xl scale-[1.008]' : 'border-slate-300/80 hover:border-aqua-gold/70') }}"
                          style="min-height: 115px;">
                         
                         <!-- Background: 
@@ -195,7 +197,7 @@
                         @endif
 
                         <!-- Wristband Perforation / Clip Notch on Left Side -->
-                        <div class="absolute top-0 left-0 bottom-0 w-3 bg-aqua-gold flex flex-col justify-around items-center py-2">
+                        <div class="absolute top-0 left-0 bottom-0 w-3 {{ $isSoldOut ? 'bg-slate-500' : 'bg-aqua-gold' }} flex flex-col justify-around items-center py-2">
                             <span class="w-1 h-2 bg-black/30 rounded-full"></span>
                             <span class="w-1 h-2 bg-black/30 rounded-full"></span>
                             <span class="w-1 h-2 bg-black/30 rounded-full"></span>
@@ -215,11 +217,20 @@
                                     <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-white/20 text-white backdrop-blur-xs border border-white/25 shadow-xs">
                                         {{ $locale === 'en' ? 'Non-Refundable' : 'Tidak Dapat Dibatalkan' }}
                                     </span>
-                                    @if($isWeekend && !$isPeak)
+                                    @if($isSoldOut)
+                                        <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-red-600 text-white tracking-wider shadow-xs animate-pulse">
+                                            {{ $locale === 'en' ? 'Sold Out' : 'Kuota Habis' }}
+                                        </span>
+                                    @elseif($availableQuota !== null && $availableQuota <= 10)
+                                        <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-amber-400 text-slate-950 font-extrabold tracking-wider shadow-xs">
+                                            {{ $locale === 'en' ? "Only {$availableQuota} Left!" : "Sisa {$availableQuota} Tiket!" }}
+                                        </span>
+                                    @endif
+                                    @if($isWeekend && !$isPeak && !$isSoldOut)
                                         <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-aqua-gold text-aqua-navy tracking-wider shadow-xs">
                                             {{ $locale === 'en' ? 'Popular' : 'Populer' }}
                                         </span>
-                                    @elseif($isPeak)
+                                    @elseif($isPeak && !$isSoldOut)
                                         <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-rose-500 text-white tracking-wider shadow-xs">
                                             {{ $locale === 'en' ? 'Peak Season' : 'Musim Liburan' }}
                                         </span>
@@ -282,9 +293,13 @@
                                     @endif
                                 </div>
 
-                                <!-- Action: Aqua Gold [ SELECT v ] or Touch-Friendly Stepper -->
+                                <!-- Action: Aqua Gold [ SELECT v ] or Touch-Friendly Stepper or SOLD OUT -->
                                 <div class="shrink-0">
-                                    @if($qty === 0)
+                                    @if($isSoldOut)
+                                        <div class="inline-flex items-center justify-center gap-1.5 bg-slate-700/80 text-white/70 px-4 md:px-5 py-2.5 md:py-3 rounded-xl md:rounded-2xl font-black text-xs md:text-sm uppercase tracking-wider border border-white/20 select-none">
+                                            <span>{{ $locale === 'en' ? 'SOLD OUT' : 'HABIS' }}</span>
+                                        </div>
+                                    @elseif($qty === 0)
                                         <button type="button" 
                                             wire:click="incrementQuantity({{ $pkg->id }})" 
                                             class="inline-flex items-center justify-center gap-1.5 bg-aqua-gold hover:bg-aqua-gold-2 text-aqua-navy px-4 md:px-6 py-2.5 md:py-3 rounded-xl md:rounded-2xl font-black text-xs md:text-sm uppercase tracking-wider transition-all duration-200 shadow-lg hover:shadow-aqua-gold/40 cursor-pointer active:scale-95 border border-aqua-gold-2/50">
@@ -299,7 +314,7 @@
                                             </button>
                                             <span class="text-sm md:text-base font-black text-aqua-navy w-8 md:w-9 text-center select-none">{{ $qty }}</span>
                                             <button type="button" wire:click="incrementQuantity({{ $pkg->id }})" 
-                                                class="w-8 h-8 md:w-9 md:h-9 rounded-lg flex items-center justify-center bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 shadow-xs font-black text-lg transition-all cursor-pointer active:scale-90">
+                                                @if($availableQuota !== null && $qty >= $availableQuota) disabled class="w-8 h-8 md:w-9 md:h-9 rounded-lg flex items-center justify-center bg-slate-200 text-slate-400 font-black text-lg cursor-not-allowed" @else class="w-8 h-8 md:w-9 md:h-9 rounded-lg flex items-center justify-center bg-aqua-navy text-aqua-gold hover:bg-aqua-navy-2 shadow-xs font-black text-lg transition-all cursor-pointer active:scale-90" @endif>
                                                 +
                                             </button>
                                         </div>

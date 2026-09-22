@@ -3,24 +3,23 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Wahana;
 use App\Models\Transaction;
-
 use App\Livewire\ScannerLogin;
 use App\Livewire\QrScanner;
-
 use App\Models\Setting;
 use App\Models\HomePageCard;
 use App\Models\Facility;
 use App\Models\Award;
 use App\Models\Faq;
+use App\Models\TicketPackage;
 
-Route::get('/', function () {
+// Helper closures for public pages
+$showHome = function () {
     $wahanas = Wahana::orderBy('order_column')->get();
     $homeCards = HomePageCard::orderBy('sort_order')->get();
     $settings = Setting::pluck('value', 'key');
     
-    // Featured Tickets & Promo Deals for Home Page (Only active bookable tickets with price)
     $now = now();
-    $featuredPackages = \App\Models\TicketPackage::where('is_active', true)
+    $featuredPackages = TicketPackage::where('is_active', true)
         ->where('price', '>', 0)
         ->where('type', '!=', 'gathering')
         ->where(function ($query) use ($now) {
@@ -34,11 +33,11 @@ Route::get('/', function () {
         ->get();
 
     return view('welcome', compact('wahanas', 'homeCards', 'settings', 'featuredPackages'));
-})->name('home');
+};
 
-Route::get('/gatherings', function () {
+$showGatherings = function () {
     $now = now();
-    $gatheringPackages = \App\Models\TicketPackage::where('is_active', true)
+    $gatheringPackages = TicketPackage::where('is_active', true)
         ->where('type', 'gathering')
         ->where(function ($query) use ($now) {
             $query->whereNull('sales_start')->orWhere('sales_start', '<=', $now);
@@ -51,21 +50,115 @@ Route::get('/gatherings', function () {
         ->get();
     $settings = Setting::pluck('value', 'key');
     return view('gatherings', compact('gatheringPackages', 'settings'));
-})->name('gatherings');
+};
 
-Route::get('/corporate-gathering', function () {
-    return redirect()->route('gatherings');
-});
+$showPackages = function () {
+    $now = now();
+    $packages = TicketPackage::where('is_active', true)
+        ->whereIn('type', ['bundle', 'flash_sale'])
+        ->where(function ($query) use ($now) {
+            $query->whereNull('sales_start')->orWhere('sales_start', '<=', $now);
+        })
+        ->where(function ($query) use ($now) {
+            $query->whereNull('sales_end')->orWhere('sales_end', '>=', $now);
+        })
+        ->orderBy('sort_order', 'asc')
+        ->orderBy('id', 'asc')
+        ->get();
+    return view('packages', compact('packages'));
+};
 
-Route::get('/group-events', function () {
-    return redirect()->route('gatherings');
-});
-
-Route::get('/v0', function () {
+$showExplore = function () {
     $wahanas = Wahana::orderBy('order_column')->get();
-    return view('v0.welcome', compact('wahanas'));
+    return view('explore', compact('wahanas'));
+};
+
+$showFacilities = function () {
+    $facilities = Facility::where('type', '!=', 'dining')
+        ->where('is_active', true)
+        ->orderBy('sort_order', 'asc')
+        ->orderBy('id', 'asc')
+        ->get();
+    return view('facilities', compact('facilities'));
+};
+
+$showDining = function () {
+    $dinings = Facility::where('type', 'dining')
+        ->where('is_active', true)
+        ->orderBy('sort_order', 'asc')
+        ->orderBy('id', 'asc')
+        ->get();
+    return view('dining', compact('dinings'));
+};
+
+$showAbout = function () {
+    $awards = Award::orderBy('sort_order')->get();
+    $settings = Setting::pluck('value', 'key');
+    return view('about', compact('awards', 'settings'));
+};
+
+$showFaq = function () {
+    $faqs = Faq::orderBy('sort_order')->get();
+    return view('faq', compact('faqs'));
+};
+
+$showTicket = fn() => view('ticket-buy');
+$showPrivacy = fn() => view('privacy');
+$showTerms = fn() => view('terms');
+
+// Dynamic Sitemap & Robots Route (serves physical files)
+Route::get('/sitemap.xml', function () {
+    if (file_exists(public_path('sitemap.xml'))) {
+        return response(file_get_contents(public_path('sitemap.xml')), 200, ['Content-Type' => 'text/xml']);
+    }
+    abort(404);
+})->name('sitemap');
+
+Route::get('/robots.txt', function () {
+    if (file_exists(public_path('robots.txt'))) {
+        return response(file_get_contents(public_path('robots.txt')), 200, ['Content-Type' => 'text/plain']);
+    }
+    abort(404);
+})->name('robots');
+
+// Public Indonesian / Root Routes
+Route::get('/', $showHome)->name('home');
+Route::get('/ticket', $showTicket)->name('ticket.buy');
+Route::get('/explore', $showExplore)->name('explore');
+Route::get('/facilities', $showFacilities)->name('facilities');
+Route::get('/dining', $showDining)->name('dining');
+Route::get('/gatherings', $showGatherings)->name('gatherings');
+Route::get('/packages', $showPackages)->name('packages');
+Route::get('/about', $showAbout)->name('about');
+Route::get('/faq', $showFaq)->name('faq');
+Route::get('/privacy-policy', $showPrivacy)->name('privacy');
+Route::get('/terms-and-conditions', $showTerms)->name('terms');
+
+// English Public Routes (Prefix /en)
+Route::prefix('en')->group(function () use ($showHome, $showTicket, $showExplore, $showFacilities, $showDining, $showGatherings, $showPackages, $showAbout, $showFaq, $showPrivacy, $showTerms) {
+    Route::get('/', $showHome)->name('en.home');
+    Route::get('/ticket', $showTicket)->name('en.ticket.buy');
+    Route::get('/explore', $showExplore)->name('en.explore');
+    Route::get('/facilities', $showFacilities)->name('en.facilities');
+    Route::get('/dining', $showDining)->name('en.dining');
+    Route::get('/gatherings', $showGatherings)->name('en.gatherings');
+    Route::get('/packages', $showPackages)->name('en.packages');
+    Route::get('/about', $showAbout)->name('en.about');
+    Route::get('/faq', $showFaq)->name('en.faq');
+    Route::get('/privacy-policy', $showPrivacy)->name('en.privacy');
+    Route::get('/terms-and-conditions', $showTerms)->name('en.terms');
 });
 
+// Legacy & Alias Redirects
+Route::get('/corporate-gathering', fn() => redirect()->route('gatherings'));
+Route::get('/group-events', fn() => redirect()->route('gatherings'));
+Route::get('/book', fn() => redirect()->route('ticket.buy'))->name('book');
+Route::get('/checkout', fn() => redirect()->route('ticket.buy'))->name('checkout');
+Route::get('/privacy', fn() => redirect()->route('privacy'));
+Route::get('/terms', fn() => redirect()->route('terms'));
+Route::get('/syarat-ketentuan', fn() => redirect()->route('terms'));
+
+// E-Ticket Voucher Show
 Route::get('/ticket/{order_id}', function ($order_id) {
     $transaction = Transaction::where('order_id', $order_id)->firstOrFail();
 
@@ -80,90 +173,6 @@ Route::get('/ticket/{order_id}', function ($order_id) {
     return view('ticket', compact('transaction'));
 })->name('ticket.show');
 
-Route::get('/book', function () {
-    return redirect()->route('ticket.buy');
-})->name('book');
-
-Route::get('/checkout', function () {
-    return redirect()->route('ticket.buy');
-})->name('checkout');
-
-Route::get('/ticket', function () {
-    return view('ticket-buy');
-})->name('ticket.buy');
-
-Route::get('/packages', function () {
-    $now = now();
-    $packages = \App\Models\TicketPackage::where('is_active', true)
-        ->whereIn('type', ['bundle', 'flash_sale'])
-        ->where(function ($query) use ($now) {
-            $query->whereNull('sales_start')
-                  ->orWhere('sales_start', '<=', $now);
-        })
-        ->where(function ($query) use ($now) {
-            $query->whereNull('sales_end')
-                  ->orWhere('sales_end', '>=', $now);
-        })
-        ->orderBy('sort_order', 'asc')
-        ->orderBy('id', 'asc')
-        ->get();
-    return view('packages', compact('packages'));
-})->name('packages');
-
-Route::get('/explore', function () {
-    $wahanas = Wahana::orderBy('order_column')->get();
-    return view('explore', compact('wahanas'));
-})->name('explore');
-
-Route::get('/facilities', function () {
-    $facilities = Facility::where('type', '!=', 'dining')
-        ->where('is_active', true)
-        ->orderBy('sort_order', 'asc')
-        ->orderBy('id', 'asc')
-        ->get();
-    return view('facilities', compact('facilities'));
-})->name('facilities');
-
-Route::get('/dining', function () {
-    $dinings = Facility::where('type', 'dining')
-        ->where('is_active', true)
-        ->orderBy('sort_order', 'asc')
-        ->orderBy('id', 'asc')
-        ->get();
-    return view('dining', compact('dinings'));
-})->name('dining');
-
-Route::get('/about', function () {
-    $awards = Award::orderBy('sort_order')->get();
-    $settings = Setting::pluck('value', 'key');
-    return view('about', compact('awards', 'settings'));
-})->name('about');
-
-Route::get('/faq', function () {
-    $faqs = Faq::orderBy('sort_order')->get();
-    return view('faq', compact('faqs'));
-})->name('faq');
-
-Route::get('/privacy-policy', function () {
-    return view('privacy');
-})->name('privacy');
-
-Route::get('/privacy', function () {
-    return redirect()->route('privacy');
-});
-
-Route::get('/terms-and-conditions', function () {
-    return view('terms');
-})->name('terms');
-
-Route::get('/terms', function () {
-    return redirect()->route('terms');
-});
-
-Route::get('/syarat-ketentuan', function () {
-    return redirect()->route('terms');
-});
-
 // Scanner App Routes
 Route::get('/scanner/login', ScannerLogin::class)->name('scanner.login');
 Route::get('/scanner', QrScanner::class)->name('scanner.app')->middleware('auth');
@@ -176,7 +185,6 @@ Route::get('/lang/{locale}', function ($locale) {
     return redirect()->back();
 })->name('lang.switch');
 
-// Account Activation Routes
 // Account Activation Routes (Protected: strictly for customer role with rate limiting)
 Route::get('/activate-account', function (Illuminate\Http\Request $request) {
     $email = $request->get('email');
@@ -213,9 +221,7 @@ Route::post('/activate-account', function (Illuminate\Http\Request $request) {
 
 // Customer Authentication Routes (With Brute-force Throttling)
 Route::middleware('guest')->group(function () {
-    Route::get('/login', function () {
-        return view('auth.login');
-    })->name('login');
+    Route::get('/login', fn() => view('auth.login'))->name('login');
 
     Route::post('/login', function (Illuminate\Http\Request $request) {
         $credentials = $request->validate([
@@ -233,9 +239,7 @@ Route::middleware('guest')->group(function () {
         ])->onlyInput('email');
     })->name('login.submit')->middleware('throttle:6,1');
 
-    Route::get('/register', function () {
-        return view('auth.register');
-    })->name('register');
+    Route::get('/register', fn() => view('auth.register'))->name('register');
 
     Route::post('/register', function (Illuminate\Http\Request $request) {
         $request->validate([
@@ -277,9 +281,7 @@ Route::middleware('guest')->group(function () {
 
 // Email Verification Routes
 Route::middleware('auth')->group(function () {
-    Route::get('/email/verify', function () {
-        return view('auth.verify-email');
-    })->name('verification.notice');
+    Route::get('/email/verify', fn() => view('auth.verify-email'))->name('verification.notice');
 
     Route::get('/email/verify/{id}/{hash}', function (Illuminate\Foundation\Auth\EmailVerificationRequest $request) {
         $request->fulfill();
@@ -331,4 +333,3 @@ Route::middleware('auth')->group(function () {
 Route::get('/payment/doku/pay/{order_id}', [\App\Http\Controllers\PaymentController::class, 'redirectToPayment'])->name('payment.doku.pay');
 Route::post('/payment/doku/notification', [\App\Http\Controllers\PaymentController::class, 'handleNotification'])->name('payment.doku.notification');
 Route::get('/payment/doku/redirect', [\App\Http\Controllers\PaymentController::class, 'paymentRedirect'])->name('payment.doku.redirect');
-
