@@ -39,6 +39,7 @@ class Checkout extends Component
 
     public function mount()
     {
+        $this->locale = app()->getLocale() ?: 'id';
         $this->visit_date = date('Y-m-d');
         $this->refreshPackages();
         

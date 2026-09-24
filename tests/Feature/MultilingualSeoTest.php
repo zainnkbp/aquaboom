@@ -73,4 +73,17 @@ class MultilingualSeoTest extends TestCase
         $sitemap->assertSee('aquaboombsb.com/ticket', false);
         $sitemap->assertSee('aquaboombsb.com/en/ticket', false);
     }
+
+    public function test_switching_from_english_to_indonesian_updates_locale_correctly(): void
+    {
+        // 1. Visit English page
+        $enResponse = $this->get('/en/explore');
+        $enResponse->assertStatus(200);
+        $enResponse->assertSee('lang="en"', false);
+
+        // 2. Visit Indonesian root page immediately afterwards
+        $idResponse = $this->get('/explore');
+        $idResponse->assertStatus(200);
+        $idResponse->assertSee('lang="id"', false);
+    }
 }

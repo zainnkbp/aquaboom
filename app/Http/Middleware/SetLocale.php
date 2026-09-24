@@ -19,7 +19,8 @@ class SetLocale
         } elseif ($request->has('lang') && in_array($request->query('lang'), ['id', 'en'], true)) {
             $locale = $request->query('lang');
         } else {
-            $locale = session('locale', 'id');
+            // Default public routes (without /en prefix) are Indonesian
+            $locale = 'id';
         }
 
         session(['locale' => $locale]);
