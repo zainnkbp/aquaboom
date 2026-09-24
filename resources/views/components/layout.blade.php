@@ -253,10 +253,21 @@
     <!-- Top Utility Bar (Desktop Only) - Dark Navy Contrast Strip -->
     <div class="hidden lg:block bg-aqua-navy border-b border-aqua-navy-2/40 py-2">
       <div class="max-w-7xl mx-auto px-6 lg:px-10 flex justify-between items-center gap-4 text-[11px]">
-        <a href="{{ $localUrl('/gatherings') }}" class="text-aqua-gold hover:text-white font-bold tracking-wider uppercase flex items-center gap-2 transition-colors">
-          <span class="bg-aqua-gold text-aqua-navy text-[9px] font-black px-2 py-0.5 rounded-full">PROMO</span>
-          <span>🎉 {{ $currentLocale === 'en' ? 'Special Corporate & Group Gathering Rates (Min. 10 Pax) — Inquire Now!' : 'Paket Promo Corporate & Family Gathering (Min. 10 Pax) — Konsultasi Sekarang!' }}</span>
-        </a>
+        @if(($siteSettings['top_promo_is_active'] ?? '1') !== '0')
+          @php
+            $promoLink = $siteSettings['top_promo_link'] ?? '/gatherings';
+            $promoBadge = $siteSettings['top_promo_badge'] ?? 'PROMO';
+            $promoText = $currentLocale === 'en' 
+              ? ($siteSettings['top_promo_text_en'] ?? '🎉 Special Corporate & Group Gathering Rates (Min. 10 Pax) — Inquire Now!')
+              : ($siteSettings['top_promo_text'] ?? '🎉 Paket Promo Corporate & Family Gathering (Min. 10 Pax) — Konsultasi Sekarang!');
+          @endphp
+          <a href="{{ $localUrl($promoLink) }}" class="text-aqua-gold hover:text-white font-bold tracking-wider uppercase flex items-center gap-2 transition-colors">
+            <span class="bg-aqua-gold text-aqua-navy text-[9px] font-black px-2 py-0.5 rounded-full">{{ $promoBadge }}</span>
+            <span>{{ $promoText }}</span>
+          </a>
+        @else
+          <div></div>
+        @endif
 
         <!-- Language Switcher (Direct Alternate URL Switch) -->
         <div class="flex items-center bg-white/10 rounded-full p-0.5 border border-white/15 shrink-0">

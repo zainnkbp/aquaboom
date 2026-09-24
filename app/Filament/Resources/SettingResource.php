@@ -82,6 +82,11 @@ class SettingResource extends Resource
                     ->label('Pengaturan')
                     ->formatStateUsing(function (string $state): string {
                         return match ($state) {
+                            'top_promo_is_active' => '🔘 Status Bar Promo Header (1: Tampil, 0: Sembunyi)',
+                            'top_promo_badge' => '🏷️ Badge Promo Header (cth: PROMO)',
+                            'top_promo_text' => '📢 Teks Promo Header (ID)',
+                            'top_promo_text_en' => '📢 Teks Promo Header (EN)',
+                            'top_promo_link' => '🔗 Link Tujuan Promo Header (cth: /gatherings)',
                             'contact_whatsapp' => '📱 Nomor WhatsApp Sales & Gathering',
                             'contact_phone' => '☎️ Nomor Telepon Hotline',
                             'contact_email' => '✉️ Email Resmi',
