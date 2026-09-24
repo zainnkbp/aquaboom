@@ -8,16 +8,18 @@
   $enUrl = url($normalizedPath === '' ? 'en' : 'en/' . $normalizedPath);
   $canonicalUrl = $currentLocale === 'en' ? $enUrl : $idUrl;
 
+  $siteSettings = \App\Models\Setting::pluck('value', 'key');
+
   $seoSchema = [
       '@context' => 'https://schema.org',
       '@type' => 'WaterPark',
       'name' => 'Aquaboom Waterpark Balikpapan',
-      'description' => 'Waterpark tertinggi di Balikpapan di lantai 7 Pentacity Mall BSB dengan berbagai wahana air seru untuk keluarga.',
+      'description' => $siteSettings['hero_description'] ?? 'Waterpark tertinggi di Balikpapan di lantai 7 Pentacity Mall BSB dengan berbagai wahana air seru untuk keluarga.',
       'url' => 'https://aquaboombsb.com',
-      'telephone' => '+625428526100',
+      'telephone' => $siteSettings['contact_phone'] ?? '+625428526100',
       'address' => [
           '@type' => 'PostalAddress',
-          'streetAddress' => 'BSB, Pentacity Mall Lt. 7, Jl. Jenderal Sudirman No.47, Gunung Bahagia',
+          'streetAddress' => $siteSettings['contact_address'] ?? 'BSB, Pentacity Mall Lt. 7, Jl. Jenderal Sudirman No.47, Gunung Bahagia',
           'addressLocality' => 'Balikpapan',
           'addressRegion' => 'Kalimantan Timur',
           'postalCode' => '76114',
@@ -32,7 +34,7 @@
           [
               '@type' => 'OpeningHoursSpecification',
               'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-              'opens' => '09:00',
+              'opens' => '08:00',
               'closes' => '18:00'
           ]
       ]
@@ -699,12 +701,16 @@
         <div>
           <h4 class="text-xs font-black text-aqua-gold mb-5 uppercase tracking-[0.2em]">{{ $currentLocale === 'en' ? 'Operating Hours' : 'Jam Operasional' }}</h4>
           <p class="text-aqua-gold text-xs font-black uppercase tracking-wider mb-1">{{ $currentLocale === 'en' ? 'Open Daily (Monday — Sunday)' : 'Buka Setiap Hari (Senin — Minggu)' }}</p>
-          <p class="text-white text-base font-black tracking-tight mb-2">09:00 — 18:00 WITA</p>
+          <p class="text-white text-base font-black tracking-tight mb-2">
+            {{ $currentLocale === 'en' 
+                ? ($siteSettings['hero_subheadline_en'] ?? 'Daily: 08:00 AM — 6:00 PM WITA') 
+                : ($siteSettings['hero_subheadline'] ?? 'Setiap Hari: 08.00 — 18.00 WITA') }}
+          </p>
           <p class="text-amber-400 text-xs font-semibold mb-4">{{ $currentLocale === 'en' ? 'Last admission: 5:00 PM WITA' : 'Batas masuk terakhir: 17:00 WITA' }}</p>
           <div class="bg-aqua-navy-2 rounded-2xl p-4 border border-aqua-gold/10">
             <p class="text-white/50 text-xs leading-relaxed font-semibold">
-              <span class="text-aqua-gold/80 font-black block mb-1">📍 7F - Shared Common Area</span>
-              7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan, Pentacity Mall, BSB
+              <span class="text-aqua-gold/80 font-black block mb-1">📍 {{ $currentLocale === 'en' ? 'Location' : 'Lokasi' }}</span>
+              {{ $siteSettings['contact_address'] ?? '7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan, Pentacity Mall, BSB' }}
             </p>
           </div>
         </div>

@@ -85,7 +85,9 @@
       <!-- Info Bar (1 Single Source of Truth) -->
       <div class="bg-aqua-navy rounded-[28px] p-8 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-white text-center border border-aqua-gold/20 shadow-xl">
         <div>
-          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">09:00 — 18:00</div>
+          <div class="text-aqua-gold text-2xl md:text-3xl font-black mb-1">
+            {{ !empty($settings['hero_subheadline']) ? preg_replace('/^(Setiap Hari:\s*|Daily:\s*)/i', '', $settings['hero_subheadline']) : '08:00 — 18:00 WITA' }}
+          </div>
           <div class="text-xs font-black uppercase tracking-widest text-white/50">
             {{ App::getLocale() === 'en' ? 'Open Daily' : 'Buka Setiap Hari' }}
           </div>
@@ -107,7 +109,7 @@
           <div class="text-xs font-black uppercase tracking-widest text-white/50">
             7F - Shared Common Area
           </div>
-          <div class="text-xs font-semibold text-white/70 mt-1">7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan</div>
+          <div class="text-xs font-semibold text-white/70 mt-1">{{ $settings['contact_address'] ?? '7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan' }}</div>
         </div>
       </div>
 

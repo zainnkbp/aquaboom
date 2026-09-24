@@ -70,14 +70,14 @@
       {{-- Sub-headline --}}
       <p class="text-xl md:text-2xl font-black text-white/80 uppercase tracking-widest mb-3">
         {!! App::getLocale() === 'en' 
-          ? (!empty($settings['hero_subheadline_en']) && !str_contains($settings['hero_subheadline_en'], '10') ? $settings['hero_subheadline_en'] : 'Daily: 09:00 AM — 6:00 PM WITA')
-          : (!empty($settings['hero_subheadline']) && !str_contains($settings['hero_subheadline'], '10') ? $settings['hero_subheadline'] : 'Setiap Hari: 09.00 — 18.00 WITA') 
+          ? (!empty($settings['hero_subheadline_en']) ? $settings['hero_subheadline_en'] : 'Daily: 08:00 AM — 6:00 PM WITA')
+          : (!empty($settings['hero_subheadline']) ? $settings['hero_subheadline'] : 'Setiap Hari: 08.00 — 18.00 WITA') 
         !!}
       </p>
       <p class="text-base text-white/55 font-semibold max-w-lg mb-10 leading-relaxed">
         {!! App::getLocale() === 'en' 
-          ? (!empty($settings['hero_description_en']) && !str_contains($settings['hero_description_en'], 'Indonesia') && !str_contains($settings['hero_description_en'], 'only waterpark') ? $settings['hero_description_en'] : "Aquaboom Waterpark Balikpapan — Balikpapan's iconic waterpark located on 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.")
-          : (!empty($settings['hero_description']) && !str_contains($settings['hero_description'], 'Indonesia') && !str_contains($settings['hero_description'], 'Satu-satunya') ? $settings['hero_description'] : "Aquaboom Waterpark Balikpapan — Waterpark ikonik di Balikpapan yang berada di 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.")
+          ? (!empty($settings['hero_description_en']) ? $settings['hero_description_en'] : "Aquaboom Waterpark Balikpapan — Balikpapan's iconic waterpark located on 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.")
+          : (!empty($settings['hero_description']) ? $settings['hero_description'] : "Aquaboom Waterpark Balikpapan — Waterpark ikonik di Balikpapan yang berada di 7F - Shared Common Area for Astara Hotel & Pentacity Hotel Balikpapan. Managed by Astara Hotel Balikpapan.")
         !!}
       </p>
 

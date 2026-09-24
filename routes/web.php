@@ -102,9 +102,9 @@ $showFaq = function () {
     return view('faq', compact('faqs'));
 };
 
-$showTicket = fn() => view('ticket-buy');
-$showPrivacy = fn() => view('privacy');
-$showTerms = fn() => view('terms');
+$showTicket = fn() => view('ticket-buy', ['settings' => Setting::pluck('value', 'key')]);
+$showPrivacy = fn() => view('privacy', ['settings' => Setting::pluck('value', 'key')]);
+$showTerms = fn() => view('terms', ['settings' => Setting::pluck('value', 'key')]);
 
 // Dynamic Sitemap & Robots Route (serves physical files)
 Route::get('/sitemap.xml', function () {
