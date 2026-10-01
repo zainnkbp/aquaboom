@@ -98,10 +98,16 @@ class PaymentController extends Controller
         }
 
         // Proses status pembayaran
-        if (strtoupper($transactionStatus) === 'SUCCESS') {
-            if ($transaction->status === 'pending') {
-                $transaction->update(['status' => 'paid']);
+        $channelId = $data['channel']['id'] ?? $data['service']['id'] ?? $data['channel']['name'] ?? $data['payment_channel'] ?? null;
 
+        if (strtoupper($transactionStatus) === 'SUCCESS') {
+            $updateData = ['status' => 'paid'];
+            if ($channelId && empty($transaction->payment_channel)) {
+                $updateData['payment_channel'] = $channelId;
+            }
+            $transaction->update($updateData);
+
+            if ($transaction->status === 'paid') {
                 // Kirim e-ticket secara otomatis
                 try {
                     Mail::to($transaction->customer_email)->send(new TicketSent($transaction));
@@ -160,8 +166,15 @@ class PaymentController extends Controller
                     ''
                 );
 
+                $channelId = $statusCheck['channel']['id'] ?? $statusCheck['transaction']['channel_id'] ?? $statusCheck['service']['id'] ?? null;
+
                 if ($remoteStatus === 'SUCCESS') {
-                    $transaction->update(['status' => 'paid']);
+                    $updateData = ['status' => 'paid'];
+                    if ($channelId && empty($transaction->payment_channel)) {
+                        $updateData['payment_channel'] = $channelId;
+                    }
+                    $transaction->update($updateData);
+
                     try {
                         Mail::to($transaction->customer_email)->send(new TicketSent($transaction));
                         Log::info('PaymentRedirect: Transaction verified as PAID via DOKU API and E-Ticket sent to ' . $transaction->customer_email);

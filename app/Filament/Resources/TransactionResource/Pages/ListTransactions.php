@@ -25,7 +25,12 @@ class ListTransactions extends ListRecords
             ->whereIn('status', ['paid', 'scanned'])
             ->count();
 
-        $expiredCount = Transaction::whereDate('visit_date', '<', $today)
+        $upcomingCount = Transaction::whereDate('visit_date', '>', $today)
+            ->where('is_redeemed', false)
+            ->whereIn('status', ['paid', 'scanned'])
+            ->count();
+
+        $noShowCount = Transaction::whereDate('visit_date', '<', $today)
             ->where('is_redeemed', false)
             ->where('status', 'paid')
             ->count();
@@ -43,19 +48,25 @@ class ListTransactions extends ListRecords
             'today' => Tab::make('Kunjungan Hari Ini')
                 ->icon('heroicon-m-calendar-days')
                 ->badge($todayCount ?: null)
-                ->badgeColor('success')
+                ->badgeColor('warning')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('visit_date', $today)->whereIn('status', ['paid', 'scanned'])),
 
-            'expired' => Tab::make('Kunjungan Expired / Terlewat')
+            'upcoming' => Tab::make('Mendatang (Belum Datang)')
+                ->icon('heroicon-m-calendar')
+                ->badge($upcomingCount ?: null)
+                ->badgeColor('success')
+                ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('visit_date', '>', $today)->where('is_redeemed', false)->whereIn('status', ['paid', 'scanned'])),
+
+            'no_show' => Tab::make('No Show / Expired')
                 ->icon('heroicon-m-clock')
-                ->badge($expiredCount ?: null)
+                ->badge($noShowCount ?: null)
                 ->badgeColor('danger')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('visit_date', '<', $today)->where('is_redeemed', false)->where('status', 'paid')),
 
             'scanned' => Tab::make('Sudah Check-In')
                 ->icon('heroicon-m-check-badge')
                 ->badge($scannedCount ?: null)
-                ->badgeColor('info')
+                ->badgeColor('gray')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where(function ($q) {
                     $q->where('is_redeemed', true)->orWhere('status', 'scanned');
                 })),

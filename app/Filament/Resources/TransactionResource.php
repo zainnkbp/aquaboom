@@ -123,10 +123,20 @@ class TransactionResource extends Resource
                                 'failed' => 'danger',
                                 default => 'gray',
                             }),
-                        TextEntry::make('is_redeemed')
-                            ->label('Status Penggunaan')
+                        TextEntry::make('attendance_status')
+                            ->label('Status Kehadiran')
                             ->badge()
-                            ->state(fn (Transaction $record): string => $record->is_redeemed ? 'Sudah Dipakai (' . ($record->redeemed_at ? $record->redeemed_at->format('d M Y H:i') : '') . ')' : 'Belum Dipakai (Aktif)')
+                            ->color(fn (string $state): string => match ($state) {
+                                'Checked In' => 'gray',
+                                'Hari Ini' => 'warning',
+                                'Belum Datang' => 'success',
+                                'No Show / Expired' => 'danger',
+                                default => 'gray',
+                            }),
+                        TextEntry::make('is_redeemed')
+                            ->label('Status Check-In Gerbang')
+                            ->badge()
+                            ->state(fn (Transaction $record): string => $record->is_redeemed ? 'Sudah Digunakan (' . ($record->redeemed_at ? $record->redeemed_at->format('d M Y H:i') : '') . ')' : 'Belum Digunakan')
                             ->color(fn (Transaction $record): string => $record->is_redeemed ? 'gray' : 'success'),
                         TextEntry::make('customer_name')
                             ->label('Nama Pelanggan')
@@ -143,10 +153,7 @@ class TransactionResource extends Resource
                             ->color('primary')
                             ->weight('bold'),
                         TextEntry::make('created_at')
-                            ->label('Waktu Pemesanan')
-                            ->dateTime('d M Y H:i:s'),
-                        TextEntry::make('updated_at')
-                            ->label('Update Terakhir')
+                            ->label('Waktu Pembelian')
                             ->dateTime('d M Y H:i:s'),
                     ]),
 
@@ -205,8 +212,13 @@ class TransactionResource extends Resource
 
                 Section::make('Rincian Finansial & Pembayaran (Financial Summary)')
                     ->icon('heroicon-o-calculator')
-                    ->columns(3)
+                    ->columns(4)
                     ->schema([
+                        TextEntry::make('payment_channel_label')
+                            ->label('Metode / Channel Pembayaran')
+                            ->badge()
+                            ->color('info')
+                            ->icon('heroicon-m-credit-card'),
                         TextEntry::make('subtotal')
                             ->label('Subtotal Tiket & Fasilitas')
                             ->money('IDR'),
@@ -241,6 +253,10 @@ class TransactionResource extends Resource
                     ->searchable()
                     ->badge()
                     ->color('warning'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Waktu Beli')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('customer_name')
                     ->label('Nama Pelanggan')
                     ->searchable()
@@ -262,7 +278,7 @@ class TransactionResource extends Resource
                         }
                         return implode(', ', $parts);
                     })
-                    ->limit(40)
+                    ->limit(35)
                     ->tooltip(function (Transaction $record): string {
                         $parts = [];
                         foreach ($record->items as $item) {
@@ -273,6 +289,10 @@ class TransactionResource extends Resource
                         }
                         return implode(', ', $parts);
                     }),
+                Tables\Columns\TextColumn::make('payment_channel_label')
+                    ->label('Metode Bayar')
+                    ->badge()
+                    ->color('gray'),
                 Tables\Columns\TextColumn::make('total_price')
                     ->label('Total Bayar')
                     ->money('IDR')
@@ -285,11 +305,16 @@ class TransactionResource extends Resource
                     ->sortable()
                     ->color('primary')
                     ->weight('bold'),
-                Tables\Columns\TextColumn::make('is_redeemed')
-                    ->label('Status Masuk')
+                Tables\Columns\TextColumn::make('attendance_status')
+                    ->label('Kehadiran')
                     ->badge()
-                    ->state(fn (Transaction $record): string => $record->is_redeemed ? 'Checked In' : 'Belum Datang')
-                    ->color(fn (Transaction $record): string => $record->is_redeemed ? 'gray' : 'success'),
+                    ->color(fn (string $state): string => match ($state) {
+                        'Checked In' => 'gray',
+                        'Hari Ini' => 'warning',
+                        'Belum Datang' => 'success',
+                        'No Show / Expired' => 'danger',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status Bayar')
                     ->badge()
@@ -300,11 +325,6 @@ class TransactionResource extends Resource
                         'failed' => 'danger',
                         default => 'gray',
                     }),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Waktu Transaksi')
-                    ->dateTime('d M Y H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -313,7 +333,7 @@ class TransactionResource extends Resource
                     ->label('Kunjungan Hari Ini')
                     ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query->whereDate('visit_date', today())),
                 Tables\Filters\Filter::make('visit_date_expired')
-                    ->label('Kunjungan Expired / Terlewat')
+                    ->label('No Show / Expired')
                     ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query->whereDate('visit_date', '<', today())->where('is_redeemed', false)->where('status', 'paid')),
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status Pembayaran')
@@ -326,8 +346,40 @@ class TransactionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
-                    ->label('Lihat Detail')
+                    ->label('Detail')
                     ->icon('heroicon-o-eye'),
+                Tables\Actions\Action::make('reschedule')
+                    ->label('Reschedule')
+                    ->icon('heroicon-o-calendar')
+                    ->color('warning')
+                    ->visible(fn (Transaction $record): bool => in_array($record->status, ['paid', 'scanned']) && !$record->is_redeemed)
+                    ->form([
+                        Forms\Components\DatePicker::make('visit_date')
+                            ->label('Tanggal Kunjungan Baru')
+                            ->minDate(today())
+                            ->default(fn (Transaction $record) => $record->visit_date)
+                            ->required(),
+                        Forms\Components\Textarea::make('reschedule_reason')
+                            ->label('Alasan / Catatan Reschedule')
+                            ->placeholder('Contoh: Permintaan pelanggan via WhatsApp karena cuaca / kendala.')
+                            ->required(),
+                    ])
+                    ->action(function (Transaction $record, array $data): void {
+                        $oldDate = $record->visit_date?->format('d M Y') ?? '-';
+                        $newDate = \Carbon\Carbon::parse($data['visit_date'])->format('d M Y');
+                        $note = "\n[" . now()->format('d M Y H:i') . ' - Reschedule oleh ' . (auth()->user()?->name ?? 'Admin') . "]: Tanggal dipindah dari {$oldDate} ke {$newDate}. Catatan: " . $data['reschedule_reason'];
+
+                        $record->update([
+                            'visit_date' => $data['visit_date'],
+                            'notes' => trim(($record->notes ?? '') . $note),
+                        ]);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Jadwal Berhasil Diubah')
+                            ->body("Tanggal kunjungan untuk tiket {$record->order_id} berhasil diubah ke {$newDate}.")
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

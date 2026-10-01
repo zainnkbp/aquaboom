@@ -44,6 +44,63 @@ class Transaction extends Model
     }
 
     /**
+     * Label representasi metode pembayaran (BCA VA, QRIS, dll.)
+     */
+    public function getPaymentChannelLabelAttribute(): string
+    {
+        if ((float)$this->total_price <= 0) {
+            return 'Gratis (Promo 100%)';
+        }
+
+        $channel = strtoupper($this->payment_channel ?? '');
+
+        if (empty($channel)) {
+            return in_array($this->status, ['paid', 'scanned']) ? 'DOKU Online Payment' : 'Menunggu Pembayaran';
+        }
+
+        return match (true) {
+            str_contains($channel, 'BCA') => 'BCA Virtual Account',
+            str_contains($channel, 'MANDIRI') => 'Mandiri Virtual Account',
+            str_contains($channel, 'BRI') => 'BRI Virtual Account',
+            str_contains($channel, 'BNI') => 'BNI Virtual Account',
+            str_contains($channel, 'PERMATA') => 'Permata Virtual Account',
+            str_contains($channel, 'CIMB') => 'CIMB Niaga Virtual Account',
+            str_contains($channel, 'DANAMON') => 'Danamon Virtual Account',
+            str_contains($channel, 'QRIS') => 'QRIS (GoPay / OVO / Dana / BCA)',
+            str_contains($channel, 'CREDIT_CARD') || str_contains($channel, 'CARD') => 'Kartu Kredit / Debit Online',
+            str_contains($channel, 'SHOPEEPAY') => 'ShopeePay',
+            str_contains($channel, 'OVO') => 'OVO',
+            str_contains($channel, 'DOKU') => 'DOKU e-Wallet',
+            str_contains($channel, 'ALFAMART') => 'Alfamart',
+            str_contains($channel, 'INDOMARET') => 'Indomaret',
+            default => ucwords(str_replace(['_', '-'], ' ', strtolower($channel))),
+        };
+    }
+
+    /**
+     * Status Kehadiran / Check-In Pengunjung
+     */
+    public function getAttendanceStatusAttribute(): string
+    {
+        if ($this->is_redeemed) {
+            return 'Checked In';
+        }
+
+        $visit = \Carbon\Carbon::parse($this->visit_date)->startOfDay();
+        $today = \Carbon\Carbon::today();
+
+        if ($visit->lt($today)) {
+            return 'No Show / Expired';
+        }
+
+        if ($visit->equalTo($today)) {
+            return 'Hari Ini';
+        }
+
+        return 'Belum Datang';
+    }
+
+    /**
      * Generate format kode tiket ringkas dan ramah input manual: AQB-XXXX-XXXX-XXXX
      * Menggunakan 12 karakter alfanumerik yang jelas tanpa huruf yang membingungkan.
      */
