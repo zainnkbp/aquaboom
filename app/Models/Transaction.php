@@ -82,15 +82,27 @@ class Transaction extends Model
      */
     public function getAttendanceStatusAttribute(): string
     {
-        if ($this->is_redeemed) {
+        if ($this->is_redeemed || $this->status === 'scanned') {
             return 'Checked In';
+        }
+
+        if (in_array($this->status, ['failed', 'cancelled'])) {
+            return 'Cancel';
         }
 
         $visit = \Carbon\Carbon::parse($this->visit_date)->startOfDay();
         $today = \Carbon\Carbon::today();
 
+        if ($this->status === 'pending') {
+            if ($visit->lt($today)) {
+                return 'Cancel';
+            }
+            return 'Menunggu Bayar';
+        }
+
+        // Status 'paid'
         if ($visit->lt($today)) {
-            return 'No Show / Expired';
+            return 'No Show';
         }
 
         if ($visit->equalTo($today)) {

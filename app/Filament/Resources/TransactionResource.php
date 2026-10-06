@@ -114,30 +114,39 @@ class TransactionResource extends Resource
                             ->color('warning')
                             ->copyable(),
                         TextEntry::make('status')
-                            ->label('Status Pembayaran')
+                            ->label('Status Tiket')
                             ->badge()
+                            ->formatStateUsing(fn (string $state): string => match ($state) {
+                                'paid' => 'Paid (Lunas)',
+                                'scanned' => 'Scanned (Masuk)',
+                                'pending' => 'Pending (Menunggu Bayar)',
+                                'failed', 'cancelled' => 'Cancel / Batal',
+                                default => ucfirst($state),
+                            })
                             ->color(fn (string $state): string => match ($state) {
                                 'paid' => 'success',
                                 'scanned' => 'info',
                                 'pending' => 'warning',
-                                'failed' => 'danger',
+                                'failed', 'cancelled' => 'danger',
                                 default => 'gray',
                             }),
                         TextEntry::make('attendance_status')
                             ->label('Status Kehadiran')
                             ->badge()
                             ->color(fn (string $state): string => match ($state) {
-                                'Checked In' => 'gray',
+                                'Checked In' => 'info',
                                 'Hari Ini' => 'warning',
                                 'Belum Datang' => 'success',
-                                'No Show / Expired' => 'danger',
+                                'No Show' => 'danger',
+                                'Cancel' => 'danger',
+                                'Menunggu Bayar' => 'warning',
                                 default => 'gray',
                             }),
                         TextEntry::make('is_redeemed')
                             ->label('Status Check-In Gerbang')
                             ->badge()
                             ->state(fn (Transaction $record): string => $record->is_redeemed ? 'Sudah Digunakan (' . ($record->redeemed_at ? $record->redeemed_at->format('d M Y H:i') : '') . ')' : 'Belum Digunakan')
-                            ->color(fn (Transaction $record): string => $record->is_redeemed ? 'gray' : 'success'),
+                            ->color(fn (Transaction $record): string => $record->is_redeemed ? 'info' : 'gray'),
                         TextEntry::make('customer_name')
                             ->label('Nama Pelanggan')
                             ->weight('bold'),
@@ -309,20 +318,29 @@ class TransactionResource extends Resource
                     ->label('Kehadiran')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Checked In' => 'gray',
+                        'Checked In' => 'info',
                         'Hari Ini' => 'warning',
                         'Belum Datang' => 'success',
-                        'No Show / Expired' => 'danger',
+                        'No Show' => 'danger',
+                        'Cancel' => 'danger',
+                        'Menunggu Bayar' => 'warning',
                         default => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status Bayar')
+                    ->label('Status Tiket')
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'paid' => 'Paid',
+                        'scanned' => 'Scanned',
+                        'pending' => 'Pending',
+                        'failed', 'cancelled' => 'Cancel',
+                        default => ucfirst($state),
+                    })
                     ->color(fn (string $state): string => match ($state) {
                         'paid' => 'success',
                         'scanned' => 'info',
                         'pending' => 'warning',
-                        'failed' => 'danger',
+                        'failed', 'cancelled' => 'danger',
                         default => 'gray',
                     }),
             ])
@@ -333,15 +351,15 @@ class TransactionResource extends Resource
                     ->label('Kunjungan Hari Ini')
                     ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query->whereDate('visit_date', today())),
                 Tables\Filters\Filter::make('visit_date_expired')
-                    ->label('No Show / Expired')
+                    ->label('No Show (Kunjungan Lewat)')
                     ->query(fn (\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder => $query->whereDate('visit_date', '<', today())->where('is_redeemed', false)->where('status', 'paid')),
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('Status Pembayaran')
+                    ->label('Status Tiket')
                     ->options([
-                        'pending' => 'Pending',
                         'paid' => 'Paid (Lunas)',
-                        'failed' => 'Failed',
-                        'scanned' => 'Scanned',
+                        'scanned' => 'Scanned (Masuk)',
+                        'pending' => 'Pending (Menunggu Bayar)',
+                        'failed' => 'Cancel (Batal / Gagal)',
                     ]),
             ])
             ->actions([

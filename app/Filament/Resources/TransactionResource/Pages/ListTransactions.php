@@ -41,6 +41,8 @@ class ListTransactions extends ListRecords
 
         $pendingCount = Transaction::where('status', 'pending')->count();
 
+        $cancelledCount = Transaction::whereIn('status', ['failed', 'cancelled'])->count();
+
         return [
             'all' => Tab::make('Semua Transaksi')
                 ->badge(Transaction::count()),
@@ -57,7 +59,7 @@ class ListTransactions extends ListRecords
                 ->badgeColor('success')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('visit_date', '>', $today)->where('is_redeemed', false)->whereIn('status', ['paid', 'scanned'])),
 
-            'no_show' => Tab::make('No Show / Expired')
+            'no_show' => Tab::make('No Show')
                 ->icon('heroicon-m-clock')
                 ->badge($noShowCount ?: null)
                 ->badgeColor('danger')
@@ -66,7 +68,7 @@ class ListTransactions extends ListRecords
             'scanned' => Tab::make('Sudah Check-In')
                 ->icon('heroicon-m-check-badge')
                 ->badge($scannedCount ?: null)
-                ->badgeColor('gray')
+                ->badgeColor('info')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where(function ($q) {
                     $q->where('is_redeemed', true)->orWhere('status', 'scanned');
                 })),
@@ -76,6 +78,12 @@ class ListTransactions extends ListRecords
                 ->badge($pendingCount ?: null)
                 ->badgeColor('warning')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'pending')),
+
+            'cancelled' => Tab::make('Batal / Cancel')
+                ->icon('heroicon-m-x-circle')
+                ->badge($cancelledCount ?: null)
+                ->badgeColor('danger')
+                ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('status', ['failed', 'cancelled'])),
         ];
     }
 }
