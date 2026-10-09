@@ -132,11 +132,11 @@ class TicketPackage extends Model
         if (preg_match_all('/<li[^>]*>(.*?)<\/li>/is', $clean, $matches)) {
             $items = $matches[1];
         } else {
-            $clean = strip_tags($clean);
-            $clean = preg_replace('/\s+/', ' ', trim($clean));
-
-            if (str_contains($clean, '+')) {
-                $parts = preg_split('/\s*\+\s*/', $clean);
+            $stripped = strip_tags($clean);
+            if (str_contains($stripped, "\n") || str_contains($stripped, '•') || str_contains($stripped, '·')) {
+                $items = preg_split('/[\r\n]+|[•·]\s*/', $stripped);
+            } elseif (str_contains($stripped, '+')) {
+                $parts = preg_split('/\s*\+\s*/', $stripped);
                 $items = [];
                 foreach ($parts as $p) {
                     if (preg_match('/^(.*?)\.\s*(Hemat\s+hingga.*|Save\s+up\s+to.*)$/i', $p, $m)) {
@@ -146,16 +146,17 @@ class TicketPackage extends Model
                         $items[] = trim($p);
                     }
                 }
-            } elseif (str_contains($clean, ';')) {
-                $items = explode(';', $clean);
+            } elseif (str_contains($stripped, ';')) {
+                $items = explode(';', $stripped);
             } else {
-                $items = preg_split('/(?<=[.!?])\s+/', $clean);
+                $items = preg_split('/(?<=[.!?])\s+/', $stripped);
             }
         }
 
         $result = [];
         foreach ($items as $item) {
             $t = trim(strip_tags($item));
+            $t = ltrim($t, "•·- \t\n\r\0\x0B");
             $t = rtrim($t, '.');
             if (!empty($t)) {
                 $result[] = $t;

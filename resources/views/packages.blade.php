@@ -128,15 +128,15 @@
                   @if($package->validity_type)
                     <p class="text-slate-400 text-[11px] font-semibold mt-2 italic">
                       @if($package->validity_type === 'weekday')
-                        * Berlaku Weekday (Senin - Jumat)
+                        * {{ App::getLocale() === 'en' ? 'Valid Weekday (Mon - Fri)' : 'Berlaku Weekday (Senin - Jumat)' }}
                       @elseif($package->validity_type === 'weekend')
-                        * Berlaku Weekend (Sabtu - Minggu, Libur)
+                        * {{ App::getLocale() === 'en' ? 'Valid Weekend & Public Holidays' : 'Berlaku Weekend (Sabtu - Minggu, Libur)' }}
                       @elseif($package->validity_type === 'peak_season')
-                        * Berlaku High / Peak Season
+                        * {{ App::getLocale() === 'en' ? 'Valid High / Peak Season' : 'Berlaku High / Peak Season' }}
                       @elseif($package->validity_type === 'specific_holidays')
-                        * Berlaku Khusus Event / Hari Libur Tertentu
+                        * {{ App::getLocale() === 'en' ? 'Valid on Specific Holidays' : 'Berlaku Khusus Event / Hari Libur Tertentu' }}
                       @else
-                        * Berlaku setiap hari
+                        * {{ App::getLocale() === 'en' ? 'Valid Every Day (Every Day Pass)' : 'Berlaku Setiap Hari (Every Day Pass)' }}
                       @endif
                     </p>
                   @endif

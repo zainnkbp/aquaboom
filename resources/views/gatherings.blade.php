@@ -177,11 +177,30 @@
                   </div>
 
                   @if(!empty($package->terms_and_conditions))
-                    <div class="mb-6 p-5 bg-aqua-cream rounded-2xl border border-aqua-cream-2 text-xs font-semibold text-slate-700 leading-relaxed whitespace-pre-line">
-                      <div class="font-black text-aqua-navy uppercase tracking-wider mb-2">
-                        {{ App::getLocale() === 'en' ? 'Inclusions & Conditions:' : 'Fasilitas & Ketentuan:' }}
+                    <div class="mb-6 p-5 bg-aqua-cream rounded-2xl border border-aqua-cream-2 text-xs font-semibold text-slate-700 leading-relaxed">
+                      <div class="font-black text-aqua-navy uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shadow-xs">
+                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                        </span>
+                        <span>{{ App::getLocale() === 'en' ? 'Inclusions & Conditions:' : 'Fasilitas & Ketentuan:' }}</span>
                       </div>
-                      {!! App::getLocale() === 'en' && !empty($package->terms_and_conditions_en) ? $package->terms_and_conditions_en : $package->terms_and_conditions !!}
+                      @php
+                        $tncRaw = App::getLocale() === 'en' && !empty($package->terms_and_conditions_en) ? $package->terms_and_conditions_en : $package->terms_and_conditions;
+                        $tncLines = preg_split('/[\r\n]+|[•·]\s*/', strip_tags($tncRaw));
+                      @endphp
+                      <div class="space-y-2">
+                        @foreach($tncLines as $tLine)
+                          @php $tLine = trim(ltrim($tLine, "•·- \t\n\r\0\x0B")); @endphp
+                          @if(!empty($tLine))
+                            <div class="flex items-start gap-2.5">
+                              <svg class="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                              </svg>
+                              <span class="leading-snug">{{ $tLine }}</span>
+                            </div>
+                          @endif
+                        @endforeach
+                      </div>
                     </div>
                   @endif
 

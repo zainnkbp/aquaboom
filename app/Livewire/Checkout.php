@@ -30,6 +30,7 @@ class Checkout extends Component
     public $promoError = '';
 
     public $locale = 'id';
+    public string $selectedCategory = 'all';
     public $addon_quantities = [];
     public $addons;
     public bool $showConfirmationModal = false;
@@ -129,6 +130,41 @@ class Checkout extends Component
             $newQuantities[$pkg->id] = $this->quantities[$pkg->id] ?? 0;
         }
         $this->quantities = $newQuantities;
+    }
+
+    public function setCategory(string $category): void
+    {
+        $this->selectedCategory = $category;
+    }
+
+    public function getFilteredPackagesProperty()
+    {
+        if (!$this->packages) {
+            return collect();
+        }
+
+        if ($this->selectedCategory === 'regular') {
+            return $this->packages->filter(fn ($p) => $p->type === 'regular')->values();
+        }
+
+        if ($this->selectedCategory === 'bundle') {
+            return $this->packages->filter(fn ($p) => in_array($p->type, ['bundle', 'flash_sale']))->values();
+        }
+
+        return $this->packages;
+    }
+
+    public function getCategoryCountsProperty(): array
+    {
+        if (!$this->packages) {
+            return ['all' => 0, 'regular' => 0, 'bundle' => 0];
+        }
+
+        return [
+            'all' => $this->packages->count(),
+            'regular' => $this->packages->filter(fn ($p) => $p->type === 'regular')->count(),
+            'bundle' => $this->packages->filter(fn ($p) => in_array($p->type, ['bundle', 'flash_sale']))->count(),
+        ];
     }
 
     public function incrementQuantity($packageId)

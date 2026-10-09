@@ -260,7 +260,7 @@
                 @endif
 
                 <div class="absolute top-4 right-4 bg-aqua-navy/80 text-aqua-gold text-[10px] font-black px-3 py-1 rounded-full backdrop-blur-sm border border-aqua-gold/30 uppercase">
-                  {{ $pkg->validity_type === 'weekday' ? 'Weekday' : ($pkg->validity_type === 'weekend' ? 'Weekend' : 'All Days') }}
+                  {{ $pkg->validity_type === 'weekday' ? 'Weekday' : ($pkg->validity_type === 'weekend' ? 'Weekend' : 'Every Day') }}
                 </div>
               </div>
 

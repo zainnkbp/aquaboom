@@ -210,7 +210,7 @@ class TicketPackageResource extends Resource
                         Forms\Components\Select::make('validity_type')
                             ->label('Aturan Hari & Musim')
                             ->options([
-                                'all_days' => 'Berlaku Setiap Hari (All-Day Pass)',
+                                'all_days' => 'Berlaku Setiap Hari (Every Day Pass)',
                                 'weekday' => 'Hanya Weekday (Senin - Jumat)',
                                 'weekend' => 'Hanya Weekend (Sabtu - Minggu)',
                                 'peak_season' => '⭐ Khusus Periode Peak Season (Liburan Sekolah & Nataru)',

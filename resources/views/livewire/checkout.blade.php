@@ -133,9 +133,47 @@
                 </p>
             </div>
         @else
+            <!-- Category Filter Tabs / Pills -->
+            @if($packages->isNotEmpty() && ($this->categoryCounts['bundle'] > 0 || $this->categoryCounts['regular'] > 0))
+                <div class="flex items-center gap-2 overflow-x-auto pb-2.5 mb-4 scrollbar-none">
+                    <button type="button" 
+                            wire:click="setCategory('all')"
+                            class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap {{ $selectedCategory === 'all' ? 'bg-aqua-navy text-aqua-gold shadow-md shadow-navy-950/20 ring-2 ring-aqua-gold/30' : 'bg-slate-100 hover:bg-slate-200 text-slate-700' }}">
+                        {{ $locale === 'en' ? 'All Passes' : 'Semua Tiket' }} ({{ $this->categoryCounts['all'] }})
+                    </button>
+
+                    @if($this->categoryCounts['regular'] > 0)
+                        <button type="button" 
+                                wire:click="setCategory('regular')"
+                                class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap {{ $selectedCategory === 'regular' ? 'bg-aqua-navy text-aqua-gold shadow-md shadow-navy-950/20 ring-2 ring-aqua-gold/30' : 'bg-slate-100 hover:bg-slate-200 text-slate-700' }}">
+                            {{ $locale === 'en' ? 'Regular Tickets' : 'Tiket Reguler' }} ({{ $this->categoryCounts['regular'] }})
+                        </button>
+                    @endif
+
+                    @if($this->categoryCounts['bundle'] > 0)
+                        <button type="button" 
+                                wire:click="setCategory('bundle')"
+                                class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap {{ $selectedCategory === 'bundle' ? 'bg-aqua-navy text-aqua-gold shadow-md shadow-navy-950/20 ring-2 ring-aqua-gold/30' : 'bg-slate-100 hover:bg-slate-200 text-slate-700' }}">
+                            {{ $locale === 'en' ? 'Promos & Bundles' : 'Paket Promo & Bundling' }} ({{ $this->categoryCounts['bundle'] }})
+                        </button>
+                    @endif
+                </div>
+            @endif
+
+            @if($this->filteredPackages->isEmpty())
+                <div class="bg-white rounded-2xl md:rounded-3xl p-8 md:p-12 text-center shadow-md border border-slate-100 mb-6">
+                    <p class="text-sm md:text-base font-bold text-slate-600 mb-3">
+                        {{ $locale === 'id' ? 'Tidak ada tiket pada kategori ini untuk tanggal yang dipilih.' : 'No tickets available in this category for the selected date.' }}
+                    </p>
+                    <button type="button" wire:click="setCategory('all')" class="inline-block px-5 py-2 rounded-xl bg-aqua-navy text-aqua-gold font-bold text-xs uppercase tracking-wider hover:bg-aqua-navy-2 transition-all">
+                        {{ $locale === 'id' ? 'Lihat Semua Tiket' : 'View All Tickets' }}
+                    </button>
+                </div>
+            @endif
+
             <!-- Waterbom Bali Style Hybrid Wristband Passes -->
             <div class="flex flex-col gap-4 md:gap-5">
-                @foreach($packages as $pkg)
+                @foreach($this->filteredPackages as $pkg)
                     @php
                         $isWeekend = Str::contains(strtolower($pkg->name), 'weekend');
                         $isGroup = Str::contains(strtolower($pkg->name), 'rombongan') || Str::contains(strtolower($pkg->name), 'rombongan');
@@ -212,7 +250,7 @@
                                 <!-- Category Tag & Promo Badges -->
                                 <div class="flex items-center gap-1.5 md:gap-2 flex-wrap mb-1">
                                     <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md tracking-wider bg-black/45 text-white backdrop-blur-xs border border-white/25 shadow-xs">
-                                        {{ $pkg->validity_type === 'weekday' ? 'Weekday Pass' : ($pkg->validity_type === 'weekend' ? 'Weekend Pass' : ($pkg->validity_type === 'peak_season' ? 'Peak Season Pass' : ($pkg->validity_type === 'specific_holidays' ? ($locale === 'en' ? 'Special Event / Holiday' : 'Event / Libur Khusus') : 'All-Day Pass'))) }}
+                                        {{ $pkg->validity_type === 'weekday' ? 'Weekday Pass' : ($pkg->validity_type === 'weekend' ? 'Weekend Pass' : ($pkg->validity_type === 'peak_season' ? 'Peak Season Pass' : ($pkg->validity_type === 'specific_holidays' ? ($locale === 'en' ? 'Special Event / Holiday' : 'Event / Libur Khusus') : 'Every Day Pass'))) }}
                                     </span>
                                     <span class="text-[9px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-white/20 text-white backdrop-blur-xs border border-white/25 shadow-xs">
                                         {{ $locale === 'en' ? 'Non-Refundable' : 'Tidak Dapat Dibatalkan' }}
@@ -1675,7 +1713,7 @@
 
                 <!-- Fallback jika array kosong tapi ada deskripsi teks -->
                 <div x-show="(!Array.isArray($data.activeTermsBenefits) || $data.activeTermsBenefits.length === 0) && activeTermsDesc">
-                    <h5 class="font-black text-aqua-navy text-xs uppercase tracking-wider mb-2">Fasilitas & Akses Termasuk</h5>
+                    <h5 class="font-black text-aqua-navy text-xs uppercase tracking-wider mb-2">{{ $locale === 'en' ? 'Included Benefits & Access' : 'Fasilitas & Akses Termasuk' }}</h5>
                     <div class="p-3.5 bg-aqua-cream rounded-2xl border border-aqua-gold/20 font-semibold text-slate-700 text-xs md:text-sm" x-text="activeTermsDesc"></div>
                 </div>
 
